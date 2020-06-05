@@ -1,0 +1,28 @@
+.#{$prefix}-heading {
+    font-weight: $text-weight-thin;
+}
+
+.#{$prefix}-title {
+    font-size  : 2em;
+    font-weight: $text-weight-thin;
+}
+
+.#{$prefix}-h1 {
+    font-size  : 2rem;
+    font-weight: $text-weight-thin;
+}
+
+.#{$prefix}-h2 {
+    font-size  : 1.6rem;
+    font-weight: $text-weight-thin;
+}
+
+.#{$prefix}-h3 {
+    font-size  : 1.2rem;
+    font-weight: 400;
+}
+
+.#{$prefix}-h4 {
+    font-size  : 1rem;
+    font-weight: $text-weight-bold;
+}

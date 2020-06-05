@@ -1,0 +1,85 @@
+$hint-background-default        : $component-background-shade;
+$hint-background-default-dark   : $component-background-shade-dark;
+$hint-background-accent         : $component-background-accent-muted;
+$hint-background-secondary      : $component-background-secondary-muted;
+$hint-background-error          : $component-background-error-muted;
+$hint-background-warning        : $component-background-warning-muted;
+$hint-background-success        : $component-background-success-muted;
+$hint-color-default             : $component-color-default;
+$hint-color-dark                : $component-color-default-dark;
+$hint-border-color-default      : $component-color-muted;
+$hint-border-color-default-dark : $component-color-muted-dark;
+$hint-border-color-accent       : $component-background-accent;
+$hint-border-color-secondary    : $component-background-secondary;
+$hint-border-color-error        : $component-background-error;
+$hint-border-color-warning      : $component-background-warning;
+$hint-border-color-success      : $component-background-success;
+
+.#{$prefix}-hint {
+    border-left     : 8px solid $hint-border-color-default;
+    background-color: $hint-background-default;
+
+    &.#{$prefix}-body {
+        @include component-padding(same);
+    }
+
+    .#{$prefix}-hint-title {
+        @include component-header;
+        @include component-padding-complex(header);
+    }
+
+    .#{$prefix}-hint-body {
+        @include component-padding-complex(body);
+    }
+
+    .#{$prefix}-hint-footer {
+        display        : flex;
+        justify-content: flex-end;
+        align-items    : center;
+        text-align     : end;
+        font-style     : italic;
+        @include component-padding-complex(footer);
+    }
+
+    &.#{$prefix}-accent {
+        background-color: $hint-background-accent;
+        color           : $hint-color-default;
+        border-color    : $hint-border-color-accent;
+    }
+
+    &.#{$prefix}-secondary {
+        background-color: $hint-background-secondary;
+        color           : $hint-color-default;
+        border-color    : $hint-border-color-secondary;
+    }
+
+    &.#{$prefix}-warning {
+        background-color: $hint-background-warning;
+        color           : $hint-color-default;
+        border-color    : $hint-border-color-warning;
+    }
+
+    &.#{$prefix}-error {
+        background-color: $hint-background-error;
+        color           : $hint-color-default;
+        border-color    : $hint-border-color-error;
+    }
+
+    &.#{$prefix}-success {
+        background-color: $hint-background-success;
+        color           : $hint-color-default;
+        border-color    : $hint-border-color-success;
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    .#{$prefix}-hint:not(.#{$prefix}-success):not(.#{$prefix}-warning):not(.#{$prefix}-error):not(.#{$prefix}-secondary):not(.#{$prefix}-accent) {
+        border-color    : $hint-border-color-default-dark;
+        color           : $hint-color-dark;
+        background-color: $hint-background-default-dark;
+    }
+}

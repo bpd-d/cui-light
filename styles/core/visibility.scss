@@ -1,0 +1,83 @@
+// Mixins
+
+@mixin visibility($size) {
+    .#{$prefix}-hidden--#{$size} {
+        display: none !important;
+    }
+
+    .#{$prefix}-invisible--#{$size} {
+        visibility: hidden !important;
+    }
+
+    .#{$prefix}-visible--#{$size} {
+        visibility: visible !important;
+    }
+}
+
+// Definitions
+
+.#{$prefix}-hidden {
+    display: none;
+}
+
+.#{$prefix}-invisible {
+    visibility: hidden;
+}
+
+.#{$prefix}-visible {
+    visibility: visible;
+}
+
+// Media
+
+// View small
+@media (max-width: $breakpoint-s) {
+    @include visibility(xs)
+}
+
+// View medium
+@media (min-width: $breakpoint-s) and (max-width: $breakpoint-m) {
+    @include visibility(s)
+}
+
+// View medium
+@media (min-width: $breakpoint-m) and (max-width: $breakpoint-l) {
+    @include visibility(m)
+}
+
+// View large
+@media (min-width: $breakpoint-l) and (max-width: $breakpoint-xl) {
+    @include visibility(l)
+}
+
+@media(orientation: landscape) {
+    @include visibility(landscape)
+}
+
+// Hover
+
+.#{$prefix}-hover-trigger {
+    &:not(:hover):not(:focus) {
+        .#{$prefix}-hidden-hover {
+            position: absolute !important;
+            width   : 0 !important;
+            height  : 0 !important;
+            padding : 0 !important;
+            margin  : 0 !important;
+            overflow: hidden !important;
+        }
+    }
+
+
+    .#{$prefix}-invisible-hover {
+        &:not(:focus-within) {
+            opacity: 0;
+        }
+    }
+
+    &:hover {
+        .#{$prefix}-invisible-hover {
+            opacity: 1;
+        }
+    }
+}

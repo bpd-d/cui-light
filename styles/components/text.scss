@@ -1,0 +1,136 @@
+// Text styling
+p,
+a,
+span {
+    line-height   : 20px;
+    vertical-align: middle;
+}
+
+// #{$prefix} colors
+.#{$prefix}-text-accent {
+    @include color(primary)
+}
+
+.#{$prefix}-text-secondary {
+    @include color(secondary)
+}
+
+.#{$prefix}-text-success {
+    @include color(success)
+}
+
+.#{$prefix}-text-warning {
+    @include color(warning)
+}
+
+.#{$prefix}-text-error {
+    @include color(error)
+}
+
+.#{$prefix}-text-muted {
+    color: var(--color-light-lighten);
+}
+
+// Weight
+
+.#{$prefix}-text-bold {
+    font-weight: $text-weight-bold;
+}
+
+.#{$prefix}-text-thin {
+    font-weight: $text-weight-thin;
+}
+
+// Size
+
+.#{$prefix}-text-large {
+    font-size: 1.4rem;
+}
+
+.#{$prefix}-text-small {
+    font-size: 0.8rem;
+}
+
+// Decoration
+
+.#{$prefix}-text-underline {
+    text-decoration: underline;
+}
+
+.#{$prefix}-text-line {
+    text-decoration: line-through;
+}
+
+.#{$prefix}-text-italic {
+    font-style: italic;
+}
+
+// Transform
+
+.#{$prefix}-text-upper {
+    text-transform: uppercase;
+}
+
+.#{$prefix}-text-lower {
+    text-transform: lowercase;
+}
+
+.#{$prefix}-text-capital {
+    text-transform: capitalize;
+}
+
+// Editor 
+
+.#{$prefix}-text-left {
+    text-align: left;
+}
+
+.#{$prefix}-text-right {
+    text-align: right;
+}
+
+.#{$prefix}-text-center {
+    text-align: center;
+}
+
+.#{$prefix}-text-justify {
+    text-align: justify;
+}
+
+// Wrapping
+
+.#{$prefix}-text-truncate {
+    text-overflow  : ellipsis;
+    //white-space  : nowrap;
+}
+
+.#{$prefix}-text-nowrap {
+    text-overflow   : clip;
+    // white-space  : nowrap;
+}
+
+// Editing
+.#{$prefix}-blockquote {
+    @include component-padding(same);
+    border-left     : 4px solid var(--color-shade-darker);
+    background-color: var(--color-shade);
+    font-style      : italic;
+    margin          : 0px;
+}
+
+.#{$prefix}-article-title {
+    font-size  : 1.6rem;
+    font-weight: $text-weight-thin;
+    line-height: 2rem;
+}
+
+.#{$prefix}-article-description {
+    font-size  : 1.2rem;
+    line-height: 1.6rem;
+    font-weight: 400;
+}
+
+.#{$prefix}-article-content {
+    font-size  : 1rem;
+    line-height: 1.4rem;
+}

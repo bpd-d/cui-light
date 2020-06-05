@@ -1,0 +1,127 @@
+$tooltip-background-color     : $component-background-default;
+$tooltip-background-color-dark: $component-background-default-dark;
+$tooltip-text-color           : $component-color-default;
+$tooltip-text-color-dark      : $component-color-default-dark;
+
+$tooltip-border-color      :$color-border-light;
+$tooltip-border-color-dark :$color-border-dark;
+
+$tooltip-max-width      : 250px;
+$tooltip-border-radius  : $border-radius-default;
+$tooltip-font-size      : 0.8rem;
+$tooltip-animation-time : $animation-duration-short;
+
+.#{$prefix}-tooltip-content {
+    position       : absolute;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    @include component-padding(sameSmall);
+    background-color: $tooltip-background-color;
+    box-shadow      : $shadow;
+    max-width       : $tooltip-max-width;
+    color           : $tooltip-text-color;
+    border          : 1px solid $tooltip-border-color;
+    border-radius   : $tooltip-border-radius;
+    font-size       : $tooltip-font-size;
+    user-select     : none;
+    transform       : scale(1);
+    transform-origin: center;
+}
+
+
+.#{$prefix}-tooltip {
+    position: relative;
+    cursor  : help;
+
+    &:before {
+        content         : attr(data-tooltip);
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        position        : absolute;
+        background-color: $tooltip-background-color;
+        box-shadow      : $shadow;
+        border          : 1px solid $tooltip-border-color;
+        border-radius   : $tooltip-border-radius;
+        font-size       : $tooltip-font-size;
+        user-select     : none;
+        transform       : scale(0) translateX(-50%) translateY(0px);
+        color           : $tooltip-text-color;
+        top             : 0;
+        width           : 200px;
+        left            : 50%;
+        transform-origin: top left;
+        transition-delay: $tooltip-animation-time;
+        transition      : transform $tooltip-animation-time ease-in;
+        @include component-padding(sameSmall);
+    }
+
+    &:hover {
+        &:before {
+            transform: scale(1) translateX(-50%) translateY(-36px);
+        }
+    }
+
+    &.#{$prefix}-wide {
+        &:before {
+            width: 350px;
+        }
+    }
+
+    &.#{$prefix}-fit {
+        &:before {
+            max-width: 400px;
+        }
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    .#{$prefix}-tooltip-content {
+        border          : 1px solid $tooltip-background-color-dark;
+        background-color: $tooltip-background-color-dark;
+        color           : $tooltip-text-color-dark;
+    }
+
+    .#{$prefix}-tooltip {
+        &:before {
+            background-color: $tooltip-background-color-dark;
+            border          : 1px solid $tooltip-border-color-dark;
+            color           : $tooltip-text-color-dark;
+        }
+    }
+}
+
+
+/**
+* Animation
+*/
+.#{$prefix}-animation-tooltip-in {
+    animation: tooltipIn var(--animation-time) ease-in forwards;
+}
+
+@keyframes tooltipIn {
+    0% {
+        transform: scale(0);
+        opacity  : 0;
+    }
+
+    40% {
+        transform: scale(0.6);
+        opacity  : 0.3;
+    }
+
+    50% {
+        transform: scale(1.3);
+        opacity  : 0.6;
+    }
+
+    100% {
+        transform: scale(1, 1);
+        opacity  : 1;
+    }
+}

@@ -1,0 +1,10 @@
+.#{$prefix}-sticky:not(table) {
+    position          : sticky;
+    top               : 0px;
+    //display         : block;
+
+    &.#{$prefix}-hidden {
+        display: none;
+    }
+
+}

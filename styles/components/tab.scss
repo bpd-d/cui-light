@@ -1,0 +1,90 @@
+$tab-color-base   : $component-color-default;
+$tab-color-primary: var(--color-primary);
+
+$tab-item-color-hover : var(--color-shade);
+$tab-item-color-active: var(--color-shade-darker);
+
+$transition-timing: $animation-duration-default;
+$tab-border-bottom: 1px solid var(--color-light-lighten);
+$tab-border-aside : 1px solid var(--color-light-lighten);
+
+@mixin pointer {
+    cursor     : pointer;
+    user-select: none;
+}
+
+ul.#{$prefix}-tab {
+    list-style   : none;
+    margin       : 0px;
+    padding      : 0px;
+    border-bottom: $tab-border-bottom;
+
+    li {
+        display   : inline-block;
+        box-sizing: border-box;
+        @include component-padding;
+
+        @include pointer;
+
+        &:hover {
+            background-color: $tab-item-color-hover;
+        }
+
+        &:active {
+            background-color: $tab-item-color-active;
+        }
+
+        &.#{$prefix}-active {
+            position: relative;
+
+            &:before {
+                position        : absolute;
+                content         : "";
+                height          : 2px;
+                background-color: $tab-color-primary;
+                width           : 100%;
+                left            : 50%;
+                transform       : translateX(-50%) scale(1, 1);
+                bottom          : -1px;
+                transition      : transform $transition-timing ease-out;
+            }
+
+            &:hover {
+                &:before {
+                    transform: translateX(-50%) scale(0.8, 1);
+                }
+            }
+        }
+    }
+
+    &.#{$prefix}-tab-side {
+        border-right : $tab-border-aside;
+        border-bottom: none;
+
+        li {
+            display: list-item;
+
+            &.#{$prefix}-active {
+                position: relative;
+
+                &:before {
+                    content         : "";
+                    position        : absolute;
+                    width           : 2px;
+                    background-color: $tab-color-primary;
+                    height          : 100%;
+                    left            : 0;
+                    top             : 50%;
+                    transform       : translateY(-50%) scale(1, 0.8);
+                    transition      : transform $transition-timing ease-out;
+                }
+
+                &:hover {
+                    &:before {
+                        transform: translateY(-50%) scale(1, 1);
+                    }
+                }
+            }
+        }
+    }
+}

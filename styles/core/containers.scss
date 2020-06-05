@@ -1,0 +1,62 @@
+$container-background-default      :$component-background-default;
+$container-background-default-dark :$component-background-default-dark;
+$container-background-inverse      :$component-background-inverse;
+$container-background-inverse-dark :$component-background-inverse-dark;
+
+$container-color-default     :$component-color-default;
+$container-color-default-dark:$component-color-default-dark;
+$container-color-inverse     :$component-color-inverse;
+$container-color-inverse-dark:$component-color-inverse-dark;
+
+.#{$prefix}-container {
+    //display: block;
+    @include component-padding(same);
+
+    &.#{$prefix}-no-padding {
+        padding: 0;
+    }
+
+    &.#{$prefix}-center {
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+    }
+
+    &.#{$prefix}-default {
+        background-color: $container-background-default;
+        color           : $container-color-default;
+    }
+
+    &.#{$prefix}-accent {
+        @include background-color(primary, lighten);
+        @include color(dark);
+    }
+
+    &.#{$prefix}-secondary {
+        @include background-color(secondary, lighten);
+        @include color(dark);
+    }
+
+    &.#{$prefix}-inverse {
+        background-color: $container-background-inverse;
+        color           : $container-color-inverse;
+    }
+}
+
+/*
+* Dark
+*/
+
+.#{$prefix}-dark {
+    .#{$prefix}-container {
+        &.#{$prefix}-default {
+            background-color: $container-background-default-dark;
+            color           : $container-color-default-dark;
+        }
+
+        &.#{$prefix}-inverse {
+            background-color: $container-background-inverse-dark;
+            color           : $container-color-inverse-dark;
+        }
+    }
+}

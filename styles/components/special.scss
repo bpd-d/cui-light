@@ -1,0 +1,195 @@
+$special-color-success  : $component-background-success;
+$special-color-fail     : $component-background-error;
+$special-animation-time : 1s;
+$special-animation-long : 2s;
+$special-animation-short: 500ms;
+$special-animation-delay: 500ms;
+/**
+* Special icon
+*/
+
+svg.special-fail {
+    stroke: $special-color-fail;
+
+    .arm_1,
+    .arm_2 {
+        stroke-dasharray : 62;
+        stroke-dashoffset: 62;
+    }
+
+    .circle {
+        stroke-dasharray : 272;
+        stroke-dashoffset: 272;
+        transform-origin : center;
+    }
+}
+
+svg.special-success {
+    stroke: $special-color-success;
+
+    .arm {
+        stroke-dasharray : 83;
+        stroke-dashoffset: 83;
+    }
+
+    .circle {
+        stroke-dasharray : 272;
+        stroke-dashoffset: 272;
+        transform-origin : center;
+    }
+}
+
+/**
+* Circle progress
+*/
+
+svg.circle-progress {
+    .circle-progress-path {
+        stroke-dasharray : 280;
+        stroke-dashoffset: 280;
+    }
+}
+
+/**
+* Double special circle
+*/
+
+svg.circle-double {
+    .circle-double-inner {
+        stroke-dasharray : 220;
+        stroke-dashoffset: 220;
+        transform-origin : center;
+    }
+
+    .circle-double-outer {
+        stroke-dasharray : 280;
+        stroke-dashoffset: 280;
+        transform-origin : center;
+    }
+}
+
+
+/**
+* Active for special
+*/
+
+.#{$prefix}-icon {
+    &.#{$prefix}-active {
+        svg {
+            path {
+                stroke-dashoffset: 0;
+            }
+        }
+
+    }
+
+    &.#{$prefix}-animation {
+        svg.special-success {
+            .arm {
+                animation      : armTwoAnim $special-animation-short linear forwards;
+                animation-delay: $special-animation-delay;
+            }
+
+            .circle {
+                transform-origin: center;
+                animation       : circleAnim $special-animation-time linear forwards;
+            }
+        }
+
+        svg.special-fail {
+
+            .arm_1,
+            .arm_2 {
+                animation      : armOneAnim $special-animation-short linear forwards;
+                animation-delay: $special-animation-delay;
+            }
+
+            .circle {
+                animation: circleAnim $special-animation-time linear forwards;
+            }
+        }
+
+        svg.circle-double {
+            .circle-double-inner {
+                animation                : circleDoubleInner $special-animation-long cubic-bezier(0.34, 0.64, 0.47, 1.07);
+                animation-iteration-count: infinite;
+            }
+
+            .circle-double-outer {
+                animation                : circleDoubleOuter $special-animation-long cubic-bezier(0.34, 0.64, 0.47, 1.07);
+                animation-iteration-count: infinite;
+            }
+        }
+    }
+}
+
+
+
+/**
+* Animation
+*/
+@keyframes circleAnim {
+    0% {
+        transform        : rotate(0deg);
+        stroke-dashoffset: 272;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+        transform        : rotate(360deg);
+    }
+}
+
+@keyframes armOneAnim {
+    0% {
+        stroke-dashoffset: 60;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes armTwoAnim {
+    0% {
+        stroke-dashoffset: 83;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes circleDoubleInner {
+    0% {
+        stroke-dashoffset: 220;
+        transform        : rotate(180deg);
+    }
+
+    50% {
+        stroke-dashoffset: 0;
+        transform        : rotate(360deg);
+    }
+
+    100% {
+        stroke-dashoffset: -220;
+        transform        : rotate(540deg);
+    }
+}
+
+@keyframes circleDoubleOuter {
+    0% {
+        stroke-dashoffset: 280;
+        transform        : rotate(0);
+    }
+
+    50% {
+        stroke-dashoffset: 0;
+        transform        : rotate(180deg);
+    }
+
+    100% {
+        stroke-dashoffset: -280;
+        transform        : rotate(360deg);
+    }
+}

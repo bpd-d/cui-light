@@ -1,0 +1,103 @@
+$accordion-animation-time    : $animation-duration-default;
+$accordion-color-default     : $component-color-default;
+$accordion-color-default-dark: $component-color-default-dark;
+
+ul.#{$prefix}-accordion {
+    display   : block;
+    list-style: none;
+    margin    : 0;
+    padding   : 0;
+
+    li {
+        div.#{$prefix}-accordion-title {
+            display        : flex;
+            font-size      : 1rem;
+            text-decoration: none;
+            align-items    : center;
+            cursor         : pointer;
+            user-select    : none;
+
+            @include component-padding;
+
+            * {
+                pointer-events: none;
+            }
+
+            svg {
+                animation      : rotateBack $accordion-animation-time ease-out;
+                margin-left    : auto;
+                fill           : none;
+                stroke-opacity : 1;
+                stroke-width   : 1px;
+                stroke-linecap : round;
+                stroke-linejoin: miter;
+                stroke         : $accordion-color-default;
+            }
+        }
+
+        div.#{$prefix}-accordion-content {
+            display: none;
+            padding: 1em;
+
+            &.#{$prefix}-animation-progress {
+                display: block;
+            }
+        }
+
+        &.#{$prefix}-active {
+
+            .#{$prefix}-accordion-title {
+                svg {
+                    animation: rotateLeft $accordion-animation-time ease-out;
+                    transform: rotate(-90deg);
+
+                }
+            }
+
+            .#{$prefix}-accordion-content {
+                display: block;
+            }
+        }
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    ul.#{$prefix}-accordion {
+        li {
+            div.#{$prefix}-accordion-title {
+                svg {
+                    stroke: $accordion-color-default-dark;
+                }
+            }
+        }
+    }
+}
+
+
+/*
+* Animation
+*/
+
+@keyframes rotateLeft {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-90deg);
+    }
+}
+
+@keyframes rotateBack {
+    0% {
+        transform: rotate(-90deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

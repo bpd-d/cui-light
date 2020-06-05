@@ -1,0 +1,253 @@
+$default-animation-time: var(--animation-time);
+$short-animation-time  : calc(var(--animation-time) * 0.5);
+
+.#{$prefix}-animation-pause {
+    animation-play-state: paused;
+}
+
+/*
+* For simple input button
+*/
+@keyframes radioShowUp {
+    0% {
+        opacity  : 0;
+        transform: scale(0)
+    }
+
+    80% {
+        opacity  : 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity  : 1;
+        transform: scale(1)
+    }
+}
+
+@keyframes radioHide {
+    0% {
+        opacity  : 1;
+        transform: scale(1)
+    }
+
+    20% {
+        opacity  : 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity  : 0;
+        transform: scale(0)
+    }
+}
+
+@keyframes checkmarkShowUp {
+    0% {
+        opacity  : 0;
+        transform: scale(0)
+    }
+
+    80% {
+        opacity  : 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity  : 1;
+        transform: scale(1)
+    }
+}
+
+@keyframes checkmarkHide {
+    0% {
+        opacity  : 1;
+        transform: scale(1)
+    }
+
+    20% {
+        opacity  : 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity  : 0;
+        transform: scale(0)
+    }
+}
+
+@keyframes switchMoveOn {
+    0% {
+        transform: translateX(0px);
+    }
+
+    100% {
+        transform: translateX(18px);
+    }
+}
+
+@keyframes switchMoveOff {
+    0% {
+        transform: translateX(18px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+.#{$prefix}-anim-slide-in {
+    z-index    : 100;
+    will-change: transform;
+    animation  : animSlideIn $default-animation-time ease-in forwards;
+}
+
+.#{$prefix}-anim-slide-out {
+    z-index    : 99;
+    will-change: transform;
+    animation  : animSlideOut $default-animation-time ease-in forwards;
+}
+
+.#{$prefix}-anim-fade-in {
+    will-change: opacity;
+    animation  : animFadeIn $default-animation-time ease-in forwards;
+}
+
+.#{$prefix}-anim-fade-out {
+    will-change: opacity;
+    animation  : animFadeOut $default-animation-time ease-out forwards;
+}
+
+.#{$prefix}-scale-y-in {
+    will-change     : transform;
+    transform-origin: top;
+    animation       : scaleYIn $default-animation-time ease-in forwards;
+}
+
+.#{$prefix}-scale-y-out {
+    will-change     : transform;
+    transform-origin: top;
+    animation       : scaleYOut $default-animation-time ease-out forwards;
+}
+
+.#{$prefix}-animation-fade-in {
+    animation: animFadeIn $default-animation-time ease-in;
+}
+
+.#{$prefix}-animation-fade-out {
+    animation: animFadeOut $default-animation-time ease-out;
+}
+
+.#{$prefix}-animation-slide-in {
+    animation: slideInLeft $default-animation-time ease-in;
+}
+
+.#{$prefix}-animation-slide-out {
+    animation: slideOutRight $default-animation-time ease-out;
+}
+
+.#{$prefix}-accordion-out {
+    display: none;
+}
+
+
+@keyframes animSlideIn {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes animSlideOut {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes animFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes animFadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes scaleYIn {
+    0% {
+        transform: scaleY(0);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes scaleYOut {
+    0% {
+        transform: scaleY(1);
+    }
+
+    100% {
+        transform: scaleY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-100%)
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes slideOutLeft {
+    0% {
+        transform: translateX(0%)
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100%)
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+
+}
+
+@keyframes slideOutRight {
+    0% {
+        transform: translateX(0%)
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}

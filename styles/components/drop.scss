@@ -1,0 +1,61 @@
+$drop-background-default      :$component-background-default;
+$drop-background-default-dark :$component-background-default-dark;
+
+$drop-color-default      :$component-color-default;
+$drop-color-default-dark :$component-color-default-dark;
+
+
+.#{$prefix}-drop {
+    visibility: hidden;
+    position  : absolute;
+    display   : block;
+    top       : 0px;
+    left      : 0px;
+
+
+    &.#{$prefix}-active {
+        visibility: visible;
+    }
+}
+
+.#{$prefix}-dropdown {
+    background-color: $drop-background-default;
+    color           : $drop-color-default;
+    border          : 1px solid transparent;
+    border-radius   : $border-radius-default;
+    box-sizing      : border-box;
+
+}
+
+ul.#{$prefix}-drop-nav {
+    list-style: none;
+    margin    : 0;
+    padding   : 0;
+    min-width : 200px;
+    color     : $drop-color-default;
+
+    li {
+        margin    : 0;
+        padding   : 0;
+        box-sizing: border-box;
+        display   : block;
+        overflow  : hidden;
+
+        a {
+            @include component-padding;
+            text-decoration: none;
+            color          : inherit;
+            display        : block;
+
+            &:hover {
+                background-color: var(--color-shade);
+            }
+        }
+
+        &.#{$prefix}-parent {
+            @include component-padding;
+            cursor     : default;
+            font-weight: $text-weight-bold;
+        }
+    }
+}

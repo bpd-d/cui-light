@@ -1,0 +1,131 @@
+// accent           : #1565c0
+
+:root {
+    --padding                   : 20px;
+    --padding-s                 : 12px;
+    --font-size                 : 16px;
+    --animation-time            : 0.3s;
+    --animation-time-long       : 0.5s;
+    --animation-time-short      : 0.15s;
+    //Breakpoints
+    // colors
+    // Light
+    --color-light-app-background: #ffffff;
+    --color-light-background    : #fff;
+    --color-light-border        : #f3f3f3;
+    --color-light-base          : #333;
+    --color-light-active        : #222;
+    --color-light-muted         : #aaa;
+    //Dark
+    --color-dark-app-background : #222;
+    --color-dark-background     : #262626;
+    --color-dark-border         : #303030;
+    --color-dark-base           : #fff;
+    --color-dark-active         : #777;
+    --color-dark-muted          : #ccc;
+    // --primary pink      : FF0066
+    --color-primary             : #1565c0;
+    --color-primary-active      : #0B3564;
+    --color-primary-muted       : #4F98EC;
+    // Secondary
+    --color-secondary           : #FF007B;
+    --color-secondary-active    : #99004A;
+    --color-secondary-muted     : #FF66B0;
+    // Signals 
+    // Warning
+    --color-warning             : #fb8c00;
+    --color-warning-active      : #955300;
+    --color-warning-muted       : #FFBA62;
+    // Success
+    --color-success             : #7cb342;
+    --color-success-active      : #486827;
+    --color-success-muted       : #AED388;
+    //Error
+    --color-error               : #f44336;
+    --color-error-active        : #BA160A;
+    --color-error-muted         : #F99D97;
+
+    --input-background-color: transparent;
+
+    // Static
+    --color-shade              : #00000010;
+    --color-shade-darker       : #00000030;
+    --color-shade-light        : #ffffff10;
+    --color-shade-light-lighter: #ffffff30;
+
+    // Outline
+    --outline: 1px solid transparent;
+}
+
+@import 'styles/variables';
+@import 'styles/mixins';
+
+html {
+    margin                  : 0;
+    padding                 : 0;
+    box-sizing              : border-box;
+    -webkit-text-size-adjust: 100%;
+    text-rendering          : optimizeLegibility;
+}
+
+body {
+    font-size       : var(--font-size);
+    box-sizing      : border-box;
+    font-family     : $font-family;
+    margin          : 0;
+    padding         : 0;
+    background-color: $app-background;
+    color           : $app-color;
+    //overflow-y: hidden;
+}
+
+// Commons
+
+@import 'styles/core/visibility';
+@import 'styles/core/spaces';
+@import 'styles/core/widths';
+@import 'styles/core/height';
+@import 'styles/animations';
+// Base
+@import 'styles/core/flex';
+@import 'styles/core/heads';
+@import 'styles/core/containers';
+@import 'styles/core/section';
+@import 'styles/core/grid';
+@import 'styles/core/position';
+@import 'styles/core/transition';
+@import 'styles/core/slide';
+@import 'styles/core/sticky';
+// Components
+@import 'styles/components/navbar';
+@import 'styles/components/accordion';
+@import 'styles/components/dialog';
+@import 'styles/components/tab';
+@import 'styles/components/tooltip';
+@import 'styles/components/buttons';
+@import 'styles/components/banner';
+@import 'styles/components/links';
+@import 'styles/components/text';
+@import 'styles/components/icon';
+@import 'styles/components/card';
+@import 'styles/components/breadcrumb';
+@import 'styles/components/input';
+//@import 'styles/components/notification';
+//@import 'styles/components/sortable';
+@import 'styles/components/spinner';
+@import 'styles/components/table';
+@import 'styles/components/drop';
+//@import 'styles/components/switch';
+@import 'styles/components/switcher';
+@import 'styles/components/list';
+@import 'styles/components/overlay';
+@import 'styles/components/progress';
+@import 'styles/components/background';
+@import 'styles/components/badge';
+@import 'styles/components/toast';
+@import 'styles/components/offcanvas';
+@import 'styles/components/hint';
+@import 'styles/components/special';
+@import 'styles/components/transitions';
+// Dark
+@import 'styles/dark';

@@ -1,0 +1,17 @@
+$overlay-color-light: rgba(255, 255, 255, 0.4);
+$overlay-color-dark : rgba(22, 22, 22, 0.4);
+$blur-intensity     : 2;
+
+.#{$prefix}-overlay-light {
+    background-color: $overlay-color-light;
+    @include color(light)
+}
+
+.#{$prefix}-overlay-dark {
+    background-color: $overlay-color-dark;
+    @include color(dark)
+}
+
+.#{$prefix}-overlay-blur {
+    backdrop-filter: blur($blur-intensity);
+}

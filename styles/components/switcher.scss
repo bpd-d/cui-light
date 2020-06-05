@@ -1,0 +1,97 @@
+$indicator-transition-time     : $animation-duration-default;
+$indicator-item-width          : 24px;
+$indicator-item-height         : 24px;
+$indicator-item-line           : 24px;
+$indicator-item-transform      : scale(1);
+$indicator-item-transform-hover: scale(1.1);
+$indicator-item-font-size      : 14px;
+$indicator-item-color          : $component-color-default;
+$indicator-item-color-dark     : $component-color-default-dark;
+$indicator-round-size          : 18px;
+$indicator-round-border        : 1px solid $indicator-item-color;
+$indicator-active-border       : 2px solid $indicator-item-color;
+$indicator-round-border-dark   : 1px solid $indicator-item-color-dark;
+$indicator-active-border-dark  : 2px solid $indicator-item-color-dark;
+
+ul.#{$prefix}-switcher-indicator {
+    list-style: none;
+    padding   : 0;
+
+    li {
+        cursor        : pointer;
+        display       : inline-block;
+        box-sizing    : border-box;
+        margin        : 0;
+        position      : relative;
+        text-align    : center;
+        vertical-align: middle;
+        width         : $indicator-item-width;
+        height        : $indicator-item-height;
+        line-height   : $indicator-item-line;
+        font-size     : $indicator-item-font-size;
+        transform     : $indicator-item-transform;
+        transition    : transform $indicator-transition-time ease-in;
+
+        &:hover {
+            transform: $indicator-item-transform-hover;
+        }
+
+        &:before {
+            content      : "";
+            position     : absolute;
+            border-radius: 50%;
+            top          : 2px;
+            left         : 2px;
+            width        : $indicator-round-size;
+            height       : $indicator-round-size;
+            border       : $indicator-round-border;
+        }
+
+        &.#{$prefix}-active {
+            &:before {
+                border: $indicator-active-border;
+                top   : 1px;
+                left  : 1px;
+            }
+        }
+
+    }
+
+    &.#{$prefix}-small {
+        li {
+            width      : 18px;
+            height     : 18px;
+            line-height: 18px;
+            font-size  : 10px;
+
+            &:before {
+                width : 14px;
+                height: 14px;
+                top   : 1px;
+                left  : 1px;
+            }
+
+            &.#{$prefix}-active {
+                &:before {
+                    top : 0px;
+                    left: 0px;
+                }
+            }
+        }
+
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    ul.#{$prefix}-switcher-indicator {
+        li {
+            &:before {
+                border: $indicator-round-border-dark;
+            }
+        }
+    }
+}

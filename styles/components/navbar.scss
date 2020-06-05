@@ -1,0 +1,136 @@
+$navbar-background-default     : $component-background-default;
+$navbar-background-default-dark: $component-background-default-dark;
+$navbar-color-default          : $component-color-default;
+$navbar-color-default-dark     : $component-color-default-dark;
+
+
+.#{$prefix}-navbar {
+    display         : flex;
+    flex-wrap       : wrap;
+    justify-content : space-between;
+    align-items     : center;
+    background-color: $navbar-background-default;
+    box-shadow      : $shadow2;
+    box-sizing      : border-box;
+    padding         : 0px;
+    z-index         : 1100;
+
+    &.#{$prefix}-transparent {
+        background-color: transparent;
+        box-shadow      : none;
+    }
+
+    ul {
+        display   : inline-block;
+        list-style: none;
+        margin    : 0px;
+        padding   : 0px;
+        height    : 100%;
+        box-sizing: border-box;
+
+        li {
+            display            : inline-block;
+            // line-height     : 1rem;
+            box-sizing         : border-box;
+            //@include component-padding(same);
+            padding            : 1.5rem 1rem;
+
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .#{$prefix}-navbar-left {
+        justify-self    : left;
+        align-self      : center;
+        box-sizing      : border-box;
+        //  padding     : $padding;
+        order           : 1;
+        height          : 100%;
+        min-width       : calc(100% / 3);
+    }
+
+    .#{$prefix}-navbar-middle {
+        justify-self: center;
+        align-self  : center;
+        order       : 2;
+        box-sizing  : border-box;
+
+    }
+
+    .#{$prefix}-navbar-right {
+        justify-self   : end;
+        align-self     : center;
+        display        : flex;
+        justify-content: flex-end;
+        order          : 3;
+        min-width      : calc(100% / 3);
+        box-sizing     : border-box;
+
+    }
+
+    .#{$prefix}-navbar-title {
+        color            : $navbar-color-default;
+        font-weight      : 700;
+        //padding        : $padding;
+        text-decoration  : none;
+        font-size        : 1.2rem;
+
+    }
+}
+
+.#{$prefix}-navbar-item {
+    color      : $navbar-color-default;
+    font-weight: 400;
+    //padding  : $padding;
+
+    &.#{$prefix}-active {
+        color      : var(--color-light-darken);
+        font-weight: 700;
+    }
+}
+
+/*
+* Dark
+**/
+
+.#{$prefix}-dark {
+    .#{$prefix}-navbar {
+        background-color: $navbar-background-default-dark;
+
+        .#{$prefix}-navbar-title {
+            color: $navbar-color-default-dark;
+        }
+    }
+
+    .#{$prefix}-navbar-item {
+        color: $navbar-color-default-dark;
+    }
+}
+
+/**
+* Media Queries
+*/
+
+// View small
+@media (max-width: $breakpoint-s) {
+
+    .#{$prefix}-navbar-left,
+    .#{$prefix}-navbar-right {
+        // justify-self   : center;
+        justify-content: center !important;
+        width          : 100%;
+    }
+}
+
+// View medium
+@media (min-width: $breakpoint-s) and (max-width: $breakpoint-m) {
+
+    .#{$prefix}-navbar-left,
+    .#{$prefix}-navbar-right {
+        //  justify-self   : center;
+        justify-content: center !important;
+        width          : 100%;
+    }
+}

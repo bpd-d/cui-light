@@ -1,0 +1,184 @@
+$icon-color-default                 :$component-color-default;
+$icon-color-inverse                 : $component-color-inverse;
+$icon-color-inverse-dark            : $component-color-inverse-dark;
+$icon-color-default-dark            : $component-color-default-dark;
+$icon-button-border                 : $button-border-color;
+$icon-button-border-inverse         : $component-color-inverse;
+$icon-button-border-inverse-dark    : $component-color-inverse-dark;
+$icon-button-border-dark            : $button-border-color-dark;
+$icon-button-background-default     : $component-background-default;
+$icon-button-background-inverse     : $component-background-inverse;
+$icon-button-background-default-dark:$component-background-default-dark;
+$icon-button-background-inverse-dark: $component-background-inverse-dark;
+
+
+
+.#{$prefix}-icon-button,
+.#{$prefix}-icon,
+.#{$prefix}-svg {
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+    text-align     : center;
+    line-height    : 20px;
+    vertical-align : middle;
+
+    svg {
+        max-width      : 100%;
+        box-sizing     : border-box;
+        height         : auto;
+        order          : 0;
+        fill           : none;
+        stroke         : $icon-color-default;
+        stroke-opacity : 1;
+        stroke-width   : 1px;
+        stroke-linecap : round;
+        stroke-linejoin: miter;
+    }
+
+    &.#{$prefix}-dark {
+        svg {
+            path {
+                stroke: $icon-color-inverse;
+            }
+        }
+    }
+
+    &.#{$prefix}-inverse {
+        svg {
+            path {
+                stroke: $icon-color-inverse;
+            }
+        }
+    }
+
+    &.#{$prefix}-accent {
+        svg {
+            path {
+                stroke: var(--color-primary);
+            }
+        }
+    }
+
+    &.#{$prefix}-secondary {
+        svg {
+            path {
+                stroke: var(--color-secondary);
+            }
+        }
+    }
+
+    &.#{$prefix}-success {
+        svg {
+            path {
+                stroke: var(--color-success);
+            }
+        }
+    }
+
+    &.#{$prefix}-warning {
+        svg {
+            path {
+                stroke: var(--color-warning);
+            }
+        }
+    }
+
+    &.#{$prefix}-error {
+        svg {
+            path {
+                stroke: var(--color-error);
+            }
+        }
+    }
+
+    /**
+    * if there is any element
+    */
+
+    &.#{$prefix}-margin {
+        &>svg {
+            margin-right: 4px;
+        }
+    }
+
+}
+
+
+.#{$prefix}-icon-button {
+    cursor: pointer;
+    @include component-padding(sameSmall);
+    background-color: transparent;
+    border          : 1px solid transparent;
+    border-radius   : 100px;
+
+    &.#{$prefix}-default {
+        border-color        : $icon-button-border;
+        //  background-color: var(--color-light-background);
+
+    }
+
+    &.#{$prefix}-inverse {
+        border-color       : $icon-button-border-inverse;
+        // background-color: var(--color-dark-background);
+    }
+
+    &:hover {
+        &.#{$prefix}-default {
+            box-shadow: $shadow;
+        }
+    }
+
+    &:focus {
+        outline: $outline-default;
+    }
+}
+
+ul.#{$prefix}-icon-nav {
+    list-style: none;
+    padding   : 0px;
+    display   : flex;
+
+    li {
+        box-sizing: border-box;
+        display   : inline-block;
+
+        &>* {
+            @include component-padding(sameSmall);
+        }
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+
+    .#{$prefix}-icon-button,
+    .#{$prefix}-icon {
+        svg {
+            stroke: $icon-color-default-dark;
+        }
+
+        &.#{$prefix}-inverse {
+            svg {
+                path {
+                    stroke: $icon-color-inverse-dark;
+                }
+            }
+        }
+    }
+
+    .#{$prefix}-icon-button {
+        &.#{$prefix}-default {
+            border-color    : $icon-button-border-dark;
+            background-color: var(--color-dark-background);
+        }
+
+        &.#{$prefix}-inverse {
+            border-color    : $icon-button-border-inverse-dark;
+            background-color: var(--color-light-background);
+        }
+    }
+}

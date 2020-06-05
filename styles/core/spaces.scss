@@ -1,0 +1,165 @@
+/*
+* SPACES
+* Definitions of additonal spaces like paddings, margins or overflows
+* They can be used when default component settings are not sufficient
+*
+*/
+// Variables
+$item-padding      : $padding-global;
+$item-padding-large: $padding-global-large;
+$item-padding-small: $padding-global-small;
+
+// MIxins
+
+$sides: "top",
+"bottom",
+"left",
+"right";
+
+@mixin margin($size) {
+    .#{$prefix}-margin--#{$size} {
+        margin: 1rem;
+    }
+
+    .#{$prefix}-margin-top--#{$size} {
+        margin-top: 1rem;
+    }
+
+    .#{$prefix}-margin-bottom--#{$size} {
+        margin-bottom: 1rem;
+    }
+
+    .#{$prefix}-margin-left--#{$size} {
+        margin-left: 1rem;
+    }
+
+    .#{$prefix}-margin-right--#{$size} {
+        margin-right: 1rem;
+    }
+}
+
+@mixin padding($size, $sides...) {
+    .#{$prefix}-padding--#{$size} {
+        padding: 1rem;
+    }
+
+    @each $side in $sides {
+        .#{$prefix}-padding-#{$side}--#{$size} {
+            padding-#{$side}: 1rem;
+        }
+    }
+}
+
+.#{$prefix}-margin {
+    margin: 1rem;
+}
+
+.#{$prefix}-margin-top {
+    margin-top: 1rem;
+}
+
+.#{$prefix}-margin-bottom {
+    margin-bottom: 1rem;
+}
+
+.#{$prefix}-margin-left {
+    margin-left: 1rem;
+}
+
+.#{$prefix}-margin-right {
+    margin-right: 1rem;
+}
+
+.#{$prefix}-margin-auto {
+    margin: 0 auto;
+}
+
+// Padding
+
+.#{$prefix}-padding {
+    padding: $item-padding;
+}
+
+.#{$prefix}-padding-top {
+    padding-top: $item-padding;
+}
+
+.#{$prefix}-padding-bottom {
+    padding-bottom: $item-padding;
+}
+
+.#{$prefix}-padding-left {
+    padding-left: $item-padding;
+}
+
+.#{$prefix}-padding-right {
+    padding-left: $item-padding;
+}
+
+/**
+* Media Queries
+*/
+// View small
+@media (max-width: $breakpoint-s) {
+    @include margin(s);
+}
+
+// View medium
+@media (max-width: $breakpoint-m) {
+    @include margin(m);
+}
+
+
+// View large
+@media (max-width: $breakpoint-l) {
+    @include margin(l);
+}
+
+
+/**
+*
+*/
+
+.#{$prefix}-overflow-x {
+    overflow-x: scroll;
+}
+
+.#{$prefix}-overflow-x-auto {
+    overflow-x: auto;
+}
+
+.#{$prefix}-overflow-x-hidden {
+    overflow-x: hidden;
+}
+
+.#{$prefix}-overflow-y {
+    overflow-y: scroll;
+}
+
+.#{$prefix}-overflow-y-auto {
+    overflow-y: auto;
+}
+
+.#{$prefix}-overflow-y-hidden {
+    overflow-y: hidden;
+}
+
+// Display 
+.#{$prefix}-inline {
+    display: inline;
+}
+
+.#{$prefix}-inline-block {
+    display: inline-block;
+}
+
+.#{$prefix}-clearfix {
+    &:after {
+        content    : ".";
+        display    : block;
+        clear      : both;
+        visibility : hidden;
+        line-height: 0;
+        height     : 0;
+    }
+}

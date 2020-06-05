@@ -1,0 +1,75 @@
+$banner-background-default      :$component-background-default;
+$banner-background-default-dark :$component-background-default-dark;
+$banner-background-inverse      :$component-background-inverse;
+$banner-background-inverse-dark :$component-background-inverse-dark;
+$banner-color-default           :$component-color-default;
+$banner-color-default-dark      :$component-color-default-dark;
+$banner-border-color            :$color-border-light;
+$banner-border-color-dark       :$color-border-dark;
+$banner-border-radius           : $border-radius-default;
+
+
+
+
+
+@mixin banner($color) {
+    border-color    : var(--color-#{$color});
+    background-color: var(--color-#{$color}) !important;
+    color           : var(--color-dark-base);
+}
+
+div.#{$prefix}-banner {
+    display         : none;
+    justify-content : space-between;
+    align-items     : center;
+    border          : 1px solid $banner-border-color;
+    background-color: $banner-background-default;
+    color           : $banner-color-default;
+    border-radius   : $banner-border-radius;
+    box-shadow      : $shadow;
+    @include component-padding;
+
+    &[#{$prefix}-show] {
+        display: flex;
+    }
+
+    &[#{$prefix}-close],
+    &[#{$prefix}-icon-close] {
+        order: 100;
+    }
+
+    &.#{$prefix}-success {
+        @include banner(success); //box-shadow      : $shadow;
+    }
+
+    &.#{$prefix}-error {
+        @include banner(error);
+    }
+
+    &.#{$prefix}-warning {
+        @include banner(warning); //box-shadow      : $shadow;
+    }
+
+    &.#{$prefix}-accent {
+        @include banner(primary); //box-shadow      : $shadow;
+    }
+
+    &.#{$prefix}-secondary {
+        @include banner(secondary);
+    }
+
+    .#{$prefix}-message-icon {
+        order: -1;
+    }
+}
+
+/**
+* Dark
+*/
+.#{$prefix}-dark {
+    div.#{$prefix}-banner {
+        border          : 1px solid $banner-border-color-dark;
+        background-color: $banner-background-default-dark;
+        color           : $banner-color-default-dark;
+    }
+}

@@ -1,0 +1,51 @@
+.#{$prefix}-link {
+    text-decoration: none;
+
+    &.#{$prefix}-accent {
+        @include color(primary)
+    }
+
+    &.#{$prefix}-secondary {
+        @include color(secondary)
+    }
+
+    &.#{$prefix}-error {
+        @include color(error)
+    }
+
+    &.#{$prefix}-warning {
+        @include color(warning)
+    }
+
+    &.#{$prefix}-success {
+        @include color(success)
+    }
+
+    &:hover {
+        text-decoration      : underline;
+        text-decoration-color: var(--color-light-lighten);
+    }
+
+    &:visited {
+
+        &.#{$prefix}-accent {
+            @include color-darken(primary)
+        }
+
+        &.#{$prefix}-secondary {
+            @include color-darken(secondary)
+        }
+
+        &.#{$prefix}-error {
+            @include color-darken(error)
+        }
+
+        &.#{$prefix}-warning {
+            @include color-darken(warning)
+        }
+
+        &.#{$prefix}-success {
+            @include color-darken(success)
+        }
+    }
+}

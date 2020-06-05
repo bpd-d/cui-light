@@ -1,0 +1,106 @@
+$list-item-hover-background: var(--color-shade-darker);
+$list-item-even-background : var(--color-shade);
+$list-item-bullet-size     : 8px;
+$list-item-color           : $component-color-default;
+$list-item-color-dark      : $component-color-default-dark;
+$list-item-active-color    : var(--color-primary);
+
+
+
+ul.#{$prefix}-list {
+    list-style: none;
+    margin    : 0;
+    padding   : 0;
+
+    li {
+        display: block;
+        @include component-padding;
+        color: $list-item-color;
+    }
+
+    &.#{$prefix}-small {
+        li {
+            @include component-padding(small);
+        }
+    }
+
+    &.#{$prefix}-hover {
+        li {
+            &:hover {
+                background-color: $list-item-hover-background;
+            }
+        }
+    }
+
+    &.#{$prefix}-stripped {
+        li:nth-child(even) {
+            background-color: $list-item-even-background;
+        }
+    }
+
+    &.#{$prefix}-bullet {
+        li {
+            padding-left: 2rem;
+            position    : relative;
+
+            &:before {
+                content      : "";
+                position     : absolute;
+                border       : 1px solid $list-item-color;
+                border-radius: 50%;
+                width        : $list-item-bullet-size;
+                height       : $list-item-bullet-size;
+                top          : calc(1rem - 2px);
+                left         : 0.5rem;
+            }
+        }
+    }
+
+    &.#{$prefix}-interactive {
+        li {
+            cursor: pointer;
+
+            &.#{$prefix}-active {
+                position: relative;
+
+                &:before {
+                    content         : "";
+                    position        : absolute;
+                    width           : 2px;
+                    background-color: $list-item-active-color;
+                    height          : 100%;
+                    left            : 0;
+                    top             : 50%;
+                    transform       : translateY(-50%) scale(1, 0.8);
+                    transition      : transform $transition-timing ease-out;
+                }
+
+                &:hover {
+                    &:before {
+                        transform: translateY(-50%) scale(1, 1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    ul.#{$prefix}-list {
+        li {
+            color: $list-item-color-dark;
+        }
+
+        &.#{$prefix}-bullet {
+            li {
+                &:before {
+                    border-color: $list-item-color-dark;
+                }
+            }
+        }
+    }
+}

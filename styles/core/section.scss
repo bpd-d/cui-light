@@ -1,0 +1,60 @@
+/**
+* SECTION
+* Separates page contents vertically
+* 
+*/
+// Variables
+$section-padding-normal         : $padding-global;
+$section-shade-background-color : var(--color-shade);
+
+$section-background-default      :$component-background-default;
+$section-background-default-dark :$component-background-default-dark;
+$section-background-inverse      :$component-background-inverse;
+$section-background-inverse-dark :$component-background-inverse-dark;
+
+
+$section-color-default      :$component-color-default;
+$section-color-default-dark :$component-color-default-dark;
+$section-color-inverse      :$component-color-inverse;
+$section-color-inverse-dark :$component-color-inverse-dark;
+
+$section-background-accent   : $component-background-accent-active;
+$section-background-secondary: $component-background-secondary-active;
+
+.#{$prefix}-section {
+    display: block;
+    margin : 0;
+    padding: $section-padding-normal;
+
+    &.#{$prefix}-accent {
+        background-color: $section-background-accent;
+        color           : $section-color-default-dark;
+    }
+
+    &.#{$prefix}-secondary {
+        background-color: $section-background-secondary;
+        color           : $section-color-default-dark;
+    }
+
+    &.#{$prefix}-inverse {
+        background-color: $section-background-inverse;
+        color           : $section-color-inverse;
+    }
+
+    &.#{$prefix}-shade {
+        background-color: $section-shade-background-color;
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    .#{$prefix}-section {
+        &.#{$prefix}-inverse {
+            background-color: $section-background-inverse-dark;
+            color           : $section-color-inverse-dark;
+        }
+    }
+}
