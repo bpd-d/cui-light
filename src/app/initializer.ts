@@ -3,7 +3,6 @@ import { DefaultSetup } from "./defaults/setup";
 import { is } from "../core/utlis/functions";
 import { CuiInstance } from "./instance";
 import { ICONS } from "../core/utlis/statics";
-import { CuiIconSet } from "../icons";
 
 export class CuiInitializer {
     #window: any;
@@ -46,7 +45,9 @@ export class CuiInit {
             prefix: 'cui',
             app: '$cui'
         }
-        initializer.setIcons(icons ?? CuiIconSet)
+        if (is(icons)) {
+            initializer.setIcons(icons)
+        }
         if (initializer.init(settings)) {
             this.#isInitialized = true;
             return true;
