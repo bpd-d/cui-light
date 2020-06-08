@@ -1,24 +1,34 @@
+$link-color-default  : $component-color-default;
+$link-color-muted    : $component-color-muted;
+$link-color-accent   : $component-background-accent;
+$link-color-secondary: $component-background-secondary;
+$link-color-error    : $component-background-error;
+$link-color-warning  : $component-background-warning;
+$link-color-success  : $component-background-success;
+
+
 .#{$prefix}-link {
     text-decoration: none;
+    color          : $link-color-default;
 
     &.#{$prefix}-accent {
-        @include color(primary)
+        color: $link-color-accent;
     }
 
     &.#{$prefix}-secondary {
-        @include color(secondary)
+        color: $link-color-secondary;
     }
 
     &.#{$prefix}-error {
-        @include color(error)
+        color: $link-color-error;
     }
 
     &.#{$prefix}-warning {
-        @include color(warning)
+        color: $link-color-warning;
     }
 
     &.#{$prefix}-success {
-        @include color(success)
+        color: $link-color-success;
     }
 
     &:hover {
@@ -29,23 +39,23 @@
     &:visited {
 
         &.#{$prefix}-accent {
-            @include color-darken(primary)
+            color: $link-color-accent;
         }
 
         &.#{$prefix}-secondary {
-            @include color-darken(secondary)
+            color: $link-color-secondary;
         }
 
         &.#{$prefix}-error {
-            @include color-darken(error)
+            color: $link-color-error;
         }
 
         &.#{$prefix}-warning {
-            @include color-darken(warning)
+            color: $link-color-warning;
         }
 
         &.#{$prefix}-success {
-            @include color-darken(success)
+            color: $link-color-success;
         }
     }
 }

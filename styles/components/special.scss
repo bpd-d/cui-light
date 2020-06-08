@@ -68,6 +68,42 @@ svg.circle-double {
     }
 }
 
+/**
+* Menu Special icon - animated
+*/
+[data-icon="special_menu"] {
+
+    path.menu_handle_1,
+    path.menu_handle_2,
+    path.menu_handle_3 {
+        stroke-dasharray: 19;
+        transition      : stroke-dashoffset $special-animation-short ease-in-out;
+    }
+
+    path.menu_handle_1 {
+        stroke-dashoffset: 2;
+    }
+
+    path.menu_handle_2 {
+        stroke-dasharray : 19;
+        stroke-dashoffset: 6;
+    }
+
+    path.menu_handle_3 {
+        stroke-dasharray : 19;
+        stroke-dashoffset: 10;
+    }
+
+    &:hover {
+
+        path.menu_handle_1,
+        path.menu_handle_2,
+        path.menu_handle_3 {
+            stroke-dashoffset: 0;
+        }
+    }
+}
+
 
 /**
 * Active for special

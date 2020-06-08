@@ -22,19 +22,19 @@ $sides: "top",
     }
 
     .#{$prefix}-margin-top--#{$size} {
-        margin-top: 1rem;
+        margin-top: 1rem !important;
     }
 
     .#{$prefix}-margin-bottom--#{$size} {
-        margin-bottom: 1rem;
+        margin-bottom: 1rem !important;
     }
 
     .#{$prefix}-margin-left--#{$size} {
-        margin-left: 1rem;
+        margin-left: 1rem !important;
     }
 
     .#{$prefix}-margin-right--#{$size} {
-        margin-right: 1rem;
+        margin-right: 1rem !important;
     }
 }
 
@@ -55,19 +55,19 @@ $sides: "top",
 }
 
 .#{$prefix}-margin-top {
-    margin-top: 1rem;
+    margin-top: 1rem !important;
 }
 
 .#{$prefix}-margin-bottom {
-    margin-bottom: 1rem;
+    margin-bottom: 1rem !important;
 }
 
 .#{$prefix}-margin-left {
-    margin-left: 1rem;
+    margin-left: 1rem !important;
 }
 
 .#{$prefix}-margin-right {
-    margin-right: 1rem;
+    margin-right: 1rem !important;
 }
 
 .#{$prefix}-margin-auto {

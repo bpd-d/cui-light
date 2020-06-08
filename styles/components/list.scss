@@ -18,6 +18,12 @@ ul.#{$prefix}-list {
         color: $list-item-color;
     }
 
+    &.#{$prefix}-inline {
+        li {
+            display: inline;
+        }
+    }
+
     &.#{$prefix}-small {
         li {
             @include component-padding(small);
