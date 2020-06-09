@@ -3,19 +3,97 @@ $drop-background-default-dark :$component-background-default-dark;
 
 $drop-color-default      :$component-color-default;
 $drop-color-default-dark :$component-color-default-dark;
+$drop-translate-y        : $margin-global;
 
+.#{$prefix}-drop-trigger {
+    position: relative;
+}
 
 .#{$prefix}-drop {
-    visibility: hidden;
-    position  : absolute;
-    display   : block;
-    top       : 0px;
-    left      : 0px;
-
+    // visibility      : hidden;
+    position          : absolute;
+    display           : block;
+    z-index           : 1150;
+    transform         : scale(0) translateX(-50%) translateY(100%);
+    transform-origin  : bottom left;
+    //transition-delay: $tooltip-animation-time;
+    transition        : transform $tooltip-animation-time ease-in;
+    left              : 50%;
+    bottom            : 0px;
+    box-sizing        : border-box;
+    height            : max-content;
 
     &.#{$prefix}-active {
-        visibility: visible;
+        // visibility: visible;
+        transform: scale(1) translateX(-50%) translateY(calc(100% + #{$drop-translate-y}));
     }
+
+    &.#{$prefix}-drop-top-center {
+        transform-origin: top left;
+        top             : 0px;
+        left            : 50%;
+        transform       : scale(0) translateX(-50%) translateY(-100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(-50%) translateY(calc(-100% - #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-top-left {
+        transform-origin: top left;
+        top             : 0px;
+        right           : 0px;
+        transform       : scale(0) translateX(-100%) translateY(-100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(-100%) translateY(calc(-100% - #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-top-right {
+        transform-origin: top right;
+        top             : 0px;
+        left            : 0px;
+        transform       : scale(0) translateX(100%) translateY(-100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(100%) translateY(calc(-100% - #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-bottom-right {
+        transform-origin: bottom right;
+        bottom          : 0px;
+        left            : 0px;
+        transform       : scale(0) translateX(100%) translateY(100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(100%) translateY(calc(100% + #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-top-left {
+        transform-origin: bottom left;
+        bottom          : 0px;
+        right           : 0px;
+        transform       : scale(0) translateX(-100%) translateY(100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(-100%) translateY(calc(100% + #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-top-left {
+        transform-origin: bottom left;
+        bottom          : 0px;
+        right           : 0px;
+        transform       : scale(0) translateX(-50%) translateY(100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(-50%) translateY(calc(100% + #{$drop-translate-y}));
+        }
+    }
+
 }
 
 .#{$prefix}-dropdown {
@@ -24,6 +102,7 @@ $drop-color-default-dark :$component-color-default-dark;
     border          : 1px solid transparent;
     border-radius   : $border-radius-default;
     box-sizing      : border-box;
+    box-shadow      : $shadow2;
 
 }
 
@@ -33,6 +112,7 @@ ul.#{$prefix}-drop-nav {
     padding   : 0;
     min-width : 200px;
     color     : $drop-color-default;
+    box-sizing: border-box;
 
     li {
         margin    : 0;

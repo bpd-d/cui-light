@@ -1,11 +1,15 @@
-$icon-color-default                 :$component-color-default;
-$icon-color-inverse                 : $component-color-inverse;
-$icon-color-inverse-dark            : $component-color-inverse-dark;
-$icon-color-default-dark            : $component-color-default-dark;
-$icon-button-border                 : $button-border-color;
-$icon-button-border-inverse         : $component-color-inverse;
-$icon-button-border-inverse-dark    : $component-color-inverse-dark;
-$icon-button-border-dark            : $button-border-color-dark;
+$icon-color-default      :$component-color-default;
+$icon-color-inverse      : $component-color-inverse;
+$icon-color-inverse-dark : $component-color-inverse-dark;
+$icon-color-default-dark : $component-color-default-dark;
+
+$icon-border-color             : $component-color-muted;
+$icon-border-color-hover       : $component-color-default;
+$icon-border-color-active      : $component-color-active;
+$icon-border-color-dark        : $component-color-muted-dark;
+$icon-border-color-hover-dark  : $component-color-default-dark;
+$icon-border-color-active-dark : $component-color-default-dark;
+
 $icon-button-background-default     : $component-background-default;
 $icon-button-background-inverse     : $component-background-inverse;
 $icon-button-background-default-dark: $component-background-default-dark;
@@ -132,19 +136,33 @@ $icon-color-success  : $component-background-success;
     border-radius   : 100px;
 
     &.#{$prefix}-default {
-        border-color    : $icon-button-border;
+        border-color    : $icon-border-color;
         background-color: $icon-button-background-default;
 
     }
 
     &.#{$prefix}-inverse {
-        border-color    : $icon-button-border-inverse;
+        border-color    : $icon-border-color-dark;
         background-color: $icon-button-background-inverse;
     }
 
     &:hover {
         &.#{$prefix}-default {
-            box-shadow: $shadow;
+            border-color: $icon-border-color-hover;
+        }
+
+        &.#{$prefix}-inverse {
+            border-color: $icon-border-color-hover-dark;
+        }
+    }
+
+    &:active {
+        &.#{$prefix}-default {
+            border-color: $icon-border-color-active;
+        }
+
+        &.#{$prefix}-inverse {
+            border-color: $icon-border-color-active-dark;
         }
     }
 
@@ -192,13 +210,34 @@ ul.#{$prefix}-icon-nav {
 
     .#{$prefix}-icon-button {
         &.#{$prefix}-default {
-            border-color    : $icon-button-border-dark;
+            border-color    : $icon-border-color-dark;
             background-color: $icon-button-background-default-dark;
         }
 
         &.#{$prefix}-inverse {
-            border-color    : $icon-button-border-inverse-dark;
+            border-color    : $icon-border-color;
             background-color: $icon-button-background-inverse-dark;
+        }
+
+
+        &:hover {
+            &.#{$prefix}-default {
+                border-color: $icon-border-color-hover-dark;
+            }
+
+            &.#{$prefix}-inverse {
+                border-color: $icon-border-color-hover;
+            }
+        }
+
+        &:active {
+            &.#{$prefix}-default {
+                border-color: $icon-border-color-active-dark;
+            }
+
+            &.#{$prefix}-inverse {
+                border-color: $icon-border-color-active;
+            }
         }
     }
 }
