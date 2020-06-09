@@ -3,6 +3,7 @@ $navbar-background-default-dark: $component-background-default-dark;
 $navbar-color-default          : $component-color-default;
 $navbar-color-default-dark     : $component-color-default-dark;
 
+$navbar-item-padding: $padding-global;
 
 .#{$prefix}-navbar {
     display         : flex;
@@ -29,11 +30,11 @@ $navbar-color-default-dark     : $component-color-default-dark;
         box-sizing: border-box;
 
         li {
-            display            : inline-block;
-            // line-height     : 1rem;
-            box-sizing         : border-box;
-            //@include component-padding(same);
-            padding            : 1.5rem 1rem;
+            display        : inline-flex;
+            box-sizing     : border-box;
+            align-items    : center;
+            justify-content: center;
+            padding        : $navbar-item-padding;
 
             a {
                 text-decoration: none;

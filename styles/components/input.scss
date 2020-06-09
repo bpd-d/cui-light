@@ -111,6 +111,10 @@ select.#{$prefix}-select {
         color: $input-color;
     }
 
+    &.#{$prefix}-transparent {
+        border-color: transparent;
+    }
+
     &:hover {
         border: 1px solid $input-border-color-active;
     }
@@ -145,6 +149,10 @@ textarea.#{$prefix}-textarea {
         border-color: $input-border-color-active;
     }
 
+    &.#{$prefix}-transparent {
+        border-color: transparent;
+    }
+
     // &.#{$prefix}-shade {
     //     border          : 1px solid transparent;
     //     background-color: var(--color-shade);
@@ -163,7 +171,8 @@ div.#{$prefix}-input-form {
     display: block;
 
     .#{$prefix}-input-label {
-        order: 0;
+        order  : 0;
+        display: block;
     }
 
     .#{$prefix}-input-description {
@@ -188,6 +197,9 @@ div.#{$prefix}-input-form {
     }
 
     &.#{$prefix}-inline {
+        .#{$prefix}-input-label {
+            display: inline-block;
+        }
 
         input,
         select {

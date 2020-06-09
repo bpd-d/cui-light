@@ -1,3 +1,7 @@
+$item-padding      : $padding-global;
+$item-padding-large: $padding-global-large;
+$item-padding-small: $padding-global-small;
+
 @mixin color($color) {
     @if $color==light {
         color: var(--color-light-base)
@@ -52,23 +56,23 @@
 
 @mixin component-padding($size: normal) {
     @if $size==normal {
-        padding: 0.5rem 1rem;
+        padding: $item-padding-small $item-padding;
     }
 
     @else if $size==large {
-        padding: 1rem 2rem;
+        padding: $item-padding $item-padding-large;
     }
 
     @else if $size==same {
-        padding: 1rem;
+        padding: $item-padding;
     }
 
     @else if $size==small {
-        padding: 0.3rem 0.5rem;
+        padding: 0.3rem $item-padding-small;
     }
 
     @else if $size==sameSmall {
-        padding: 0.5rem;
+        padding: $item-padding-small;
     }
 }
 

@@ -8,10 +8,14 @@ $icon-button-border-inverse-dark    : $component-color-inverse-dark;
 $icon-button-border-dark            : $button-border-color-dark;
 $icon-button-background-default     : $component-background-default;
 $icon-button-background-inverse     : $component-background-inverse;
-$icon-button-background-default-dark:$component-background-default-dark;
+$icon-button-background-default-dark: $component-background-default-dark;
 $icon-button-background-inverse-dark: $component-background-inverse-dark;
 
-
+$icon-color-accent   : $component-background-accent;
+$icon-color-secondary: $component-background-secondary;
+$icon-color-error    : $component-background-error;
+$icon-color-warning  : $component-background-warning;
+$icon-color-success  : $component-background-success;
 
 .#{$prefix}-icon-button,
 .#{$prefix}-icon,
@@ -36,6 +40,21 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
         stroke-linejoin: miter;
     }
 
+    &.#{$prefix}-button {
+
+        &.#{$prefix}-accent,
+        &.#{$prefix}-secondary,
+        &.#{$prefix}-error,
+        &.#{$prefix}-warning,
+        &.#{$prefix}-success {
+            svg {
+                path {
+                    stroke: $icon-color-inverse;
+                }
+            }
+        }
+    }
+
     &.#{$prefix}-dark {
         svg {
             path {
@@ -55,7 +74,7 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
     &.#{$prefix}-accent {
         svg {
             path {
-                stroke: var(--color-primary);
+                stroke: $icon-color-accent;
             }
         }
     }
@@ -63,7 +82,7 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
     &.#{$prefix}-secondary {
         svg {
             path {
-                stroke: var(--color-secondary);
+                stroke: $icon-color-secondary;
             }
         }
     }
@@ -71,7 +90,7 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
     &.#{$prefix}-success {
         svg {
             path {
-                stroke: var(--color-success);
+                stroke: $icon-color-success;
             }
         }
     }
@@ -79,7 +98,7 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
     &.#{$prefix}-warning {
         svg {
             path {
-                stroke: var(--color-warning);
+                stroke: $icon-color-warning;
             }
         }
     }
@@ -87,7 +106,7 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
     &.#{$prefix}-error {
         svg {
             path {
-                stroke: var(--color-error);
+                stroke: $icon-color-error;
             }
         }
     }
@@ -113,14 +132,14 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
     border-radius   : 100px;
 
     &.#{$prefix}-default {
-        border-color        : $icon-button-border;
-        //  background-color: var(--color-light-background);
+        border-color    : $icon-button-border;
+        background-color: $icon-button-background-default;
 
     }
 
     &.#{$prefix}-inverse {
-        border-color       : $icon-button-border-inverse;
-        // background-color: var(--color-dark-background);
+        border-color    : $icon-button-border-inverse;
+        background-color: $icon-button-background-inverse;
     }
 
     &:hover {
@@ -137,6 +156,7 @@ $icon-button-background-inverse-dark: $component-background-inverse-dark;
 ul.#{$prefix}-icon-nav {
     list-style: none;
     padding   : 0px;
+    margin    : 0px;
     display   : flex;
 
     li {
@@ -173,12 +193,12 @@ ul.#{$prefix}-icon-nav {
     .#{$prefix}-icon-button {
         &.#{$prefix}-default {
             border-color    : $icon-button-border-dark;
-            background-color: var(--color-dark-background);
+            background-color: $icon-button-background-default-dark;
         }
 
         &.#{$prefix}-inverse {
             border-color    : $icon-button-border-inverse-dark;
-            background-color: var(--color-light-background);
+            background-color: $icon-button-background-inverse-dark;
         }
     }
 }

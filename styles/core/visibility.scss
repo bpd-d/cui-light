@@ -14,6 +14,15 @@
     }
 }
 
+@mixin hidden {
+    position: absolute !important;
+    width   : 0 !important;
+    height  : 0 !important;
+    padding : 0 !important;
+    margin  : 0 !important;
+    overflow: hidden !important;
+}
+
 // Definitions
 
 .#{$prefix}-hidden {
@@ -59,12 +68,7 @@
 .#{$prefix}-hover-trigger {
     &:not(:hover):not(:focus) {
         .#{$prefix}-hidden-hover {
-            position: absolute !important;
-            width   : 0 !important;
-            height  : 0 !important;
-            padding : 0 !important;
-            margin  : 0 !important;
-            overflow: hidden !important;
+            @include hidden();
         }
     }
 

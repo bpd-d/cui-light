@@ -24,6 +24,10 @@ $padding-global      : 1rem;
 $padding-global-large: 2rem;
 $padding-global-small: 0.5rem;
 
+$margin-global      : 1rem;
+$margin-global-large: 2rem;
+$margin-global-small: 0.5rem;
+
 $notification-width  : 350px;
 $notification-margin : 20px;
 
@@ -105,15 +109,15 @@ $component-background-secondary-hover : var(--color-secondary);
 $component-background-secondary-active: var(--color-secondary-active);
 $component-background-secondary-muted : var(--color-secondary-muted);
 
-$component-background-error           : var(--color-error);
-$component-background-error-hover     : var(--color-error-muted);
-$component-background-error-active    : var(--color-error-active);
-$component-background-error-muted : var(--color-error-muted);
+$component-background-error        : var(--color-error);
+$component-background-error-hover  : var(--color-error-muted);
+$component-background-error-active : var(--color-error-active);
+$component-background-error-muted  : var(--color-error-muted);
 
-$component-background-warning         : var(--color-warning);
-$component-background-warning-hover   : var(--color-warning);
-$component-background-warning-active  : var(--color-warning-active);
-$component-background-warning-muted : var(--color-warning-muted);
+$component-background-warning        : var(--color-warning);
+$component-background-warning-hover  : var(--color-warning);
+$component-background-warning-active : var(--color-warning-active);
+$component-background-warning-muted  : var(--color-warning-muted);
 
 $component-background-success       : var(--color-success);
 $component-background-success-hover : var(--color-success);

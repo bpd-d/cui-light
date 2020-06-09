@@ -9,6 +9,10 @@ $item-padding      : $padding-global;
 $item-padding-large: $padding-global-large;
 $item-padding-small: $padding-global-small;
 
+$item-margin      : $margin-global;
+$item-margin-large: $margin-global-large;
+$item-margin-small: $margin-global-small;
+
 // MIxins
 
 $sides: "top",
@@ -17,25 +21,78 @@ $sides: "top",
 "right";
 
 @mixin margin($size) {
+    /**
+    * Normal
+    */
+
     .#{$prefix}-margin--#{$size} {
-        margin: 1rem;
+        margin: $item-margin;
     }
 
     .#{$prefix}-margin-top--#{$size} {
-        margin-top: 1rem !important;
+        margin-top: $item-margin !important;
     }
 
     .#{$prefix}-margin-bottom--#{$size} {
-        margin-bottom: 1rem !important;
+        margin-bottom: $item-margin !important;
     }
 
     .#{$prefix}-margin-left--#{$size} {
-        margin-left: 1rem !important;
+        margin-left: $item-margin !important;
     }
 
     .#{$prefix}-margin-right--#{$size} {
-        margin-right: 1rem !important;
+        margin-right: $item-margin !important;
     }
+
+    /**
+    * Small
+    */
+
+    .#{$prefix}-margin-small--#{$size} {
+        margin: $item-margin-small;
+    }
+
+    .#{$prefix}-margin-small-top--#{$size} {
+        margin-top: $item-margin-small !important;
+    }
+
+    .#{$prefix}-margin-small-bottom--#{$size} {
+        margin-bottom: $item-margin-small !important;
+    }
+
+    .#{$prefix}-margin-small-left--#{$size} {
+        margin-left: $item-margin-small !important;
+    }
+
+    .#{$prefix}-margin-small-right--#{$size} {
+        margin-right: $item-margin-small !important;
+    }
+
+    /**
+    * Large
+    */
+
+    .#{$prefix}-margin-large--#{$size} {
+        margin: $item-margin-large;
+    }
+
+    .#{$prefix}-margin-large-top--#{$size} {
+        margin-top: $item-margin-large !important;
+    }
+
+    .#{$prefix}-margin-large-bottom--#{$size} {
+        margin-bottom: $item-margin-large !important;
+    }
+
+    .#{$prefix}-margin-large-left--#{$size} {
+        margin-left: $item-margin-large !important;
+    }
+
+    .#{$prefix}-margin-large-right--#{$size} {
+        margin-right: $item-margin-large !important;
+    }
+
 }
 
 @mixin padding($size, $sides...) {
@@ -74,7 +131,58 @@ $sides: "top",
     margin: 0 auto;
 }
 
-// Padding
+/**
+    * Small
+    */
+
+.#{$prefix}-margin-small {
+    margin: $item-margin-small;
+}
+
+.#{$prefix}-margin-small-top {
+    margin-top: $item-margin-small !important;
+}
+
+.#{$prefix}-margin-small-bottom {
+    margin-bottom: $item-margin-small !important;
+}
+
+.#{$prefix}-margin-small-left {
+    margin-left: $item-margin-small !important;
+}
+
+.#{$prefix}-margin-small-right {
+    margin-right: $item-margin-small !important;
+}
+
+/**
+* Large
+*/
+
+.#{$prefix}-margin-large {
+    margin: $item-margin-large;
+}
+
+.#{$prefix}-margin-large-top {
+    margin-top: $item-margin-large !important;
+}
+
+.#{$prefix}-margin-large-bottom {
+    margin-bottom: $item-margin-large !important;
+}
+
+.#{$prefix}-margin-large-left {
+    margin-left: $item-margin-large !important;
+}
+
+.#{$prefix}-margin-large-right {
+    margin-right: $item-margin-large !important;
+}
+
+/**
+* Padding
+*/
+
 
 .#{$prefix}-padding {
     padding: $item-padding;
@@ -94,6 +202,53 @@ $sides: "top",
 
 .#{$prefix}-padding-right {
     padding-left: $item-padding;
+}
+
+/**
+* Padding small
+*/
+
+.#{$prefix}-padding-small {
+    padding: $item-padding-small;
+}
+
+.#{$prefix}-padding-small-top {
+    padding-top: $item-padding-small;
+}
+
+.#{$prefix}-padding-small-bottom {
+    padding-bottom: $item-padding-small;
+}
+
+.#{$prefix}-padding-small-left {
+    padding-left: $item-padding-small;
+}
+
+.#{$prefix}-padding-small-right {
+    padding-left: $item-padding-small;
+}
+
+/**
+* Large
+*/
+.#{$prefix}-padding-large {
+    padding: $item-padding-large;
+}
+
+.#{$prefix}-padding-large-top {
+    padding-top: $item-padding-large;
+}
+
+.#{$prefix}-padding-large-bottom {
+    padding-bottom: $item-padding-large;
+}
+
+.#{$prefix}-padding-large-left {
+    padding-left: $item-padding-large;
+}
+
+.#{$prefix}-padding-large-right {
+    padding-left: $item-padding-large;
 }
 
 /**

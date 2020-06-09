@@ -48,13 +48,17 @@ $tooltip-animation-time : $animation-duration-short;
         user-select     : none;
         transform       : scale(0) translateX(-50%) translateY(0px);
         color           : $tooltip-text-color;
-        top             : 0;
-        width           : 200px;
-        left            : 50%;
+        width           : 100px;
+        max-width       : 200px;
         transform-origin: top left;
         transition-delay: $tooltip-animation-time;
         transition      : transform $tooltip-animation-time ease-in;
         @include component-padding(sameSmall);
+
+        &:not(.#{$prefix}-tooltip-bottom-center):not(.#{$prefix}-tooltip-bottom-right):not(.#{$prefix}-tooltip-bottom-left) {
+            top   : 0;
+            //left: 50%;
+        }
     }
 
     &:hover {
@@ -62,6 +66,98 @@ $tooltip-animation-time : $animation-duration-short;
             transform: scale(1) translateX(-50%) translateY(-36px);
         }
     }
+
+    &.#{$prefix}-tooltip-top-center {
+        &:before {
+            transform-origin: top left;
+            top             : 0;
+            left            : 50%;
+            transform       : scale(0) translateX(-50%) translateY(0px);
+        }
+
+        &:hover {
+            &:before {
+                transform: scale(1) translateX(-50%) translateY(-36px);
+            }
+        }
+    }
+
+    &.#{$prefix}-tooltip-top-left {
+        &:before {
+            transform-origin: top left;
+            top             : 0;
+            left            : 0;
+            transform       : scale(0) translateX(-100%) translateY(0px);
+        }
+
+        &:hover {
+            &:before {
+                transform: scale(1) translateX(-100%) translateY(-36px);
+            }
+        }
+    }
+
+    &.#{$prefix}-tooltip-top-right {
+        &:before {
+            transform-origin: top right;
+            top             : 0;
+            right           : 0;
+            transform       : scale(0) translateX(100%) translateY(0px);
+        }
+
+        &:hover {
+            &:before {
+                transform: scale(1) translateX(100%) translateY(-36px);
+            }
+        }
+    }
+
+    &.#{$prefix}-tooltip-bottom-left {
+        &:before {
+            // top         : 100%;
+            transform-origin: bottom left;
+            bottom          : 0;
+            left            : 0;
+            transform       : scale(0) translateX(-100%) translateY(0px);
+        }
+
+        &:hover {
+            &:before {
+                transform: scale(1) translateX(-100%) translateY(36px);
+            }
+        }
+    }
+
+    &.#{$prefix}-tooltip-bottom-right {
+        &:before {
+            transform-origin: bottom right;
+            bottom          : 0;
+            right           : 0;
+            transform       : scale(0) translateX(100%) translateY(0px);
+        }
+
+        &:hover {
+            &:before {
+                transform: scale(1) translateX(100%) translateY(36px);
+            }
+        }
+    }
+
+    &.#{$prefix}-tooltip-bottom-center {
+        &:before {
+            transform-origin: bottom left;
+            bottom          : 0;
+            left            : 50%;
+            transform       : scale(0) translateX(-50%) translateY(0px);
+        }
+
+        &:hover {
+            &:before {
+                transform: scale(1) translateX(-50%) translateY(36px);
+            }
+        }
+    }
+
 
     &.#{$prefix}-wide {
         &:before {
