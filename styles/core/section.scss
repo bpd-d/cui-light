@@ -5,6 +5,7 @@
 */
 // Variables
 $section-padding-normal         : $padding-global;
+$section-padding-large          : $padding-global-large;
 $section-shade-background-color : var(--color-shade);
 
 $section-background-default      :$component-background-default;
@@ -43,6 +44,10 @@ $section-background-secondary: $component-background-secondary-active;
 
     &.#{$prefix}-shade {
         background-color: $section-shade-background-color;
+    }
+
+    &.#{$prefix}-large {
+        padding: $section-padding-large;
     }
 }
 

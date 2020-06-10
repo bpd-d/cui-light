@@ -1,5 +1,5 @@
 .#{$prefix}-flex {
-    display        : flex;
+    display        : flex !important;
     flex-wrap      : wrap;
     justify-content: start;
     align-items    : flex-start;

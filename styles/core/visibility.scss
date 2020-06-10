@@ -14,6 +14,20 @@
     }
 }
 
+@mixin visibility_normal($size) {
+    .#{$prefix}-hidden--#{$size} {
+        display: initial !important;
+    }
+
+    .#{$prefix}-invisible--#{$size} {
+        visibility: visible !important;
+    }
+
+    .#{$prefix}-visible--#{$size} {
+        visibility: invisible !important;
+    }
+}
+
 @mixin hidden {
     position: absolute !important;
     width   : 0 !important;
@@ -37,30 +51,52 @@
     visibility: visible;
 }
 
+@include visibility_normal(s);
+@include visibility_normal(m);
+@include visibility_normal(l);
+@include visibility_normal(xl);
+
 // Media
 
-// View small
-@media (max-width: $breakpoint-s) {
-    @include visibility(xs)
+// View medium
+@media (min-width: $breakpoint-s) {
+    @include visibility(s);
 }
 
 // View medium
-@media (min-width: $breakpoint-s) and (max-width: $breakpoint-m) {
-    @include visibility(s)
-}
-
-// View medium
-@media (min-width: $breakpoint-m) and (max-width: $breakpoint-l) {
-    @include visibility(m)
+@media (min-width: $breakpoint-m) {
+    @include visibility(m);
 }
 
 // View large
-@media (min-width: $breakpoint-l) and (max-width: $breakpoint-xl) {
-    @include visibility(l)
+@media (min-width: $breakpoint-l) {
+    @include visibility(l);
+
+}
+
+@media (min-width: $breakpoint-xl) {
+    @include visibility(xl);
+
 }
 
 @media(orientation: landscape) {
     @include visibility(landscape)
+}
+
+/* smartphones, touchscreens */
+@media (hover: none) and (pointer: coarse) {
+
+    .#{$prefix}-hidden-touch {
+        @include hidden();
+    }
+}
+
+/* mouse, touch pad */
+@media (hover: hover) and (pointer: fine) {
+
+    .#{$prefix}-hidden-precise {
+        @include hidden();
+    }
 }
 
 // Hover

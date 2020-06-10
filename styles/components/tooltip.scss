@@ -54,6 +54,7 @@ $tooltip-animation-time : $animation-duration-short;
         transition-delay: $tooltip-animation-time;
         transition      : transform $tooltip-animation-time ease-in;
         @include component-padding(sameSmall);
+        z-index: 1160;
 
         &:not(.#{$prefix}-tooltip-bottom-center):not(.#{$prefix}-tooltip-bottom-right):not(.#{$prefix}-tooltip-bottom-left) {
             top   : 0;

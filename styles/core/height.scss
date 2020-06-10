@@ -50,17 +50,22 @@
     height: attr(#{$prefix}-item-height);
 }
 
-// View small
-@media (max-width: $breakpoint-s) {
+
+@media (min-width: $breakpoint-s) {
     @include heights(--s)
 }
 
 // View medium
-@media (min-width: $breakpoint-s) and (max-width: $breakpoint-m) {
+@media (min-width: $breakpoint-m) {
     @include heights(--m)
 }
 
-// View large
-@media (min-width: $breakpoint-m) and (max-width: $breakpoint-l) {
+// View medium
+@media (min-width: $breakpoint-l) {
     @include heights(--l)
+}
+
+// View medium
+@media (min-width: $breakpoint-xl) {
+    @include heights(--xl)
 }

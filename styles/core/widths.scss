@@ -57,16 +57,21 @@
 
 
 // View small
-@media (max-width: $breakpoint-s) {
+@media (min-width: $breakpoint-s) {
     @include widths(--s);
 }
 
 // View medium
-@media (min-width: $breakpoint-s) and (max-width: $breakpoint-m) {
+@media (min-width: $breakpoint-m) {
     @include widths(--m);
 }
 
 // View medium
-@media (min-width: $breakpoint-m) and (max-width: $breakpoint-l) {
+@media (min-width: $breakpoint-l) {
     @include widths(--l);
+}
+
+// View medium
+@media (min-width: $breakpoint-xl) {
+    @include widths(--xl);
 }

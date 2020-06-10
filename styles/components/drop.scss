@@ -10,21 +10,23 @@ $drop-translate-y        : $margin-global;
 }
 
 .#{$prefix}-drop {
-    // visibility      : hidden;
-    position          : absolute;
-    display           : block;
-    z-index           : 1150;
-    transform         : scale(0) translateX(-50%) translateY(100%);
-    transform-origin  : bottom left;
-    //transition-delay: $tooltip-animation-time;
-    transition        : transform $tooltip-animation-time ease-in;
-    left              : 50%;
-    bottom            : 0px;
-    box-sizing        : border-box;
-    height            : max-content;
+    position        : absolute;
+    display         : block;
+    z-index         : 1150;
+    transform       : scale(0) translateX(-50%) translateY(100%);
+    transform-origin: bottom left;
+    transition      : transform $tooltip-animation-time ease-in;
+
+    bottom    : 0px;
+    box-sizing: border-box;
+    height    : max-content;
+    width     : max-content;
+
+    &:not(.#{$prefix}-drop-bottom-right):not(.#{$prefix}-drop-top-right) {
+        left: 50%;
+    }
 
     &.#{$prefix}-active {
-        // visibility: visible;
         transform: scale(1) translateX(-50%) translateY(calc(100% + #{$drop-translate-y}));
     }
 
@@ -42,51 +44,51 @@ $drop-translate-y        : $margin-global;
     &.#{$prefix}-drop-top-left {
         transform-origin: top left;
         top             : 0px;
-        right           : 0px;
-        transform       : scale(0) translateX(-100%) translateY(-100%);
+        left            : 0px;
+        transform       : scale(0) translateX(0%) translateY(-100%);
 
         &.#{$prefix}-active {
-            transform: scale(1) translateX(-100%) translateY(calc(-100% - #{$drop-translate-y}));
+            transform: scale(1) translateX(0%) translateY(calc(-100% - #{$drop-translate-y}));
         }
     }
 
     &.#{$prefix}-drop-top-right {
         transform-origin: top right;
         top             : 0px;
-        left            : 0px;
-        transform       : scale(0) translateX(100%) translateY(-100%);
+        right           : 0px;
+        transform       : scale(0) translateX(0%) translateY(-100%);
 
         &.#{$prefix}-active {
-            transform: scale(1) translateX(100%) translateY(calc(-100% - #{$drop-translate-y}));
+            transform: scale(1) translateX(0%) translateY(calc(-100% - #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-bottom-left {
+        transform-origin: bottom left;
+        bottom          : 0px;
+        left            : 0px;
+        transform       : scale(0) translateX(0%) translateY(100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(0%) translateY(calc(100% + #{$drop-translate-y}));
         }
     }
 
     &.#{$prefix}-drop-bottom-right {
         transform-origin: bottom right;
         bottom          : 0px;
+        right           : 0px;
+        transform       : scale(0) translateX(0%) translateY(100%);
+
+        &.#{$prefix}-active {
+            transform: scale(1) translateX(0%) translateY(calc(100% + #{$drop-translate-y}));
+        }
+    }
+
+    &.#{$prefix}-drop-bottom-center {
+        transform-origin: bottom left;
+        bottom          : 0px;
         left            : 0px;
-        transform       : scale(0) translateX(100%) translateY(100%);
-
-        &.#{$prefix}-active {
-            transform: scale(1) translateX(100%) translateY(calc(100% + #{$drop-translate-y}));
-        }
-    }
-
-    &.#{$prefix}-drop-top-left {
-        transform-origin: bottom left;
-        bottom          : 0px;
-        right           : 0px;
-        transform       : scale(0) translateX(-100%) translateY(100%);
-
-        &.#{$prefix}-active {
-            transform: scale(1) translateX(-100%) translateY(calc(100% + #{$drop-translate-y}));
-        }
-    }
-
-    &.#{$prefix}-drop-top-left {
-        transform-origin: bottom left;
-        bottom          : 0px;
-        right           : 0px;
         transform       : scale(0) translateX(-50%) translateY(100%);
 
         &.#{$prefix}-active {

@@ -8,13 +8,26 @@ $container-color-default-dark:$component-color-default-dark;
 $container-color-inverse     :$component-color-inverse;
 $container-color-inverse-dark:$component-color-inverse-dark;
 
+$container-padding-large : $padding-global-large;
+$container-padding-normal: $padding-global;
+
 .#{$prefix}-container {
-    //display: block;
     @include component-padding(same);
+    //width : 100%;
 
     &.#{$prefix}-no-padding {
         padding: 0;
     }
+
+    &.#{$prefix}-space {
+        padding: $container-padding-large;
+    }
+
+    &.#{$prefix}-lean {
+        @include component-padding(smallSame);
+    }
+
+    // @include container();
 
     &.#{$prefix}-center {
         display        : flex;
@@ -42,6 +55,38 @@ $container-color-inverse-dark:$component-color-inverse-dark;
         color           : $container-color-inverse;
     }
 }
+
+/**
+* Media
+*/
+
+// // View small
+// @media (min-width: $breakpoint-s) {
+//     .#{$prefix}-container {
+//         @include container(--s);
+//     }
+// }
+
+// // View medium
+// @media (min-width: $breakpoint-m) {
+//     .#{$prefix}-container {
+//         @include container(--m);
+//     }
+// }
+
+// // View medium
+// @media (min-width: $breakpoint-l) {
+//     .#{$prefix}-container {;
+//         @include container(--l);
+//     }
+// }
+
+// // View medium
+// @media (min-width: $breakpoint-xl) {
+//     .#{$prefix}-container {
+//         @include container(--xl);
+//     }
+// }
 
 /*
 * Dark
