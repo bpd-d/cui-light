@@ -31,6 +31,19 @@
     }
 }
 
+@mixin widths_small() {
+    @for $i from 1 through 6 {
+
+        .#{$prefix}-width-1-#{$i},
+        .#{$prefix}-width-2-#{$i},
+        .#{$prefix}-width-3-#{$i},
+        .#{$prefix}-width-4-#{$i},
+        .#{$prefix}-width-5-#{$i} {
+            width: 100% !important;
+        }
+    }
+}
+
 [class*="#{$prefix}-width"] {
     box-sizing: border-box;
     width     : 100%;
@@ -55,6 +68,9 @@
 
 @include widths();
 
+@media (max-width: $breakpoint-s) {
+    @include widths_small();
+}
 
 // View small
 @media (min-width: $breakpoint-s) {

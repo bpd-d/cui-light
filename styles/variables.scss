@@ -11,6 +11,16 @@ sans-serif,
 
 $prefix: 'cui';
 
+$font-normal : 1rem;
+$font-large  : 1.2rem;
+$font-xlarge : 2rem;
+$font-small  : 0.8rem;
+
+$line-height       : var(--line-height);
+$line-height-large : calc(#{$line-height} * 1.4);
+$line-height-small : calc(#{$line-height} * 0.8);
+$line-height-xlarge: calc(#{$line-height} * 1.8);
+
 $animation-duration-default: var(--animation-time);
 $animation-duration-short  : var(--animation-time-short);
 $animation-duration-long   : var(--animation-time-long);

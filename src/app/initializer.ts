@@ -41,7 +41,7 @@ export class CuiInit {
         }
         const initializer = new CuiInitializer();
         const settings: CuiSetup = setup ?? {
-            logLevel: 'error',
+            logLevel: 'debug',
             prefix: 'cui',
             app: '$cui'
         }

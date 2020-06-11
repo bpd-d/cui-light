@@ -10,13 +10,11 @@ export class ElementManager {
     #isLocked: boolean;
     #logger: ICuiLogger;
     #interactions: IUIInteractionProvider;
-    #currentTask: any;
     constructor(elements: Element[], interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
         this.#elements = elements;
         this.#isLocked = false;
         this.#logger = CuiLoggerFactory.get("ElementManager", logLevel);
         this.#interactions = interactions;
-        this.#currentTask = null;
     }
 
     async toggleClass(className: string): Promise<boolean> {

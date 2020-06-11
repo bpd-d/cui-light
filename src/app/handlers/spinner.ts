@@ -1,12 +1,14 @@
-import { ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiMutationHandler, IUIInteractionProvider } from "../../core/models/interfaces";
 import { ATTRIBUTES, ICONS } from "../../core/utlis/statics";
 import { is } from "../../core/utlis/functions";
 import { IconBuilder } from "./icon";
+import { CuiHandlerBase } from "./base";
 
-export class CuiSpinnerHandler implements ICuiMutationHandler {
+export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #element: Element;
 
-    constructor(element: Element) {
+    constructor(element: Element, interactions?: IUIInteractionProvider) {
+        super("CuiSpinnerHandler", interactions);
         this.#element = element;
     }
     handle(): void {
@@ -17,8 +19,16 @@ export class CuiSpinnerHandler implements ICuiMutationHandler {
         }
         const iconElement = new IconBuilder(svgIcon).build();
         this.#element.innerHTML = "";
+        this.mutate(this.addSpinner, iconElement, spinnerName);
+    }
+
+    refresh(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    private addSpinner(iconElement: Element, name: string) {
         this.#element.appendChild(iconElement);
-        this.#element.classList.add(`animation-spinner-${spinnerName}`);
+        this.#element.classList.add(`animation-spinner-${name}`);
     }
 
 }

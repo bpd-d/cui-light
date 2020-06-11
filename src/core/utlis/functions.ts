@@ -1,6 +1,6 @@
 import { HTMLAttribute } from "../models/elements";
 import { CuiColor } from "../models/color";
-import { COLORS } from "./statics";
+import { COLORS, MUTATED_ATTRIBUTES } from "./statics";
 
 /**
  * Checks if value is defined an is not null
@@ -76,6 +76,22 @@ export function getFirstAttributeStartingWith(element: Element, prefix: string):
         }
     }
     return null;
+}
+
+export function getMutationAttribute(element: Element): HTMLAttribute {
+    let attr = null;
+    let len = MUTATED_ATTRIBUTES.length;
+    for (let i = 0; i < len; i++) {
+        let attribute = MUTATED_ATTRIBUTES[i];
+        if (element.hasAttribute(attribute)) {
+            attr = {
+                name: attribute,
+                value: element.getAttribute(attribute)
+            }
+            break;
+        }
+    }
+    return attr;
 }
 
 export function getRangeValue(value: number, min: number, max: number) {

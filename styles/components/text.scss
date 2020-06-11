@@ -1,9 +1,26 @@
 // Text styling
+$text-large      : $font-large;
+$text-small      : $font-small;
+$text-xlarge     :$font-xlarge;
+$text-line-height: $line-height;
+$text-line-large : $line-height-large;
+$text-line-small : $line-height-small;
+$text-line-xlarge: $line-height-xlarge;
+
+$text-color-muted     : $component-color-muted;
+$text-color-muted-dark: $component-color-muted-dark;
+
+$blockquote-background-default: $component-background-shade;
+$blockquote-background-dark   : $component-background-shade-dark;
+$blockquote-border-color      : $component-background-shade-active;
+$blockquote-border-color-dark : $component-background-shade-dark-active;
+
+
 p,
 a,
 span {
-    line-height   : 20px;
-    vertical-align: middle;
+    line-height     : $text-line-height;
+    //vertical-align: middle;
 }
 
 // #{$prefix} colors
@@ -28,7 +45,7 @@ span {
 }
 
 .#{$prefix}-text-muted {
-    color: var(--color-light-lighten);
+    color: $text-color-muted;
 }
 
 // Weight
@@ -44,11 +61,11 @@ span {
 // Size
 
 .#{$prefix}-text-large {
-    font-size: 1.4rem;
+    font-size: $text-large;
 }
 
 .#{$prefix}-text-small {
-    font-size: 0.8rem;
+    font-size: $text-small;
 }
 
 // Decoration
@@ -100,37 +117,44 @@ span {
 // Wrapping
 
 .#{$prefix}-text-truncate {
-    text-overflow  : ellipsis;
-    //white-space  : nowrap;
+    text-overflow: ellipsis;
 }
 
 .#{$prefix}-text-nowrap {
-    text-overflow   : clip;
-    // white-space  : nowrap;
+    text-overflow: clip;
 }
 
 // Editing
 .#{$prefix}-blockquote {
     @include component-padding(same);
-    border-left     : 4px solid var(--color-shade-darker);
-    background-color: var(--color-shade);
+    border-left     : 4px solid $blockquote-border-color;
+    background-color: $blockquote-background-default;
     font-style      : italic;
     margin          : 0px;
 }
 
 .#{$prefix}-article-title {
-    font-size  : 1.6rem;
+    font-size  : $text-xlarge;
     font-weight: $text-weight-thin;
-    line-height: 2rem;
+    line-height: $text-line-xlarge;
 }
 
 .#{$prefix}-article-description {
-    font-size  : 1.2rem;
-    line-height: 1.6rem;
-    font-weight: 400;
+    font-size  : $text-large;
+    line-height: $line-height-large;
 }
 
-.#{$prefix}-article-content {
-    font-size  : 1rem;
-    line-height: 1.4rem;
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    .#{$prefix}-text-muted {
+        color: $text-color-muted-dark;
+    }
+
+    .#{$prefix}-blockquote {
+        border-color    : $blockquote-border-color-dark;
+        background-color: $blockquote-background-default;
+    }
 }

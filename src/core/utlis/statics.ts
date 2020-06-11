@@ -8,10 +8,11 @@ export const CLASSES = {
 export const ATTRIBUTES = {
     icon: 'data-icon',
     scale: 'data-scale',
-    spinner: 'data-spinner'
+    spinner: 'data-spinner',
+    circle: 'circle-progress'
 }
 
-export const MUTATED_ATTRIBUTES = [ATTRIBUTES.icon, ATTRIBUTES.scale, ATTRIBUTES.spinner]
+export const MUTATED_ATTRIBUTES = [ATTRIBUTES.icon, ATTRIBUTES.spinner, ATTRIBUTES.circle]
 export const ICONS: any = {
     close: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" width=\"20\" height=\"20\"><path d=\"M 1.9999999,1.9999999 18,18\"></path><path d=\"M 18,1.9999999 1.9999999,18\"></path></svg>",
     accordion: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" width=\"20\" height=\"20\"><path d=\"M 5.0000475,7.4490018 10.000024,12.551028 15,7.4490018\"></path></svg>",

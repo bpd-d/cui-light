@@ -22,7 +22,7 @@ $drop-translate-y        : $margin-global;
     height    : max-content;
     width     : max-content;
 
-    &:not(.#{$prefix}-drop-bottom-right):not(.#{$prefix}-drop-top-right) {
+    &.#{$prefix}-drop-top-center.#{$prefix}-drop-bottom-center {
         left: 50%;
     }
 

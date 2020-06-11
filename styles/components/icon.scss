@@ -194,7 +194,8 @@ ul.#{$prefix}-icon-nav {
 .#{$prefix}-dark {
 
     .#{$prefix}-icon-button,
-    .#{$prefix}-icon {
+    .#{$prefix}-icon,
+    .#{$prefix}-svg {
         svg {
             stroke: $icon-color-default-dark;
         }

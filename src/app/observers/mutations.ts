@@ -1,7 +1,8 @@
-import { ICuiLogger } from "../../core/models/interfaces";
-import { CuiAttributeMutationHandler } from "../managers/mutations";
+import { ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CuiLogLevel } from "../../core/utlis/types";
+import { is } from "../../core/utlis/functions";
+import { CuiAttributeMutationHandler } from "../managers/mutations";
 
 export interface ICuiMutionObserver {
     setOptions(options: MutationObserverInit): ICuiMutionObserver;
@@ -12,15 +13,16 @@ export interface ICuiMutionObserver {
 
 export class CuiMutationObserver implements ICuiMutionObserver {
     #log: ICuiLogger;
-
+    #logLevel: CuiLogLevel;
     private observer: MutationObserver;
     private options: MutationObserverInit;
     private element: HTMLElement;
 
-    constructor(element: HTMLElement, logLevel?: CuiLogLevel) {
+    constructor(element: HTMLElement, interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
         this.observer = null
         this.element = element
         this.#log = CuiLoggerFactory.get('CuiMutationObserver', logLevel)
+        this.#logLevel = logLevel
 
     }
 
@@ -51,11 +53,44 @@ export class CuiMutationObserver implements ICuiMutionObserver {
         mutations.forEach((mutation: MutationRecord) => {
             switch (mutation.type) {
                 case 'attributes':
-                    let handler = CuiAttributeMutationHandler.get(mutation.target)
-                    if (handler)
-                        handler.handle()
+                    const item = mutation.target as any;
+                    if (is(item.$handler)) {
+                        item.$handler.handle();
+                    }
+                    break;
+
+                case 'childList':
+                    this.handleChildListMutation(mutation);
                     break;
             }
+        })
+    }
+
+    private handleChildListMutation(mutation: MutationRecord) {
+        const addedLen = mutation.addedNodes.length;
+        const removedLen = mutation.removedNodes.length;
+        if (addedLen > 0) {
+            this.#log.debug("Registering added nodes: " + addedLen)
+            this.handleAddedNodes(mutation.addedNodes);
+        } else if (removedLen > 0) {
+            this.#log.debug("REmoving nodes: " + removedLen);
+            this.handleRemovedNodes(mutation.removedNodes);
+        }
+    }
+
+    private handleAddedNodes(nodes: NodeList) {
+        nodes.forEach(node => {
+            let handler = CuiAttributeMutationHandler.get(node)
+            if (is(handler)) {
+                let item = node as any;
+                item['$handler'] = handler;
+            }
+        })
+    }
+
+    private handleRemovedNodes(nodes: NodeList) {
+        nodes.forEach(node => {
+            this.#log.debug("Removing")
         })
     }
 }

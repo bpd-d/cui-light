@@ -1,31 +1,50 @@
-import { ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiMutationHandler, ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
 import { ATTRIBUTES, ICONS } from "../../core/utlis/statics";
 import { createElementFromString, is } from "../../core/utlis/functions";
+import { CuiHandlerBase } from "./base";
 
-export class CuiIconHandler implements ICuiMutationHandler {
-
+export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandler {
+    #log: ICuiLogger;
     #element: Element;
-    constructor(element: Element) {
+    #prevIcon: string;
+    constructor(element: Element, interactions?: IUIInteractionProvider) {
+        super("CuiIconHandler", interactions);
         this.#element = element;
+        this.#prevIcon = null;
     }
 
     handle(): void {
         const iconAttr = this.#element.getAttribute(ATTRIBUTES.icon)
+        if (iconAttr === this.#prevIcon) {
+            return;
+        }
+
         const iconStr = iconAttr ? ICONS[iconAttr] : null;
-        const scale = this.#element.hasAttribute(ATTRIBUTES.scale) ? parseFloat(this.#element.getAttribute(ATTRIBUTES.scale)) : 1
         if (!iconStr) {
             return
         }
-        const iconSvg = new IconBuilder(iconStr).setScale(scale).build();
+        const iconSvg = new IconBuilder(iconStr).build();
         const svg = this.#element.querySelector('svg')
         if (is(svg)) {
             svg.remove();
         }
         if (this.#element.childNodes.length > 0) {
-            this.#element.insertBefore(iconSvg, this.#element.firstChild);
+            this.mutate(this.insertBefore, iconSvg)
         } else {
-            this.#element.appendChild(iconSvg);
+            this.mutate(this.appendChild, iconSvg)
         }
+    }
+
+    refresh(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    private insertBefore(iconElement: Element) {
+        this.#element.insertBefore(iconElement, this.#element.firstChild);
+    }
+
+    private appendChild(iconElement: Element) {
+        this.#element.appendChild(iconElement);
     }
 }
 
@@ -36,6 +55,7 @@ export class IconBuilder {
 
     constructor(svgString: string) {
         this.#element = svgString;
+        this.#scale = 1;
     }
 
     setStyle(style: string): IconBuilder {

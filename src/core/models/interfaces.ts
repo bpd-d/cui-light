@@ -37,4 +37,5 @@ export interface ICuiObserver<T> {
 
 export interface ICuiMutationHandler {
     handle(): void;
+    refresh(): void;
 }

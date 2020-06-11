@@ -13,6 +13,7 @@ import { CuiAttributeMutationHandler } from "./managers/mutations";
 import { CuiLoggerFactory } from "../core/factories/logger";
 import { CuiInstanceColorHandler } from "./handlers/colors";
 import { CuiToastHandler } from "./managers/toast";
+import { ListManager } from "./managers/list";
 
 export class CuiInstance {
     #log: ICuiLogger;
@@ -27,24 +28,24 @@ export class CuiInstance {
     //pubic
     colors: CuiInstanceColorHandler;
     constructor(setup: CuiSetup) {
-
         this.#prefix = setup.prefix ?? DefaultSetup.prefix;
         this.#logLevel = setup.logLevel ?? DefaultSetup.logLevel
         this.#interactions = CuiInteractionsFactory.get(setup.interaction)
         this.#log = CuiLoggerFactory.get('CuiInstance', this.#logLevel)
         this.#cache = new CuiDictionary<ElementManager>();
-        this.#mutationObserver = new CuiMutationObserver(document.body)
+        this.#mutationObserver = new CuiMutationObserver(document.body, this.#interactions)
         this.colors = new CuiInstanceColorHandler(this.#interactions)
         this.#toastManager = new CuiToastHandler(this.#interactions, this.#prefix, setup.animationTimeLong ?? DefaultSetup.animationTimeLong);
     }
 
     init(icons?: any): CuiInstance {
-        const initElements = document.querySelectorAll(joinAttributesForQuery([ATTRIBUTES.icon, ATTRIBUTES.spinner]))
+        const initElements = document.querySelectorAll(joinAttributesForQuery([ATTRIBUTES.icon, ATTRIBUTES.spinner, ATTRIBUTES.circle]))
         if (is(initElements)) {
             this.#log.debug(`Initiating ${initElements.length} elements`)
-            initElements.forEach(item => {
-                let handler = CuiAttributeMutationHandler.get(item)
+            initElements.forEach((item: any) => {
+                let handler = CuiAttributeMutationHandler.get(item, this.#interactions)
                 if (is(handler)) {
+                    item.$handler = handler;
                     handler.handle();
                 } else {
                     this.#log.warning("Handler not found")
@@ -80,6 +81,14 @@ export class CuiInstance {
         const newElement = new ElementManager(elements, this.#interactions, this.#logLevel);
         this.#cache.add(selector, newElement)
         return newElement
+    }
+
+    list(selector: string): ListManager {
+        const elements = this.all(selector);
+        if (!is(elements)) {
+            return undefined;
+        }
+        return new ListManager(elements, this.#interactions, this.#logLevel);
     }
 
     toggleDarkMode(): void {
