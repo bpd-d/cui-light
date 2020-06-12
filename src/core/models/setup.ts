@@ -6,6 +6,8 @@ export class CuiSetup {
     app?: string;
     logLevel?: CuiLogLevel;
     interaction?: CuiInteractionsType;
+    cacheSize?: number;
+    autoLightMode?: boolean;
     animationTime?: number;
     animationTimeShort?: number;
     animationTimeLong?: number;
@@ -16,4 +18,8 @@ export class CuiSetup {
     colorSuccess?: CuiColorSet;
     colorError?: CuiColorSet;
     colorWarning?: CuiColorSet;
+
+    constructor() {
+        this.autoLightMode = false;
+    }
 }

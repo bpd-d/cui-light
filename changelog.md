@@ -1,4 +1,11 @@
 # bpd cUI Light changelog
+
+## [0.0.5] 2020-06-12
+* [Changed] Element cache behavior
+* [Changed] Badge position and size
+* [Added] Switch Css component
+* [Added] Automatic light/dark mode - optional
+
 ## [0.0.4] 2020-06-11
 * [Removed] Grid system from grid display mode
 * [Fixed] Dropdown display
@@ -7,6 +14,7 @@
 * [Added] Interaction handler to mutated elements
 * [Added] Collection handler to handle elements collections like lists, tabs switchers
 * [Added] Circle progress
+
 ## [0.0.3] 2020-06-10
 * [Fixed] Force element to be a flex when *-flex
 * [Changed] Behavior of width / visiblity / container elements

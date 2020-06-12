@@ -1,20 +1,22 @@
 import { is, sleep } from "../../core/utlis/functions";
-import { ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, CuiCachable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CuiLogLevel } from "../../core/utlis/types";
 import { DefaultSetup } from "../defaults/setup";
 import { CLASSES } from "../../core/utlis/statics";
 
-export class ElementManager {
+export class ElementManager implements CuiCachable {
     #elements: Element[];
     #isLocked: boolean;
     #logger: ICuiLogger;
     #interactions: IUIInteractionProvider;
+    #cDt: number;
     constructor(elements: Element[], interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
         this.#elements = elements;
         this.#isLocked = false;
         this.#logger = CuiLoggerFactory.get("ElementManager", logLevel);
         this.#interactions = interactions;
+        this.#cDt = Date.now();
     }
 
     async toggleClass(className: string): Promise<boolean> {
@@ -202,6 +204,6 @@ export class ElementManager {
 
     refresh(): boolean {
         // Todo
-        return true;
+        return (Date.now() - this.#cDt) < 360000;
     }
 }

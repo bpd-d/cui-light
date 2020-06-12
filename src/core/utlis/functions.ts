@@ -1,6 +1,7 @@
 import { HTMLAttribute } from "../models/elements";
 import { CuiColor } from "../models/color";
 import { COLORS, MUTATED_ATTRIBUTES } from "./statics";
+import { CuiLightMode } from "./types";
 
 /**
  * Checks if value is defined an is not null
@@ -142,4 +143,9 @@ export function joinAttributesForQuery(attributes: string[]): string {
         return ""
     }
     return `[${attributes.join('],[')}]`
+}
+
+export function getSystemLightMode(): CuiLightMode {
+    return window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }

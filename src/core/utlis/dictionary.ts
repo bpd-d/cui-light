@@ -58,4 +58,8 @@ export class CuiDictionary<T> implements ICuiDictionary<T> {
         }
         this.#values[index] = value
     }
+    clear() {
+        this.#values = [];
+        this.#keys = [];
+    }
 }

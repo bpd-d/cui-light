@@ -2,7 +2,7 @@ $special-color-success  : $component-background-success;
 $special-color-fail     : $component-background-error;
 $special-animation-time : 1s;
 $special-animation-long : 2s;
-$special-animation-short: 500ms;
+$special-animation-short: 150ms;
 $special-animation-delay: 500ms;
 /**
 * Special icon
@@ -47,6 +47,7 @@ svg.circle-progress {
     .circle-progress-path {
         stroke-dasharray : 280;
         stroke-dashoffset: 280;
+        transition       : stroke-dashoffset $special-animation-short ease-in-out;
     }
 }
 

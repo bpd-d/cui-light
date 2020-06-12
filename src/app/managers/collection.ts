@@ -1,9 +1,10 @@
-import { IUIInteractionProvider, ICuiLogger } from "../../core/models/interfaces";
+import { IUIInteractionProvider, ICuiLogger, CuiCachable } from "../../core/models/interfaces";
 import { CuiLogLevel } from "../../core/utlis/types";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { is } from "../../core/utlis/functions";
+import { CLASSES } from "../../core/utlis/statics";
 
-export class ListManager {
+export class CollectionManager implements CuiCachable {
     #elements: Element[];
     #interactions: IUIInteractionProvider;
     #log: ICuiLogger;
@@ -11,6 +12,8 @@ export class ListManager {
     #isRunning: boolean;
     #current: number;
     #count: number;
+    #cDt: number;
+
     constructor(elements: Element[], interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
         this.#elements = elements;
         this.#interactions = interactions;
@@ -19,6 +22,7 @@ export class ListManager {
         this.#isRunning = false;
         this.#count = this.length();
         this.#current = this.getCurrentIndex();
+        this.#cDt = Date.now();
     }
 
     setToggleClass(className: string) {
@@ -67,12 +71,49 @@ export class ListManager {
         return this.setCurrent(index)
     }
 
+    async setWithAnimation(index: number, animClassIn: string, animClassOut: string, duration: number): Promise<boolean> {
+        if (!this.check() || index < 0 || index === this.#current || index >= this.#count) {
+            return false;
+        }
+        return this.setCurrentWithAnimation(index, animClassIn, animClassOut, duration)
+    }
+
     async setCurrent(newIndex: number): Promise<boolean> {
+        this.setRunning(true)
         this.#log.debug(`Switching index from: ${this.#current} to ${newIndex}`)
         this.#elements[this.#current].classList.remove(this.#toggleClass);
         this.#elements[newIndex].classList.add(this.#toggleClass);
         this.#current = newIndex
+        this.setRunning(false);
         return true;
+    }
+
+    async setCurrentWithAnimation(newIndex: number, animClassIn: string, animClassOut: string, duration: number): Promise<boolean> {
+        this.setRunning(true)
+        this.#log.debug(`Switching index from: ${this.#current} to ${newIndex}`)
+        const currentElement = this.#elements[this.#current];
+        const nextElement = this.#elements[newIndex];
+        this.#interactions.mutate(this.addAnimationClass, this, currentElement, nextElement, animClassIn, animClassOut);
+        setTimeout(() => {
+            this.#interactions.mutate(this.setFinalClasses, this, currentElement, nextElement, animClassIn, animClassOut)
+            this.#current = newIndex
+            this.setRunning(false)
+        }, duration)
+        return true;
+    }
+
+    private addAnimationClass(currentElement: Element, nextElement: Element, animIn: string, animOut: string): void {
+        nextElement.classList.add(CLASSES.animProgress);
+        currentElement.classList.add(animOut);
+        nextElement.classList.add(animIn);
+    }
+
+    private setFinalClasses(currentElement: Element, nextElement: Element, animIn: string, animOut: string): void {
+        nextElement.classList.remove(CLASSES.animProgress);
+        currentElement.classList.remove(animOut);
+        nextElement.classList.remove(animIn);
+        currentElement.classList.remove(this.#toggleClass);
+        nextElement.classList.add(this.#toggleClass);
     }
 
     length() {
@@ -107,5 +148,12 @@ export class ListManager {
         return true;
     }
 
+    refresh(): boolean {
+        return this.length() > 0 && Date.now() - this.#cDt > 360000;
+    }
+
+    setRunning(flag: boolean) {
+        this.#isRunning = flag;
+    }
 
 }

@@ -127,6 +127,7 @@ $card-border-color-dark       :$color-border-dark;
 * Dark
 */
 
+
 .#{$prefix}-dark {
     .#{$prefix}-card {
         .#{$prefix}-card-header {
@@ -156,14 +157,14 @@ $card-border-color-dark       :$color-border-dark;
             }
         }
 
-        &.#{$prefix}-accent,
-        &.#{$prefix}-secondary {
-            color: $card-color-default-dark;
+        // &.#{$prefix}-accent,
+        // &.#{$prefix}-secondary {
+        //     color: $card-color-default-dark;
 
-            .#{$prefix}-card-header,
-            .#{$prefix}-card-footer {
-                border-color: $card-separator-color-accent;
-            }
-        }
+        //     .#{$prefix}-card-header,
+        //     .#{$prefix}-card-footer {
+        //         border-color: $card-separator-color-accent;
+        //     }
+        // }
     }
 }

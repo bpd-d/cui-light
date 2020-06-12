@@ -7,5 +7,7 @@ export const DefaultSetup: CuiSetup = {
     interaction: 'async',
     animationTime: 300,
     animationTimeShort: 150,
-    animationTimeLong: 500
+    animationTimeLong: 500,
+    cacheSize: 500,
+    autoLightMode: false,
 }

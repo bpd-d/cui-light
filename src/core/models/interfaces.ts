@@ -21,6 +21,7 @@ export interface ICuiDictionary<T> {
     values(): T[];
     indexOf(key: string): number;
     update(key: string, value: T): void;
+    clear(): void;
 }
 
 export interface ICuiDictionaryItem<T> {
@@ -38,4 +39,18 @@ export interface ICuiObserver<T> {
 export interface ICuiMutationHandler {
     handle(): void;
     refresh(): void;
+}
+
+export interface CuiCachable {
+    refresh(): boolean;
+}
+
+export interface ICui {
+    getId(): string;
+}
+
+export interface ICuiCacheManager {
+    put(key: string, element: CuiCachable): void;
+    get(key: string): CuiCachable;
+    has(key: string): boolean;
 }

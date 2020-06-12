@@ -6,7 +6,6 @@ import { CuiHandlerBase } from "./base";
 
 export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #element: Element;
-
     constructor(element: Element, interactions?: IUIInteractionProvider) {
         super("CuiSpinnerHandler", interactions);
         this.#element = element;
