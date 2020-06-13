@@ -1,6 +1,5 @@
 import { IUIInteractionProvider } from "../../core/models/interfaces";
 import { is, sleep } from "../../core/utlis/functions";
-import { DefaultSetup } from "../defaults/setup";
 import { CLASSES } from "../../core/utlis/statics";
 
 export class CuiToastHandler {

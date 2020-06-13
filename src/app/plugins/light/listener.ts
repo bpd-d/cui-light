@@ -1,10 +1,13 @@
-import { CuiInstance } from "../../app/instance";
+import { CuiUtils } from "../../../core/models/utils";
+import { AutoLightPluginSetup } from "./light";
 
 export class LightModeListener {
-    #instance: CuiInstance;
+    #utils: CuiUtils;
     #isInitialized: boolean;
-    constructor(instance: CuiInstance) {
-        this.#instance = instance;
+    #descriptor: string;
+    constructor(utils: CuiUtils, descriptor: string) {
+        this.#utils = utils;
+        this.#descriptor = descriptor;
         this.#isInitialized = false;
     }
 
@@ -15,6 +18,7 @@ export class LightModeListener {
         window.matchMedia('(prefers-color-scheme: dark)')
             .addEventListener('change', this.event.bind(this))
         this.#isInitialized = true
+        console.log("Listener initiated")
         return true
     }
 
@@ -28,11 +32,16 @@ export class LightModeListener {
     }
 
     private event(ev: MediaQueryListEvent): void {
-        if (this.#instance.autoLightMode) {
+        console.log("Event")
+        let autoLightSetup = this.#utils.setup.plugins[this.#descriptor] as AutoLightPluginSetup;
+        let autoLight = autoLightSetup?.autoLight ?? false;
+        if (autoLight) {
             if (ev.matches) {
-                this.#instance.setLightMode('dark')
+                console.log("dark")
+                this.#utils.setLightMode('dark')
             } else {
-                this.#instance.setLightMode('light')
+                console.log("Light")
+                this.#utils.setLightMode('light')
             }
         }
     }

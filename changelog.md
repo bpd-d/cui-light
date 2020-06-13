@@ -1,5 +1,11 @@
 # bpd cUI Light changelog
 
+## [0.0.6] 2020-06-13
+* [Changed] Automatic light mode moved to new plugins
+* [Added] Support for framework plugins
+* [Added] Framework internal event bus
+* [Added] Input mixed component
+
 ## [0.0.5] 2020-06-12
 * [Changed] Element cache behavior
 * [Changed] Badge position and size

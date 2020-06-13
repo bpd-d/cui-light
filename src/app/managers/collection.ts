@@ -14,10 +14,10 @@ export class CollectionManager implements CuiCachable {
     #count: number;
     #cDt: number;
 
-    constructor(elements: Element[], interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
+    constructor(elements: Element[], interactions: IUIInteractionProvider) {
         this.#elements = elements;
         this.#interactions = interactions;
-        this.#log = CuiLoggerFactory.get('ListManager', logLevel);
+        this.#log = CuiLoggerFactory.get('ListManager');
         this.#toggleClass = null;
         this.#isRunning = false;
         this.#count = this.length();

@@ -40,5 +40,9 @@ export class CuiCacheManager implements ICuiCacheManager {
         }
         return false;
     }
+
+    clear(): void {
+        this.#cache.clear();
+    }
 }
 

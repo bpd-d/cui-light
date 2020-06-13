@@ -1,21 +1,20 @@
-import { is, sleep } from "../../core/utlis/functions";
+import { is } from "../../core/utlis/functions";
 import { ICuiLogger, IUIInteractionProvider, CuiCachable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { CuiLogLevel } from "../../core/utlis/types";
-import { DefaultSetup } from "../defaults/setup";
 import { CLASSES } from "../../core/utlis/statics";
+import { CuiUtils } from "../../core/models/utils";
 
 export class ElementManager implements CuiCachable {
     #elements: Element[];
     #isLocked: boolean;
     #logger: ICuiLogger;
-    #interactions: IUIInteractionProvider;
     #cDt: number;
-    constructor(elements: Element[], interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
+    #utils: CuiUtils;
+    constructor(elements: Element[], utils: CuiUtils) {
         this.#elements = elements;
         this.#isLocked = false;
-        this.#logger = CuiLoggerFactory.get("ElementManager", logLevel);
-        this.#interactions = interactions;
+        this.#logger = CuiLoggerFactory.get("ElementManager");
+        this.#utils = utils;
         this.#cDt = Date.now();
     }
 
@@ -119,7 +118,7 @@ export class ElementManager implements CuiCachable {
         if (!is(className)) {
             return false;
         }
-        const delay = timeout ?? DefaultSetup.animationTime;
+        const delay = timeout ?? this.#utils.setup.animationTime;
         return this.call((element) => {
             this.change(() => {
                 element.classList.add(className);
@@ -138,7 +137,7 @@ export class ElementManager implements CuiCachable {
         if (!is(openClass)) {
             return false
         }
-        const delay = timeout ?? DefaultSetup.animationTime;
+        const delay = timeout ?? this.#utils.setup.animationTime;
         return this.call((element) => {
             this.change(() => {
                 element.classList.add(animationClass);
@@ -158,7 +157,7 @@ export class ElementManager implements CuiCachable {
         if (!is(closeClass)) {
             return false
         }
-        const delay = timeout ?? DefaultSetup.animationTime;
+        const delay = timeout ?? this.#utils.setup.animationTime;
         return this.call((element) => {
             this.change(() => {
                 element.classList.add(animationClass);
@@ -175,11 +174,11 @@ export class ElementManager implements CuiCachable {
     }
 
     read(callback: any, ...args: any[]): void {
-        this.#interactions.fetch(callback, this, ...args)
+        this.#utils.interactions.fetch(callback, this, ...args)
     }
 
     change(callback: any, ...args: any[]): void {
-        this.#interactions.mutate(callback, this, ...args)
+        this.#utils.interactions.mutate(callback, this, ...args)
     }
 
     elements(): Element[] {

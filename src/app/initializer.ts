@@ -1,8 +1,9 @@
-import { CuiSetup } from "../core/models/setup";
-import { DefaultSetup } from "./defaults/setup";
+import { CuiSetupInit } from "../core/models/setup";
 import { is } from "../core/utlis/functions";
 import { CuiInstance } from "./instance";
 import { ICONS } from "../core/utlis/statics";
+import { ICuiPlugin } from "../core/models/interfaces";
+import { CuiAutoLightModePlugin } from "./plugins/light/light";
 
 export class CuiInitializer {
     #window: any;
@@ -10,12 +11,13 @@ export class CuiInitializer {
         this.#window = window;
     }
 
-    async init(setup?: CuiSetup): Promise<boolean> {
-        const appPrefix: string = setup?.app ?? DefaultSetup.app;
+    async init(plugins: ICuiPlugin[], setup?: CuiSetupInit): Promise<boolean> {
+        const settings: CuiSetupInit = { ... new CuiSetupInit(), ...setup }
+        const appPrefix: string = settings.app;
         if (is(this.#window[appPrefix])) {
             return false;
         }
-        this.#window[appPrefix] = new CuiInstance(setup)
+        this.#window[appPrefix] = new CuiInstance(settings, plugins)
         this.#window[appPrefix].init();
         return true;
     }
@@ -34,21 +36,20 @@ export class CuiInit {
         this.#isInitialized = false;
     }
 
-    async init(setup: CuiSetup, icons: any): Promise<boolean> {
+    async init(setup: CuiSetupInit, icons: any): Promise<boolean> {
         if (this.#isInitialized) {
             console.log("Module is already initialized")
             return false;
         }
         const initializer = new CuiInitializer();
-        const settings: CuiSetup = setup ?? {
-            logLevel: 'debug',
-            prefix: 'cui',
-            app: '$cui'
-        }
+        const plugins: ICuiPlugin[] = [
+            new CuiAutoLightModePlugin({ autoLight: true })
+        ];
+
         if (is(icons)) {
             initializer.setIcons(icons)
         }
-        if (initializer.init(settings)) {
+        if (initializer.init(plugins, setup)) {
             this.#isInitialized = true;
             return true;
         }

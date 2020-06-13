@@ -1,4 +1,5 @@
 import { CuiColorPair } from "../models/color";
+import { CuiLogLevel } from "./types";
 
 export const CLASSES = {
     dark: 'dark',
@@ -76,4 +77,10 @@ export const CSS_THEMES = {
         muted: '--color-error-muted',
         active: '--color-error-active'
     }
+}
+
+
+export class STATICS {
+    static logLevel: CuiLogLevel = 'none';
+    static prefix: string = 'cui';
 }

@@ -1,4 +1,4 @@
-import { ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, ICuiPlugin, ICuiMutiationPlugin } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CuiLogLevel } from "../../core/utlis/types";
 import { is } from "../../core/utlis/functions";
@@ -6,6 +6,7 @@ import { CuiAttributeMutationHandler } from "../managers/mutations";
 
 export interface ICuiMutionObserver {
     setOptions(options: MutationObserverInit): ICuiMutionObserver;
+    setPlugins(plugins: ICuiMutiationPlugin[]): ICuiMutionObserver;
     start(): ICuiMutionObserver;
     stop(): ICuiMutionObserver;
 }
@@ -13,38 +14,42 @@ export interface ICuiMutionObserver {
 
 export class CuiMutationObserver implements ICuiMutionObserver {
     #log: ICuiLogger;
-    #logLevel: CuiLogLevel;
-    private observer: MutationObserver;
-    private options: MutationObserverInit;
-    private element: HTMLElement;
+    #observer: MutationObserver;
+    #options: MutationObserverInit;
+    #element: HTMLElement;
+    #plugins: ICuiMutiationPlugin[];
 
-    constructor(element: HTMLElement, interactions: IUIInteractionProvider, logLevel?: CuiLogLevel) {
-        this.observer = null
-        this.element = element
-        this.#log = CuiLoggerFactory.get('CuiMutationObserver', logLevel)
-        this.#logLevel = logLevel
-
+    constructor(element: HTMLElement, interactions: IUIInteractionProvider) {
+        this.#observer = null
+        this.#element = element
+        this.#log = CuiLoggerFactory.get('CuiMutationObserver')
+        this.#plugins = null;
     }
 
     setOptions(options: MutationObserverInit) {
-        this.options = options
+        this.#options = options
         return this
+    }
+
+    setPlugins(plugins: ICuiMutiationPlugin[]) {
+        this.#plugins = plugins;
+        return this;
     }
 
     start() {
         this.#log.debug("Starting")
-        this.observer = new MutationObserver(this.mutationCallback)
-        this.observer.observe(this.element, this.options)
+        this.#observer = new MutationObserver(this.mutationCallback)
+        this.#observer.observe(this.#element, this.#options)
         this.#log.debug("Started")
         return this;
     }
 
     stop() {
         this.#log.debug("Stopping")
-        if (this.observer !== null)
+        if (this.#observer !== null)
             this.#log.debug("Observer available")
-        this.observer.disconnect()
-        this.observer = null;
+        this.#observer.disconnect()
+        this.#observer = null;
         this.#log.debug("Stopped")
         return this
     }
@@ -62,6 +67,22 @@ export class CuiMutationObserver implements ICuiMutionObserver {
                 case 'childList':
                     this.handleChildListMutation(mutation);
                     break;
+            }
+            if (is(this.#plugins)) {
+                let tasks: Promise<boolean>[] = [];
+                this.#plugins.forEach(plugin => {
+                    tasks.push(plugin.mutation(mutation))
+                })
+                Promise.all(tasks).then((flags: boolean[]) => {
+                    this.#log.debug("Plugins mutation completed");
+                    if (flags.find(val => {
+                        return val === false;
+                    })) {
+                        this.#log.error("Plugins mutation completed failed on at least one element");
+                    }
+                }, (reason) => {
+                    this.#log.error("Plugins mutation failed");
+                })
             }
         })
     }

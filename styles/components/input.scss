@@ -85,6 +85,44 @@ input.#{$prefix}-input {
     }
 }
 
+div.#{$prefix}-input-mix {
+    display      : inline-flex;
+    border       : 1px solid $input-border-color-inactive;
+    border-radius: $input-border-radius;
+
+    .#{$prefix}-input {
+        border          : none;
+        background-color: transparent;
+        order           : 0;
+    }
+
+    .#{$prefix}-icon,
+    .#{$prefix}-button {
+        order                      : 1;
+        padding                    : $input-padding-default;
+        border-bottom-left-radius  : 0px;
+        border-top-left-radius     : 0px;
+        border-bottom-right-radius : calc(#{$input-border-radius} - 1px);
+        border-top-right-radius    : calc(#{$input-border-radius} - 1px);
+
+    }
+
+    &.#{$prefix}-reverse {
+        .#{$prefix}-input {
+            order: 1;
+        }
+
+        .#{$prefix}-icon,
+        .#{$prefix}-button {
+            order                     : 0;
+            border-bottom-right-radius: 0px;
+            border-top-right-radius   : 0px;
+            border-bottom-left-radius : calc(#{$input-border-radius} - 1px);
+            border-top-left-radius    : calc(#{$input-border-radius} - 1px);
+        }
+    }
+}
+
 select.#{$prefix}-select {
     font-size          : $input-font-size-default;
     background-color   : $input-background-color;
@@ -152,15 +190,6 @@ textarea.#{$prefix}-textarea {
     &.#{$prefix}-transparent {
         border-color: transparent;
     }
-
-    // &.#{$prefix}-shade {
-    //     border          : 1px solid transparent;
-    //     background-color: var(--color-shade);
-
-    //     &:focus {
-    //         border-color: $input-border-color-active;
-    //     }
-    // }
 }
 
 /***

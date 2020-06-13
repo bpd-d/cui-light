@@ -1,58 +1,39 @@
-import { CuiSetup } from "../core/models/setup";
-import { DefaultSetup } from "./defaults/setup";
-import { is, getName, joinAttributesForQuery, getSystemLightMode } from "../core/utlis/functions";
+import { CuiSetupInit } from "../core/models/setup";
+import { is, joinAttributesForQuery, getSystemLightMode } from "../core/utlis/functions";
 import { ElementManager } from "./managers/element";
-import { CuiLogLevel, CuiClearCacheType, CuiLightMode } from "../core/utlis/types";
-import { CLASSES, MUTATED_ATTRIBUTES, ATTRIBUTES } from "../core/utlis/statics";
-import { IUIInteractionProvider, ICuiDictionary, ICuiLogger, ICuiCacheManager } from "../core/models/interfaces";
-import { FastDom } from "../core/utlis/interactions";
-import { CuiInteractionsFactory } from "../core/factories/interactions";
-import { CuiDictionary } from "../core/utlis/dictionary";
+import { MUTATED_ATTRIBUTES, ATTRIBUTES, STATICS } from "../core/utlis/statics";
+import { ICuiLogger, ICuiPlugin, ICuiMutiationPlugin } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
 import { CuiAttributeMutationHandler } from "./managers/mutations";
 import { CuiLoggerFactory } from "../core/factories/logger";
-import { CuiInstanceColorHandler } from "./handlers/colors";
 import { CuiToastHandler } from "./managers/toast";
 import { CollectionManager } from "./managers/collection";
-import { CuiCacheManager } from "./managers/cache";
-import { LightModeListener } from "../core/listeners/light";
+import { CuiUtils } from "../core/models/utils";
 
 export class CuiInstance {
     #log: ICuiLogger;
-    #prefix: string;
-    #logLevel: CuiLogLevel;
-    #interactions: IUIInteractionProvider;
-    #cache: ICuiDictionary<ElementManager>;
-    #collectionCache: ICuiDictionary<CollectionManager>;
     #mutationObserver: ICuiMutionObserver;
     #toastManager: CuiToastHandler;
-    #cacheManager: ICuiCacheManager;
-    #lightModeListener: LightModeListener;
-    autoLightMode: boolean;
+    #utils: CuiUtils;
+    #plugins: ICuiPlugin[];
+    constructor(setup: CuiSetupInit, plugins?: ICuiPlugin[]) {
+        STATICS.prefix = setup.prefix;
+        STATICS.logLevel = setup.logLevel;
+        this.#plugins = plugins ?? [];
+        this.#utils = new CuiUtils(setup);
+        this.#log = CuiLoggerFactory.get('CuiInstance')
+        this.#mutationObserver = new CuiMutationObserver(document.body, this.#utils.interactions)
+        this.#toastManager = new CuiToastHandler(this.#utils.interactions, this.#utils.setup.prefix, this.#utils.setup.animationTimeLong);
 
-    //pubic
-    colors: CuiInstanceColorHandler;
-    constructor(setup: CuiSetup) {
-        this.#prefix = setup.prefix ?? DefaultSetup.prefix;
-        this.#logLevel = setup.logLevel ?? DefaultSetup.logLevel
-        this.#interactions = CuiInteractionsFactory.get(setup.interaction)
-        this.#log = CuiLoggerFactory.get('CuiInstance', this.#logLevel)
-        this.#cache = new CuiDictionary<ElementManager>();
-        this.#collectionCache = new CuiDictionary<CollectionManager>();
-        this.#cacheManager = new CuiCacheManager(setup.cacheSize ?? DefaultSetup.cacheSize);
-        this.#mutationObserver = new CuiMutationObserver(document.body, this.#interactions)
-        this.colors = new CuiInstanceColorHandler(this.#interactions)
-        this.#toastManager = new CuiToastHandler(this.#interactions, this.#prefix, setup.animationTimeLong ?? DefaultSetup.animationTimeLong);
-        this.#lightModeListener = new LightModeListener(this);
-        this.autoLightMode = setup.autoLightMode ?? DefaultSetup.autoLightMode;
     }
 
     init(icons?: any): CuiInstance {
+        // Init elements
         const initElements = document.querySelectorAll(joinAttributesForQuery([ATTRIBUTES.icon, ATTRIBUTES.spinner, ATTRIBUTES.circle]))
         if (is(initElements)) {
             this.#log.debug(`Initiating ${initElements.length} elements`)
             initElements.forEach((item: any) => {
-                let handler = CuiAttributeMutationHandler.get(item, this.#interactions)
+                let handler = CuiAttributeMutationHandler.get(item, this.#utils.interactions)
                 if (is(handler)) {
                     item.$handler = handler;
                     handler.handle();
@@ -61,16 +42,22 @@ export class CuiInstance {
                 }
             })
         }
+        // Init plugins
+        this.#plugins.forEach(plugin => {
+            this.#utils.setup.plugins[plugin.description] = plugin.setup;
+            plugin.init(this.#utils);
+        })
         this.#mutationObserver.setOptions({
             attributes: true,
             subtree: true,
             attributeFilter: MUTATED_ATTRIBUTES
         });
+
+        this.#mutationObserver.setPlugins(this.#plugins.filter(plugin => {
+            let mutated = plugin as any;
+            return is(mutated['mutation']);
+        }) as any);
         this.#mutationObserver.start();
-        this.#lightModeListener.start();
-        if (this.autoLightMode && getSystemLightMode() === 'dark') {
-            this.setLightMode('dark')
-        }
         return this;
     }
 
@@ -80,7 +67,7 @@ export class CuiInstance {
 
 
     get(selector: string): ElementManager {
-        const existing = this.#cacheManager.get(selector);
+        const existing = this.#utils.cache.get(selector);
         if (is(existing)) {
             return existing as ElementManager;
         }
@@ -88,13 +75,13 @@ export class CuiInstance {
         if (!elements) {
             return undefined
         }
-        const newElement = new ElementManager(elements, this.#interactions, this.#logLevel);
-        this.#cacheManager.put(selector, newElement)
+        const newElement = new ElementManager(elements, this.#utils);
+        this.#utils.cache.put(selector, newElement)
         return newElement
     }
 
     collection(selector: string): CollectionManager {
-        const existing = this.#cacheManager.get(selector);
+        const existing = this.#utils.cache.get(selector);
         if (is(existing)) {
             return existing as CollectionManager;
         }
@@ -102,30 +89,11 @@ export class CuiInstance {
         if (!is(elements)) {
             return undefined;
         }
-        let manager = new CollectionManager(elements, this.#interactions, this.#logLevel);
-        this.#cacheManager.put(selector, manager)
+        let manager = new CollectionManager(elements, this.#utils.interactions);
+        this.#utils.cache.put(selector, manager)
         return manager;
     }
 
-    // toggleDarkMode(): void {
-    //     const name: string = getName(this.#prefix, CLASSES.dark)
-    //     const classes = document.body.classList
-    //     if (classes.contains(name)) {
-    //         classes.remove(name)
-    //     } else {
-    //         classes.add(name)
-    //     }
-    // }
-
-    setLightMode(mode: CuiLightMode) {
-        const name: string = getName(this.#prefix, CLASSES.dark);
-        const classes = document.body.classList;
-        if (mode === 'dark' && !classes.contains(name)) {
-            classes.add(name);
-        } else if (mode === 'light' && classes.contains(name)) {
-            classes.remove(name);
-        }
-    }
 
     async toast(message: string): Promise<boolean> {
         if (!is(message)) {
@@ -146,17 +114,17 @@ export class CuiInstance {
         return [...nodes];
     }
 
-    clearCache(clearType: CuiClearCacheType): void {
-        switch (clearType) {
-            case 'element':
-                this.#cache.clear();
-                break;
-            case 'collection':
-                this.#collectionCache.clear();
-                break;
-            case 'all':
-                this.#cache.clear();
-                this.#collectionCache.clear();
-        }
-    }
+    // clearCache(clearType: CuiClearCacheType): void {
+    //     switch (clearType) {
+    //         case 'element':
+    //             this.#cache.clear();
+    //             break;
+    //         case 'collection':
+    //             this.#collectionCache.clear();
+    //             break;
+    //         case 'all':
+    //             this.#cache.clear();
+    //             this.#collectionCache.clear();
+    //     }
+    // }
 }

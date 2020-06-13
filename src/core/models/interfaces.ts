@@ -1,3 +1,5 @@
+import { CuiUtils } from "./utils";
+
 export interface ICuiLogger {
     debug(message: string, functionName?: string): void;
     error(message: string, functionName?: string): void;
@@ -53,4 +55,47 @@ export interface ICuiCacheManager {
     put(key: string, element: CuiCachable): void;
     get(key: string): CuiCachable;
     has(key: string): boolean;
+    remove(key: string): boolean;
+    clear(): void;
+}
+
+export interface ICuiPlugin {
+    description: string;
+    setup: any;
+    init(utils: CuiUtils): void;
+    destroy(): void;
+}
+
+export interface ICuiMutiationPlugin {
+    mutation(record: MutationRecord): Promise<boolean>;
+}
+
+export interface ICuiEventBus {
+    on(name: string, callback: any, ctx: CuiContext): void;
+    detach(name: string, ctx: CuiContext): void;
+    detachAll(name: string): void;
+    emit(event: string, ...args: any[]): Promise<boolean>;
+    isSubscribing(name: string, ctx: CuiContext): boolean;
+    clear(name: string): void;
+}
+
+export interface ICuiCallbackExecutor {
+    execute(callback: any, ctx: any, args: any[]): Promise<void>;
+}
+
+export interface CuiEventObj {
+    ctx: any;
+    callback: any;
+}
+
+export interface CuiEventReceiver {
+    [id: string]: CuiEventObj;
+}
+
+export interface ICuiEventEmitHandler {
+    handle(receiver: CuiEventReceiver, args: any[]): Promise<void>;
+}
+
+export interface CuiContext {
+    getCuid(): string;
 }
