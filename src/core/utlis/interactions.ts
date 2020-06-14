@@ -5,11 +5,13 @@ export class FastDom implements IUIInteractionProvider {
     private reads: any[];
     private raf: any;
     private isScheduled: boolean = false;
+    #limit: number;
 
     constructor() {
         this.raf = window.requestAnimationFrame.bind(window)
         this.writes = []
         this.reads = []
+        this.#limit = 5;
     }
     mutate(callback: any, ctx: any, ...args: any[]): void {
         this.reads.push(this.createTask(callback, ctx, ...args))
@@ -32,14 +34,20 @@ export class FastDom implements IUIInteractionProvider {
         }
     }
 
-    private schedule() {
+    private schedule(recursion?: number) {
         if (!this.isScheduled) {
             this.isScheduled = true;
-            this.raf(this.flush.bind(this));
+            if (recursion >= this.#limit) {
+                throw new Error("Fast Dom limit reached")
+            } else {
+                this.raf(this.flush.bind(this, recursion));
+            }
+
         }
     }
 
-    private flush() {
+    private flush(recursion?: number) {
+        let rec: number = recursion ?? 0;
         let error = null;
         let writes = this.writes;
         let reads = this.reads;
@@ -54,7 +62,10 @@ export class FastDom implements IUIInteractionProvider {
         this.isScheduled = false;
 
         if (error) {
-            this.schedule()
+            this.schedule(rec + 1)
+        }
+        if (this.writes.length || this.reads.length) {
+            this.schedule(recursion + 1);
         }
     }
 }

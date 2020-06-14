@@ -1,5 +1,9 @@
 # bpd cUI Light changelog
 
+## [0.0.7] 2020-06-14
+* [Fixed] Various fixes related to unit tests
+* [Fixed] Fast dom not updating nodes when mutate and fetch are nested
+
 ## [0.0.6] 2020-06-13
 * [Changed] Automatic light mode moved to new plugins
 * [Added] Support for framework plugins

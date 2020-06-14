@@ -53,6 +53,13 @@ export class ElementManager implements CuiCachable {
         }, 'removeClass');
     }
 
+    getAttribute(attributeName: string): string {
+        if (!is(attributeName)) {
+            return null;
+        }
+        return this.#elements[0].getAttribute(attributeName)
+    }
+
     async setAttribute(attributeName: string, attributeValue?: string): Promise<boolean> {
         if (!is(attributeName)) {
             return false;

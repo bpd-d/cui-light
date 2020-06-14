@@ -32,7 +32,28 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
             this.#factor = this.#full / 100;
             this.#isInitialized = true;
         }
+        this.fetch(this.readStyle)
+        // const value = this.#element.hasAttribute(ATTRIBUTES.circle) ? parseInt(this.#element.getAttribute(ATTRIBUTES.circle)) : 0;
+        // if (value === this.#prevValue) {
+        //     return;
+        // }
+        // this.#prevValue = value;
+        // const progress = getRangeValue(value, 0, 100);
 
+        // this.mutate(this.updateStyle, this.#full - this.#factor * progress);
+    }
+
+    refresh(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    private updateStyle(value: number) {
+        console.log('Write progress')
+        this.#path.style.strokeDashoffset = value;
+    }
+
+    private readStyle(): void {
+        console.log('Read progress')
         const value = this.#element.hasAttribute(ATTRIBUTES.circle) ? parseInt(this.#element.getAttribute(ATTRIBUTES.circle)) : 0;
         if (value === this.#prevValue) {
             return;
@@ -41,14 +62,6 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
         const progress = getRangeValue(value, 0, 100);
 
         this.mutate(this.updateStyle, this.#full - this.#factor * progress);
-    }
-
-    refresh(): void {
-        throw new Error("Method not implemented.");
-    }
-
-    private updateStyle(value: number) {
-        this.#path.style.strokeDashoffset = value;
     }
 
 }

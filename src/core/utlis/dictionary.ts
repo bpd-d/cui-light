@@ -1,5 +1,6 @@
 import { ICuiDictionary, ICuiDictionaryItem } from "../models/interfaces";
-import { ItemNotFoundError } from "../models/errors";
+import { ItemNotFoundError, ArgumentError } from "../models/errors";
+import { is } from "./functions";
 
 export class CuiDictionary<T> implements ICuiDictionary<T> {
 
@@ -12,18 +13,28 @@ export class CuiDictionary<T> implements ICuiDictionary<T> {
 
         if (init) {
             init.forEach(x => {
+                if (!is(x.key)) {
+                    this.#keys = []
+                    this.#values = []
+                    throw new ArgumentError("Key is empty");
+                }
                 this.add(x.key, x.value)
             })
         }
     }
 
     add(key: string, value: T): void {
+        this.throwOnEmptyKey(key)
         if (this.containsKey(key))
             throw new Error("Key already exists");
         this.#keys.push(key)
         this.#values.push(value)
     }
+
     remove(key: string): void {
+        if (!is(key)) {
+            return
+        }
         let index = this.#keys.indexOf(key);
         if (index >= 0) {
             this.#keys.splice(index, 1)
@@ -31,6 +42,7 @@ export class CuiDictionary<T> implements ICuiDictionary<T> {
         }
     }
     get(key: string): T {
+        this.throwOnEmptyKey(key)
         let index = this.indexOf(key)
         if (index < 0) {
             return undefined;
@@ -38,7 +50,7 @@ export class CuiDictionary<T> implements ICuiDictionary<T> {
         return this.#values[index];
     }
     containsKey(key: string): boolean {
-        return this.indexOf(key) >= 0
+        return is(key) && this.indexOf(key) >= 0
     }
     keys(): string[] {
         return this.#keys
@@ -47,19 +59,27 @@ export class CuiDictionary<T> implements ICuiDictionary<T> {
         return this.#values;
     }
 
-    indexOf(key: string) {
-        return this.#keys.indexOf(key)
+    indexOf(key: string): number {
+        return is(key) ? this.#keys.indexOf(key) : -1;
     }
 
     update(key: string, value: T): void {
+        this.throwOnEmptyKey(key)
         let index = this.indexOf(key)
         if (index < 0) {
             throw new ItemNotFoundError(`Item with key [${key}] not found`)
         }
         this.#values[index] = value
     }
+
     clear() {
         this.#values = [];
         this.#keys = [];
+    }
+
+    private throwOnEmptyKey(key: string) {
+        if (!is(key)) {
+            throw new ArgumentError("Key is empty");
+        }
     }
 }

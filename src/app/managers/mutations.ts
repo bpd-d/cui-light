@@ -1,5 +1,5 @@
 import { ICuiMutationHandler, IUIInteractionProvider } from "../../core/models/interfaces";
-import { is, getFirstAttributeStartingWith, getMutationAttribute } from "../../core/utlis/functions";
+import { is, getMutationAttribute } from "../../core/utlis/functions";
 import { ATTRIBUTES } from "../../core/utlis/statics";
 import { CuiIconHandler } from "../handlers/icon";
 import { CuiSpinnerHandler } from "../handlers/spinner";

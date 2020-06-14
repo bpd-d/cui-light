@@ -114,6 +114,9 @@ export class CuiInstance {
         return [...nodes];
     }
 
+    getUtils(): CuiUtils {
+        return this.#utils;
+    }
     // clearCache(clearType: CuiClearCacheType): void {
     //     switch (clearType) {
     //         case 'element':

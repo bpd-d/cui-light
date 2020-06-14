@@ -2,6 +2,7 @@ import { HTMLAttribute } from "../models/elements";
 import { CuiColor } from "../models/color";
 import { COLORS, MUTATED_ATTRIBUTES } from "./statics";
 import { CuiLightMode } from "./types";
+import { ArgumentError } from "../models/errors";
 
 /**
  * Checks if value is defined an is not null
@@ -22,7 +23,6 @@ export function is(val: any, typecheck: boolean = true): boolean {
     return false;
 }
 
-
 /**
  * Checks if value is empty string, array or object
  *
@@ -41,6 +41,9 @@ export function isEmpty(val: any): boolean {
 }
 
 export function getName(prefix: string, name: string) {
+    if (!is(prefix) || !is(name)) {
+        throw new ArgumentError("Missing argument value")
+    }
     return `${prefix}-${name}`
 }
 
@@ -55,29 +58,32 @@ export function sleep(timeout: number): Promise<boolean> {
  * @param htmlString - string containing html
  */
 export function createElementFromString(htmlString: string): Element {
+    if (!is(htmlString)) {
+        return null;
+    }
     let template = document.createElement('template')
     template.innerHTML = htmlString
-    return template.content.children[0];
+    return template.content.children.length > 0 ? template.content.children[0] : null;
 }
 
 
 
-export function getFirstAttributeStartingWith(element: Element, prefix: string): HTMLAttribute {
-    let count = element.attributes.length;
-    if (count === 0) {
-        return null
-    }
-    for (let i = 0; i < count; i++) {
-        let attr = element.attributes[i]
-        if (attr.name.startsWith(prefix)) {
-            return {
-                name: attr.name,
-                value: attr.value
-            }
-        }
-    }
-    return null;
-}
+// export function getFirstAttributeStartingWith(element: Element, prefix: string): HTMLAttribute {
+//     let count = element.attributes.length;
+//     if (count === 0) {
+//         return null
+//     }
+//     for (let i = 0; i < count; i++) {
+//         let attr = element.attributes[i]
+//         if (attr.name.startsWith(prefix)) {
+//             return {
+//                 name: attr.name,
+//                 value: attr.value
+//             }
+//         }
+//     }
+//     return null;
+// }
 
 export function getMutationAttribute(element: Element): HTMLAttribute {
     let attr = null;
@@ -145,6 +151,10 @@ export function joinAttributesForQuery(attributes: string[]): string {
     return `[${attributes.join('],[')}]`
 }
 
+/**
+ * Checks light system light mode
+ * @returns Light Mode - dark/light
+ */
 export function getSystemLightMode(): CuiLightMode {
     return window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
