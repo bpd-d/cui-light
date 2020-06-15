@@ -9,9 +9,6 @@ $banner-border-color-dark       :$color-border-dark;
 $banner-border-radius           : $border-radius-default;
 
 
-
-
-
 @mixin banner($color) {
     border-color    : var(--color-#{$color});
     background-color: var(--color-#{$color}) !important;
@@ -27,14 +24,15 @@ div.#{$prefix}-banner {
     color           : $banner-color-default;
     border-radius   : $banner-border-radius;
     box-shadow      : $shadow;
+    margin          : 0 $margin-global;
     @include component-padding;
 
-    &[#{$prefix}-show] {
+    &.#{$prefix}-open {
         display: flex;
     }
 
-    &[#{$prefix}-close],
-    &[#{$prefix}-icon-close] {
+    .#{$prefix}-close,
+    .#{$prefix}-icon-close {
         order: 100;
     }
 
@@ -71,5 +69,18 @@ div.#{$prefix}-banner {
         border          : 1px solid $banner-border-color-dark;
         background-color: $banner-background-default-dark;
         color           : $banner-color-default-dark;
+    }
+}
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    div.#{$prefix}-banner {
+        border          : $component-print-border;
+        background-color: $component-print-background;
+        color           : $component-print-color;
+        box-shadow      : $component-print-shadow;
     }
 }

@@ -41,4 +41,19 @@ export class CuiUtils {
         }
     }
 
+    setPrintMode(flag: boolean) {
+        const name: string = getName(this.setup.prefix, CLASSES.print);
+        const classes = document.body.classList;
+        if (flag && !classes.contains(name)) {
+            this.interactions.mutate(() => {
+                classes.add(name);
+            }, this)
+
+        } else if (!flag && classes.contains(name)) {
+            this.interactions.mutate(() => {
+                classes.remove(name);
+            }, this)
+        }
+    }
+
 }

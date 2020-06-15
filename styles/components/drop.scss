@@ -1,9 +1,11 @@
 $drop-background-default      :$component-background-default;
 $drop-background-default-dark :$component-background-default-dark;
 
-$drop-color-default      :$component-color-default;
-$drop-color-default-dark :$component-color-default-dark;
-$drop-translate-y        : $margin-global;
+$drop-color-default            :$component-color-default;
+$drop-color-default-dark       :$component-color-default-dark;
+$drop-nav-hover-background     : $component-background-shade;
+$drop-nav-dark-hover-background: $component-background-shade-dark;
+$drop-translate-y              : $margin-global;
 
 .#{$prefix}-drop-trigger {
     position: relative;
@@ -130,7 +132,7 @@ ul.#{$prefix}-drop-nav {
             display        : block;
 
             &:hover {
-                background-color: var(--color-shade);
+                background-color: $drop-nav-hover-background;
             }
         }
 
@@ -139,5 +141,41 @@ ul.#{$prefix}-drop-nav {
             cursor     : default;
             font-weight: $text-weight-bold;
         }
+    }
+}
+
+/**
+* Dark
+*/
+
+.#{$prefix}-dark {
+    .#{$prefix}-dropdown {
+        background-color: $drop-background-default-dark;
+        color           : $drop-color-default-dark;
+    }
+
+    ul.#{$prefix}-drop-nav {
+        color: $drop-color-default-dark;
+
+        li {
+            a {
+                &:hover {
+                    background-color: $drop-nav-dark-hover-background;
+                }
+            }
+        }
+    }
+}
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-dropdown {
+        background-color: $component-print-background;
+        color           : $component-print-color;
+        border          : $component-print-border;
+        box-shadow      : $component-print-shadow;
     }
 }

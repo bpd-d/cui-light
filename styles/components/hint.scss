@@ -83,3 +83,15 @@ $hint-border-color-success      : $component-background-success;
         background-color: $hint-background-default-dark;
     }
 }
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-hint {
+        border          : $component-print-border;
+        color           : $component-print-color;
+        background-color: $component-print-background;
+    }
+}

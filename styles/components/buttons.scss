@@ -326,3 +326,16 @@ $button-outline                       : $outline-default;
 
     }
 }
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+
+    .#{$prefix}-button {
+        border          : $component-print-border;
+        color           : $component-print-color;
+        background-color: $component-print-background;
+    }
+}

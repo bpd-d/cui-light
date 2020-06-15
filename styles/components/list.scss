@@ -110,3 +110,34 @@ ul.#{$prefix}-list {
         }
     }
 }
+
+/**
+* Print
+*/
+
+
+.#{$prefix}-print {
+    ul.#{$prefix}-list {
+        li {
+            color: $component-print-color;
+        }
+
+        &.#{$prefix}-bullet {
+            li {
+                &:before {
+                    border-color: $component-print-color;
+                }
+            }
+        }
+
+        &.#{$prefix}-interactive {
+            li {
+                &.#{$prefix}-active {
+                    &:before {
+                        background-color: $component-print-color;
+                    }
+                }
+            }
+        }
+    }
+}

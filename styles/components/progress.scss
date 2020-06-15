@@ -160,6 +160,36 @@ progress.#{$prefix}-progress {
                 background-color: $progress-value-color-dark;
             }
         }
+    }
+}
 
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    progress.#{$prefix}-progress {
+        background-color: $component-print-background;
+        border          : $component-print-border;
+
+
+        &::-webkit-progress-bar {
+            background-color: $component-print-background;
+        }
+
+
+        &::-webkit-progress-value {
+            background-color: $component-print-color;
+
+        }
+
+        &::-moz-progress-bar {
+            background-color: $component-print-color;
+
+        }
+
+        &::-ms-fill {
+            background-color: $component-print-color;
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { is, getName, createElementFromString, getMutationAttribute, getRangeValue, joinAttributesForQuery, clone } from "../src/core/utlis/functions"
+import { is, getName, createElementFromString, getMutationAttribute, getRangeValue, joinAttributesForQuery, clone, are } from "../src/core/utlis/functions"
 import { MUTATED_ATTRIBUTES } from "../src/core/utlis/statics"
 
 /**
@@ -204,6 +204,23 @@ describe("Tests checking method [clone]", function () {
         expect(out1.a).toEqual(obj1.a)
         expect(out2.b()).toEqual(obj2.b())
         expect(out3).toEqual(null)
+    })
+})
+
+describe("Tests checking method [are]", function () {
+    it("Shall return true when all values are proper values", function () {
+        let output = are('test', 0, 1, {})
+        expect(output).toBeTrue()
+    })
+
+    it("Shall return false when at least one value doesn't have proper value", function () {
+        let output = are('test', 0, -1, null)
+        expect(output).toBeFalse()
+    })
+
+    it("Shall return false when at least one value doesn't have proper value 2", function () {
+        let output = are('test', 0, '', {})
+        expect(output).toBeFalse()
     })
 
 })

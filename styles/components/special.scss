@@ -162,6 +162,19 @@ svg.circle-double {
 
 
 /**
+* Print
+*/
+
+.#{$prefix}-print {
+
+    svg.special-fail,
+    svg.special-success {
+        stroke: $component-print-color;
+    }
+}
+
+
+/**
 * Animation
 */
 @keyframes circleAnim {

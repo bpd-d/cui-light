@@ -153,6 +153,7 @@ table.#{$prefix}-table {
 
 .#{$prefix}-dark {
     table.#{$prefix}-table {
+
         &.#{$prefix}-stripped {
             tr:nth-child(even) {
                 background-color: $table-stripped-color-dark;
@@ -198,6 +199,54 @@ table.#{$prefix}-table {
                     color: $table-color-inverse-dark;
                 }
             }
+        }
+    }
+}
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    table.#{$prefix}-table {
+
+        &.#{$prefix}-stripped {
+            tr:nth-child(even) {
+                background-color: $component-print-background;
+            }
+        }
+
+        &.#{$prefix}-divider {
+
+            td {
+                border-color: $component-print-border-color;
+            }
+        }
+
+        &.#{$prefix}-column-divider {
+            tr {
+                th {
+                    border-color: $component-print-border-color;
+                }
+
+                td {
+                    border-color: $component-print-border-color;
+                }
+            }
+        }
+
+        tr {
+            &.#{$prefix}-divider {
+                td {
+                    border-color: $component-print-border-color;
+                }
+            }
+
+            th {
+                border-color: $component-print-border-color;
+                color       : $component-print-color;
+            }
+
         }
     }
 }

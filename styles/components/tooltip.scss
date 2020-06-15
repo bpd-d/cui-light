@@ -193,6 +193,28 @@ $tooltip-animation-time : $animation-duration-short;
     }
 }
 
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-tooltip-content {
+        border          : $component-print-border;
+        background-color: $component-print-background;
+        color           : $component-print-color;
+        box-shadow      : $component-print-shadow;
+    }
+
+    .#{$prefix}-tooltip {
+        &:before {
+            background-color: $component-print-background;
+            border          : $component-print-border;
+            color           : $component-print-color;
+            box-shadow      : $component-print-shadow;
+        }
+    }
+}
+
 
 /**
 * Animation

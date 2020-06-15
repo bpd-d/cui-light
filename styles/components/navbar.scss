@@ -111,6 +111,25 @@ $navbar-item-padding: $padding-global;
 }
 
 /**
+* print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-navbar {
+        box-shadow      : $component-print-shadow;
+        background-color: $component-print-background;
+
+        .#{$prefix}-navbar-title {
+            color: $component-print-color;
+        }
+    }
+
+    .#{$prefix}-navbar-item {
+        color: $component-print-color;
+    }
+}
+
+/**
 * Media Queries
 */
 

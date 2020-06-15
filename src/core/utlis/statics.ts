@@ -3,7 +3,8 @@ import { CuiLogLevel } from "./types";
 
 export const CLASSES = {
     dark: 'dark',
-    animProgress: 'animation-progress'
+    animProgress: 'animation-progress',
+    print: 'print'
 }
 
 export const ATTRIBUTES = {

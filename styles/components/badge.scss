@@ -8,7 +8,7 @@ $badge-background-error    : $component-background-error;
 $badge-background-success  : $component-background-success;
 $badge-background-warning  : $component-background-warning;
 $badge-background          : $component-background-default;
-$badge-background-dark     : $component-background-default;
+$badge-background-dark     : $component-background-default-dark;
 
 $badge-color        :$component-color-default;
 $badge-color-inverse: $component-color-inverse;
@@ -69,5 +69,18 @@ $badge-color-dark   : $component-color-default-dark;
     .#{$prefix}-badge {
         background-color: $badge-background-dark;
         color           : $badge-color-dark;
+    }
+}
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-badge {
+        box-shadow      : $component-print-shadow;
+        background-color: $component-print-background;
+        color           : $component-print-color;
+        border          : $component-print-border;
     }
 }

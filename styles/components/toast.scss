@@ -43,6 +43,19 @@ $toast-animation-duration   : $animation-duration-default;
     }
 }
 
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-toast {
+        color     : $component-print-color;
+        background: $component-print-background;
+        box-shadow: $component-print-shadow;
+        border    : $component-print-border;
+    }
+}
+
 
 /**
 * Animations

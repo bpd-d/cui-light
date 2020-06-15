@@ -1,5 +1,6 @@
 import { ICuiDictionary, CuiCachable, ICui, ICuiCacheManager } from "../../core/models/interfaces";
 import { CuiDictionary } from "../../core/utlis/dictionary";
+import { is } from "../../core/utlis/functions";
 
 export class CuiCacheManager implements ICuiCacheManager {
     #cache: ICuiDictionary<CuiCachable>;
@@ -9,16 +10,17 @@ export class CuiCacheManager implements ICuiCacheManager {
         this.#maxSize = maxSize ?? 500;
     }
     put(key: string, element: CuiCachable): void {
+        if (!is(key)) return;
         if (this.has(key)) {
             this.#cache.update(key, element);
+            return;
         }
-        if (this.#cache.keys().length >= this.#maxSize) {
-            this.#cache.remove(this.#cache.keys()[0]);
-        }
+        this.clean();
         this.#cache.add(key, element);
     }
 
     get(key: string): CuiCachable {
+        if (!is(key)) return null;
         if (this.has(key)) {
             let item = this.#cache.get(key);
             if (item.refresh()) {
@@ -30,10 +32,11 @@ export class CuiCacheManager implements ICuiCacheManager {
     }
 
     has(key: string): boolean {
-        return this.#cache.containsKey(key);
+        return is(key) ? this.#cache.containsKey(key) : false;
     }
 
     remove(key: string): boolean {
+        if (!is(key)) return false;
         if (this.has(key)) {
             this.#cache.remove(key);
             return true;
@@ -43,6 +46,12 @@ export class CuiCacheManager implements ICuiCacheManager {
 
     clear(): void {
         this.#cache.clear();
+    }
+
+    private clean() {
+        if (this.#cache.keys().length >= this.#maxSize) {
+            this.#cache.remove(this.#cache.keys()[0]);
+        }
     }
 }
 

@@ -5,7 +5,7 @@ export interface ICuiLogger {
     error(message: string, functionName?: string): void;
     warning(message: string, functionName?: string): void;
     exception(e: Error, functionName?: string): void;
-    performance(callback: any, message?: string, functionName?: string): void;
+    performance(callback: any, functionName?: string): void;
     setId(id: string): void;
 }
 

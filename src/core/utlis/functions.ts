@@ -159,3 +159,15 @@ export function getSystemLightMode(): CuiLightMode {
     return window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
+
+/**
+ * Verifies whether attributes exist and have some values
+ * @param attributes attributes list
+ */
+export function are(...attributes: any[]): boolean {
+    if (!is(attributes)) {
+        return false
+    }
+    let result = attributes.find(item => { return is(item) === false })
+    return typeof result === "undefined";
+}

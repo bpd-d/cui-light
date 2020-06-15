@@ -155,3 +155,19 @@ span {
         background-color: $blockquote-background-default;
     }
 }
+
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    [class*="#{$prefix}-text-"] {
+        color: $component-print-color;
+    }
+
+    .#{$prefix}-blockquote {
+        border-color    : $component-print-color;
+        background-color: $component-print-background;
+    }
+}

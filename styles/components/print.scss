@@ -1,0 +1,10 @@
+@media print {
+    /**
+    * Base
+    */
+
+    body.#{$prefix}-print {
+        background-color: white !important;
+        color           : $app-color !important;
+    }
+}

@@ -95,3 +95,17 @@ ul.#{$prefix}-switcher-indicator {
         }
     }
 }
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    ul.#{$prefix}-switcher-indicator {
+        li {
+            &:before {
+                border: $component-print-border;
+            }
+        }
+    }
+}

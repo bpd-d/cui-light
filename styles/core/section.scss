@@ -63,3 +63,14 @@ $section-background-secondary: $component-background-secondary-active;
         }
     }
 }
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-section {
+        background-color: $component-print-background;
+        color           : $component-print-color;
+    }
+}

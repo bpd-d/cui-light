@@ -38,6 +38,19 @@ $spinner-color-default-dark : $component-color-default-dark;
 }
 
 /**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-spinner {
+        svg {
+            stroke: $component-print-color;
+        }
+    }
+}
+
+
+/**
 * Circle spinner
 */
 

@@ -1,4 +1,4 @@
-import { is } from "../../core/utlis/functions";
+import { is, are } from "../../core/utlis/functions";
 import { ICuiLogger, IUIInteractionProvider, CuiCachable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CLASSES } from "../../core/utlis/statics";
@@ -31,6 +31,23 @@ export class ElementManager implements CuiCachable {
         }, 'toggleClass');
     }
 
+    async toggleClassAs(className: string): Promise<boolean> {
+        if (!is(className)) {
+            return false;
+        }
+        return this.call((element) => {
+            let classes = element.classList;
+            this.#utils.interactions.fetch(() => {
+                if (!classes.contains(className)) {
+                    this.#utils.interactions.mutate(classes.add, classes, className);
+                } else {
+                    this.#utils.interactions.mutate(classes.remove, classes, className);
+                }
+            }, this)
+
+        }, 'toggleClassAs');
+    }
+
     async setClass(className: string): Promise<boolean> {
         if (!is(className)) {
             return false;
@@ -40,6 +57,22 @@ export class ElementManager implements CuiCachable {
                 element.classList.add(className)
             }
         }, 'setClass');
+    }
+
+    async setClassAs(className: string): Promise<boolean> {
+        if (!is(className)) {
+            return false;
+        }
+
+        return this.call((element) => {
+            let classes = element.classList;
+            this.#utils.interactions.fetch(() => {
+                if (!classes.contains(className)) {
+                    this.#utils.interactions.mutate(classes.add, classes, className);
+                }
+            }, this)
+
+        }, 'setClassAs');
     }
 
     async removeClass(className: string): Promise<boolean> {
@@ -53,11 +86,32 @@ export class ElementManager implements CuiCachable {
         }, 'removeClass');
     }
 
-    getAttribute(attributeName: string): string {
+    async removeClassAs(className: string): Promise<boolean> {
+        if (!is(className)) {
+            return false;
+        }
+        return this.call((element) => {
+            let classes = element.classList;
+            this.#utils.interactions.fetch(() => {
+                if (classes.contains(className)) {
+                    this.#utils.interactions.mutate(classes.remove, classes, className);
+                }
+            }, this)
+        }, 'removeClass');
+    }
+
+    getAttribute(attributeName: string): string[] {
         if (!is(attributeName)) {
             return null;
         }
-        return this.#elements[0].getAttribute(attributeName)
+        return this.#elements.reduce<string[]>((val: string[], current: Element) => {
+            if (current.hasAttribute(attributeName)) {
+                val.push(current.getAttribute(attributeName))
+            } else {
+                val.push(null);
+            }
+            return val;
+        }, []);
     }
 
     async setAttribute(attributeName: string, attributeValue?: string): Promise<boolean> {
@@ -69,13 +123,31 @@ export class ElementManager implements CuiCachable {
         }, 'setAttribute');
     }
 
-    async removeAttribute(attributeName: string, attributeValue?: string): Promise<boolean> {
+    async setAttributeAs(attributeName: string, attributeValue?: string): Promise<boolean> {
+        if (!is(attributeName)) {
+            return false;
+        }
+        return this.call((element) => {
+            this.#utils.interactions.mutate(element.setAttribute, element, attributeName, attributeValue ?? "")
+        }, 'setAttributeAs');
+    }
+
+    async removeAttribute(attributeName: string): Promise<boolean> {
         if (!is(attributeName)) {
             return false;
         }
         return this.call((element) => {
             element.removeAttribute(attributeName)
         }, 'removeAttribute');
+    }
+
+    async removeAttributeAs(attributeName: string): Promise<boolean> {
+        if (!is(attributeName)) {
+            return false;
+        }
+        return this.call((element) => {
+            this.#utils.interactions.mutate(element.removeAttribute, element, attributeName);
+        }, 'removeAttributeAs');
     }
 
     async toggleAttribute(attributeName: string, attributeValue?: string): Promise<boolean> {
@@ -89,6 +161,22 @@ export class ElementManager implements CuiCachable {
                 element.setAttribute(attributeName, attributeValue ?? "")
             }
         }, 'toggleAttribute');
+    }
+
+    async toggleAttributeAs(attributeName: string, attributeValue?: string): Promise<boolean> {
+        if (!is(attributeName)) {
+            return false;
+        }
+        return this.call((element) => {
+            this.#utils.interactions.fetch(() => {
+                if (element.hasAttribute(attributeName)) {
+                    this.#utils.interactions.mutate(element.removeAttribute, element, attributeName);
+                } else {
+                    this.#utils.interactions.mutate(element.setAttribute, element, attributeName, attributeValue ?? "")
+                }
+            }, this)
+
+        }, 'toggleAttributeAs');
     }
 
     async click(onClick: (ev: MouseEvent) => void): Promise<boolean> {
@@ -141,7 +229,7 @@ export class ElementManager implements CuiCachable {
     }
 
     async open(openClass: string, animationClass: string, timeout?: number): Promise<boolean> {
-        if (!is(openClass)) {
+        if (!are(openClass, animationClass)) {
             return false
         }
         const delay = timeout ?? this.#utils.setup.animationTime;
@@ -161,7 +249,7 @@ export class ElementManager implements CuiCachable {
     }
 
     async close(closeClass: string, animationClass: string, timeout?: number): Promise<boolean> {
-        if (!is(closeClass)) {
+        if (!are(closeClass, animationClass)) {
             return false
         }
         const delay = timeout ?? this.#utils.setup.animationTime;
@@ -209,7 +297,6 @@ export class ElementManager implements CuiCachable {
     }
 
     refresh(): boolean {
-        // Todo
         return (Date.now() - this.#cDt) < 360000;
     }
 }

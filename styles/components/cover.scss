@@ -23,21 +23,31 @@ $cover-transition-duration:$animation-duration-long;
     color           : $cover-color-default;
     z-index         : 1250;
 
-    // &:not(.#{$prefix}-active) {
-    //     width : 0;
-    //     height: 0;
-    // }
-
     &.#{$prefix}-active {
         opacity  : 1;
         transform: scale(1, 1);
     }
 }
 
+/**
+* Dark
+*/
 
 .#{$prefix}-dark {
     .#{$prefix}-cover {
         background-color: $cover-background-dark;
         color           : $cover-color-dark;
+    }
+}
+
+/**
+* Print
+*/
+
+
+.#{$prefix}-print {
+    .#{$prefix}-cover {
+        background-color: $component-print-background;
+        color           : $component-print-color;
     }
 }

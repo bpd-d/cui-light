@@ -156,15 +156,31 @@ $card-border-color-dark       :$color-border-dark;
                 border-color: $card-separator-color;
             }
         }
+    }
+}
 
-        // &.#{$prefix}-accent,
-        // &.#{$prefix}-secondary {
-        //     color: $card-color-default-dark;
+/**
+* Print
+*/
 
-        //     .#{$prefix}-card-header,
-        //     .#{$prefix}-card-footer {
-        //         border-color: $card-separator-color-accent;
-        //     }
-        // }
+.#{$prefix}-print {
+    .#{$prefix}-card {
+        box-shadow: $component-print-shadow;
+
+        &.#{$prefix}-default,
+        &.#{$prefix}-accent,
+        &.#{$prefix}-secondary {
+            background-color: $component-print-background;
+            color           : $component-print-color;
+            border          : $component-print-border;
+        }
+
+        .#{$prefix}-card-header {
+            border-bottom: $component-print-border
+        }
+
+        .#{$prefix}-card-footer {
+            border-top: $component-print-border
+        }
     }
 }

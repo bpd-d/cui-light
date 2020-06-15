@@ -39,8 +39,13 @@ export class CuiLogger implements ICuiLogger {
             console.exception(e.stack)
     }
 
-    performance(callback: any, message?: string, functionName?: string): void {
-        //
+    performance(callback: () => void, functionName?: string): void {
+        if (this.level !== 'debug') {
+            return;
+        }
+        let start = Date.now();
+        callback();
+        console.log(this.prepString(`Performance measure: ${Date.now() - start}ms`, functionName))
     }
 
     private prepString(message: string, functionName?: string) {

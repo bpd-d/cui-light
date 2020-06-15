@@ -118,6 +118,31 @@ body[#{$prefix}-dialog-show='noscroll'] {
     }
 }
 
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-dialog {
+        background-color: $component-print-background;
+
+        .#{$prefix}-dialog-container {
+            background-color: $component-print-background;
+            color           : $component-print-color;
+            border          : $component-print-border;
+            box-shadow      : $component-print-shadow;
+
+            .#{$prefix}-dialog-header {
+                border-bottom: $component-print-border;
+            }
+
+            .#{$prefix}-dialog-footer {
+                border-top: $component-print-border;
+            }
+        }
+    }
+}
+
 
 /****
 * Animations

@@ -77,6 +77,23 @@ ul.#{$prefix}-accordion {
     }
 }
 
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+    ul.#{$prefix}-accordion {
+        li {
+            div.#{$prefix}-accordion-title {
+                svg {
+                    stroke: $component-print-color;
+                }
+            }
+        }
+    }
+}
+
+
 
 /*
 * Animation

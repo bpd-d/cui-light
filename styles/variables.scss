@@ -134,6 +134,12 @@ $component-background-success-hover : var(--color-success);
 $component-background-success-active: var(--color-success-active);
 $component-background-success-muted : var(--color-success-muted);
 
+$component-print-background   : white !important;
+$component-print-color        : black !important;
+$component-print-shadow       : none !important;
+$component-print-border       : 1px solid $component-color-muted !important;
+$component-print-border-color : $component-color-muted !important;
+
 // --color-primary                   : #1565c0;
 //    --color-primary-darken            : #0B3564;
 //    --color-primary-lighten           : #4F98EC;

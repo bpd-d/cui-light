@@ -105,3 +105,14 @@ $container-padding-normal: $padding-global;
         }
     }
 }
+
+/*
+* Print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-container {
+        background-color: $component-print-background;
+        color           : $component-print-color;
+    }
+}

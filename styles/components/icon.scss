@@ -242,3 +242,37 @@ ul.#{$prefix}-icon-nav {
         }
     }
 }
+
+/**
+* Print
+*/
+
+.#{$prefix}-print {
+
+    .#{$prefix}-icon-button,
+    .#{$prefix}-icon,
+    .#{$prefix}-svg {
+        svg {
+            stroke: $component-print-color;
+
+            path {
+                stroke: $component-print-color;
+            }
+        }
+
+        &.#{$prefix}-button {
+            svg {
+                path {
+                    stroke: $component-print-color;
+                }
+            }
+        }
+    }
+
+    .#{$prefix}-icon-button {
+        &.#{$prefix}-default {
+            border-color    : $component-print-border;
+            background-color: $component-print-background;
+        }
+    }
+}

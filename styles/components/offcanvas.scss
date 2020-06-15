@@ -62,6 +62,22 @@ div.#{$prefix}-off-canvas {
     }
 }
 
+/**
+* print
+*/
+
+
+.#{$prefix}-dark {
+    div.#{$prefix}-off-canvas {
+        background-color: $component-print-background;
+
+        .#{$prefix}-off-canvas-container {
+            background-color: $component-print-background;
+            color           : $component-print-color;
+        }
+    }
+}
+
 
 /**
 * Animations 

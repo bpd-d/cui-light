@@ -1,12 +1,16 @@
 $tab-color-base   : $component-color-default;
 $tab-color-primary: $component-background-accent;
 
-$tab-item-color-hover : $component-background-shade;
-$tab-item-color-active: $component-background-shade-active;
+$tab-item-color-hover      : $component-background-shade;
+$tab-item-color-active     : $component-background-shade-active;
+$tab-item-color-dark-hover : $component-background-shade-dark;
+$tab-item-color-dark-active:$component-background-shade-dark-active;
 
 $transition-timing: $animation-duration-default;
-$tab-border-bottom: 1px solid $component-background-shade-active;
-$tab-border-aside : 1px solid $component-background-shade-active;
+$tab-border-bottom: 1px solid $button-border-color;
+$tab-border-aside : 1px solid $button-border-color;
+
+$tab-border-color-dark: $button-border-color-dark;
 
 @mixin pointer {
     cursor     : pointer;
@@ -24,7 +28,6 @@ ul.#{$prefix}-tab {
         display   : inline-block;
         box-sizing: border-box;
         @include component-padding;
-
         @include pointer;
 
         &:hover {
@@ -83,6 +86,70 @@ ul.#{$prefix}-tab {
                 &:hover {
                     &:before {
                         transform: translateY(-50%) scale(1, 1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+* dark
+*/
+
+.#{$prefix}-dark {
+    ul.#{$prefix}-tab {
+        border-color: $tab-border-color-dark;
+
+        li {
+            &:hover {
+                background-color: $tab-item-color-dark-hover;
+            }
+
+            &:active {
+                background-color: $tab-item-color-dark-active;
+            }
+        }
+
+        &.#{$prefix}-tab-side {
+            border-color: $tab-border-color-dark;
+        }
+    }
+}
+
+
+/**
+* Print
+*/
+
+
+.#{$prefix}-print {
+    ul.#{$prefix}-tab {
+        border-bottom: $component-print-border;
+
+        li {
+            &:hover {
+                background-color: $component-print-background;
+            }
+
+            &:active {
+                background-color: $component-print-background;
+            }
+
+            &.#{$prefix}-active {
+                &:before {
+                    background-color: $component-print-color;
+                }
+            }
+        }
+
+        &.#{$prefix}-tab-side {
+            border-color: $component-print-border-color;
+
+            li {
+                &.#{$prefix}-active {
+                    &:before {
+                        background-color: $component-print-color;
                     }
                 }
             }

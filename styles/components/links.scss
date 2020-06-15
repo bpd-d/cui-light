@@ -59,3 +59,13 @@ $link-color-success  : $component-background-success;
         }
     }
 }
+
+/**
+* print
+*/
+
+.#{$prefix}-print {
+    .#{$prefix}-link {
+        color: $component-print-color;
+    }
+}
