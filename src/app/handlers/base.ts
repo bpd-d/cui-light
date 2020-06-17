@@ -1,29 +1,22 @@
 import { ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { is } from "../../core/utlis/functions";
+import { CuiUtils } from "../../core/models/utils";
 
 export class CuiHandlerBase {
     _log: ICuiLogger;
-    #interactions: IUIInteractionProvider;
-    constructor(componentName: string, interactionsProvider: IUIInteractionProvider) {
+    utils: CuiUtils;
+    constructor(componentName: string, utils: CuiUtils) {
         this._log = CuiLoggerFactory.get(componentName);
-        this.#interactions = interactionsProvider;
+        this.utils = utils;
     }
 
     mutate(callback: any, ...args: any[]): void {
-        if (is(this.#interactions)) {
-            this.#interactions.mutate(callback, this, ...args)
-        } else {
-            callback(...args);
-        }
+        this.utils.interactions.mutate(callback, this, ...args)
     }
 
     fetch(callback: any, ...args: any[]): void {
-        if (is(this.#interactions)) {
-            this.#interactions.fetch(callback, this, ...args)
-        } else {
-            callback(...args);
-        }
+        this.utils.interactions.fetch(callback, this, ...args)
     }
 
 

@@ -66,25 +66,6 @@ export function createElementFromString(htmlString: string): Element {
     return template.content.children.length > 0 ? template.content.children[0] : null;
 }
 
-
-
-// export function getFirstAttributeStartingWith(element: Element, prefix: string): HTMLAttribute {
-//     let count = element.attributes.length;
-//     if (count === 0) {
-//         return null
-//     }
-//     for (let i = 0; i < count; i++) {
-//         let attr = element.attributes[i]
-//         if (attr.name.startsWith(prefix)) {
-//             return {
-//                 name: attr.name,
-//                 value: attr.value
-//             }
-//         }
-//     }
-//     return null;
-// }
-
 export function getMutationAttribute(element: Element): HTMLAttribute {
     let attr = null;
     let len = MUTATED_ATTRIBUTES.length;
@@ -95,6 +76,19 @@ export function getMutationAttribute(element: Element): HTMLAttribute {
                 name: attribute,
                 value: element.getAttribute(attribute)
             }
+            break;
+        }
+    }
+    return attr;
+}
+
+export function getMatchingAttribute(element: any, attributes: string[]): string {
+    let attr = null;
+    let len = attributes.length;
+    for (let i = 0; i < len; i++) {
+        let attribute = attributes[i];
+        if (element.hasAttribute(attribute)) {
+            attr = attribute
             break;
         }
     }

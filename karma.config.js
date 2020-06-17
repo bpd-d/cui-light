@@ -25,7 +25,7 @@ module.exports = function (config) {
         //if true, Karma fails on running empty test-suites
         failOnEmptyTestSuite: false,
         //reduce the kind of information passed to the bash
-        logLevel: config.LOG_WARN, //config.LOG_DISABLE, config.LOG_ERROR, config.LOG_INFO, config.LOG_DEBUG
+        logLevel: config.LOG_ERROR, //config.LOG_DISABLE, config.LOG_ERROR, config.LOG_INFO, config.LOG_DEBUG
 
         //list of frameworks you want to use, only jasmine is installed with this boilerplate
         frameworks: ['jasmine'],
@@ -51,7 +51,7 @@ module.exports = function (config) {
 
         client: {
             //capture all console output and pipe it to the terminal, true is default
-            captureConsole: false,
+            captureConsole: true,
             //if true, Karma clears the context window upon the completion of running the tests, true is default
             clearContext: false,
             //run the tests on the same window as the client, without using iframe or a new window, false is default

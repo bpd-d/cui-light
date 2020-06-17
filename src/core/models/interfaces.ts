@@ -1,4 +1,5 @@
 import { CuiUtils } from "./utils";
+import { CuiSetupInit } from "./setup";
 
 export interface ICuiLogger {
     debug(message: string, functionName?: string): void;
@@ -76,7 +77,6 @@ export interface ICuiEventBus {
     detachAll(name: string): void;
     emit(event: string, ...args: any[]): Promise<boolean>;
     isSubscribing(name: string, ctx: CuiContext): boolean;
-    clear(name: string): void;
 }
 
 export interface ICuiCallbackExecutor {
@@ -98,4 +98,26 @@ export interface ICuiEventEmitHandler {
 
 export interface CuiContext {
     getCuid(): string;
+}
+
+export interface CuiInitData {
+    plugins?: ICuiPlugin[];
+    components?: ICuiComponent[];
+    setup?: CuiSetupInit;
+    icons?: any;
+}
+
+export interface CuiInitResult {
+    result: boolean;
+    message?: string;
+}
+
+export interface ICuiComponentFactory {
+    get(element: Element, sutils: CuiUtils): ICuiMutationHandler;
+}
+
+export interface ICuiComponent {
+    attribute: string;
+    getStyle(): string;
+    get(element: Element, sutils: CuiUtils): ICuiMutationHandler;
 }

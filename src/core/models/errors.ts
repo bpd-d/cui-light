@@ -17,3 +17,15 @@ export class ArgumentError extends ErrorBase {
         super("ArgumentError", message);
     }
 }
+
+export class CuiBusError extends ErrorBase {
+    constructor(message?: string) {
+        super("ArgumentError", message);
+    }
+}
+
+export class CuiInstanceInitError extends ErrorBase {
+    constructor(message?: string) {
+        super("CuiInstanceInitError", message);
+    }
+}

@@ -1,13 +1,29 @@
-import { ICuiMutationHandler, IUIInteractionProvider } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { CuiUtils } from "../../core/models/utils";
+import { CuiIconHandler, IconBuilder } from "../icon/icon";
+import { CuiHandlerBase } from "../../app/handlers/base";
 import { ATTRIBUTES, ICONS } from "../../core/utlis/statics";
 import { is } from "../../core/utlis/functions";
-import { IconBuilder } from "./icon";
-import { CuiHandlerBase } from "./base";
+
+export class CuiSpinnerComponent implements ICuiComponent {
+    attribute: string;
+    constructor() {
+        this.attribute = 'data-spinner';
+    }
+
+    getStyle(): string {
+        return null;
+    }
+
+    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+        return new CuiSpinnerHandler(element, utils);
+    }
+}
 
 export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #element: Element;
-    constructor(element: Element, interactions?: IUIInteractionProvider) {
-        super("CuiSpinnerHandler", interactions);
+    constructor(element: Element, utils: CuiUtils) {
+        super("CuiSpinnerHandler", utils);
         this.#element = element;
     }
     handle(): void {

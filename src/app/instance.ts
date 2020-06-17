@@ -1,14 +1,15 @@
 import { CuiSetupInit } from "../core/models/setup";
-import { is, joinAttributesForQuery, getSystemLightMode } from "../core/utlis/functions";
+import { is, joinAttributesForQuery, getSystemLightMode, getMatchingAttribute } from "../core/utlis/functions";
 import { ElementManager } from "./managers/element";
 import { MUTATED_ATTRIBUTES, ATTRIBUTES, STATICS } from "../core/utlis/statics";
-import { ICuiLogger, ICuiPlugin, ICuiMutiationPlugin } from "../core/models/interfaces";
+import { ICuiLogger, ICuiPlugin, ICuiMutiationPlugin, ICuiComponent } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
-import { CuiAttributeMutationHandler } from "./managers/mutations";
+//import { CuiAttributeMutationHandler } from "./managers/mutations_old";
 import { CuiLoggerFactory } from "../core/factories/logger";
 import { CuiToastHandler } from "./managers/toast";
 import { CollectionManager } from "./managers/collection";
 import { CuiUtils } from "../core/models/utils";
+import { CuiInstanceInitError } from "../core/models/errors";
 
 export class CuiInstance {
     #log: ICuiLogger;
@@ -16,28 +17,38 @@ export class CuiInstance {
     #toastManager: CuiToastHandler;
     #utils: CuiUtils;
     #plugins: ICuiPlugin[];
-    constructor(setup: CuiSetupInit, plugins?: ICuiPlugin[]) {
+    #components: ICuiComponent[];
+    constructor(setup: CuiSetupInit, plugins: ICuiPlugin[], components: ICuiComponent[]) {
         STATICS.prefix = setup.prefix;
         STATICS.logLevel = setup.logLevel;
         this.#plugins = plugins ?? [];
+        this.#components = components ?? [];
         this.#utils = new CuiUtils(setup);
         this.#log = CuiLoggerFactory.get('CuiInstance')
-        this.#mutationObserver = new CuiMutationObserver(document.body, this.#utils.interactions)
-        this.#toastManager = new CuiToastHandler(this.#utils.interactions, this.#utils.setup.prefix, this.#utils.setup.animationTimeLong);
-
     }
 
-    init(icons?: any): CuiInstance {
+    init(): CuiInstance {
         // Init elements
-        const initElements = document.querySelectorAll(joinAttributesForQuery([ATTRIBUTES.icon, ATTRIBUTES.spinner, ATTRIBUTES.circle]))
+        if (!is(window.MutationObserver)) {
+            throw new CuiInstanceInitError("Mutation observer does not exists");
+        }
+        this.#toastManager = new CuiToastHandler(this.#utils.interactions, this.#utils.setup.prefix, this.#utils.setup.animationTimeLong);
+        const mutatedAttributes: string[] = this.#components.map(x => { return x.attribute }); // MUTATED_ATTRIBUTES;
+
+        const initElements = document.querySelectorAll(joinAttributesForQuery(mutatedAttributes))
         if (is(initElements)) {
             this.#log.debug(`Initiating ${initElements.length} elements`)
             initElements.forEach((item: any) => {
-                let handler = CuiAttributeMutationHandler.get(item, this.#utils.interactions)
-                if (is(handler)) {
-                    item.$handler = handler;
-                    handler.handle();
-                } else {
+                let matching: string = getMatchingAttribute(item, mutatedAttributes)
+                if (is(matching)) {
+                    let component = this.#components.find(c => { return c.attribute === matching });
+                    if (is(component)) {
+                        this.#utils.styleAppender.append(component.getStyle());
+                        item.$handler = component.get(item, this.#utils);
+                        item.$handler.handle();
+                    }
+                }
+                else {
                     this.#log.warning("Handler not found")
                 }
             })
@@ -47,12 +58,8 @@ export class CuiInstance {
             this.#utils.setup.plugins[plugin.description] = plugin.setup;
             plugin.init(this.#utils);
         })
-        this.#mutationObserver.setOptions({
-            attributes: true,
-            subtree: true,
-            attributeFilter: MUTATED_ATTRIBUTES
-        });
-
+        this.#mutationObserver = new CuiMutationObserver(document.body, this.#utils)
+        this.#mutationObserver.setComponents(this.#components).setAttributes(mutatedAttributes)
         this.#mutationObserver.setPlugins(this.#plugins.filter(plugin => {
             let mutated = plugin as any;
             return is(mutated['mutation']);

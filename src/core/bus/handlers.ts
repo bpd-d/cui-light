@@ -9,6 +9,7 @@ export class SimpleEventEmitHandler implements ICuiEventEmitHandler {
         this.#executor = executor;
         this.#log = CuiLoggerFactory.get("SimpleEventEmitHandler");
     }
+
     async handle(events: CuiEventReceiver, args: any[]): Promise<void> {
         if (!is(events)) {
             this.#log.warning("No events provided")

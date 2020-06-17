@@ -9,6 +9,7 @@ import { CuiCallbackExecutor } from "../bus/executors";
 import { getName } from "../utlis/functions";
 import { CLASSES } from "../utlis/statics";
 import { CuiInstanceColorHandler } from "../../app/handlers/colors";
+import { ICuiDocumentStyleAppender, CuiDocumentStyleAppender } from "../styles/appender";
 
 export class CuiUtils {
     interactions: IUIInteractionProvider;
@@ -16,13 +17,15 @@ export class CuiUtils {
     setup: CuiSetup;
     cache: ICuiCacheManager;
     colors: CuiInstanceColorHandler;
+    styleAppender: ICuiDocumentStyleAppender;
 
     constructor(initialSetup: CuiSetupInit) {
         this.setup = new CuiSetup().fromInit(initialSetup);
         this.interactions = CuiInteractionsFactory.get(initialSetup.interaction)
         this.cache = new CuiCacheManager(this.setup.cacheSize);
         this.bus = new CuiEventBus(new TaskedEventEmitHandler(new CuiCallbackExecutor()));
-        this.colors = new CuiInstanceColorHandler(this.interactions)
+        this.colors = new CuiInstanceColorHandler(this.interactions);
+        this.styleAppender = new CuiDocumentStyleAppender(this.interactions);
     }
 
     setLightMode(mode: CuiLightMode) {

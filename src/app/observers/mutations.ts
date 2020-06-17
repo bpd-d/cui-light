@@ -1,12 +1,13 @@
-import { ICuiLogger, IUIInteractionProvider, ICuiPlugin, ICuiMutiationPlugin } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { CuiLogLevel } from "../../core/utlis/types";
-import { is } from "../../core/utlis/functions";
-import { CuiAttributeMutationHandler } from "../managers/mutations";
+import { is, getMatchingAttribute } from "../../core/utlis/functions";
+import { CuiUtils } from "../../core/models/utils";
 
 export interface ICuiMutionObserver {
-    setOptions(options: MutationObserverInit): ICuiMutionObserver;
+    // setOptions(options: MutationObserverInit): ICuiMutionObserver;
     setPlugins(plugins: ICuiMutiationPlugin[]): ICuiMutionObserver;
+    setComponents(components: ICuiComponent[]): ICuiMutionObserver;
+    setAttributes(attributes: string[]): ICuiMutionObserver;
     start(): ICuiMutionObserver;
     stop(): ICuiMutionObserver;
 }
@@ -18,21 +19,37 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     #options: MutationObserverInit;
     #element: HTMLElement;
     #plugins: ICuiMutiationPlugin[];
-
-    constructor(element: HTMLElement, interactions: IUIInteractionProvider) {
+    #components: ICuiComponent[];
+    #attributes: string[];
+    #utils: CuiUtils;
+    constructor(element: HTMLElement, utils: CuiUtils) {
         this.#observer = null
         this.#element = element
         this.#log = CuiLoggerFactory.get('CuiMutationObserver')
-        this.#plugins = null;
-    }
+        this.#plugins = [];
+        this.#components = [];
+        this.#attributes = [];
+        this.#utils = utils;
 
-    setOptions(options: MutationObserverInit) {
-        this.#options = options
-        return this
     }
 
     setPlugins(plugins: ICuiMutiationPlugin[]) {
         this.#plugins = plugins;
+        return this;
+    }
+
+    setComponents(components: ICuiComponent[]) {
+        this.#components = components;
+        return this;
+    }
+
+    setAttributes(attributes: string[]) {
+        this.#options = {
+            attributes: true,
+            subtree: true,
+            attributeFilter: attributes
+        }
+        this.#attributes = attributes;
         return this;
     }
 
@@ -100,11 +117,15 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     }
 
     private handleAddedNodes(nodes: NodeList) {
-        nodes.forEach(node => {
-            let handler = CuiAttributeMutationHandler.get(node)
-            if (is(handler)) {
-                let item = node as any;
-                item['$handler'] = handler;
+        nodes.forEach((node: any) => {
+            const matching = getMatchingAttribute(node, this.#attributes);
+            if (is(matching)) {
+                const component = this.#components.find(c => { c.attribute === matching });
+                if (is(component)) {
+                    this.#utils.styleAppender.append(component.getStyle());
+                    node.$handler = component.get(node, this.#utils)
+                    node.$handler.handle();
+                }
             }
         })
     }

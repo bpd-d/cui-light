@@ -48,7 +48,7 @@ describe("Tests for class [CuiCacheManager]", function () {
         let item: CacheTestItem = getItem(0);
         manager.put('first', item);
 
-        expect(manager.has('first'));
+        expect(manager.has('first')).toBeTrue();
     })
 
     it("Method [put] - update existing item", function () {
@@ -60,7 +60,7 @@ describe("Tests for class [CuiCacheManager]", function () {
         manager.put('first', item2);
         output = manager.get('first') as CacheTestItem;
 
-        expect(manager.has('first'));
+        expect(manager.has('first')).toBeTrue();
         expect(output.id).toEqual(item2.id);
     })
 

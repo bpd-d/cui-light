@@ -3,6 +3,7 @@ import { is } from "../utlis/functions"
 
 export class CuiCallbackExecutor implements ICuiCallbackExecutor {
     async execute(callback: any, ctx: any, args: any[]): Promise<void> {
+        args = args ?? []
         if (is(ctx)) {
             callback.apply(ctx, args)
         } else {

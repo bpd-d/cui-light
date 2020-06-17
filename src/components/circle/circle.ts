@@ -1,8 +1,24 @@
-import { ICuiMutationHandler, IUIInteractionProvider } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { CuiUtils } from "../../core/models/utils";
+import { CuiHandlerBase } from "../../app/handlers/base";
 import { is, getRangeValue } from "../../core/utlis/functions";
-import { IconBuilder } from "./icon";
+import { IconBuilder } from "../icon/icon";
 import { ICONS, ATTRIBUTES } from "../../core/utlis/statics";
-import { CuiHandlerBase } from "./base";
+
+export class CuiCircleComponent implements ICuiComponent {
+    attribute: string;
+    constructor() {
+        this.attribute = 'circle-progress';
+    }
+
+    getStyle(): string {
+        return null;
+    }
+
+    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+        return new CuiCircleHandler(element, utils);
+    }
+}
 
 export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #element: Element;
@@ -11,8 +27,8 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     #full: number;
     #path: any;
     #prevValue: number;
-    constructor(element: Element, interactions?: IUIInteractionProvider) {
-        super("CuiCircleHandler", interactions);
+    constructor(element: Element, utils: CuiUtils) {
+        super("CuiCircleHandler", utils);
         this.#element = element;
         this.#factor = this.#full = 0;
         this.#path = null
@@ -20,6 +36,7 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     }
 
     handle(): void {
+        console.log('circle');
         if (!is(this.#isInitialized)) {
             const iconSvg = new IconBuilder(ICONS['special_circle_progress']).build();
             const svg = this.#element.querySelector('svg')
@@ -33,14 +50,6 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
             this.#isInitialized = true;
         }
         this.fetch(this.readStyle)
-        // const value = this.#element.hasAttribute(ATTRIBUTES.circle) ? parseInt(this.#element.getAttribute(ATTRIBUTES.circle)) : 0;
-        // if (value === this.#prevValue) {
-        //     return;
-        // }
-        // this.#prevValue = value;
-        // const progress = getRangeValue(value, 0, 100);
-
-        // this.mutate(this.updateStyle, this.#full - this.#factor * progress);
     }
 
     refresh(): void {

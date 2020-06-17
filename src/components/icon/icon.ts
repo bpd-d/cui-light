@@ -1,14 +1,35 @@
-import { ICuiMutationHandler, ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentFactory, ICuiMutationHandler, ICuiLogger } from "../../core/models/interfaces";
+import { CuiUtils } from "../../core/models/utils";
+import { CuiHandlerBase } from "../../app/handlers/base";
 import { ATTRIBUTES, ICONS } from "../../core/utlis/statics";
-import { createElementFromString, is } from "../../core/utlis/functions";
-import { CuiHandlerBase } from "./base";
+import { is, createElementFromString } from "../../core/utlis/functions";
+
+export class CuiIconComponent implements ICuiComponent {
+    attribute: string;
+    constructor() {
+        this.attribute = 'data-icon';
+    }
+
+    getStyle(): string {
+        return `
+            [data-icon] {
+                background-color: red;
+            }
+        `;
+    }
+
+    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+        return new CuiIconHandler(element, utils);
+    }
+}
 
 export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #log: ICuiLogger;
     #element: Element;
     #prevIcon: string;
-    constructor(element: Element, interactions?: IUIInteractionProvider) {
-        super("CuiIconHandler", interactions);
+    
+    constructor(element: Element, utils: CuiUtils) {
+        super("CuiIconHandler", utils);
         this.#element = element;
         this.#prevIcon = null;
     }
