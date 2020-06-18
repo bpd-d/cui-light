@@ -1,7 +1,9 @@
 # bpd cUI Light changelog
+## [0.0.10] 2020-06-18
+* [Added] Plugins managing system
+
 ## [0.0.9] 2020-06-17
 * [Added] Support for custom components
-* [Added] Support for class **print** which reduces colors to black and white
 
 ## [0.0.8] 2020-06-15
 * [Added] Methods for async/interactive callbacks in element manager

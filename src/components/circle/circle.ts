@@ -7,8 +7,10 @@ import { ICONS, ATTRIBUTES } from "../../core/utlis/statics";
 
 export class CuiCircleComponent implements ICuiComponent {
     attribute: string;
+    #iconStr: string;
     constructor() {
         this.attribute = 'circle-progress';
+        ICONS['special_circle_progress'] = "<svg xmlns=\"http://www.w3.org/2000/svg\"  class=\"circle-progress\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><path class=\"circle-progress-path\" d=\"M 50,5.3660047 A 44.867708,44.633994 0 0 1 94.867709,49.999997 44.867708,44.633994 0 0 1 50,94.633995 44.867708,44.633994 0 0 1 5.1322908,50.000001 44.867708,44.633994 0 0 1 50,5.3660047\"></path></svg>";
     }
 
     getStyle(): string {
@@ -27,6 +29,7 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     #full: number;
     #path: any;
     #prevValue: number;
+    #iconStr: string;
     constructor(element: Element, utils: CuiUtils) {
         super("CuiCircleHandler", utils);
         this.#element = element;

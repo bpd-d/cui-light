@@ -8,8 +8,8 @@ import { TaskedEventEmitHandler } from "../bus/handlers";
 import { CuiCallbackExecutor } from "../bus/executors";
 import { getName } from "../utlis/functions";
 import { CLASSES } from "../utlis/statics";
-import { CuiInstanceColorHandler } from "../../app/handlers/colors";
 import { ICuiDocumentStyleAppender, CuiDocumentStyleAppender } from "../styles/appender";
+import { CuiInstanceColorHandler } from "../../app/handlers/colors";
 
 export class CuiUtils {
     interactions: IUIInteractionProvider;

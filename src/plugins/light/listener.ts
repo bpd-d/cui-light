@@ -1,4 +1,4 @@
-import { CuiUtils } from "../../../core/models/utils";
+import { CuiUtils } from "../../core/models/utils";
 import { AutoLightPluginSetup } from "./light";
 
 export class LightModeListener {

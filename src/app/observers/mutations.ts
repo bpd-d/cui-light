@@ -1,11 +1,11 @@
-import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { is, getMatchingAttribute } from "../../core/utlis/functions";
 import { CuiUtils } from "../../core/models/utils";
 
 export interface ICuiMutionObserver {
     // setOptions(options: MutationObserverInit): ICuiMutionObserver;
-    setPlugins(plugins: ICuiMutiationPlugin[]): ICuiMutionObserver;
+    setPlugins(plugins: ICuiPluginManager): ICuiMutionObserver;
     setComponents(components: ICuiComponent[]): ICuiMutionObserver;
     setAttributes(attributes: string[]): ICuiMutionObserver;
     start(): ICuiMutionObserver;
@@ -18,7 +18,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     #observer: MutationObserver;
     #options: MutationObserverInit;
     #element: HTMLElement;
-    #plugins: ICuiMutiationPlugin[];
+    #plugins: ICuiPluginManager;
     #components: ICuiComponent[];
     #attributes: string[];
     #utils: CuiUtils;
@@ -26,14 +26,14 @@ export class CuiMutationObserver implements ICuiMutionObserver {
         this.#observer = null
         this.#element = element
         this.#log = CuiLoggerFactory.get('CuiMutationObserver')
-        this.#plugins = [];
+        this.#plugins = null;
         this.#components = [];
         this.#attributes = [];
         this.#utils = utils;
 
     }
 
-    setPlugins(plugins: ICuiMutiationPlugin[]) {
+    setPlugins(plugins: ICuiPluginManager) {
         this.#plugins = plugins;
         return this;
     }
@@ -86,19 +86,8 @@ export class CuiMutationObserver implements ICuiMutionObserver {
                     break;
             }
             if (is(this.#plugins)) {
-                let tasks: Promise<boolean>[] = [];
-                this.#plugins.forEach(plugin => {
-                    tasks.push(plugin.mutation(mutation))
-                })
-                Promise.all(tasks).then((flags: boolean[]) => {
-                    this.#log.debug("Plugins mutation completed");
-                    if (flags.find(val => {
-                        return val === false;
-                    })) {
-                        this.#log.error("Plugins mutation completed failed on at least one element");
-                    }
-                }, (reason) => {
-                    this.#log.error("Plugins mutation failed");
+                this.#plugins.onMutation(mutation).then(() => {
+                    this.#log.debug("Mutation performed on plugins")
                 })
             }
         })

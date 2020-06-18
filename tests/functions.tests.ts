@@ -1,4 +1,4 @@
-import { is, getName, createElementFromString, getMutationAttribute, getRangeValue, joinAttributesForQuery, clone, are } from "../src/core/utlis/functions"
+import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute } from "../src/core/utlis/functions"
 import { MUTATED_ATTRIBUTES } from "../src/core/utlis/statics"
 
 /**
@@ -101,9 +101,65 @@ describe("Tests checking method [createElementFromString]", function () {
     })
 })
 
-describe("Tests checking method [getMutationAttribute]", function () {
+// describe("Tests checking method [getMutationAttribute]", function () {
+//     it("Shall return first attribute matching to mutation attributes ", function () {
+//         let attribute: string = MUTATED_ATTRIBUTES[0];
+//         let value: string = "xxx";
+//         let element: Element = document.createElement('div');
+//         element.setAttribute("dummy", "dummy");
+//         element.setAttribute("test", "test");
+//         element.setAttribute(attribute, value);
+//         let failed = false;
+//         let output = null;
+//         try {
+//             output = getMutationAttribute(element);
+//         } catch (e) {
+//             failed = true
+//         }
+
+//         expect(failed).toEqual(false, "Shall not fail")
+//         expect(output !== null).toEqual(true, "Output shall be defined")
+//         expect(output.name).toEqual(attribute, "Found attribute shall be correct")
+//         expect(output.value).toEqual(value, "Found value shall be correct")
+//     })
+
+//     it("Shall return null if element doesn't contain mutated attribute", function () {
+//         let element: Element = document.createElement('div');
+//         element.setAttribute("dummy", "dummy");
+//         element.setAttribute("test", "test");
+//         let output = null;
+//         let failed = false;
+//         try {
+//             output = getMutationAttribute(element);
+//         } catch (e) {
+//             failed = true
+//         }
+//         expect(failed).toEqual(false, "Shall not fail")
+//         expect(output).toEqual(null, "Output shall be null")
+//     })
+
+//     it("Shall fail if element is empty", function () {
+//         let element: Element = null;
+//         let output = null;
+//         let failed = false;
+//         try {
+//             output = getMutationAttribute(element);
+//         } catch (e) {
+//             failed = true
+//         }
+//         expect(failed).toEqual(true, "Shall fail")
+//         expect(output).toEqual(null, "Output shall be null")
+//     })
+// })
+
+describe("Tests checking method [getMatchingAttribute]", function () {
+    let attributes: string[];
+    beforeAll(() => {
+        attributes = ['xxx', 'yyy', 'zzz']
+    })
+
     it("Shall return first attribute matching to mutation attributes ", function () {
-        let attribute: string = MUTATED_ATTRIBUTES[0];
+        let attribute: string = attributes[0];
         let value: string = "xxx";
         let element: Element = document.createElement('div');
         element.setAttribute("dummy", "dummy");
@@ -112,15 +168,14 @@ describe("Tests checking method [getMutationAttribute]", function () {
         let failed = false;
         let output = null;
         try {
-            output = getMutationAttribute(element);
+            output = getMatchingAttribute(element, attributes);
         } catch (e) {
             failed = true
         }
 
         expect(failed).toEqual(false, "Shall not fail")
         expect(output !== null).toEqual(true, "Output shall be defined")
-        expect(output.name).toEqual(attribute, "Found attribute shall be correct")
-        expect(output.value).toEqual(value, "Found value shall be correct")
+        expect(output).toEqual(attribute, "Found attribute shall be correct")
     })
 
     it("Shall return null if element doesn't contain mutated attribute", function () {
@@ -130,7 +185,7 @@ describe("Tests checking method [getMutationAttribute]", function () {
         let output = null;
         let failed = false;
         try {
-            output = getMutationAttribute(element);
+            output = getMatchingAttribute(element, attributes);
         } catch (e) {
             failed = true
         }
@@ -143,7 +198,7 @@ describe("Tests checking method [getMutationAttribute]", function () {
         let output = null;
         let failed = false;
         try {
-            output = getMutationAttribute(element);
+            output = getMatchingAttribute(element, attributes);
         } catch (e) {
             failed = true
         }

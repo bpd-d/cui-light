@@ -1,5 +1,5 @@
 import { CuiLogLevel, CuiInteractionsType } from "../utlis/types";
-import { CuiColorSet } from "./color";
+import { CuiColorSet } from "./colors";
 
 export class CuiSetup {
     prefix?: string;
@@ -9,13 +9,13 @@ export class CuiSetup {
     animationTime?: number;
     animationTimeShort?: number;
     animationTimeLong?: number;
-    colorLight?: CuiColorSet;
-    colorDark?: CuiColorSet;
-    colorAccent?: CuiColorSet;
-    colorSecondary?: CuiColorSet;
-    colorSuccess?: CuiColorSet;
-    colorError?: CuiColorSet;
-    colorWarning?: CuiColorSet;
+    // colorLight?: CuiColorSet;
+    // colorDark?: CuiColorSet;
+    // colorAccent?: CuiColorSet;
+    // colorSecondary?: CuiColorSet;
+    // colorSuccess?: CuiColorSet;
+    // colorError?: CuiColorSet;
+    // colorWarning?: CuiColorSet;
     plugins: any;
 
     constructor() {
@@ -31,13 +31,13 @@ export class CuiSetup {
         this.animationTime = init.animationTime;
         this.animationTimeShort = init.animationTimeShort;
         this.animationTimeLong = init.animationTimeLong;
-        this.colorLight = init.colorLight;
-        this.colorDark = init.colorDark;
-        this.colorAccent = init.colorAccent;
-        this.colorSecondary = init.colorSecondary;
-        this.colorSuccess = init.colorSuccess;
-        this.colorError = init.colorError;
-        this.colorWarning = init.colorWarning;
+        // this.colorLight = init.colorLight;
+        // this.colorDark = init.colorDark;
+        // this.colorAccent = init.colorAccent;
+        // this.colorSecondary = init.colorSecondary;
+        // this.colorSuccess = init.colorSuccess;
+        // this.colorError = init.colorError;
+        // this.colorWarning = init.colorWarning;
         return this;
     }
 }
@@ -53,13 +53,13 @@ export class CuiSetupInit {
     animationTime?: number;
     animationTimeShort?: number;
     animationTimeLong?: number;
-    colorLight?: CuiColorSet;
-    colorDark?: CuiColorSet;
-    colorAccent?: CuiColorSet;
-    colorSecondary?: CuiColorSet;
-    colorSuccess?: CuiColorSet;
-    colorError?: CuiColorSet;
-    colorWarning?: CuiColorSet;
+    // colorLight?: CuiColorSet;
+    // colorDark?: CuiColorSet;
+    // colorAccent?: CuiColorSet;
+    // colorSecondary?: CuiColorSet;
+    // colorSuccess?: CuiColorSet;
+    // colorError?: CuiColorSet;
+    // colorWarning?: CuiColorSet;
 
     constructor() {
         this.prefix = 'cui';

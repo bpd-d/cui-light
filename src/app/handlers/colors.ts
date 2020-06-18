@@ -1,8 +1,8 @@
-import { CuiColorSet, CuiColor } from "../../core/models/color";
 import { CuiColorSetType } from "../../core/utlis/types";
-import { CSS_THEMES, CSS_APP_BACKGROUND_COLORS, CSS_COMPONENT_BACKGROUND_COLORS, CSS_COMPONENT_BORDER_COLORS } from "../../core/utlis/statics";
-import { is, clone, getRangeValue } from "../../core/utlis/functions";
+import { is, getRangeValue, are } from "../../core/utlis/functions";
 import { IUIInteractionProvider } from "../../core/models/interfaces";
+import { CuiColor, CuiColorSet } from "../../core/models/colors";
+import { CSS_APP_BACKGROUND_COLORS, CSS_COMPONENT_BACKGROUND_COLORS, CSS_COMPONENT_BORDER_COLORS, CSS_THEMES } from "../../core/utlis/statics";
 
 export class CuiInstanceColorHandler {
     #root: HTMLElement;
@@ -60,11 +60,9 @@ export class CuiInstanceColorHandler {
     }
 
     setPropertyIn(propertyName: string, value: string) {
-        if (!is(value)) {
+        if (!are(value, propertyName)) {
             return;
         }
-        this.#interactions.mutate(() => {
-            this.setProperty(propertyName, value);
-        }, this)
+        this.#interactions.mutate(this.setProperty, this, propertyName, value)
     }
 }

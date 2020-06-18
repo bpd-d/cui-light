@@ -1,6 +1,3 @@
-import { HTMLAttribute } from "../models/elements";
-import { CuiColor } from "../models/color";
-import { COLORS, MUTATED_ATTRIBUTES } from "./statics";
 import { CuiLightMode } from "./types";
 import { ArgumentError } from "../models/errors";
 
@@ -66,22 +63,6 @@ export function createElementFromString(htmlString: string): Element {
     return template.content.children.length > 0 ? template.content.children[0] : null;
 }
 
-export function getMutationAttribute(element: Element): HTMLAttribute {
-    let attr = null;
-    let len = MUTATED_ATTRIBUTES.length;
-    for (let i = 0; i < len; i++) {
-        let attribute = MUTATED_ATTRIBUTES[i];
-        if (element.hasAttribute(attribute)) {
-            attr = {
-                name: attribute,
-                value: element.getAttribute(attribute)
-            }
-            break;
-        }
-    }
-    return attr;
-}
-
 export function getMatchingAttribute(element: any, attributes: string[]): string {
     let attr = null;
     let len = attributes.length;
@@ -119,16 +100,16 @@ export function clone(object: any): any {
     return Object.assign({}, object);
 }
 
-export function getAvgColorRatio(first: CuiColor, second: CuiColor) {
-    let ratio = 0;
-    for (let color in COLORS) {
-        if (color === 'alpha') {
-            ratio += getSingleColorRatio(first.getColorValue(color), second.getColorValue(color), 1);
-        }
-        ratio += getSingleColorRatio(first.getColorValue(color), second.getColorValue(color), 255);
-    }
-    return ratio / COLORS.length;
-}
+// export function getAvgColorRatio(first: CuiColor, second: CuiColor) {
+//     let ratio = 0;
+//     for (let color in COLORS) {
+//         if (color === 'alpha') {
+//             ratio += getSingleColorRatio(first.getColorValue(color), second.getColorValue(color), 1);
+//         }
+//         ratio += getSingleColorRatio(first.getColorValue(color), second.getColorValue(color), 255);
+//     }
+//     return ratio / COLORS.length;
+// }
 
 export function getSingleColorRatio(first: number, second: number, max: number): number {
     return Math.abs(((first - second) / max) * 100)

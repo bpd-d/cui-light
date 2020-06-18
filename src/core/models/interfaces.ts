@@ -62,6 +62,7 @@ export interface ICuiCacheManager {
 
 export interface ICuiPlugin {
     description: string;
+    name: string;
     setup: any;
     init(utils: CuiUtils): void;
     destroy(): void;
@@ -120,4 +121,10 @@ export interface ICuiComponent {
     attribute: string;
     getStyle(): string;
     get(element: Element, sutils: CuiUtils): ICuiMutationHandler;
+}
+
+export interface ICuiPluginManager {
+    init(utils: CuiUtils): void;
+    get(name: string): ICuiPlugin;
+    onMutation(mutation: MutationRecord): Promise<boolean>;
 }

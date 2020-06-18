@@ -3,7 +3,7 @@ import { is } from "../core/utlis/functions";
 import { CuiInstance } from "./instance";
 import { ICONS } from "../core/utlis/statics";
 import { ICuiPlugin, CuiInitData, CuiInitResult, ICuiComponent } from "../core/models/interfaces";
-import { CuiAutoLightModePlugin } from "./plugins/light/light";
+import { CuiAutoLightModePlugin } from "../plugins/light/light";
 import { CuiIconComponent } from "../components/icon/icon";
 import { CuiCircleComponent } from "../components/circle/circle";
 import { CuiSpinnerComponent } from "../components/spinner/spinner";
