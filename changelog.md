@@ -1,4 +1,8 @@
 # bpd cUI Light changelog
+## [0.0.11] 2020-06-18
+* [Fixed] Icons and banners layout
+* [Added] Input accent colors
+
 ## [0.0.10] 2020-06-18
 * [Added] Plugins managing system
 

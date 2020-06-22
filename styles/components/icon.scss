@@ -21,6 +21,14 @@ $icon-color-error    : $component-background-error;
 $icon-color-warning  : $component-background-warning;
 $icon-color-success  : $component-background-success;
 
+
+span.#{$prefix}-svg,
+span.#{$prefix}-icon {
+    border    : 1px solid transparent;
+    box-sizing: border-box;
+}
+
+.#{$prefix}-icon,
 .#{$prefix}-icon-button,
 .#{$prefix}-icon,
 .#{$prefix}-svg {
@@ -30,6 +38,8 @@ $icon-color-success  : $component-background-success;
     text-align     : center;
     line-height    : 20px;
     vertical-align : middle;
+
+
 
     svg {
         max-width      : 100%;

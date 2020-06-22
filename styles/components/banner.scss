@@ -6,13 +6,13 @@ $banner-color-default           :$component-color-default;
 $banner-color-default-dark      :$component-color-default-dark;
 $banner-border-color            :$color-border-light;
 $banner-border-color-dark       :$color-border-dark;
-$banner-border-radius           : $border-radius-default;
+$banner-border-radius           :$border-radius-default;
 
 
-@mixin banner($color) {
+@mixin banner-color($color) {
     border-color    : var(--color-#{$color});
     background-color: var(--color-#{$color}) !important;
-    color           : var(--color-dark-base);
+    color           : $banner-background-default-dark;
 }
 
 div.#{$prefix}-banner {
@@ -25,7 +25,7 @@ div.#{$prefix}-banner {
     border-radius   : $banner-border-radius;
     box-shadow      : $shadow;
     margin          : 0 $margin-global;
-    @include component-padding;
+    @include component-padding(same);
 
     &.#{$prefix}-open {
         display: flex;
@@ -37,27 +37,27 @@ div.#{$prefix}-banner {
     }
 
     &.#{$prefix}-success {
-        @include banner(success); //box-shadow      : $shadow;
+        @include banner-color(success);
     }
 
     &.#{$prefix}-error {
-        @include banner(error);
+        @include banner-color(error);
     }
 
     &.#{$prefix}-warning {
-        @include banner(warning); //box-shadow      : $shadow;
+        @include banner-color(warning);
     }
 
     &.#{$prefix}-accent {
-        @include banner(primary); //box-shadow      : $shadow;
-    }
+        @include banner-color(primary);
 
-    &.#{$prefix}-secondary {
-        @include banner(secondary);
-    }
+        &.#{$prefix}-secondary {
+            @include banner-color(secondary);
+        }
 
-    .#{$prefix}-message-icon {
-        order: -1;
+        .#{$prefix}-message-icon {
+            order: -1;
+        }
     }
 }
 

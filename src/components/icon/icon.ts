@@ -11,11 +11,7 @@ export class CuiIconComponent implements ICuiComponent {
     }
 
     getStyle(): string {
-        return `
-            [data-icon] {
-                background-color: red;
-            }
-        `;
+        return null;
     }
 
     get(element: Element, utils: CuiUtils): ICuiMutationHandler {
@@ -27,7 +23,7 @@ export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandle
     #log: ICuiLogger;
     #element: Element;
     #prevIcon: string;
-    
+
     constructor(element: Element, utils: CuiUtils) {
         super("CuiIconHandler", utils);
         this.#element = element;
