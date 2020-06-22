@@ -1,4 +1,4 @@
-var webpackConfig = require('./webpack.config.js');
+var webpackConfig = require('./webpack.development.js');
 module.exports = function (config) {
     config.set({
         //root path location to resolve paths defined in files and exclude

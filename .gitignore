@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+.bin/
+
 # VS code
 .vscode/
 *.code-workspace
