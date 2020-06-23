@@ -44,7 +44,7 @@ module.exports = {
     },
     entry: {
         index: './src/index.ts',
-        styles: './src/styles.ts',
+        //styles: './src/styles.ts',
     },
     module: {
         rules: [
@@ -85,7 +85,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: 'cui-light.[name].css',
-            chunkFilename: '[id].css',
+            chunkFilename: 'cui-light.[name].[id].css',
         })
     ]
 };

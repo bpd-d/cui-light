@@ -1,8 +1,8 @@
 import { CuiSetupInit } from "../core/models/setup";
 import { is, joinAttributesForQuery, getSystemLightMode, getMatchingAttribute, are } from "../core/utlis/functions";
 import { ElementManager } from "./managers/element";
-import { MUTATED_ATTRIBUTES, ATTRIBUTES, STATICS } from "../core/utlis/statics";
-import { ICuiLogger, ICuiPlugin, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager } from "../core/models/interfaces";
+import { STATICS, EVENTS } from "../core/utlis/statics";
+import { ICuiLogger, ICuiPlugin, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager, CuiContext } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
 //import { CuiAttributeMutationHandler } from "./managers/mutations_old";
 import { CuiLoggerFactory } from "../core/factories/logger";
@@ -62,11 +62,13 @@ export class CuiInstance {
             this.#mutationObserver.setPlugins(this.plugins);
             this.#mutationObserver.start();
         }
+        this.#utils.bus.emit(EVENTS.INSTANCE_INITIALIZED)
         return this;
     }
 
     finish(): void {
         this.#mutationObserver.stop();
+        this.#utils.bus.emit(EVENTS.INSTANCE_FINISHED)
     }
 
     get(selector: string): ElementManager {
@@ -120,17 +122,11 @@ export class CuiInstance {
     getUtils(): CuiUtils {
         return this.#utils;
     }
-    // clearCache(clearType: CuiClearCacheType): void {
-    //     switch (clearType) {
-    //         case 'element':
-    //             this.#cache.clear();
-    //             break;
-    //         case 'collection':
-    //             this.#collectionCache.clear();
-    //             break;
-    //         case 'all':
-    //             this.#cache.clear();
-    //             this.#collectionCache.clear();
-    //     }
-    // }
+
+    on(event: string, callback: any, context: CuiContext): void {
+        if (!are(event, callback, context)) {
+            this.#log.error("Incorrect arguments", "on")
+        }
+        this.#utils.bus.on(event, callback, context);
+    }
 }

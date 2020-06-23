@@ -1,7 +1,7 @@
 import { ICuiComponent, ICuiComponentFactory, ICuiMutationHandler, ICuiLogger } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { ATTRIBUTES, ICONS } from "../../core/utlis/statics";
+import { ICONS } from "../../core/utlis/statics";
 import { is, createElementFromString } from "../../core/utlis/functions";
 
 export class CuiIconComponent implements ICuiComponent {
@@ -15,7 +15,7 @@ export class CuiIconComponent implements ICuiComponent {
     }
 
     get(element: Element, utils: CuiUtils): ICuiMutationHandler {
-        return new CuiIconHandler(element, utils);
+        return new CuiIconHandler(element, utils, this.attribute);
     }
 }
 
@@ -23,15 +23,16 @@ export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandle
     #log: ICuiLogger;
     #element: Element;
     #prevIcon: string;
-
-    constructor(element: Element, utils: CuiUtils) {
+    #attribute: string;
+    constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiIconHandler", utils);
         this.#element = element;
         this.#prevIcon = null;
+        this.#attribute = attribute;
     }
 
     handle(): void {
-        const iconAttr = this.#element.getAttribute(ATTRIBUTES.icon)
+        const iconAttr = this.#element.getAttribute(this.#attribute)
         if (iconAttr === this.#prevIcon) {
             return;
         }

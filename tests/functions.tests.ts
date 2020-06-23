@@ -1,5 +1,4 @@
 import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute } from "../src/core/utlis/functions"
-import { MUTATED_ATTRIBUTES } from "../src/core/utlis/statics"
 
 /**
  * Tests check function is

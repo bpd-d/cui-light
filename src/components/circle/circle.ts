@@ -3,7 +3,7 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { is, getRangeValue } from "../../core/utlis/functions";
 import { IconBuilder } from "../icon/icon";
-import { ICONS, ATTRIBUTES } from "../../core/utlis/statics";
+import { ICONS } from "../../core/utlis/statics";
 
 export class CuiCircleComponent implements ICuiComponent {
     attribute: string;
@@ -18,7 +18,7 @@ export class CuiCircleComponent implements ICuiComponent {
     }
 
     get(element: Element, utils: CuiUtils): ICuiMutationHandler {
-        return new CuiCircleHandler(element, utils);
+        return new CuiCircleHandler(element, utils, this.attribute);
     }
 }
 
@@ -30,12 +30,14 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     #path: any;
     #prevValue: number;
     #iconStr: string;
-    constructor(element: Element, utils: CuiUtils) {
+    #attribute: string;
+    constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiCircleHandler", utils);
         this.#element = element;
         this.#factor = this.#full = 0;
         this.#path = null
-        this.#prevValue = -1
+        this.#prevValue = -1;
+        this.#attribute = attribute;
     }
 
     handle(): void {
@@ -66,7 +68,7 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
 
     private readStyle(): void {
         console.log('Read progress')
-        const value = this.#element.hasAttribute(ATTRIBUTES.circle) ? parseInt(this.#element.getAttribute(ATTRIBUTES.circle)) : 0;
+        const value = this.#element.hasAttribute(this.#attribute) ? parseInt(this.#element.getAttribute(this.#attribute)) : 0;
         if (value === this.#prevValue) {
             return;
         }

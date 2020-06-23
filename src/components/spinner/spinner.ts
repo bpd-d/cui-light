@@ -1,8 +1,8 @@
 import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiIconHandler, IconBuilder } from "../icon/icon";
+import { IconBuilder } from "../icon/icon";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { ATTRIBUTES, ICONS } from "../../core/utlis/statics";
+import { ICONS } from "../../core/utlis/statics";
 import { is } from "../../core/utlis/functions";
 
 export class CuiSpinnerComponent implements ICuiComponent {
@@ -17,18 +17,20 @@ export class CuiSpinnerComponent implements ICuiComponent {
     }
 
     get(element: Element, utils: CuiUtils): ICuiMutationHandler {
-        return new CuiSpinnerHandler(element, utils);
+        return new CuiSpinnerHandler(element, utils, this.attribute);
     }
 }
 
 export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #element: Element;
-    constructor(element: Element, utils: CuiUtils) {
+    #attribute: string;
+    constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiSpinnerHandler", utils);
         this.#element = element;
+        this.#attribute = attribute
     }
     handle(): void {
-        const spinnerName = this.#element.getAttribute(ATTRIBUTES.spinner);
+        const spinnerName = this.#element.getAttribute(this.#attribute);
         const svgIcon = is(spinnerName) ? ICONS[`spinner_${spinnerName}`] : null;
         if (!is(svgIcon)) {
             return;

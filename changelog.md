@@ -1,4 +1,8 @@
 # bpd cUI Light changelog
+# [0.0.12] 2020-06-23
+* [Added] Events emitions
+* [Removed] CSS components have been moved to **cui-styles**
+
 ## [0.0.11] 2020-06-18
 * [Fixed] Icons and banners layout
 * [Added] Input accent colors
