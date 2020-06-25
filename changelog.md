@@ -1,4 +1,8 @@
 # bpd cUI Light changelog
+
+# [0.0.14] 2020-06-23
+* [Added] Typescript typings
+
 # [0.0.12] 2020-06-23
 * [Added] Events emitions
 * [Removed] CSS components have been moved to **cui-styles**

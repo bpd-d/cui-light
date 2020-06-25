@@ -1,8 +1,12 @@
 {
   "name": "cui-light",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "cUI light framework for the web",
-  "main": "index.ts",
+  "main": "./dist/cui-light.index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "dev": "webpack-dev-server --config webpack.development.js",
     "build": "webpack --config webpack.production.js",
