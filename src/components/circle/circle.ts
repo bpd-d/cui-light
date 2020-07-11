@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiMutationHandler, CuiObservables, CuiContext } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { is, getRangeValue } from "../../core/utlis/functions";
@@ -23,7 +23,6 @@ export class CuiCircleComponent implements ICuiComponent {
 }
 
 export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #element: Element;
     #isInitialized: boolean;
     #factor: number;
     #full: number;
@@ -32,24 +31,26 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     #iconStr: string;
     #attribute: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiCircleHandler", utils);
-        this.#element = element;
+        super("CuiCircleHandler", element, utils);
         this.#factor = this.#full = 0;
         this.#path = null
         this.#prevValue = -1;
         this.#attribute = attribute;
     }
 
+    observables(): CuiObservables {
+        return null;
+    }
+
     handle(): void {
-        console.log('circle');
         if (!is(this.#isInitialized)) {
             const iconSvg = new IconBuilder(ICONS['special_circle_progress']).build();
-            const svg = this.#element.querySelector('svg')
+            const svg = this.element.querySelector('svg')
             if (is(svg)) {
                 svg.remove();
             }
-            this.#element.appendChild(iconSvg);
-            this.#path = this.#element.querySelector('.circle-progress-path');
+            this.element.appendChild(iconSvg);
+            this.#path = this.element.querySelector('.circle-progress-path');
             this.#full = this.#path.getTotalLength();
             this.#factor = this.#full / 100;
             this.#isInitialized = true;
@@ -58,17 +59,18 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     }
 
     refresh(): void {
-        throw new Error("Method not implemented.");
+        this.fetch(this.readStyle)
     }
 
+    destroy(): void {
+
+    }
     private updateStyle(value: number) {
-        console.log('Write progress')
         this.#path.style.strokeDashoffset = value;
     }
 
     private readStyle(): void {
-        console.log('Read progress')
-        const value = this.#element.hasAttribute(this.#attribute) ? parseInt(this.#element.getAttribute(this.#attribute)) : 0;
+        const value = this.element.hasAttribute(this.#attribute) ? parseInt(this.element.getAttribute(this.#attribute)) : 0;
         if (value === this.#prevValue) {
             return;
         }

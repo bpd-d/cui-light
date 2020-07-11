@@ -29,3 +29,10 @@ export class CuiInstanceInitError extends ErrorBase {
         super("CuiInstanceInitError", message);
     }
 }
+
+export class CuiScrollSpyOutOfRangeError extends ErrorBase {
+    constructor(message?: string) {
+        super("CuiScrollSpyOutOfRangeError", message);
+    }
+}
+

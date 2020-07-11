@@ -1,8 +1,8 @@
-import { ICuiDictionary, CuiCachable, ICui, ICuiCacheManager } from "../../core/models/interfaces";
+import { ICuiDictionary, CuiCachable, ICuiManager } from "../../core/models/interfaces";
 import { CuiDictionary } from "../../core/utlis/dictionary";
 import { is } from "../../core/utlis/functions";
 
-export class CuiCacheManager implements ICuiCacheManager {
+export class CuiCacheManager implements ICuiManager<CuiCachable> {
     #cache: ICuiDictionary<CuiCachable>;
     #maxSize: number;
     constructor(maxSize?: number) {

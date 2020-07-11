@@ -1,9 +1,9 @@
-import { ICuiCacheManager, CuiCachable } from "../src/core/models/interfaces"
+import { CuiCachable, ICuiManager } from "../src/core/models/interfaces"
 import { CuiCacheManager } from "../src/app/managers/cache";
 import { CacheTestItem } from "./helpers/models";
 
 describe("Tests for class [CuiCacheManager]", function () {
-    let manager: ICuiCacheManager;
+    let manager: ICuiManager<CuiCachable>;
     let maxSize: number = 10;
     let getItem = (id: number): CacheTestItem => {
         return new CacheTestItem(id);

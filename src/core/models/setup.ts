@@ -1,7 +1,7 @@
 import { CuiLogLevel, CuiInteractionsType } from "../utlis/types";
 import { CuiColorSet } from "./colors";
 
-export class CuiSetup {
+interface CuiSetupCommon {
     prefix?: string;
     logLevel?: CuiLogLevel;
     cacheSize?: number;
@@ -9,17 +9,26 @@ export class CuiSetup {
     animationTime?: number;
     animationTimeShort?: number;
     animationTimeLong?: number;
-    // colorLight?: CuiColorSet;
-    // colorDark?: CuiColorSet;
-    // colorAccent?: CuiColorSet;
-    // colorSecondary?: CuiColorSet;
-    // colorSuccess?: CuiColorSet;
-    // colorError?: CuiColorSet;
-    // colorWarning?: CuiColorSet;
+    scrollThreshold?: number;
+    resizeThreshold?: number;
+}
+
+export class CuiSetup implements CuiSetupCommon {
+    prefix?: string;
+    logLevel?: CuiLogLevel;
+    cacheSize?: number;
+    autoLightMode?: boolean;
+    animationTime?: number;
+    animationTimeShort?: number;
+    animationTimeLong?: number;
+    scrollThreshold: number;
+    resizeThreshold: number;
     plugins: any;
 
     constructor() {
         this.autoLightMode = false;
+        this.scrollThreshold = 20;
+        this.resizeThreshold = 20;
         this.plugins = {};
     }
 
@@ -31,19 +40,15 @@ export class CuiSetup {
         this.animationTime = init.animationTime;
         this.animationTimeShort = init.animationTimeShort;
         this.animationTimeLong = init.animationTimeLong;
-        // this.colorLight = init.colorLight;
-        // this.colorDark = init.colorDark;
-        // this.colorAccent = init.colorAccent;
-        // this.colorSecondary = init.colorSecondary;
-        // this.colorSuccess = init.colorSuccess;
-        // this.colorError = init.colorError;
-        // this.colorWarning = init.colorWarning;
+        this.scrollThreshold = init.scrollThreshold;
+        this.resizeThreshold = init.resizeThreshold;
+
         return this;
     }
 }
 
 
-export class CuiSetupInit {
+export class CuiSetupInit implements CuiSetupCommon {
     prefix?: string;
     app?: string;
     interaction?: CuiInteractionsType;
@@ -53,13 +58,8 @@ export class CuiSetupInit {
     animationTime?: number;
     animationTimeShort?: number;
     animationTimeLong?: number;
-    // colorLight?: CuiColorSet;
-    // colorDark?: CuiColorSet;
-    // colorAccent?: CuiColorSet;
-    // colorSecondary?: CuiColorSet;
-    // colorSuccess?: CuiColorSet;
-    // colorError?: CuiColorSet;
-    // colorWarning?: CuiColorSet;
+    scrollThreshold?: number;
+    resizeThreshold?: number;
 
     constructor() {
         this.prefix = 'cui';
@@ -71,5 +71,7 @@ export class CuiSetupInit {
         this.animationTimeLong = 500;
         this.cacheSize = 500;
         this.autoLightMode = false;
+        this.scrollThreshold = 20;
+        this.resizeThreshold = 20;
     }
 }

@@ -1,4 +1,4 @@
-import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute } from "../src/core/utlis/functions"
+import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt } from "../src/core/utlis/functions"
 
 /**
  * Tests check function is
@@ -19,8 +19,6 @@ describe("Tests checking method [is]", function () {
         expect(is(num)).toEqual(true, "Positive number")
         expect(is(negnum)).toEqual(true, "Negative number")
         expect(is(arr)).toEqual(true, "Not empty array")
-
-
     })
 
     it("Shall return false when object is empty", function () {
@@ -28,6 +26,7 @@ describe("Tests checking method [is]", function () {
         let str: string = ""
         let someNull: any = null
         let arr: string[] = []
+        //let undef: any;
 
         expect(is(str)).toEqual(false, "Empty string")
         expect(is(someNull)).toEqual(false, "Null object")
@@ -276,5 +275,368 @@ describe("Tests checking method [are]", function () {
         let output = are('test', 0, '', {})
         expect(output).toBeFalse()
     })
+})
 
+describe("Tests checking method [parseIntOrDefault]", function () {
+    it("Returns number when string number is passed", function () {
+        let output = getIntOrDefault('0', 1)
+        expect(output).toEqual(0)
+    })
+
+    it("Returns default when string is not a number", function () {
+        let output = getIntOrDefault('xxx', 1)
+        expect(output).toEqual(1)
+    })
+
+    it("Returns default when string is not a value", function () {
+        let val: any = undefined;
+        let output = getIntOrDefault(val, 1)
+        expect(output).toEqual(1)
+    })
+})
+
+describe("Tests checking method [getRangeValueOrDefault]", function () {
+    it("Returns number when string number is passed", function () {
+        let output = getRangeValueOrDefault(parseInt('0'), -2, 2, 10);
+        expect(output).toEqual(0)
+    })
+
+    it("Returns default when string is not a number", function () {
+        let output = getRangeValueOrDefault(parseInt('sss'), -1, 1, 0.5)
+        expect(output).toEqual(0.5)
+    })
+
+    it("Returns default when string is not a value", function () {
+        let val: any = null;
+        let output = getRangeValueOrDefault(val, -1, 1, 0.5)
+        expect(output).toEqual(0.5)
+    })
+
+})
+
+describe("Tests checking method [getStyleValue]", function () {
+    it("Returns computed style value", function () {
+        let div = document.createElement('div');
+        div.innerHTML = "SSS";
+        div.style.margin = "1rem";
+        document.body.appendChild(div);
+        let top = getStyleValue(div, 'margin-top');
+        let left = getStyleValue(div, 'margin-left');
+        div.remove();
+        expect(top).toEqual("16px");
+        expect(left).toEqual("16px");
+    })
+
+    it("Returns null when one of arguments is not a value", function () {
+        let div = document.createElement('div');
+        div.innerHTML = "SSS";
+        div.style.margin = "16px";
+        document.body.appendChild(div);
+        let top = getStyleValue(null, 'margin-top');
+        let left = getStyleValue(div, undefined);
+        div.remove();
+        expect(top).toEqual(null);
+        expect(left).toEqual(null);
+    })
+})
+
+describe("Tests checking method [getOffsetTop]", function () {
+    it("Offset value is calculated on proper node", function () {
+        let div = document.createElement('div');
+        div.innerHTML = "SSS";
+        div.style.padding = "20px";
+        div.style.height = "100px";
+        document.body.appendChild(div);
+        let out = getOffsetTop(div);
+        div.remove();
+
+        expect(out).toBeGreaterThan(-1);
+
+    })
+
+    it("Offset value is negative calculated on inproper node", function () {
+        let out = getOffsetTop(null);
+        expect(out).toEqual(-1);
+
+    })
+})
+
+describe("Tests checking method [getOffsetLeft]", function () {
+    it("Offset value is calculated on proper node", function () {
+        let div = document.createElement('div');
+        div.innerHTML = "SSS";
+        div.style.padding = "20px";
+        div.style.height = "100px";
+        document.body.appendChild(div);
+
+        let out = getOffsetLeft(div);
+        div.remove();
+
+        expect(out).toBeGreaterThan(-1);
+
+    })
+
+    it("Offset value is negative calculated on inproper node", function () {
+        let out = getOffsetLeft(null);
+        expect(out).toEqual(-1);
+
+    })
+})
+
+
+describe("Tests checking method [parseAttibuteJSON]", function () {
+    it("Parses proper JSON string", function () {
+        let str = `{"a":"-1", "b": "-2"}`
+        let out = parseJsonString(str);
+        expect(out.a).toEqual("-1");
+        expect(out.b).toEqual("-2");
+
+    })
+
+    it("Parses inproper JSON string", function () {
+        let str = `{"a":"-1"; "b": "-2"}`; // colon instead of semi-colon
+        let out = parseJsonString(str);
+        expect(out).toEqual(null);
+    })
+})
+
+describe("Tests checking method [parseAttributeString]", function () {
+    it("Parses proper string", function () {
+        let str = `a:-1`
+        let out = parseAttributeString(str);
+        expect(out.a).toEqual("-1");
+    })
+
+    it("Parses proper string", function () {
+        let str = `a:-1; b: -2`
+        let out = parseAttributeString(str);
+        expect(out.a).toEqual("-1");
+        expect(out.b).toEqual("-2");
+
+    })
+
+    it("Parses inproper string", function () {
+        let str = `a:-1 b: -2`;
+        let out = parseAttributeString(str);
+        expect(out.a).toEqual(undefined);
+        expect(out.b).toEqual(undefined);
+    })
+
+    it("Parses string only", function () {
+        let str = `xxx`;
+        let out = parseAttributeString(str);
+        expect(out).toEqual('xxx');
+    })
+
+    it("Parses object single", function () {
+        let str = `xxx: -1`;
+        let out = parseAttributeString(str);
+        expect(out.xxx).toEqual('-1');
+    })
+})
+
+describe("Tests checking method [prepLogString]", function () {
+    it("Outputs a proper string", function () {
+        let out = prepLogString("X", "Y", "Z");
+        expect(out).toContain("[Y][Z][X]");
+
+    })
+
+    it("Outputs proper string when not all argument are passed", function () {
+        let out = prepLogString("X", null);
+        expect(out).toContain("[-][-][X]");
+    })
+})
+
+describe("Tests checking method [jsonify]", function () {
+    it("Outputs a proper string", function () {
+        let str = `{"a":"-1", "b": "-2"}`;
+        let out = jsonify(str);
+        expect(out.a).toContain("-1");
+        expect(out.b).toEqual("-2");
+    })
+
+    it("Outputs proper string when not all argument are passed", function () {
+        let str = `{"a":"-1"; "b": "-2"}`;
+        let out = null;
+        let failed = false;
+        try {
+            let out = jsonify(str);
+        } catch (e) {
+            failed = true;
+        }
+        expect(out).toBe(null);
+        expect(failed).toBeTrue();
+    })
+})
+
+describe("Tests checking method [isInRange]", function () {
+    it("Returns true when value is in range", function () {
+        let out = isInRange(1, 0, 10);
+        expect(out).toBeTrue();
+    })
+
+    it("Returns false when value is in range", function () {
+        let out = isInRange(-2, 0, 10);
+        expect(out).toBeFalse();
+    })
+})
+
+describe("Tests checking method [isString]", function () {
+    it("Returns true when value string", function () {
+        let out = isString("XXX");
+        expect(out).toBeTrue();
+    })
+
+    it("Returns false when value is not a string", function () {
+        let out = isString(-1);
+        expect(out).toBeFalse();
+    })
+
+    it("Returns false when value is null", function () {
+        let out = isString(null);
+        expect(out).toBeFalse();
+    })
+
+    it("Returns false when value is undefined", function () {
+        let out = isString(null);
+        expect(out).toBeFalse();
+    })
+})
+
+describe("Tests checking method [parseAttribute]", function () {
+    let div: Element;
+    beforeEach(() => {
+        div = document.createElement('div');
+        div.setAttribute("attr", "val")
+        document.body.appendChild(div);
+    })
+
+    afterEach(() => {
+        div.remove();
+    })
+
+    it("Returns proper value of an attribute", function () {
+        let out = parseAttribute(div, 'attr');
+        expect(out).toEqual("val");
+    })
+
+    it("Returns the same value when there's no prefix", function () {
+        let out = parseAttribute(div, null);
+        expect(out).toEqual(null);
+    })
+
+    it("Returns value when is not value", function () {
+        let out = parseAttribute(null, 'attr');
+        expect(out).toEqual(null);
+    })
+})
+
+describe("Tests checking method [replacePrefix]", function () {
+    it("Returns true when value string", function () {
+        let out = replacePrefix("-{prefix}-value", 'cui');
+        expect(out).toEqual("-cui-value");
+    })
+
+    it("Returns the same value when there's no prefix", function () {
+        let out = replacePrefix("-xxx-value", 'cui');
+        expect(out).toEqual("-xxx-value");
+    })
+
+    it("Returns value when is not value", function () {
+        let out = replacePrefix(null, 'cui');
+        expect(out).toEqual(null);
+    })
+
+    it("Replaces prefix with empty string when prefix isn't provided", function () {
+        let out = replacePrefix("-{prefix}-value", null);
+        expect(out).toEqual("--value");
+    })
+})
+
+describe("Tests checking method [isStringTrue]", function () {
+    it("Returns true when value string is true", function () {
+        let out = isStringTrue("TRUE");
+        expect(out).toBeTrue();
+    })
+
+    it("Returns false when value string is falsy", function () {
+        let out = isStringTrue("FALSE");
+        expect(out).toBeFalse();
+    })
+
+    it("Returns false when is not value", function () {
+        let out = isStringTrue(null);
+        expect(out).toBeFalse();
+    })
+})
+
+describe("Tests checking method [boolStringOrDefault]", function () {
+    it("Returns true when value string is true", function () {
+        let out = boolStringOrDefault("TRUE", true);
+        expect(out).toBeTrue();
+    })
+
+    it("Returns false when value string is falsy", function () {
+        let out = boolStringOrDefault("FALSE", true);
+        expect(out).toBeFalse();
+    })
+
+    it("Returns default when is not value", function () {
+        let out = boolStringOrDefault(null, true);
+        expect(out).toBeTrue();
+    })
+})
+
+describe("Tests checking method [getStringOrDefault]", function () {
+    it("Returns lower casesd value", function () {
+        let out = getStringOrDefault("TRUE", "xxx");
+        expect(out).toEqual('true');
+    })
+
+    it("Returns default value when value is empty", function () {
+        let out = getStringOrDefault("", 'xxx');
+        expect(out).toEqual('xxx');
+    })
+
+    it("Returns default when is not value", function () {
+        let out = getStringOrDefault(null, 'xxx');
+        expect(out).toEqual('xxx');
+    })
+
+    it("Returns default when is not value", function () {
+        let out = getStringOrDefault(null, null);
+        expect(out).toEqual(null);
+    })
+})
+
+describe("Tests checking method [generateCUID]", function () {
+    it("Randomized string with element name", function () {
+        let out = generateCUID("xxx");
+        expect(out).toContain('xxx');
+    })
+
+    it("Randomized string with default name when no name is passed", function () {
+        let out = generateCUID();
+        expect(out).toContain('cui-element');
+    })
+})
+
+describe("Tests checking method [generateRandomString]", function () {
+    it("Randomized string ", function () {
+        let out = generateRandomString();
+        expect(out.length).toBeGreaterThan(2);
+    })
+})
+
+describe("Tests checking method [getRandomInt]", function () {
+    it("Randomized string ", function () {
+        let out = getRandomInt(0, 100);
+        let out2 = getRandomInt(0, 1000);
+        expect(out).toBeGreaterThanOrEqual(0);
+        expect(out).toBeLessThanOrEqual(100);
+        expect(out2).toBeGreaterThanOrEqual(0);
+        expect(out2).toBeLessThanOrEqual(1000);
+        expect(out !== out2).toBeTrue();
+    })
 })

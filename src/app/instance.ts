@@ -1,16 +1,16 @@
 import { CuiSetupInit } from "../core/models/setup";
-import { is, joinAttributesForQuery, getSystemLightMode, getMatchingAttribute, are } from "../core/utlis/functions";
+import { is, joinAttributesForQuery, are, registerCuiElement } from "../core/utlis/functions";
 import { ElementManager } from "./managers/element";
 import { STATICS, EVENTS } from "../core/utlis/statics";
-import { ICuiLogger, ICuiPlugin, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager, CuiContext } from "../core/models/interfaces";
+import { ICuiLogger, ICuiPlugin, ICuiComponent, ICuiPluginManager, CuiContext, CuiElement } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
-//import { CuiAttributeMutationHandler } from "./managers/mutations_old";
 import { CuiLoggerFactory } from "../core/factories/logger";
 import { CuiToastHandler } from "./managers/toast";
 import { CollectionManager } from "./managers/collection";
 import { CuiUtils } from "../core/models/utils";
 import { CuiInstanceInitError } from "../core/models/errors";
 import { CuiPluginManager } from "./managers/plugins";
+
 
 export class CuiInstance {
     #log: ICuiLogger;
@@ -39,18 +39,7 @@ export class CuiInstance {
         if (is(initElements)) {
             this.#log.debug(`Initiating ${initElements.length} elements`)
             initElements.forEach((item: any) => {
-                let matching: string = getMatchingAttribute(item, mutatedAttributes)
-                if (is(matching)) {
-                    let component = this.#components.find(c => { return c.attribute === matching });
-                    if (is(component)) {
-                        this.#utils.styleAppender.append(component.getStyle());
-                        item.$handler = component.get(item, this.#utils);
-                        item.$handler.handle();
-                    }
-                }
-                else {
-                    this.#log.warning("Handler not found")
-                }
+                registerCuiElement(item, this.#components, mutatedAttributes, this.#utils);
             })
         }
         // Init plugins
@@ -62,13 +51,14 @@ export class CuiInstance {
             this.#mutationObserver.setPlugins(this.plugins);
             this.#mutationObserver.start();
         }
-        this.#utils.bus.emit(EVENTS.INSTANCE_INITIALIZED)
+
+        this.#utils.bus.emit(EVENTS.INSTANCE_INITIALIZED, null)
         return this;
     }
 
     finish(): void {
         this.#mutationObserver.stop();
-        this.#utils.bus.emit(EVENTS.INSTANCE_FINISHED)
+        this.#utils.bus.emit(EVENTS.INSTANCE_FINISHED, null)
     }
 
     get(selector: string): ElementManager {
@@ -123,10 +113,10 @@ export class CuiInstance {
         return this.#utils;
     }
 
-    on(event: string, callback: any, context: CuiContext): void {
-        if (!are(event, callback, context)) {
+    on(event: string, callback: any, context: CuiContext, element?: CuiElement): void {
+        if (!are(event, callback)) {
             this.#log.error("Incorrect arguments", "on")
         }
-        this.#utils.bus.on(event, callback, context);
+        this.#utils.bus.on(event, callback, context, element);
     }
 }

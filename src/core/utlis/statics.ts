@@ -1,10 +1,12 @@
 import { CuiLogLevel } from "./types";
 import { CuiColorPair } from "../models/colors";
+import { counter } from "./functions";
 
 export const CLASSES = {
     dark: 'dark',
     animProgress: 'animation-progress',
-    print: 'print'
+    print: 'print',
+    active: 'active'
 }
 
 export const ICONS: any = {
@@ -70,6 +72,62 @@ export const CSS_THEMES = {
     }
 }
 
+export const CSS_VARIABLES: any = {
+    fontSize: "--{prefix}-font-size",
+    lineHeight: "--{prefix}-line-height",
+    animationTime: "--{prefix}-animation-time",
+    animationTimeLong: "--{prefix}-animation-time-long",
+    animationTimeShort: "--{prefix}-animation-time-short",
+    colorLightAppBackground: "--{prefix}-color-light-app-background",
+    colorLightBackground: "--{prefix}-color-light-background",
+    colorLightBorder: "--{prefix}-color-light-border",
+    colorLightBase: "--{prefix}-color-light-base",
+    colorLightActive: "--{prefix}-color-light-active",
+    colorLightMuted: "--{prefix}-color-light-muted",
+    colorDarkAppBackground: "--{prefix}-color-dark-app-background",
+    colorDarkBackground: "--{prefix}-color-dark-background",
+    colorDarkBorder: "--{prefix}-color-dark-border",
+    colorDarkBase: "--{prefix}-color-dark-base",
+    colorDarkActive: "--{prefix}-color-dark-active",
+    colorDarkMuted: "--{prefix}-color-dark-muted",
+    colorAccent: "--{prefix}-color-primary",
+    colorAccentActive: "--{prefix}-color-primary-active",
+    colorAccentMuted: "--{prefix}-color-primary-muted",
+    colorAccentShade: "--{prefix}-color-primary-shade",
+    colorAccentShadeDark: "--{prefix}-color-primary-shade-dark",
+    colorSecondary: "--{prefix}-color-secondary",
+    colorSecondaryActive: "--{prefix}-color-secondary-active",
+    colorSecondaryMuted: "--{prefix}-color-secondary-muted",
+    colorSecondaryShade: "--{prefix}-color-secondary-shade",
+    colorSecondaryShadeDark: "--{prefix}-color-secondary-shade-dark",
+    colorWarning: "--{prefix}-color-warning",
+    colorWarningActive: "--{prefix}-color-warning-active",
+    colorWarningMuted: "--{prefix}-color-warning-muted",
+    colorWarningShade: "--{prefix}-color-warning-shade",
+    colorWarningShadeDark: "--{prefix}-color-warning-shade-dark",
+    colorSuccess: "--{prefix}-color-success",
+    colorSuccessActive: "--{prefix}-color-success-active",
+    colorSuccessMuted: "--{prefix}-color-success-muted",
+    colorSuccessShade: "--{prefix}-color-success-shade",
+    colorSuccessShadeDark: "--{prefix}-color-success-shade-dark",
+    colorError: "--{prefix}-color-error",
+    colorErrorActive: "--{prefix}-color-error-active",
+    colorErrorMuted: "--{prefix}-color-error-muted",
+    colorErrorShade: "--{prefix}-color-error-shade",
+    colorErrorShadeDark: "--{prefix}-color-error-shade-dark",
+    inputBackground: "--{prefix}-input-background-color",
+    colorShade: "--{prefix}-color-shade",
+    colorShadeDarker: "--{prefix}-color-shade-darker",
+    colorShadeLight: "--{prefix}-color-shade-light",
+    colorShadeLighter: "--{prefix}-color-shade-light-lighter",
+    outline: "--{prefix}-outline",
+    borderRadius: "--{prefix}-border-radius",
+    padding: "--{prefix}-padding",
+    margin: "--{prefix}-margin",
+    scrollbarWidth: "--{prefix}-scrollbar-width",
+    componentSpace: "--{prefix}-component-space"
+}
+
 
 export class STATICS {
     static logLevel: CuiLogLevel = 'none';
@@ -78,5 +136,18 @@ export class STATICS {
 
 export const EVENTS = {
     INSTANCE_INITIALIZED: 'instance-initialized',
-    INSTANCE_FINISHED: 'instance=finished'
+    INSTANCE_FINISHED: 'instance-finished',
+    ON_RESIZE: "resize",
+    ON_OPEN: "open",
+    ON_CLOSE: "close",
+    ON_TOGGLE: "toggle",
+    ON_SCROLL: "scroll",
+    ON_TARGET_CHANGE: 'targetchange',
+    ON_INTERSECTION: 'intersection',
+    ON_KEYDOWN: 'keydown',
+    ON_SCROLLBY: 'scrollby'
 }
+
+export const OBSERVABLE_SCROLL = "SCROLL";
+export const OBSERVABLE_INTERSECTION = "INTERSECTION";
+export const COMPONENTS_COUNTER = counter();

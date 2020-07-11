@@ -13,3 +13,6 @@ export declare class CuiBusError extends ErrorBase {
 export declare class CuiInstanceInitError extends ErrorBase {
     constructor(message?: string);
 }
+export declare class CuiScrollSpyOutOfRangeError extends ErrorBase {
+    constructor(message?: string);
+}

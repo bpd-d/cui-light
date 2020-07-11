@@ -80,6 +80,9 @@ module.exports = {
     output: {
         filename: 'cui-light.[name].js',
         path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'umd',
+        library: "cui-light",
+        umdNamedDefine: true
     },
     plugins: [
         new CleanWebpackPlugin(),

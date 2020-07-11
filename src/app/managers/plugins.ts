@@ -19,6 +19,7 @@ export class CuiPluginManager implements ICuiPluginManager {
         }) as any;
         this.#plugins.forEach(plugin => {
             plugin.init(utils);
+            utils.setup.plugins[plugin.description] = plugin.setup;
         })
         this.#log.debug("Plugins have been initialized");
     }

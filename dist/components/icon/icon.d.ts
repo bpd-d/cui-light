@@ -3,7 +3,7 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 export declare class CuiIconComponent implements ICuiComponent {
     attribute: string;
-    constructor();
+    constructor(prefix?: string);
     getStyle(): string;
     get(element: Element, utils: CuiUtils): ICuiMutationHandler;
 }
@@ -12,6 +12,7 @@ export declare class CuiIconHandler extends CuiHandlerBase implements ICuiMutati
     constructor(element: Element, utils: CuiUtils, attribute: string);
     handle(): void;
     refresh(): void;
+    destroy(): void;
     private insertBefore;
     private appendChild;
 }

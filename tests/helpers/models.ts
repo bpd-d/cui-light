@@ -29,7 +29,8 @@ export class ExecutorTestItemExt implements CuiContext {
         this.value = false;
         this.id = id;
     }
-    getCuid(): string {
+
+    getId(): string {
         return this.id;
     }
 

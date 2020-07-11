@@ -1,5 +1,12 @@
 # bpd cUI Light changelog
 
+# [0.0.17] 2020-07-08
+* [Changed] Event bus improvements
+* [Added] New components: scrollspy and scroll, intersection
+* [Added] Auto print plugin
+* [Added] Event emits on components mutation/change
+* [Added] Key press listener/observer
+
 # [0.0.14] 2020-06-23
 * [Added] Typescript typings
 

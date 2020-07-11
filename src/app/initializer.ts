@@ -7,6 +7,16 @@ import { CuiAutoLightModePlugin } from "../plugins/light/light";
 import { CuiIconComponent } from "../components/icon/icon";
 import { CuiCircleComponent } from "../components/circle/circle";
 import { CuiSpinnerComponent } from "../components/spinner/spinner";
+import { CuiDummyComponent } from "../components/dummy/dummy";
+import { CuiScrollComponent } from "../components/scroll/scroll";
+import { CuiScrollspyComponent } from "../components/scrollspy/scrollspy";
+import { CuiAutoPrintModePlugin } from "../plugins/print/print";
+import { CuiIntersectionComponent } from "../components/intersection/intersection";
+import { CuiOpenComponent } from "../components/open/open";
+import { CuiCloseComponent } from "../components/close/close";
+import { CuiToggleComponent } from "../components/toggle/toggle";
+import { CuiResizeComponent } from "../components/resize/resize";
+import { CuiKeysObserverPlugin } from "../plugins/keys/keys";
 
 export class CuiInitializer {
     #window: any;
@@ -48,27 +58,37 @@ export class CuiInit {
         this.#isInitialized = false;
     }
 
-    async init(setup: CuiSetupInit, icons: any): Promise<boolean> {
+    async init(data: CuiInitData): Promise<boolean> {
         if (this.#isInitialized) {
             console.log("Module is already initialized")
             return false;
         }
         const initializer = new CuiInitializer();
-        const plugins: ICuiPlugin[] = [
-            new CuiAutoLightModePlugin({ autoLight: true })
+        const pluginList: ICuiPlugin[] = [
+            new CuiAutoLightModePlugin({ autoLight: true }),
+            new CuiAutoPrintModePlugin({ autoPrint: true }),
+            new CuiKeysObserverPlugin(null)
         ];
 
-        const components: ICuiComponent[] = [
+        const componentList: ICuiComponent[] = [
             new CuiIconComponent(),
             new CuiCircleComponent(),
-            new CuiSpinnerComponent()
+            new CuiSpinnerComponent(),
+            new CuiDummyComponent(),
+            new CuiScrollComponent(),
+            new CuiScrollspyComponent(),
+            new CuiIntersectionComponent(),
+            new CuiOpenComponent(),
+            new CuiCloseComponent(),
+            new CuiToggleComponent(),
+            new CuiResizeComponent(),
         ];
 
         let result = await initializer.init({
-            setup: setup,
-            icons: icons,
-            plugins: plugins,
-            components: components
+            setup: data.setup,
+            icons: data.icons,
+            plugins: is(data.plugins) ? [...pluginList, ...data.plugins] : pluginList,
+            components: is(data.components) ? [...componentList, ...data.components] : componentList
         })
         if (result.result) {
             this.#isInitialized = true;

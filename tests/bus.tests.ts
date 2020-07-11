@@ -1,4 +1,4 @@
-import { ICuiEventBus, ICuiCallbackExecutor, ICuiEventEmitHandler, CuiEventReceiver } from "../src/core/models/interfaces"
+import { ICuiEventBus, ICuiCallbackExecutor, ICuiEventEmitHandler, CuiEventReceiver, CuiElement } from "../src/core/models/interfaces"
 import { CuiEventBus } from "../src/core/bus/bus";
 import { CuiCallbackExecutor } from "../src/core/bus/executors";
 import { TaskedEventEmitHandler } from "../src/core/bus/handlers";
@@ -42,9 +42,9 @@ describe("Tests for class [TaskedEventEmitHandler]", function () {
     it("Case for method [handle] - no context", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue }
+            "task": { ctx: item, callback: item.setValue, $cuid: "000" }
         }
-        await handler.handle(tasks, [true])
+        await handler.handle(tasks, null, [true])
 
         expect(item.value).toBeTrue();
     })
@@ -52,9 +52,9 @@ describe("Tests for class [TaskedEventEmitHandler]", function () {
     it("Case for method [handle] - no args", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue }
+            "task": { ctx: item, callback: item.setValue, $cuid: null }
         }
-        await handler.handle(tasks, null)
+        await handler.handle(tasks, null, null)
 
         expect(item.value).toBeFalsy();
     })
@@ -63,10 +63,10 @@ describe("Tests for class [TaskedEventEmitHandler]", function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let item2: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue },
-            "task2": { ctx: item2, callback: item2.setValue }
+            "task": { ctx: item, callback: item.setValue, $cuid: null },
+            "task2": { ctx: item2, callback: item2.setValue, $cuid: "000" }
         }
-        await handler.handle(tasks, [true])
+        await handler.handle(tasks, null, [true])
 
         expect(item.value).toBeTrue();
         expect(item2.value).toBeTrue();
@@ -86,9 +86,9 @@ describe("Tests for class [SimpleEventEmitHandler]", function () {
     it("Case for method [handle] - no context", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue }
+            "task": { ctx: item, callback: item.setValue, $cuid: null }
         }
-        await handler.handle(tasks, [true])
+        await handler.handle(tasks, null, [true])
 
         expect(item.value).toBeTrue();
     })
@@ -96,9 +96,9 @@ describe("Tests for class [SimpleEventEmitHandler]", function () {
     it("Case for method [handle] - no args", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue }
+            "task": { ctx: item, callback: item.setValue, $cuid: null }
         }
-        await handler.handle(tasks, null)
+        await handler.handle(tasks, null, null)
 
         expect(item.value).toBeFalsy();
     })
@@ -107,10 +107,10 @@ describe("Tests for class [SimpleEventEmitHandler]", function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let item2: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue },
-            "task2": { ctx: item2, callback: item2.setValue }
+            "task": { ctx: item, callback: item.setValue, $cuid: null },
+            "task2": { ctx: item2, callback: item2.setValue, $cuid: null }
         }
-        await handler.handle(tasks, [true])
+        await handler.handle(tasks, null, [true])
 
         expect(item.value).toBeTrue();
         expect(item2.value).toBeTrue();
@@ -158,7 +158,7 @@ describe("Tests for class [CuiEventBus]", function () {
             failed = true;
         }
 
-        expect(failed).toBeTrue();
+        expect(failed).toBeFalse();
     })
 
     it("Case for method [detach]", function () {
@@ -244,7 +244,7 @@ describe("Tests for class [CuiEventBus]", function () {
         try {
             bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
-            await bus.emit('test', true);
+            await bus.emit('test', null, true);
 
         } catch (e) {
             console.error(e)
@@ -264,7 +264,7 @@ describe("Tests for class [CuiEventBus]", function () {
             bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
 
-            await bus.emit('', true);
+            await bus.emit('', null, true);
         } catch (e) {
             failed = true;
         }
@@ -282,12 +282,12 @@ describe("Tests for class [CuiEventBus]", function () {
             bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
 
-            await bus.emit('test_2', true);
+            await bus.emit('test_2', null, true);
         } catch (e) {
             failed = true;
         }
 
-        expect(failed).toBeFalse();
+        expect(failed).toEqual(false, "Method failed");
         expect(item.value).toBeFalse();
         expect(item2.value).toBeFalse();
     })
@@ -296,7 +296,7 @@ describe("Tests for class [CuiEventBus]", function () {
         let failed: boolean = false;
         try {
 
-            await bus.emit('test', true);
+            await bus.emit('test', null, true);
         } catch (e) {
             failed = true;
         }
@@ -304,5 +304,43 @@ describe("Tests for class [CuiEventBus]", function () {
         expect(failed).toBeFalse();
     })
 
+
+    it("Case for method [emit] - call event only for specfic components", async function () {
+        let item = new ExecutorTestItemExt('001');
+        let item2 = new ExecutorTestItemExt('002');
+        let element: CuiElement = { $cuid: "000-000-01" }
+        let failed: boolean = false;
+        try {
+            bus.on('test', item.setValue, item, element);
+            bus.on('test', item2.setValue, item2);
+
+            await bus.emit('test', element.$cuid, true);
+        } catch (e) {
+            failed = true;
+        }
+
+        expect(failed).toBeFalse();
+        expect(item.value).toBeTrue();
+        expect(item2.value).toBeFalse();
+    })
+
+    it("Case for method [emit] - call event all components regardless of attached element", async function () {
+        let item = new ExecutorTestItemExt('001');
+        let item2 = new ExecutorTestItemExt('002');
+        let element: CuiElement = { $cuid: "000-000-01" }
+        let failed: boolean = false;
+        try {
+            bus.on('test', item.setValue, item, element);
+            bus.on('test', item2.setValue, item2);
+
+            await bus.emit('test', null, true);
+        } catch (e) {
+            failed = true;
+        }
+
+        expect(failed).toBeFalse();
+        expect(item.value).toBeTrue();
+        expect(item2.value).toBeTrue();
+    })
 
 })

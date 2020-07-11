@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiComponentFactory, ICuiMutationHandler, ICuiLogger } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentFactory, ICuiMutationHandler, ICuiLogger, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { ICONS } from "../../core/utlis/statics";
@@ -6,8 +6,8 @@ import { is, createElementFromString } from "../../core/utlis/functions";
 
 export class CuiIconComponent implements ICuiComponent {
     attribute: string;
-    constructor() {
-        this.attribute = 'data-icon';
+    constructor(prefix?: string) {
+        this.attribute = `${prefix ?? 'cui'}-icon`;
     }
 
     getStyle(): string {
@@ -20,19 +20,17 @@ export class CuiIconComponent implements ICuiComponent {
 }
 
 export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #log: ICuiLogger;
-    #element: Element;
     #prevIcon: string;
     #attribute: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiIconHandler", utils);
-        this.#element = element;
+        super("CuiIconHandler", element, utils);
         this.#prevIcon = null;
         this.#attribute = attribute;
     }
 
+
     handle(): void {
-        const iconAttr = this.#element.getAttribute(this.#attribute)
+        const iconAttr = this.element.getAttribute(this.#attribute)
         if (iconAttr === this.#prevIcon) {
             return;
         }
@@ -42,11 +40,11 @@ export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandle
             return
         }
         const iconSvg = new IconBuilder(iconStr).build();
-        const svg = this.#element.querySelector('svg')
+        const svg = this.element.querySelector('svg')
         if (is(svg)) {
             svg.remove();
         }
-        if (this.#element.childNodes.length > 0) {
+        if (this.element.childNodes.length > 0) {
             this.mutate(this.insertBefore, iconSvg)
         } else {
             this.mutate(this.appendChild, iconSvg)
@@ -54,15 +52,18 @@ export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandle
     }
 
     refresh(): void {
-        throw new Error("Method not implemented.");
+    }
+
+    destroy(): void {
+
     }
 
     private insertBefore(iconElement: Element) {
-        this.#element.insertBefore(iconElement, this.#element.firstChild);
+        this.element.insertBefore(iconElement, this.element.firstChild);
     }
 
     private appendChild(iconElement: Element) {
-        this.#element.appendChild(iconElement);
+        this.element.appendChild(iconElement);
     }
 }
 

@@ -9,6 +9,7 @@ export interface ICuiMutionObserver {
 }
 export declare class CuiMutationObserver implements ICuiMutionObserver {
     #private;
+    plugins: ICuiPluginManager;
     constructor(element: HTMLElement, utils: CuiUtils);
     setPlugins(plugins: ICuiPluginManager): this;
     setComponents(components: ICuiComponent[]): this;

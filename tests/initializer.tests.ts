@@ -54,7 +54,7 @@ describe("Tests checking class [CuiInit]", function () {
         let setup: CuiSetupInit = new CuiSetupInit();
         let initializer: CuiInit = new CuiInit();
         let initialized: boolean = false;
-        await initializer.init(setup, null)
+        await initializer.init({ setup: setup })
 
         let w = window as any;
 

@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
 import { CuiHandlerBase } from "../../app/handlers/base";
@@ -22,31 +22,34 @@ export class CuiSpinnerComponent implements ICuiComponent {
 }
 
 export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #element: Element;
     #attribute: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiSpinnerHandler", utils);
-        this.#element = element;
+        super("CuiSpinnerHandler", element, utils);
+        this.element = element;
         this.#attribute = attribute
     }
+
     handle(): void {
-        const spinnerName = this.#element.getAttribute(this.#attribute);
+        const spinnerName = this.element.getAttribute(this.#attribute);
         const svgIcon = is(spinnerName) ? ICONS[`spinner_${spinnerName}`] : null;
         if (!is(svgIcon)) {
             return;
         }
         const iconElement = new IconBuilder(svgIcon).build();
-        this.#element.innerHTML = "";
+        this.element.innerHTML = "";
         this.mutate(this.addSpinner, iconElement, spinnerName);
     }
 
     refresh(): void {
-        throw new Error("Method not implemented.");
+    }
+
+    destroy(): void {
+
     }
 
     private addSpinner(iconElement: Element, name: string) {
-        this.#element.appendChild(iconElement);
-        this.#element.classList.add(`animation-spinner-${name}`);
+        this.element.appendChild(iconElement);
+        this.element.classList.add(`animation-spinner-${name}`);
     }
 
 }

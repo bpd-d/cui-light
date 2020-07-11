@@ -27,15 +27,10 @@ export interface ICuiDictionaryItem<T> {
     key: string;
     value: T;
 }
-export interface ICuiObserver<T> {
-    observe(target: T): void;
-    unobserve(target: T): void;
-    connect(): void;
-    disconnect(): void;
-}
 export interface ICuiMutationHandler {
     handle(): void;
     refresh(): void;
+    destroy(): void;
 }
 export interface CuiCachable {
     refresh(): boolean;
@@ -43,9 +38,9 @@ export interface CuiCachable {
 export interface ICui {
     getId(): string;
 }
-export interface ICuiCacheManager {
-    put(key: string, element: CuiCachable): void;
-    get(key: string): CuiCachable;
+export interface ICuiManager<T> {
+    put(key: string, element: T): void;
+    get(key: string): T;
     has(key: string): boolean;
     remove(key: string): boolean;
     clear(): void;
@@ -61,11 +56,11 @@ export interface ICuiMutiationPlugin {
     mutation(record: MutationRecord): Promise<boolean>;
 }
 export interface ICuiEventBus {
-    on(name: string, callback: any, ctx: CuiContext): void;
-    detach(name: string, ctx: CuiContext): void;
-    detachAll(name: string): void;
-    emit(event: string, ...args: any[]): Promise<boolean>;
-    isSubscribing(name: string, ctx: CuiContext): boolean;
+    on(name: string, callback: any, ctx: CuiContext, cui?: CuiElement): string;
+    detach(name: string, ctx: CuiContext, cui?: CuiElement): void;
+    detachAll(name: string, cui?: CuiElement): void;
+    emit(event: string, cuid: string, ...args: any[]): Promise<boolean>;
+    isSubscribing(name: string, ctx: CuiContext, cui?: CuiElement): boolean;
 }
 export interface ICuiCallbackExecutor {
     execute(callback: any, ctx: any, args: any[]): Promise<void>;
@@ -73,15 +68,16 @@ export interface ICuiCallbackExecutor {
 export interface CuiEventObj {
     ctx: any;
     callback: any;
+    $cuid: string;
 }
 export interface CuiEventReceiver {
     [id: string]: CuiEventObj;
 }
 export interface ICuiEventEmitHandler {
-    handle(receiver: CuiEventReceiver, args: any[]): Promise<void>;
+    handle(receiver: CuiEventReceiver, cuid: string, args: any[]): Promise<void>;
 }
 export interface CuiContext {
-    getCuid(): string;
+    getId(): string;
 }
 export interface CuiInitData {
     plugins?: ICuiPlugin[];
@@ -99,10 +95,38 @@ export interface ICuiComponentFactory {
 export interface ICuiComponent {
     attribute: string;
     getStyle(): string;
-    get(element: Element, sutils: CuiUtils): ICuiMutationHandler;
+    get(element: HTMLElement, sutils: CuiUtils): ICuiMutationHandler;
 }
 export interface ICuiPluginManager {
     init(utils: CuiUtils): void;
     get(name: string): ICuiPlugin;
     onMutation(mutation: MutationRecord): Promise<boolean>;
+}
+export interface ICuiObservableArg {
+}
+export interface ICuiObservable {
+    key: string;
+    on(arg: ICuiObservableArg): Promise<boolean>;
+}
+export interface CuiObservables {
+    [key: string]: ICuiObservable;
+}
+export interface CuiHandlers {
+    [id: string]: ICuiMutationHandler;
+}
+export interface CuiElement {
+    $cuid: string;
+    $handlers?: CuiHandlers;
+}
+export interface ICuiObserver {
+    observe(target: Element): void;
+    unobserve(target: Element): void;
+    connect(): void;
+    disconnect(): void;
+}
+export interface ICuiEventListener<T> {
+    setCallback(callback: (t: T) => void): void;
+    isInProgress(): boolean;
+    attach(): void;
+    detach(): void;
 }

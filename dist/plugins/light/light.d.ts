@@ -11,4 +11,5 @@ export declare class CuiAutoLightModePlugin implements ICuiPlugin {
     constructor(autoLightInit: AutoLightPluginSetup);
     init(utils: CuiUtils): void;
     destroy(): void;
+    onChange(ev: MediaQueryListEvent): void;
 }

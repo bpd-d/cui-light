@@ -1,6 +1,6 @@
-import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager, CuiElement } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { is, getMatchingAttribute } from "../../core/utlis/functions";
+import { is, getMatchingAttribute, are, getMatchingAttributes, generateCUID, registerCuiElement } from "../../core/utlis/functions";
 import { CuiUtils } from "../../core/models/utils";
 
 export interface ICuiMutionObserver {
@@ -18,7 +18,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     #observer: MutationObserver;
     #options: MutationObserverInit;
     #element: HTMLElement;
-    #plugins: ICuiPluginManager;
+    plugins: ICuiPluginManager;
     #components: ICuiComponent[];
     #attributes: string[];
     #utils: CuiUtils;
@@ -26,7 +26,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
         this.#observer = null
         this.#element = element
         this.#log = CuiLoggerFactory.get('CuiMutationObserver')
-        this.#plugins = null;
+        this.plugins = null;
         this.#components = [];
         this.#attributes = [];
         this.#utils = utils;
@@ -34,7 +34,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     }
 
     setPlugins(plugins: ICuiPluginManager) {
-        this.#plugins = plugins;
+        this.plugins = plugins;
         return this;
     }
 
@@ -76,8 +76,8 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             switch (mutation.type) {
                 case 'attributes':
                     const item = mutation.target as any;
-                    if (is(item.$handler)) {
-                        item.$handler.handle();
+                    if (are(item.$handlers, item.$handlers[mutation.attributeName])) {
+                        item.$handlers[mutation.attributeName].refresh();
                     }
                     break;
 
@@ -85,8 +85,8 @@ export class CuiMutationObserver implements ICuiMutionObserver {
                     this.handleChildListMutation(mutation);
                     break;
             }
-            if (is(this.#plugins)) {
-                this.#plugins.onMutation(mutation).then(() => {
+            if (is(this.plugins)) {
+                this.plugins.onMutation(mutation).then(() => {
                     this.#log.debug("Mutation performed on plugins")
                 })
             }
@@ -107,15 +107,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
 
     private handleAddedNodes(nodes: NodeList) {
         nodes.forEach((node: any) => {
-            const matching = getMatchingAttribute(node, this.#attributes);
-            if (is(matching)) {
-                const component = this.#components.find(c => { c.attribute === matching });
-                if (is(component)) {
-                    this.#utils.styleAppender.append(component.getStyle());
-                    node.$handler = component.get(node, this.#utils)
-                    node.$handler.handle();
-                }
-            }
+            registerCuiElement(node, this.#components, this.#attributes, this.#utils);
         })
     }
 
@@ -124,4 +116,22 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             this.#log.debug("Removing")
         })
     }
+
+    // private registterCuiElement(node: any) {
+    //     let element = node as CuiElement
+    //     element.$handlers = {};
+    //     let matching: string[] = getMatchingAttributes(node, this.#attributes)
+    //     if (is(matching)) {
+    //         matching.forEach(match => {
+    //             let component = this.#components.find(c => { return c.attribute === match });
+    //             if (is(component)) {
+    //                 this.#utils.styleAppender.append(component.getStyle());
+    //                 let handler = component.get(node, this.#utils);
+    //                 element.$handlers[component.attribute] = handler;
+    //                 element.$handlers[component.attribute].handle();
+    //             }
+    //         })
+    //         element.$cuid = generateCUID(node.tagName)
+    //     }
+    // }
 }

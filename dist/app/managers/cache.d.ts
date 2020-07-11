@@ -1,5 +1,5 @@
-import { CuiCachable, ICuiCacheManager } from "../../core/models/interfaces";
-export declare class CuiCacheManager implements ICuiCacheManager {
+import { CuiCachable, ICuiManager } from "../../core/models/interfaces";
+export declare class CuiCacheManager implements ICuiManager<CuiCachable> {
     #private;
     constructor(maxSize?: number);
     put(key: string, element: CuiCachable): void;

@@ -12,5 +12,6 @@ export declare class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMut
     constructor(element: Element, utils: CuiUtils, attribute: string);
     handle(): void;
     refresh(): void;
+    destroy(): void;
     private addSpinner;
 }

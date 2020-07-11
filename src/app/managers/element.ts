@@ -3,6 +3,8 @@ import { ICuiLogger, IUIInteractionProvider, CuiCachable } from "../../core/mode
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CLASSES } from "../../core/utlis/statics";
 import { CuiUtils } from "../../core/models/utils";
+import { CuiActionsHelper } from "../../core/helpers/helpers";
+import { CuiClassAction } from "../../core/utlis/actions";
 
 export class ElementManager implements CuiCachable {
     #elements: Element[];
@@ -10,12 +12,14 @@ export class ElementManager implements CuiCachable {
     #logger: ICuiLogger;
     #cDt: number;
     #utils: CuiUtils;
+    #actionsHelper: CuiActionsHelper;
     constructor(elements: Element[], utils: CuiUtils) {
         this.#elements = elements;
         this.#isLocked = false;
         this.#logger = CuiLoggerFactory.get("ElementManager");
         this.#utils = utils;
         this.#cDt = Date.now();
+        this.#actionsHelper = new CuiActionsHelper(utils.interactions);
     }
 
     async toggleClass(className: string): Promise<boolean> {
@@ -233,17 +237,10 @@ export class ElementManager implements CuiCachable {
             return false
         }
         const delay = timeout ?? this.#utils.setup.animationTime;
+        const action = new CuiClassAction(animationClass);
         return this.call((element) => {
-            this.change(() => {
-                element.classList.add(animationClass);
-                element.classList.add(CLASSES.animProgress);
-                setTimeout(() => {
-                    this.change(() => {
-                        element.classList.remove(animationClass);
-                        element.classList.remove(CLASSES.animProgress);
-                        element.classList.add(openClass);
-                    })
-                }, delay)
+            this.#actionsHelper.performAction(element, action, delay).then(() => {
+                element.classList.add(openClass);
             })
         });
     }
@@ -253,17 +250,10 @@ export class ElementManager implements CuiCachable {
             return false
         }
         const delay = timeout ?? this.#utils.setup.animationTime;
+        const action = new CuiClassAction(animationClass);
         return this.call((element) => {
-            this.change(() => {
-                element.classList.add(animationClass);
-                element.classList.add(CLASSES.animProgress);
-                setTimeout(() => {
-                    this.change(() => {
-                        element.classList.remove(animationClass);
-                        element.classList.remove(CLASSES.animProgress);
-                        element.classList.remove(closeClass);
-                    })
-                }, delay)
+            this.#actionsHelper.performAction(element, action, delay).then(() => {
+                element.classList.remove(closeClass);
             })
         });
     }

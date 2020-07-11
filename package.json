@@ -1,6 +1,6 @@
 {
   "name": "cui-light",
-  "version": "0.0.14",
+  "version": "0.0.17",
   "description": "cUI light framework for the web",
   "main": "./dist/cui-light.index.js",
   "typings": "./dist/index.d.ts",
@@ -37,7 +37,6 @@
     "jasmine": "^3.5.0",
     "karma-typescript": "^5.0.3",
     "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "sass-loader": "^8.0.2",
     "serialize-javascript": ">=2.1.1",
@@ -50,9 +49,7 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-karma-jasmine": "^4.0.0",
-    "webpack-merge": "^4.2.2"
-  },
-  "dependencies": {
+    "webpack-merge": "^4.2.2",
     "sass": "^1.26.9"
   }
 }

@@ -1,4 +1,3 @@
-import { CuiSetupInit } from "../core/models/setup";
 import { CuiInitData, CuiInitResult } from "../core/models/interfaces";
 export declare class CuiInitializer {
     #private;
@@ -8,5 +7,5 @@ export declare class CuiInitializer {
 export declare class CuiInit {
     #private;
     constructor();
-    init(setup: CuiSetupInit, icons: any): Promise<boolean>;
+    init(data: CuiInitData): Promise<boolean>;
 }
