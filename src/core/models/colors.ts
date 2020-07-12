@@ -1,4 +1,4 @@
-import { getRangeValue, increaseValue, decreaseValue } from "../utlis/functions";
+import { getRangeValue, increaseValue, decreaseValue } from "../utils/functions";
 
 export class CuiColor {
     #red: number;

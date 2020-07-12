@@ -1,7 +1,7 @@
-import { CLASSES } from "../../core/utlis/statics";
+import { CLASSES } from "../../core/utils/statics";
 import { ICuiLogger, IUIInteractionProvider } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { is } from "../../core/utlis/functions";
+import { is } from "../../core/utils/functions";
 
 export class CollectionManagerHelper {
     #elements: Element[];

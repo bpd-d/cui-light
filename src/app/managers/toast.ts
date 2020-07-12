@@ -1,6 +1,6 @@
 import { IUIInteractionProvider } from "../../core/models/interfaces";
-import { is, sleep } from "../../core/utlis/functions";
-import { CLASSES } from "../../core/utlis/statics";
+import { is, sleep } from "../../core/utils/functions";
+import { CLASSES } from "../../core/utils/statics";
 
 export class CuiToastHandler {
     #interactions: IUIInteractionProvider;

@@ -1,7 +1,7 @@
-import { CuiLogger } from "../utlis/logger";
-import { CuiLogLevel } from "../utlis/types";
+import { CuiLogger } from "../utils/logger";
+import { CuiLogLevel } from "../utils/types";
 import { ICuiLogger } from "../models/interfaces";
-import { STATICS } from "../utlis/statics";
+import { STATICS } from "../utils/statics";
 
 /**
  * 

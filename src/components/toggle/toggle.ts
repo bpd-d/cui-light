@@ -1,9 +1,9 @@
 import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utlis/actions";
-import { is, isString, getStringOrDefault, getName, parseAttribute } from "../../core/utlis/functions";
-import { EVENTS } from "../../core/utlis/statics";
+import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
+import { is, isString, getStringOrDefault, getName, parseAttribute } from "../../core/utils/functions";
+import { EVENTS } from "../../core/utils/statics";
 
 export class CuiToggleArgs {
     target: string;

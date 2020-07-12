@@ -1,6 +1,6 @@
 import { ICuiDictionary, CuiCachable, ICuiManager } from "../../core/models/interfaces";
-import { CuiDictionary } from "../../core/utlis/dictionary";
-import { is } from "../../core/utlis/functions";
+import { CuiDictionary } from "../../core/utils/dictionary";
+import { is } from "../../core/utils/functions";
 
 export class CuiCacheManager implements ICuiManager<CuiCachable> {
     #cache: ICuiDictionary<CuiCachable>;

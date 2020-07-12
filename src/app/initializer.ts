@@ -1,7 +1,7 @@
 import { CuiSetupInit } from "../core/models/setup";
-import { is } from "../core/utlis/functions";
+import { is } from "../core/utils/functions";
 import { CuiInstance } from "./instance";
-import { ICONS } from "../core/utlis/statics";
+import { ICONS } from "../core/utils/statics";
 import { ICuiPlugin, CuiInitData, CuiInitResult, ICuiComponent } from "../core/models/interfaces";
 import { CuiAutoLightModePlugin } from "../plugins/light/light";
 import { CuiIconComponent } from "../components/icon/icon";

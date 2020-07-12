@@ -1,6 +1,6 @@
 import { ICuiLogger, IUIInteractionProvider, CuiElement, CuiContext } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { is } from "../../core/utlis/functions";
+import { is } from "../../core/utils/functions";
 import { CuiUtils } from "../../core/models/utils";
 
 export class CuiHandlerBase implements CuiContext {

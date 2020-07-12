@@ -1,6 +1,6 @@
 import { ICuiPlugin } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { getSystemLightMode } from "../../core/utlis/functions";
+import { getSystemLightMode } from "../../core/utils/functions";
 import { CuiMediaQueryListener } from "../../core/listeners/media";
 
 export interface AutoLightPluginSetup {

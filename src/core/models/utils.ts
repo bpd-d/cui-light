@@ -1,13 +1,13 @@
 import { IUIInteractionProvider, ICuiEventBus, ICuiManager, CuiCachable } from "./interfaces";
 import { CuiSetup, CuiSetupInit } from "./setup";
-import { CuiLightMode } from "../utlis/types";
+import { CuiLightMode } from "../utils/types";
 import { CuiInteractionsFactory } from "../factories/interactions";
 import { CuiCacheManager } from "../../app/managers/cache";
 import { CuiEventBus } from "../bus/bus";
 import { TaskedEventEmitHandler } from "../bus/handlers";
 import { CuiCallbackExecutor } from "../bus/executors";
-import { getName, replacePrefix } from "../utlis/functions";
-import { CLASSES } from "../utlis/statics";
+import { getName, replacePrefix } from "../utils/functions";
+import { CLASSES } from "../utils/statics";
 import { ICuiDocumentStyleAppender, CuiDocumentStyleAppender } from "../styles/appender";
 import { CuiInstanceColorHandler } from "../../app/handlers/colors";
 import { ICuiResizableObserver, CuiResizeObserver } from "../../app/observers/resize";

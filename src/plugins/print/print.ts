@@ -1,6 +1,6 @@
 import { ICuiPlugin } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { getSystemPrintMode } from "../../core/utlis/functions";
+import { getSystemPrintMode } from "../../core/utils/functions";
 import { CuiMediaQueryListener } from "../../core/listeners/media";
 
 export interface AutoPrintPluginSetup {

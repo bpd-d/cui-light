@@ -1,6 +1,6 @@
 import { IUIInteractionProvider } from "../models/interfaces";
-import { CuiInteractionsType } from "../utlis/types";
-import { FastDom, SyncInteractions } from "../utlis/interactions";
+import { CuiInteractionsType } from "../utils/types";
+import { FastDom, SyncInteractions } from "../utils/interactions";
 
 export class CuiInteractionsFactory {
     /**

@@ -1,6 +1,6 @@
 import { IUIInteractionProvider } from "../models/interfaces";
-import { ICuiComponentAction } from "../utlis/actions";
-import { CLASSES } from "../utlis/statics";
+import { ICuiComponentAction } from "../utils/actions";
+import { CLASSES } from "../utils/statics";
 
 export class CuiActionsHelper {
     #interactions: IUIInteractionProvider;

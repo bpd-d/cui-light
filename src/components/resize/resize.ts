@@ -2,8 +2,8 @@ import { ICuiComponent, ICuiMutationHandler, CuiContext, ICuiEventBus } from "..
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { ICuiResizable, CuiResizeData } from "../../app/observers/resize";
-import { generateCUID } from "../../core/utlis/functions";
-import { EVENTS } from "../../core/utlis/statics";
+import { generateCUID } from "../../core/utils/functions";
+import { EVENTS } from "../../core/utils/statics";
 
 export class CuiResizeComponent implements ICuiComponent {
     attribute: string;

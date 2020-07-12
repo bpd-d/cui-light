@@ -1,7 +1,7 @@
 import { CuiSetupInit } from "../core/models/setup";
-import { is, joinAttributesForQuery, are, registerCuiElement } from "../core/utlis/functions";
+import { is, joinAttributesForQuery, are, registerCuiElement } from "../core/utils/functions";
 import { ElementManager } from "./managers/element";
-import { STATICS, EVENTS } from "../core/utlis/statics";
+import { STATICS, EVENTS } from "../core/utils/statics";
 import { ICuiLogger, ICuiPlugin, ICuiComponent, ICuiPluginManager, CuiContext, CuiElement } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
 import { CuiLoggerFactory } from "../core/factories/logger";

@@ -1,6 +1,6 @@
 import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager, CuiElement } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { is, getMatchingAttribute, are, getMatchingAttributes, generateCUID, registerCuiElement } from "../../core/utlis/functions";
+import { is, getMatchingAttribute, are, getMatchingAttributes, generateCUID, registerCuiElement } from "../../core/utils/functions";
 import { CuiUtils } from "../../core/models/utils";
 
 export interface ICuiMutionObserver {

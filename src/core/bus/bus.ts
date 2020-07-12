@@ -1,5 +1,5 @@
 import { ICuiEventBus, CuiEventReceiver, ICuiLogger, ICuiEventEmitHandler, CuiContext, CuiElement } from "../models/interfaces";
-import { is, are, generateRandomString } from "../utlis/functions";
+import { is, are, generateRandomString } from "../utils/functions";
 import { ArgumentError } from "../models/errors";
 import { CuiLoggerFactory } from "../factories/logger";
 

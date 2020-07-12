@@ -1,4 +1,4 @@
-import { ICuiComponentAction } from "../utlis/actions";
+import { ICuiComponentAction } from "../utils/actions";
 
 export interface CuiTargetChangeEvent {
     top: number;

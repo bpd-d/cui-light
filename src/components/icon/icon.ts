@@ -1,8 +1,8 @@
 import { ICuiComponent, ICuiComponentFactory, ICuiMutationHandler, ICuiLogger, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { ICONS } from "../../core/utlis/statics";
-import { is, createElementFromString } from "../../core/utlis/functions";
+import { ICONS } from "../../core/utils/statics";
+import { is, createElementFromString } from "../../core/utils/functions";
 
 export class CuiIconComponent implements ICuiComponent {
     attribute: string;

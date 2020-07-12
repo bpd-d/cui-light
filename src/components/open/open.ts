@@ -1,10 +1,10 @@
 import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString } from "../../core/utlis/functions";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utlis/actions";
+import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString } from "../../core/utils/functions";
+import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
-import { EVENTS } from "../../core/utlis/statics";
+import { EVENTS } from "../../core/utils/statics";
 
 export class CuiOpenArgs {
     target: string;

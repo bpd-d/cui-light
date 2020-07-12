@@ -1,4 +1,4 @@
-import { is } from "../utlis/functions";
+import { is } from "../utils/functions";
 import { CuiUtils } from "../models/utils";
 import { IUIInteractionProvider } from "../models/interfaces";
 

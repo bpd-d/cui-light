@@ -1,9 +1,16 @@
 import { CuiInit } from './app/initializer';
-//import "../node_modules/cui-styles/styles/style.scss";
+
+
 declare global {
     interface Window {
         cuiInit: CuiInit;
     }
 }
+
+export * from "./core/models/interfaces";
+export * from './core/models/events';
+export * from './core/models/setup';
+export * from './core/models/utils';
+export { CuiInitializer } from './app/initializer'
 
 window.cuiInit = new CuiInit();

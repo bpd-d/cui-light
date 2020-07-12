@@ -1,5 +1,5 @@
 import { ICuiEventListener } from "../models/interfaces";
-import { is } from "../utlis/functions";
+import { is } from "../utils/functions";
 
 export class CuiKeyPressListener implements ICuiEventListener<KeyboardEvent> {
     #callback: (t: KeyboardEvent) => void;

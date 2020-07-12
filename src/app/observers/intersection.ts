@@ -1,6 +1,6 @@
-import { is } from "../../core/utlis/functions";
+import { is } from "../../core/utils/functions";
 import { ICuiObserver, CuiElement } from "../../core/models/interfaces";
-import { OBSERVABLE_INTERSECTION } from "../../core/utlis/statics";
+import { OBSERVABLE_INTERSECTION } from "../../core/utils/statics";
 
 export interface ICuiIntersectionObserver {
     observe(target: Element): void;

@@ -1,11 +1,13 @@
 {
   "name": "cui-light",
-  "version": "0.0.17",
+  "version": "0.1.2",
   "description": "cUI light framework for the web",
-  "main": "./dist/cui-light.index.js",
+  "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "files": [
-    "/dist"
+    "/dist/index.js",
+    "/dist/index.js.map",
+    "/dist/index.d.ts"
   ],
   "scripts": {
     "dev": "webpack-dev-server --config webpack.development.js",
@@ -31,25 +33,17 @@
   "devDependencies": {
     "@types/jasmine": "^3.5.11",
     "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.6.0",
-    "cui-styles": "0.0.2",
-    "html-webpack-plugin": "^3.2.0",
+    "dts-bundle": "^0.7.3",
     "jasmine": "^3.5.0",
     "karma-typescript": "^5.0.3",
-    "mini-css-extract-plugin": "^0.9.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "sass-loader": "^8.0.2",
     "serialize-javascript": ">=2.1.1",
-    "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^3.0.6",
     "ts-loader": "^6.2.2",
     "typescript": "^3.9.5",
-    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-karma-jasmine": "^4.0.0",
-    "webpack-merge": "^4.2.2",
-    "sass": "^1.26.9"
+    "webpack-merge": "^4.2.2"
   }
 }

@@ -1,8 +1,8 @@
-import { CuiColorSetType } from "../../core/utlis/types";
-import { is, getRangeValue, are } from "../../core/utlis/functions";
+import { CuiColorSetType } from "../../core/utils/types";
+import { is, getRangeValue, are } from "../../core/utils/functions";
 import { IUIInteractionProvider } from "../../core/models/interfaces";
 import { CuiColor, CuiColorSet } from "../../core/models/colors";
-import { CSS_APP_BACKGROUND_COLORS, CSS_COMPONENT_BACKGROUND_COLORS, CSS_COMPONENT_BORDER_COLORS, CSS_THEMES } from "../../core/utlis/statics";
+import { CSS_APP_BACKGROUND_COLORS, CSS_COMPONENT_BACKGROUND_COLORS, CSS_COMPONENT_BORDER_COLORS, CSS_THEMES } from "../../core/utils/statics";
 
 export class CuiInstanceColorHandler {
     #root: HTMLElement;

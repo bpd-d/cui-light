@@ -1,4 +1,4 @@
-import { CuiLogLevel, CuiInteractionsType } from "../utlis/types";
+import { CuiLogLevel, CuiInteractionsType } from "../utils/types";
 import { CuiColorSet } from "./colors";
 
 interface CuiSetupCommon {

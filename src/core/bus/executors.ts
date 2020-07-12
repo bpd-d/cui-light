@@ -1,5 +1,5 @@
 import { ICuiCallbackExecutor } from "../models/interfaces"
-import { is } from "../utlis/functions"
+import { is } from "../utils/functions"
 
 export class CuiCallbackExecutor implements ICuiCallbackExecutor {
     async execute(callback: any, ctx: any, args: any[]): Promise<void> {

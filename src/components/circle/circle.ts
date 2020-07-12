@@ -1,9 +1,9 @@
 import { ICuiComponent, ICuiMutationHandler, CuiObservables, CuiContext } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { is, getRangeValue } from "../../core/utlis/functions";
+import { is, getRangeValue } from "../../core/utils/functions";
 import { IconBuilder } from "../icon/icon";
-import { ICONS } from "../../core/utlis/statics";
+import { ICONS } from "../../core/utils/statics";
 
 export class CuiCircleComponent implements ICuiComponent {
     attribute: string;

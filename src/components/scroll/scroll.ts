@@ -2,8 +2,8 @@ import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/m
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { ICONS, EVENTS } from "../../core/utlis/statics";
-import { is, parseAttributeString, getOffsetTop } from "../../core/utlis/functions";
+import { ICONS, EVENTS } from "../../core/utils/statics";
+import { is, parseAttributeString, getOffsetTop } from "../../core/utils/functions";
 
 export class CuiScrollComponent implements ICuiComponent {
     attribute: string;

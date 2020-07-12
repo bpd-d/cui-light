@@ -1,5 +1,5 @@
 import { ICuiEventListener } from "../models/interfaces";
-import { getRangeValueOrDefault } from "../utlis/functions";
+import { getRangeValueOrDefault } from "../utils/functions";
 
 export interface CuiScrollEvent {
     base: Event;

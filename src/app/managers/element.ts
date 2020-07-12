@@ -1,10 +1,10 @@
-import { is, are } from "../../core/utlis/functions";
+import { is, are } from "../../core/utils/functions";
 import { ICuiLogger, IUIInteractionProvider, CuiCachable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { CLASSES } from "../../core/utlis/statics";
+import { CLASSES } from "../../core/utils/statics";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
-import { CuiClassAction } from "../../core/utlis/actions";
+import { CuiClassAction } from "../../core/utils/actions";
 
 export class ElementManager implements CuiCachable {
     #elements: Element[];

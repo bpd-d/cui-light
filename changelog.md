@@ -1,5 +1,6 @@
 # bpd cUI Light changelog
-
+# [0.1.2] 2020-07-12
+* [Changed] Refactoring
 # [0.0.17] 2020-07-08
 * [Changed] Event bus improvements
 * [Added] New components: scrollspy and scroll, intersection

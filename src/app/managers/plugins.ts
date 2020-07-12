@@ -1,7 +1,7 @@
 import { ICuiPluginManager, ICuiPlugin, ICuiLogger, ICuiMutiationPlugin } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { is } from "../../core/utlis/functions";
+import { is } from "../../core/utils/functions";
 
 export class CuiPluginManager implements ICuiPluginManager {
     #plugins: ICuiPlugin[];

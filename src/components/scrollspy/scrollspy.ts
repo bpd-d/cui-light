@@ -2,9 +2,9 @@ import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/m
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utlis/actions";
-import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft } from "../../core/utlis/functions";
-import { EVENTS } from "../../core/utlis/statics";
+import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
+import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft } from "../../core/utils/functions";
+import { EVENTS } from "../../core/utils/statics";
 import { CuiScrollSpyOutOfRangeError } from "../../core/models/errors";
 
 export interface CuiScrollSpyAttribute {

@@ -2,8 +2,8 @@ import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/m
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { ICONS } from "../../core/utlis/statics";
-import { is } from "../../core/utlis/functions";
+import { ICONS } from "../../core/utils/statics";
+import { is } from "../../core/utils/functions";
 
 export class CuiSpinnerComponent implements ICuiComponent {
     attribute: string;

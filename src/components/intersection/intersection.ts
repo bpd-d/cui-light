@@ -2,9 +2,9 @@ import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { CuiIntersectionObserver } from "../../app/observers/intersection";
-import { CuiActionsFatory, ICuiComponentAction } from "../../core/utlis/actions";
-import { is, parseAttributeString, getRangeValueOrDefault, clone } from "../../core/utlis/functions";
-import { EVENTS } from "../../core/utlis/statics";
+import { CuiActionsFatory, ICuiComponentAction } from "../../core/utils/actions";
+import { is, parseAttributeString, getRangeValueOrDefault, clone } from "../../core/utils/functions";
+import { EVENTS } from "../../core/utils/statics";
 
 export class CuiIntersectionAttributes {
     target: string;

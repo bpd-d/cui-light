@@ -1,7 +1,7 @@
-import { CuiWindowSize } from "../../core/utlis/types";
-import { calcWindowSize } from "../../core/utlis/functions";
+import { CuiWindowSize } from "../../core/utils/types";
+import { calcWindowSize } from "../../core/utils/functions";
 import { ICuiEventBus } from "../../core/models/interfaces";
-import { EVENTS } from "../../core/utlis/statics";
+import { EVENTS } from "../../core/utils/statics";
 
 export interface ICuiResizable {
     resize(data: CuiResizeData): Promise<boolean>;

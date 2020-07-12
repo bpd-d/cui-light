@@ -1,5 +1,5 @@
 import { ICuiEventEmitHandler, ICuiLogger, ICuiCallbackExecutor, CuiEventReceiver } from "../models/interfaces";
-import { is } from "../utlis/functions";
+import { is } from "../utils/functions";
 import { CuiLoggerFactory } from "../factories/logger";
 
 interface EmitHandlerData {

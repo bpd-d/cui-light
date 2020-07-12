@@ -1,5 +1,5 @@
 import { ICuiManager, ICuiDictionary, ICuiObserver } from "../../core/models/interfaces";
-import { CuiDictionary } from "../../core/utlis/dictionary";
+import { CuiDictionary } from "../../core/utils/dictionary";
 
 
 export class CuiObserversManager implements ICuiManager<ICuiObserver> {
