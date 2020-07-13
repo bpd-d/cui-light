@@ -1,6 +1,6 @@
 import { CuiInitializer, CuiInit } from "../src/app/initializer"
 import { CuiSetupInit } from "../src/core/models/setup";
-import { is } from "../src/core/utlis/functions";
+import { is } from "../src/core/utils/functions";
 
 describe("Tests checking class [CuiInitializer]", function () {
     let initializer: CuiInitializer;

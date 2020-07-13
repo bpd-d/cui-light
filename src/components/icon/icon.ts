@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiComponentFactory, ICuiMutationHandler, ICuiLogger, CuiObservables } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
@@ -30,6 +30,7 @@ export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandle
 
 
     handle(): void {
+        this._log.debug("Icon updating", "handle")
         const iconAttr = this.element.getAttribute(this.#attribute)
         if (iconAttr === this.#prevIcon) {
             return;
@@ -52,10 +53,11 @@ export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandle
     }
 
     refresh(): void {
+        this._log.debug("Icon updating", "refresh")
     }
 
     destroy(): void {
-
+        this._log.debug("Icon delete", "destroy")
     }
 
     private insertBefore(iconElement: Element) {

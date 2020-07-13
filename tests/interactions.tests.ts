@@ -1,5 +1,5 @@
 import { IUIInteractionProvider } from "../src/core/models/interfaces";
-import { FastDom } from "../src/core/utlis/interactions";
+import { FastDom } from "../src/core/utils/interactions";
 
 describe("Tests checking [FastDom]", function () {
 

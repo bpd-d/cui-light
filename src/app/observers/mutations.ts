@@ -14,7 +14,7 @@ export interface ICuiMutionObserver {
 
 
 export class CuiMutationObserver implements ICuiMutionObserver {
-    #log: ICuiLogger;
+    _log: ICuiLogger;
     #observer: MutationObserver;
     #options: MutationObserverInit;
     #element: HTMLElement;
@@ -25,7 +25,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     constructor(element: HTMLElement, utils: CuiUtils) {
         this.#observer = null
         this.#element = element
-        this.#log = CuiLoggerFactory.get('CuiMutationObserver')
+        this._log = CuiLoggerFactory.get('CuiMutationObserver')
         this.plugins = null;
         this.#components = [];
         this.#attributes = [];
@@ -47,6 +47,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
         this.#options = {
             attributes: true,
             subtree: true,
+            childList: true,
             attributeFilter: attributes
         }
         this.#attributes = attributes;
@@ -54,24 +55,25 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     }
 
     start() {
-        this.#log.debug("Starting")
-        this.#observer = new MutationObserver(this.mutationCallback)
+        this._log.debug("Starting")
+        this.#observer = new MutationObserver(this.mutationCallback.bind(this));
         this.#observer.observe(this.#element, this.#options)
-        this.#log.debug("Started")
+        this._log.debug("Started")
         return this;
     }
 
     stop() {
-        this.#log.debug("Stopping")
+        this._log.debug("Stopping")
         if (this.#observer !== null)
-            this.#log.debug("Observer available")
+            this._log.debug("Observer available")
         this.#observer.disconnect()
         this.#observer = null;
-        this.#log.debug("Stopped")
+        this._log.debug("Stopped")
         return this
     }
 
     private mutationCallback(mutations: MutationRecord[], observer: MutationObserver) {
+        this._log.debug("Mutation")
         mutations.forEach((mutation: MutationRecord) => {
             switch (mutation.type) {
                 case 'attributes':
@@ -87,7 +89,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             }
             if (is(this.plugins)) {
                 this.plugins.onMutation(mutation).then(() => {
-                    this.#log.debug("Mutation performed on plugins")
+                    this._log.debug("Mutation performed on plugins")
                 })
             }
         })
@@ -97,10 +99,10 @@ export class CuiMutationObserver implements ICuiMutionObserver {
         const addedLen = mutation.addedNodes.length;
         const removedLen = mutation.removedNodes.length;
         if (addedLen > 0) {
-            this.#log.debug("Registering added nodes: " + addedLen)
+            this._log.debug("Registering added nodes: " + addedLen)
             this.handleAddedNodes(mutation.addedNodes);
         } else if (removedLen > 0) {
-            this.#log.debug("REmoving nodes: " + removedLen);
+            this._log.debug("REmoving nodes: " + removedLen);
             this.handleRemovedNodes(mutation.removedNodes);
         }
     }
@@ -113,7 +115,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
 
     private handleRemovedNodes(nodes: NodeList) {
         nodes.forEach(node => {
-            this.#log.debug("Removing")
+            this._log.debug("Removing")
         })
     }
 

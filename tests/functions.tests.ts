@@ -1,4 +1,4 @@
-import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt } from "../src/core/utlis/functions"
+import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt, getMatchingAttributes } from "../src/core/utils/functions";
 
 /**
  * Tests check function is
@@ -638,5 +638,15 @@ describe("Tests checking method [getRandomInt]", function () {
         expect(out2).toBeGreaterThanOrEqual(0);
         expect(out2).toBeLessThanOrEqual(1000);
         expect(out !== out2).toBeTrue();
+    })
+})
+
+describe("Tests checking method [getMatchingAttributes]", function () {
+    it("Normal case", function () {
+        let attrs = ['XXX', 'YYY']
+        let element = document.createElement('span');
+        element.setAttribute('XXX', "sss")
+        let matching: string[] = null;
+        matching = getMatchingAttributes(element, attrs);
     })
 })

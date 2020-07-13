@@ -11,6 +11,6 @@ export * from "./core/models/interfaces";
 export * from './core/models/events';
 export * from './core/models/setup';
 export * from './core/models/utils';
-export { CuiInitializer } from './app/initializer'
+export * from './app/initializer'
 
 window.cuiInit = new CuiInit();

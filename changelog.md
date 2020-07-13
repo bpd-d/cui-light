@@ -1,6 +1,12 @@
 # bpd cUI Light changelog
+# [0.1.3] 2020-07-13
+* [Fixed] Unit test references
+* [Fixed] Mutation observer not updating properly
+* [Added] Initial function to copy setup values from JS module to CSS global variables
+
 # [0.1.2] 2020-07-12
 * [Changed] Refactoring
+
 # [0.0.17] 2020-07-08
 * [Changed] Event bus improvements
 * [Added] New components: scrollspy and scroll, intersection

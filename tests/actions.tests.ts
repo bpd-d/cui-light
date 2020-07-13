@@ -1,8 +1,8 @@
 
-import { CuiClassAction, ICuiComponentAction, CuiInboundAction, CuiActionsFatory } from '../src/core/utlis/actions';
+import { CuiClassAction, ICuiComponentAction, CuiInboundAction, CuiActionsFatory } from '../src/core/utils/actions';
 import { CuiUtils } from '../src/core/models/utils';
 import { CuiSetupInit } from '../src/core/models/setup';
-import { sleep } from '../src/core/utlis/functions';
+import { sleep } from '../src/core/utils/functions';
 describe("Tests checking method [CuiActions]", function () {
     let element: Element;
     let utils: CuiUtils;

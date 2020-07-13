@@ -1,7 +1,7 @@
 import { CuiUtils } from "../src/core/models/utils"
 import { CuiSetupInit } from "../src/core/models/setup";
-import { sleep } from "../src/core/utlis/functions";
-import { CuiLightMode } from "../src/core/utlis/types";
+import { sleep } from "../src/core/utils/functions";
+import { CuiLightMode } from "../src/core/utils/types";
 
 describe("Tests checking method [CuiUtils]", function () {
     let utils: CuiUtils;

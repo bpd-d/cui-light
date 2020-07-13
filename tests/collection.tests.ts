@@ -1,5 +1,5 @@
 import { CollectionManager } from "../src/app/managers/collection";
-import { FastDom } from "../src/core/utlis/interactions";
+import { FastDom } from "../src/core/utils/interactions";
 
 describe("Tests checking class [CollectionManager]", function () {
     let manager: CollectionManager;

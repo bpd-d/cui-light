@@ -60,6 +60,7 @@ export class CuiSetupInit implements CuiSetupCommon {
     animationTimeLong?: number;
     scrollThreshold?: number;
     resizeThreshold?: number;
+    root: HTMLElement;
 
     constructor() {
         this.prefix = 'cui';
@@ -73,5 +74,6 @@ export class CuiSetupInit implements CuiSetupCommon {
         this.autoLightMode = false;
         this.scrollThreshold = 20;
         this.resizeThreshold = 20;
+        this.root = document.body;
     }
 }

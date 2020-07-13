@@ -34,6 +34,9 @@ export function isEmpty(val: any): boolean {
     if (typeof val === "string") {
         return val.length === 0
     }
+    if (typeof val === "boolean") {
+        return val;
+    }
     else if (Array.isArray(val)) {
         return val.length === 0
     }
@@ -80,6 +83,9 @@ export function getMatchingAttribute(element: any, attributes: string[]): string
 }
 
 export function getMatchingAttributes(element: any, attributes: string[]): string[] {
+    if (!element || !is(element.hasAttribute)) {
+        return null;
+    }
     return attributes.filter(a => {
         return element.hasAttribute(a);
     });

@@ -1,7 +1,7 @@
 import { CuiSetupInit } from "../core/models/setup";
 import { is, joinAttributesForQuery, are, registerCuiElement } from "../core/utils/functions";
 import { ElementManager } from "./managers/element";
-import { STATICS, EVENTS } from "../core/utils/statics";
+import { STATICS, EVENTS, CSS_VARIABLES } from "../core/utils/statics";
 import { ICuiLogger, ICuiPlugin, ICuiComponent, ICuiPluginManager, CuiContext, CuiElement } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
 import { CuiLoggerFactory } from "../core/factories/logger";
@@ -19,6 +19,7 @@ export class CuiInstance {
     #utils: CuiUtils;
     plugins: ICuiPluginManager;
     #components: ICuiComponent[];
+    #rootElement: HTMLElement;
     constructor(setup: CuiSetupInit, plugins: ICuiPlugin[], components: ICuiComponent[]) {
         STATICS.prefix = setup.prefix;
         STATICS.logLevel = setup.logLevel;
@@ -26,9 +27,11 @@ export class CuiInstance {
         this.#components = components ?? [];
         this.#utils = new CuiUtils(setup);
         this.#log = CuiLoggerFactory.get('CuiInstance')
+        this.#rootElement = setup.root;
     }
 
     init(): CuiInstance {
+        this.#log.debug("Instance started", "init")
         // Init elements
         if (!is(window.MutationObserver)) {
             throw new CuiInstanceInitError("Mutation observer does not exists");
@@ -42,15 +45,25 @@ export class CuiInstance {
                 registerCuiElement(item, this.#components, mutatedAttributes, this.#utils);
             })
         }
+        this.#log.debug("Init plugins", "init")
         // Init plugins
         this.plugins.init(this.#utils);
 
         if (are(this.#components, mutatedAttributes)) {
-            this.#mutationObserver = new CuiMutationObserver(document.body, this.#utils)
+            this.#log.debug("Init mutation observer", "init")
+            this.#mutationObserver = new CuiMutationObserver(this.#rootElement, this.#utils)
             this.#mutationObserver.setComponents(this.#components).setAttributes(mutatedAttributes)
             this.#mutationObserver.setPlugins(this.plugins);
             this.#mutationObserver.start();
         }
+
+        this.#log.debug("Setting CSS globals", 'init')
+        this.#utils.interactions.mutate(() => {
+            document.documentElement.style.setProperty(CSS_VARIABLES.animationTimeLong, `${this.#utils.setup.animationTimeLong}ms`);
+            document.documentElement.style.setProperty(CSS_VARIABLES.animationTime, `${this.#utils.setup.animationTime}ms`);
+            document.documentElement.style.setProperty(CSS_VARIABLES.animationTimeShort, `${this.#utils.setup.animationTimeShort}ms`);
+        }, null)
+
 
         this.#utils.bus.emit(EVENTS.INSTANCE_INITIALIZED, null)
         return this;

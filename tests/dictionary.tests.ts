@@ -1,6 +1,6 @@
-import { CuiDictionary } from "../src/core/utlis/dictionary"
+import { CuiDictionary } from "../src/core/utils/dictionary"
 import { ICuiDictionary } from "../src/core/models/interfaces"
-import { is } from "../src/core/utlis/functions";
+import { is } from "../src/core/utils/functions";
 
 describe("Tests checking CuiDictionary", function () {
     it("Shall init dictionary if items are provided", function () {
