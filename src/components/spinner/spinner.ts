@@ -23,13 +23,18 @@ export class CuiSpinnerComponent implements ICuiComponent {
 
 export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
     #attribute: string;
+    #isInitialized: boolean;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiSpinnerHandler", element, utils);
         this.element = element;
         this.#attribute = attribute
+        this.#isInitialized = false;
     }
 
-    handle(): void {
+    handle(args: any): void {
+        if (this.#isInitialized) {
+            return
+        }
         const spinnerName = this.element.getAttribute(this.#attribute);
         const svgIcon = is(spinnerName) ? ICONS[`spinner_${spinnerName}`] : null;
         if (!is(svgIcon)) {
@@ -37,14 +42,19 @@ export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHan
         }
         const iconElement = new IconBuilder(svgIcon).build();
         this.element.innerHTML = "";
+        this.#isInitialized = true
         this.mutate(this.addSpinner, iconElement, spinnerName);
     }
 
-    refresh(): void {
+    refresh(args: any): void {
+        if (this.#isInitialized) {
+            return
+        }
     }
 
     destroy(): void {
-
+        this.#isInitialized = false;
+        this.element.innerHTML = "";
     }
 
     private addSpinner(iconElement: Element, name: string) {

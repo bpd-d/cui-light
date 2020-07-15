@@ -40,13 +40,13 @@ export class CuiScrollHandler extends CuiHandlerBase implements ICuiMutationHand
         this.#target = null;
     }
 
-    handle(): void {
-        this.parseArguments();
+    handle(args: any): void {
+        this.parseArguments(args);
         this.element.addEventListener('click', this.onClick.bind(this));
     }
 
-    refresh(): void {
-        this.parseArguments();
+    refresh(args: any): void {
+        this.parseArguments(args);
     }
 
     destroy(): void {
@@ -74,8 +74,8 @@ export class CuiScrollHandler extends CuiHandlerBase implements ICuiMutationHand
         ev.preventDefault();
     }
 
-    private parseArguments(): void {
-        this.#args = parseAttributeString(this.element.getAttribute(this.#attribute));
+    private parseArguments(args: any): void {
+        this.#args = args;
         this.#target = document.querySelector(this.#args.target) as HTMLElement;
         if (is(this.#target)) {
             this.#parent = is(this.#args.parent) ? document.querySelector(this.#args.parent) : this.#target.parentElement;

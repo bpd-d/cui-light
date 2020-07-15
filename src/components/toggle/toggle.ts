@@ -50,14 +50,14 @@ export class CuiToggleHandler extends CuiHandlerBase implements ICuiMutationHand
         this.#utils = utils;
     }
 
-    handle(): void {
-        this.#args.parse(parseAttribute(this.element, this.#attribute));
+    handle(args: any): void {
+        this.#args.parse(args);
         this.#target = this.getTarget();
         this.element.addEventListener('click', this.onClick.bind(this));
     }
 
-    refresh(): void {
-        this.#args.parse(parseAttribute(this.element, this.#attribute));
+    refresh(args: any): void {
+        this.#args.parse(args);
         this.#target = this.getTarget();
     }
 

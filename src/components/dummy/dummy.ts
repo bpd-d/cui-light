@@ -26,11 +26,11 @@ export class CuiDummyHandler extends CuiHandlerBase implements ICuiMutationHandl
         this.#attribute = attribute
     }
 
-    handle(): void {
+    handle(args: any): void {
 
     }
 
-    refresh(): void {
+    refresh(args: any): void {
 
     }
 

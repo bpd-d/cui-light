@@ -1,6 +1,6 @@
 import { ICuiLogger, IUIInteractionProvider, ICuiMutiationPlugin, ICuiComponent, ICuiPluginManager, CuiElement } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
-import { is, getMatchingAttribute, are, getMatchingAttributes, generateCUID, registerCuiElement } from "../../core/utils/functions";
+import { is, getMatchingAttribute, are, getMatchingAttributes, generateCUID, registerCuiElement, joinAttributesForQuery, parseAttribute } from "../../core/utils/functions";
 import { CuiUtils } from "../../core/models/utils";
 
 export interface ICuiMutionObserver {
@@ -22,6 +22,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     #components: ICuiComponent[];
     #attributes: string[];
     #utils: CuiUtils;
+    #queryString: string;
     constructor(element: HTMLElement, utils: CuiUtils) {
         this.#observer = null
         this.#element = element
@@ -30,6 +31,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
         this.#components = [];
         this.#attributes = [];
         this.#utils = utils;
+        this.#queryString = "";
 
     }
 
@@ -51,6 +53,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             attributeFilter: attributes
         }
         this.#attributes = attributes;
+        this.#queryString = joinAttributesForQuery(attributes);
         return this;
     }
 
@@ -73,13 +76,12 @@ export class CuiMutationObserver implements ICuiMutionObserver {
     }
 
     private mutationCallback(mutations: MutationRecord[], observer: MutationObserver) {
-        this._log.debug("Mutation")
         mutations.forEach((mutation: MutationRecord) => {
             switch (mutation.type) {
                 case 'attributes':
                     const item = mutation.target as any;
                     if (are(item.$handlers, item.$handlers[mutation.attributeName])) {
-                        item.$handlers[mutation.attributeName].refresh();
+                        item.$handlers[mutation.attributeName].refresh(parseAttribute(item, mutation.attributeName));
                     }
                     break;
 
@@ -89,7 +91,7 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             }
             if (is(this.plugins)) {
                 this.plugins.onMutation(mutation).then(() => {
-                    this._log.debug("Mutation performed on plugins")
+                    //
                 })
             }
         })
@@ -102,38 +104,51 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             this._log.debug("Registering added nodes: " + addedLen)
             this.handleAddedNodes(mutation.addedNodes);
         } else if (removedLen > 0) {
-            this._log.debug("REmoving nodes: " + removedLen);
+            this._log.debug("Removing nodes: " + removedLen);
             this.handleRemovedNodes(mutation.removedNodes);
         }
     }
 
     private handleAddedNodes(nodes: NodeList) {
         nodes.forEach((node: any) => {
-            registerCuiElement(node, this.#components, this.#attributes, this.#utils);
+            try {
+                registerCuiElement(node, this.#components, this.#attributes, this.#utils);
+                let childrens = node.hasChildNodes() ? node.querySelectorAll(this.#queryString) : null;
+                if (is(childrens)) {
+                    childrens.forEach((child: any) => {
+                        registerCuiElement(child, this.#components, this.#attributes, this.#utils);
+                    })
+                }
+            } catch (e) {
+                this._log.exception(e);
+            }
         })
     }
 
     private handleRemovedNodes(nodes: NodeList) {
-        nodes.forEach(node => {
-            this._log.debug("Removing")
+        nodes.forEach((node: any) => {
+            this.destroySingleElement(node);
+            let childrens = node.hasChildNodes() ? node.querySelectorAll(this.#queryString) : null;
+            if (is(childrens)) {
+                childrens.forEach((child: any) => {
+                    this.destroySingleElement(child);
+                })
+            }
         })
     }
 
-    // private registterCuiElement(node: any) {
-    //     let element = node as CuiElement
-    //     element.$handlers = {};
-    //     let matching: string[] = getMatchingAttributes(node, this.#attributes)
-    //     if (is(matching)) {
-    //         matching.forEach(match => {
-    //             let component = this.#components.find(c => { return c.attribute === match });
-    //             if (is(component)) {
-    //                 this.#utils.styleAppender.append(component.getStyle());
-    //                 let handler = component.get(node, this.#utils);
-    //                 element.$handlers[component.attribute] = handler;
-    //                 element.$handlers[component.attribute].handle();
-    //             }
-    //         })
-    //         element.$cuid = generateCUID(node.tagName)
-    //     }
-    // }
+    private destroySingleElement(node: any) {
+        let element = node as CuiElement;
+        if (element.$handlers) {
+            for (let name in element.$handlers) {
+                if (element.$handlers.hasOwnProperty(name)) {
+                    try {
+                        element.$handlers[name].destroy();
+                    } catch (e) {
+                        this._log.exception(e, 'remove - ' + name)
+                    }
+                }
+            }
+        }
+    }
 }

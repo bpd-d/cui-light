@@ -28,7 +28,6 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
     #full: number;
     #path: any;
     #prevValue: number;
-    #iconStr: string;
     #attribute: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiCircleHandler", element, utils);
@@ -38,33 +37,31 @@ export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHand
         this.#attribute = attribute;
     }
 
-    observables(): CuiObservables {
-        return null;
-    }
-
-    handle(): void {
-        if (!is(this.#isInitialized)) {
-            const iconSvg = new IconBuilder(ICONS['special_circle_progress']).build();
-            const svg = this.element.querySelector('svg')
-            if (is(svg)) {
-                svg.remove();
-            }
-            this.element.appendChild(iconSvg);
-            this.#path = this.element.querySelector('.circle-progress-path');
-            this.#full = this.#path.getTotalLength();
-            this.#factor = this.#full / 100;
-            this.#isInitialized = true;
+    handle(args: any): void {
+        if (is(this.#isInitialized)) {
+            return;
         }
+        const iconSvg = new IconBuilder(ICONS['special_circle_progress']).build();
+        const svg = this.element.querySelector('svg')
+        if (is(svg)) {
+            svg.remove();
+        }
+        this.element.appendChild(iconSvg);
+        this.#path = this.element.querySelector('.circle-progress-path');
+        this.#full = this.#path.getTotalLength();
+        this.#factor = this.#full / 100;
+        this.#isInitialized = true;
         this.fetch(this.readStyle)
     }
 
-    refresh(): void {
+    refresh(args: any): void {
         this.fetch(this.readStyle)
     }
 
     destroy(): void {
-
+        this.#isInitialized = false
     }
+
     private updateStyle(value: number) {
         this.#path.style.strokeDashoffset = value;
     }

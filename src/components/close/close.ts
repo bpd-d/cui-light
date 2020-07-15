@@ -47,7 +47,6 @@ export class CuiCloseComponent implements ICuiComponent {
 }
 
 export class CuiCloseHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #attribute: string;
     #args: CuiCloseArgs;
     #isInitialized: boolean;
     #prefix: string;
@@ -56,23 +55,22 @@ export class CuiCloseHandler extends CuiHandlerBase implements ICuiMutationHandl
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiCloseHandler", element, utils);
         this.#actionHelper = new CuiActionsHelper(utils.interactions);
-        this.#attribute = attribute
         this.#args = new CuiCloseArgs();
         this.#isInitialized = false;
         this.#prefix = prefix;
     }
 
-    handle(): void {
+    handle(args: any): void {
         this._log.debug("Init", "handle")
-        this.#args.parse(parseAttribute(this.element, this.#attribute));
+        this.#args.parse(args);
         this.element.addEventListener('click', this.onClick.bind(this))
         this.#isInitialized = true;
         this._log.debug("Initialized", "handle")
     }
 
-    refresh(): void {
+    refresh(args: any): void {
         this._log.debug("Refresh", "refresh")
-        this.#args.parse(parseAttribute(this.element, this.#attribute));
+        this.#args.parse(args);
         if (!this.#isInitialized) {
             this.element.addEventListener('click', this.onClick.bind(this))
             this.#isInitialized = true;

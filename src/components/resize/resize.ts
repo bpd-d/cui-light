@@ -31,12 +31,12 @@ export class CuiResizeHandler extends CuiHandlerBase implements ICuiMutationHand
     }
 
 
-    handle(): void {
+    handle(args: any): void {
         //   this._log.debug(this.#element.getAttribute(this.#attribute));
         this.#bus.on(EVENTS.ON_RESIZE, this.resize, this);
     }
 
-    refresh(): void {
+    refresh(args: any): void {
         // console.log(this.#element.getAttribute(this.#attribute));
     }
 

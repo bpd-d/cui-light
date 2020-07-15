@@ -74,19 +74,19 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiMutationH
         this.#currentIdx = this.#targetsLength = this.#linksLength - 1;
     }
 
-    handle(): void {
+    handle(args: any): void {
         this._log.debug("Handle", "handle");
         this.#prevScrollTop = this.element.scrollTop;
         this.#prevScrollLeft = this.element.scrollLeft;
-        this.parseAttribute();
+        this.parseAttribute(args);
         this.calculateCurrent(this.#prevScrollTop);
         this.#listener.setCallback(this.onScroll.bind(this));
         this.#listener.attach();
     }
 
-    refresh(): void {
+    refresh(args: any): void {
         this._log.debug("Refresh")
-        this.parseAttribute();
+        this.parseAttribute(args);
         this.#prevScrollTop = this.element.scrollTop;
         this.#prevScrollLeft = this.element.scrollLeft;
         this.calculateCurrent(this.#prevScrollTop);
@@ -117,8 +117,8 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiMutationH
         this.#prevScrollLeft = this.element.scrollLeft;
     }
 
-    private parseAttribute() {
-        this.#args.parse(parseAttributeString(this.element.getAttribute(this.#attribute)));
+    private parseAttribute(args: any) {
+        this.#args.parse(args);
         this.#targets = [...this.element.querySelectorAll(this.#args.selector)];
         this.#links = this.#args.link ? [...document.querySelectorAll(this.#args.link)] : [];
         this.#targetsLength = this.#targets.length;

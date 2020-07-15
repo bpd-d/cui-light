@@ -45,12 +45,15 @@ export interface ICuiDictionaryItem<T> {
     value: T;
 }
 export interface ICuiMutationHandler {
-    handle(): void;
-    refresh(): void;
+    handle(args: any): void;
+    refresh(args: any): void;
     destroy(): void;
 }
 export interface CuiCachable {
     refresh(): boolean;
+}
+export interface ICuiParsable {
+    parse(val: any): void;
 }
 export interface ICui {
     getId(): string;

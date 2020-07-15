@@ -1,5 +1,5 @@
 import { CuiLightMode, CuiWindowSize } from "./types";
-import { ArgumentError } from "../models/errors";
+import { ArgumentError, RegisterElementError } from "../models/errors";
 import { ICuiComponent, CuiElement } from "../models/interfaces";
 import { CuiUtils } from "../models/utils";
 import { COMPONENTS_COUNTER } from "./statics";
@@ -380,10 +380,14 @@ export function registerCuiElement(node: any, components: ICuiComponent[], attri
         matching.forEach(match => {
             let component = components.find(c => { return c.attribute === match });
             if (is(component)) {
-                utils.styleAppender.append(component.getStyle());
-                let handler = component.get(node, utils);
-                element.$handlers[component.attribute] = handler;
-                element.$handlers[component.attribute].handle();
+                try {
+                    utils.styleAppender.append(component.getStyle());
+                    let handler = component.get(node, utils);
+                    element.$handlers[component.attribute] = handler;
+                    element.$handlers[component.attribute].handle(parseAttribute(node, component.attribute));
+                } catch (e) {
+                    throw new RegisterElementError(e.message);
+                }
             }
         })
         element.$cuid = generateCUID(node.tagName)

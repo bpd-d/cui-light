@@ -36,3 +36,9 @@ export class CuiScrollSpyOutOfRangeError extends ErrorBase {
     }
 }
 
+
+export class RegisterElementError extends ErrorBase {
+    constructor(message?: string) {
+        super("RegisterElementError", message);
+    }
+}

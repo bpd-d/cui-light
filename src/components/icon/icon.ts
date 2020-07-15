@@ -1,8 +1,23 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiMutationHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
-import { is, createElementFromString } from "../../core/utils/functions";
+import { is, createElementFromString, isString, getStringOrDefault } from "../../core/utils/functions";
+
+export class CuiIconArgs implements ICuiParsable {
+    icon: string;
+
+    parse(val: any) {
+        if (!is(val)) {
+            this.icon = null;
+        }
+        if (isString(val)) {
+            this.icon = val
+            return;
+        }
+        this.icon = getStringOrDefault(val.icon, "");
+    }
+}
 
 export class CuiIconComponent implements ICuiComponent {
     attribute: string;
@@ -19,45 +34,66 @@ export class CuiIconComponent implements ICuiComponent {
     }
 }
 
+
+
 export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #prevIcon: string;
+    #currentIcon: string;
     #attribute: string;
+    #args: CuiIconArgs;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiIconHandler", element, utils);
-        this.#prevIcon = null;
+        this.#currentIcon = null;
         this.#attribute = attribute;
+        this.#args = new CuiIconArgs();
     }
 
 
-    handle(): void {
-        this._log.debug("Icon updating", "handle")
-        const iconAttr = this.element.getAttribute(this.#attribute)
-        if (iconAttr === this.#prevIcon) {
+    handle(args: any): void {
+        this._log.debug("Icon handle", "handle")
+        this.#args.parse(args);
+        if (this.#currentIcon !== null) {
+            this._log.debug("Icon already initialized")
             return;
         }
+        this.addIcon(this.#args.icon)
+        this.#currentIcon = this.#args.icon;
+    }
 
-        const iconStr = iconAttr ? ICONS[iconAttr] : null;
+    refresh(args: any): void {
+        this._log.debug("Icon refresh", "refresh")
+        this.#args.parse(args);
+        if (this.#args.icon === this.#currentIcon) {
+            return;
+        }
+        this.addIcon(this.#args.icon);
+        this.#currentIcon = this.#args.icon;
+    }
+
+    destroy(): void {
+        this._log.debug("Icon delete", "destroy")
+        const svg = this.element.querySelector('svg')
+        if (is(svg)) {
+            svg.remove();
+        }
+        this.#currentIcon = null;
+    }
+
+    private addIcon(icon: string) {
+        const iconStr = icon ? ICONS[icon] : null;
         if (!iconStr) {
-            return
+            return;
         }
         const iconSvg = new IconBuilder(iconStr).build();
         const svg = this.element.querySelector('svg')
         if (is(svg)) {
             svg.remove();
         }
+
         if (this.element.childNodes.length > 0) {
             this.mutate(this.insertBefore, iconSvg)
         } else {
             this.mutate(this.appendChild, iconSvg)
         }
-    }
-
-    refresh(): void {
-        this._log.debug("Icon updating", "refresh")
-    }
-
-    destroy(): void {
-        this._log.debug("Icon delete", "destroy")
     }
 
     private insertBefore(iconElement: Element) {

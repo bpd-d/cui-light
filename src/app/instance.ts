@@ -38,12 +38,16 @@ export class CuiInstance {
         }
         this.#toastManager = new CuiToastHandler(this.#utils.interactions, this.#utils.setup.prefix, this.#utils.setup.animationTimeLong);
         const mutatedAttributes: string[] = this.#components.map(x => { return x.attribute }); // MUTATED_ATTRIBUTES; 
-        const initElements = is(mutatedAttributes) ? document.querySelectorAll(joinAttributesForQuery(mutatedAttributes)) : null
+        const initElements = is(mutatedAttributes) ? this.#rootElement.querySelectorAll(joinAttributesForQuery(mutatedAttributes)) : null
         if (is(initElements)) {
             this.#log.debug(`Initiating ${initElements.length} elements`)
-            initElements.forEach((item: any) => {
-                registerCuiElement(item, this.#components, mutatedAttributes, this.#utils);
-            })
+            try {
+                initElements.forEach((item: any) => {
+                    registerCuiElement(item, this.#components, mutatedAttributes, this.#utils);
+                })
+            } catch (e) {
+                this.#log.exception(e);
+            }
         }
         this.#log.debug("Init plugins", "init")
         // Init plugins
@@ -59,9 +63,9 @@ export class CuiInstance {
 
         this.#log.debug("Setting CSS globals", 'init')
         this.#utils.interactions.mutate(() => {
-            document.documentElement.style.setProperty(CSS_VARIABLES.animationTimeLong, `${this.#utils.setup.animationTimeLong}ms`);
-            document.documentElement.style.setProperty(CSS_VARIABLES.animationTime, `${this.#utils.setup.animationTime}ms`);
-            document.documentElement.style.setProperty(CSS_VARIABLES.animationTimeShort, `${this.#utils.setup.animationTimeShort}ms`);
+            this.#utils.setProperty(CSS_VARIABLES.animationTimeLong, `${this.#utils.setup.animationTimeLong}ms`)
+            this.#utils.setProperty(CSS_VARIABLES.animationTime, `${this.#utils.setup.animationTime}ms`);
+            this.#utils.setProperty(CSS_VARIABLES.animationTimeShort, `${this.#utils.setup.animationTimeShort}ms`);
         }, null)
 
 

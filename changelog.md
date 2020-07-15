@@ -1,4 +1,8 @@
 # bpd cUI Light changelog
+# [0.1.4] 2020-07-15
+* [Fixed] More adjustments to mutation observer
+* [Chnaged] Mutation observer now gets attribute value and passed ready to use argument object to handle and refresh
+
 # [0.1.3] 2020-07-13
 * [Fixed] Unit test references
 * [Fixed] Mutation observer not updating properly

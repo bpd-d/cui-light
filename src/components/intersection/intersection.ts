@@ -51,8 +51,8 @@ export class CuiIntersectionHandler extends CuiHandlerBase implements ICuiMutati
         this.#targets = []
     }
 
-    handle(): void {
-        this.parseArguments(null);
+    handle(args: any): void {
+        this.parseArguments(null, args);
         this.#observer.setCallback(this.onIntersection.bind(this))
         this.#observer.connect();
         this.#targets.forEach(target => {
@@ -60,17 +60,17 @@ export class CuiIntersectionHandler extends CuiHandlerBase implements ICuiMutati
         })
     }
 
-    refresh(): void {
+    refresh(args: any): void {
         let prev = clone(this.#args)
-        this.parseArguments(prev);
+        this.parseArguments(prev, args);
     }
 
     destroy(): void {
         this.#observer.disconnect();
     }
 
-    parseArguments(prev: CuiIntersectionAttributes) {
-        this.#args.parse(parseAttributeString(this.element.getAttribute(this.#attribute)));
+    parseArguments(prev: CuiIntersectionAttributes, args: any) {
+        this.#args.parse(args);
         if (prev === null || prev.target !== this.#args.target) {
             this.#targets = [...document.querySelectorAll(this.#args.target)];
         }
