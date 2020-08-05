@@ -1,5 +1,5 @@
 # bpd cUI Light changelog
-# [0.1.4] 
+# [0.1.5] 
 * [Fixed] More adjustments to mutation observer
 * [Chnaged] Mutation observer now gets attribute value and passed ready to use argument object to handle and refresh
 * [Changed] Open and close components will first try to call corresponding open/close function in specifi cUI component
