@@ -14,11 +14,13 @@ export class CuiScrollListener implements ICuiEventListener<CuiScrollEvent> {
     #prevX: number;
     #prevY: number;
     #callback: (ev: CuiScrollEvent) => void;
+    #isAttached: boolean;
     constructor(target: Element, threshold?: number) {
         this.#target = target;
         this.#inProgress = false;
         this.#threshold = getRangeValueOrDefault(threshold, 0, 100, 0);
         this.#prevX = this.#prevY = 0;
+        this.#isAttached = false;
     }
 
     setCallback(callback: (ev: CuiScrollEvent) => void) {
@@ -27,14 +29,20 @@ export class CuiScrollListener implements ICuiEventListener<CuiScrollEvent> {
 
     attach() {
         this.#target.addEventListener('scroll', this.listener.bind(this))
+        this.#isAttached = true;
     }
 
     detach() {
         this.#target.removeEventListener('scroll', this.listener.bind(this))
+        this.#isAttached = false;
     }
 
     isInProgress(): boolean {
         return this.#inProgress;
+    }
+
+    isAttached(): boolean {
+        return this.#isAttached;
     }
 
     private listener(ev: Event) {

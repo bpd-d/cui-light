@@ -1,6 +1,6 @@
-import { ICuiComponent, ICuiMutationHandler, ICuiParsable } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
 import { is, createElementFromString, isString, getStringOrDefault } from "../../core/utils/functions";
 
@@ -29,48 +29,40 @@ export class CuiIconComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiIconHandler(element, utils, this.attribute);
     }
 }
 
 
 
-export class CuiIconHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiIconHandler extends CuiHandler<CuiIconArgs> {
+
     #currentIcon: string;
-    #attribute: string;
-    #args: CuiIconArgs;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiIconHandler", element, utils);
+        super("CuiIconHandler", element, new CuiIconArgs(), utils);
         this.#currentIcon = null;
-        this.#attribute = attribute;
-        this.#args = new CuiIconArgs();
+
     }
 
-
-    handle(args: any): void {
-        this._log.debug("Icon handle", "handle")
-        this.#args.parse(args);
+    onInit(): void {
         if (this.#currentIcon !== null) {
             this._log.debug("Icon already initialized")
             return;
         }
-        this.addIcon(this.#args.icon)
-        this.#currentIcon = this.#args.icon;
+        this.addIcon(this.args.icon)
+        this.#currentIcon = this.args.icon;
     }
 
-    refresh(args: any): void {
-        this._log.debug("Icon refresh", "refresh")
-        this.#args.parse(args);
-        if (this.#args.icon === this.#currentIcon) {
+    onUpdate(): void {
+        if (this.args.icon === this.#currentIcon) {
             return;
         }
-        this.addIcon(this.#args.icon);
-        this.#currentIcon = this.#args.icon;
+        this.addIcon(this.args.icon);
+        this.#currentIcon = this.args.icon;
     }
 
-    destroy(): void {
-        this._log.debug("Icon delete", "destroy")
+    onDestroy(): void {
         const svg = this.element.querySelector('svg')
         if (is(svg)) {
             svg.remove();

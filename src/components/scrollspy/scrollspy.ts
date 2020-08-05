@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
@@ -47,13 +47,12 @@ export class CuiScrollspyComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiScrollspyHandler(element, utils, this.attribute);
     }
 }
 
-export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #attribute: string;
+export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #listener: CuiScrollListener;
     #args: CuiScrollSpyArgs;
     #links: Element[];
@@ -66,7 +65,6 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiMutationH
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiScrollspyHandler", element, utils);
         this.element = element as HTMLElement;
-        this.#attribute = attribute;
         this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
         this.#args = new CuiScrollSpyArgs();
         this.#links = [];

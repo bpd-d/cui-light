@@ -1,7 +1,7 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, CuiElement, ICuiOpenable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString } from "../../core/utils/functions";
+import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, getHandlerExtendingOrNull, isStringTrue } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
 import { EVENTS } from "../../core/utils/statics";
@@ -10,10 +10,12 @@ export class CuiOpenArgs {
     target: string;
     action: ICuiComponentAction;
     timeout: number;
+    prevent: boolean;
     constructor() {
         this.target = "";
         this.action = null;
         this.timeout = 0;
+        this.prevent = false;
     }
 
     parse(args: any) {
@@ -21,11 +23,13 @@ export class CuiOpenArgs {
             this.target = args;
             this.action = null;
             this.timeout = -1
+            this.prevent = false;
             return;
         }
         this.target = getStringOrDefault(args.target, null);
         this.action = CuiActionsFatory.get(args.action)
         this.timeout = getIntOrDefault(args.timeout, -1);
+        this.prevent = args.prevent && isStringTrue(args.prevent)
     }
 
     isValid(): boolean {
@@ -45,12 +49,12 @@ export class CuiOpenComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiOpenHandler(element, utils, this.attribute, this.#prefix);
     }
 }
 
-export class CuiOpenHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiOpenHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #args: CuiOpenArgs;
     #isInitialized: boolean;
     #prefix: string;
@@ -106,19 +110,41 @@ export class CuiOpenHandler extends CuiHandlerBase implements ICuiMutationHandle
             return;
         }
         this.#inProgress = true;
-        if (this.#args.action && this.#args.timeout !== -1) {
-            let delay = this.#args.timeout > 0 ? this.#args.timeout : this.utils.setup.animationTime;
-            this.#actionsHelper.performAction(target, this.#args.action, delay).then(() => {
-                target.classList.add(getActiveClass(this.#prefix));
-                this.emitOpen(ev);
-                this.#inProgress = false;
-            });
-        } else {
-            target.classList.add(getActiveClass(this.#prefix));
-            this.emitOpen(ev);
+        this.run(target).then((result) => {
+            this.activateTarget(ev, target);
             this.#inProgress = false;
+        }).catch((e) => {
+            this._log.exception(e);
+            this.#inProgress = false;
+        })
+        if (this.#args.prevent) {
+            ev.preventDefault();
         }
-        ev.preventDefault();
+
+    }
+
+    private canPerformAction(): boolean {
+        return this.#args.action && this.#args.timeout !== -1;
+    }
+
+    private async run(target: Element): Promise<boolean> {
+        let openable = getHandlerExtendingOrNull<ICuiOpenable>(target as any, 'open');
+        if (is(openable)) {
+            console.log("openable");
+            return openable.open();
+        } else if (this.canPerformAction()) {
+            let delay = this.#args.timeout > 0 ? this.#args.timeout : this.utils.setup.animationTime;
+            return this.#actionsHelper.performAction(target, this.#args.action, delay);
+        }
+        return true;
+    }
+
+    private activateTarget(ev: MouseEvent, target: Element): void {
+        let activeCls = getActiveClass(this.#prefix);
+        if (is(target) && !target.classList.contains(activeCls)) {
+            target.classList.add(activeCls);
+        }
+        this.emitOpen(ev);
     }
 
     emitOpen(ev: MouseEvent) {

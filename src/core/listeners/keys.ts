@@ -6,6 +6,7 @@ export class CuiKeyPressListener implements ICuiEventListener<KeyboardEvent> {
     #keys: string[];
     #inProgress: boolean;
     #singleEmit: boolean;
+    #isAttached: boolean;
     constructor(singleEmit: boolean, keys?: string[]) {
         this.#keys = keys;
         this.#inProgress = false;
@@ -25,6 +26,7 @@ export class CuiKeyPressListener implements ICuiEventListener<KeyboardEvent> {
         if (this.#singleEmit) {
             document.addEventListener('keyup', this.onKeyUp.bind(this))
         }
+        this.#isAttached = true;
     }
 
     detach(): void {
@@ -32,6 +34,11 @@ export class CuiKeyPressListener implements ICuiEventListener<KeyboardEvent> {
         if (this.#singleEmit) {
             document.addEventListener('keyup', this.onKeyUp.bind(this))
         }
+        this.#isAttached = false;
+    }
+
+    isAttached(): boolean {
+        return this.#isAttached;
     }
 
     onKeyDown(ev: KeyboardEvent) {

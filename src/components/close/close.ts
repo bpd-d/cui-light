@@ -1,7 +1,7 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, ICuiClosable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
-import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString } from "../../core/utils/functions";
+import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, isStringTrue, getHandlerExtendingOrNull } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { CLASSES, EVENTS } from "../../core/utils/statics";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
@@ -10,10 +10,12 @@ export class CuiCloseArgs {
     target: string;
     action: ICuiComponentAction;
     timeout: number;
+    prevent: boolean;
     constructor() {
         this.target = "";
         this.action = null;
         this.timeout = 0;
+        this.prevent = false;
     }
 
     parse(args: any) {
@@ -21,11 +23,13 @@ export class CuiCloseArgs {
             this.target = args
             this.action = null
             this.timeout = -1
+            this.prevent = false
             return;
         }
         this.target = getStringOrDefault(args.target, null);
         this.action = CuiActionsFatory.get(args.action)
         this.timeout = getIntOrDefault(args.timeout, -1);
+        this.prevent = args.prevent && isStringTrue(args.prevent)
     }
 }
 
@@ -41,12 +45,12 @@ export class CuiCloseComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiCloseHandler(element, utils, this.attribute, this.#prefix);
     }
 }
 
-export class CuiCloseHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiCloseHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #args: CuiCloseArgs;
     #isInitialized: boolean;
     #prefix: string;
@@ -96,19 +100,35 @@ export class CuiCloseHandler extends CuiHandlerBase implements ICuiMutationHandl
             return;
         }
         this.#inProgress = true;
-        if (this.#args.action && this.#args.timeout !== -1) {
-            let delay = this.#args.timeout > 0 ? this.#args.timeout : this.utils.setup.animationTime;
-            this.#actionHelper.performAction(target, this.#args.action, delay).then(() => {
-                target.classList.remove(getActiveClass(this.#prefix));
-                this.emitClose(ev);
-                this.#inProgress = false
-            })
+        this.run(target).then((result) => {
+            this.onActionFinish(ev, target);
+        }).catch((e) => {
+            this._log.exception(e);
+        }).finally(() => {
+            this.#inProgress = false;
+        })
+        if (this.#args.prevent)
+            ev.preventDefault();
+    }
+
+    private async run(target: Element): Promise<boolean> {
+        let closable = getHandlerExtendingOrNull<ICuiClosable>(target as any, 'close');
+        if (closable) {
+            return closable.close();
+        } else if (this.#args.action) {
+            let timeout = this.#args.timeout > 0 ? this.#args.timeout : this.utils.setup.animationTime;
+            return this.#actionHelper.performAction(target, this.#args.action, timeout);
         } else {
-            target.classList.remove(getActiveClass(this.#prefix));
-            this.emitClose(ev);
-            this.#inProgress = false
+            return true;
         }
-        ev.preventDefault();
+    }
+
+    private onActionFinish(ev: MouseEvent, target: Element) {
+        let activeCls = getActiveClass(this.#prefix);
+        if (is(target) && target.classList.contains(activeCls)) {
+            target.classList.remove(activeCls);
+        }
+        this.emitClose(ev);
     }
 
     private getTarget(): Element {

@@ -17,6 +17,14 @@ import { CuiCloseComponent } from "../components/close/close";
 import { CuiToggleComponent } from "../components/toggle/toggle";
 import { CuiResizeComponent } from "../components/resize/resize";
 import { CuiKeysObserverPlugin } from "../plugins/keys/keys";
+import { CuiDialogComponent } from "../components/dialog/dialog";
+import { CuiOffCanvasArgs, CuiOffCanvasComponent } from "../components/offcanvas/offcanvas";
+import { CuiAccordionComponent } from "../components/accordion/accordion";
+import { CuiDropComponenet } from "../components/drop/drop";
+import { CuiWindowClickPlugin } from "../plugins/click/click";
+import { CuiOffsetComponent } from "../components/offset/offset";
+import { CuiSwitchArgs, CuiSwitchComponent } from "../components/switch/switch";
+import { CuiSwitcherComponent } from "../components/switch/switcher";
 
 export class CuiInitializer {
     #window: any;
@@ -67,7 +75,8 @@ export class CuiInit {
         const pluginList: ICuiPlugin[] = [
             new CuiAutoLightModePlugin({ autoLight: true }),
             new CuiAutoPrintModePlugin({ autoPrint: true }),
-            new CuiKeysObserverPlugin(null)
+            new CuiKeysObserverPlugin(null),
+            new CuiWindowClickPlugin()
         ];
 
         const componentList: ICuiComponent[] = [
@@ -82,6 +91,13 @@ export class CuiInit {
             new CuiCloseComponent(),
             new CuiToggleComponent(),
             new CuiResizeComponent(),
+            new CuiDialogComponent(),
+            new CuiOffCanvasComponent(),
+            new CuiAccordionComponent(),
+            new CuiDropComponenet(),
+            new CuiOffsetComponent(),
+            new CuiSwitchComponent(),
+            new CuiSwitcherComponent()
         ];
 
         let result = await initializer.init({

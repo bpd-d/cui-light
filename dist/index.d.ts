@@ -44,10 +44,19 @@ export interface ICuiDictionaryItem<T> {
     key: string;
     value: T;
 }
-export interface ICuiMutationHandler {
+export interface ICuiComponentHandler {
     handle(args: any): void;
     refresh(args: any): void;
     destroy(): void;
+}
+export interface ICuiOpenable {
+    open(): Promise<boolean>;
+}
+export interface ICuiSwitchable {
+    switch(index: number): Promise<boolean>;
+}
+export interface ICuiClosable {
+    close(): Promise<boolean>;
 }
 export interface CuiCachable {
     refresh(): boolean;
@@ -110,12 +119,12 @@ export interface CuiInitResult {
     message?: string;
 }
 export interface ICuiComponentFactory {
-    get(element: Element, sutils: CuiUtils): ICuiMutationHandler;
+    get(element: Element, sutils: CuiUtils): ICuiComponentHandler;
 }
 export interface ICuiComponent {
     attribute: string;
     getStyle(): string;
-    get(element: HTMLElement, sutils: CuiUtils): ICuiMutationHandler;
+    get(element: HTMLElement, sutils: CuiUtils): ICuiComponentHandler;
 }
 export interface ICuiPluginManager {
     init(utils: CuiUtils): void;
@@ -132,7 +141,7 @@ export interface CuiObservables {
     [key: string]: ICuiObservable;
 }
 export interface CuiHandlers {
-    [id: string]: ICuiMutationHandler;
+    [id: string]: ICuiComponentHandler;
 }
 export interface CuiElement {
     $cuid: string;
@@ -149,6 +158,7 @@ export interface ICuiEventListener<T> {
     isInProgress(): boolean;
     attach(): void;
     detach(): void;
+    isAttached(): boolean;
 }
 
 export interface CuiTargetChangeEvent {
@@ -255,6 +265,9 @@ export class DummyAction implements ICuiComponentAction {
 }
 export class CuiActionsFatory {
     static get(value: string): ICuiComponentAction;
+}
+export class CuiActionsListFactory {
+    static get(value: string): ICuiComponentAction[];
 }
 
 export type CuiLogLevel = "none" | "error" | "warning" | "debug";

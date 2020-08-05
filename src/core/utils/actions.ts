@@ -116,3 +116,15 @@ export class CuiActionsFatory {
         }
     }
 }
+
+export class CuiActionsListFactory {
+    public static get(value: string): ICuiComponentAction[] {
+        if (!is(value)) {
+            return [];
+        }
+        const split = value.split(',');
+        return split.map(single => {
+            return CuiActionsFatory.get(single.trim());
+        })
+    }
+}

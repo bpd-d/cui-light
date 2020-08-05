@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 
@@ -12,12 +12,12 @@ export class CuiDummyComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiDummyHandler(element, utils, this.attribute);
     }
 }
 
-export class CuiDummyHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiDummyHandler extends CuiHandlerBase implements ICuiComponentHandler {
 
     #attribute: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {

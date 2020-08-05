@@ -16,7 +16,7 @@ class EmitHandlerBase {
         this.isBusy = false;
     }
     idMatches(emitId: string, handleId: string) {
-        return !is(emitId) || (is(emitId) && emitId === handleId);
+        return !is(emitId) || (is(emitId) && emitId == handleId);
     }
 }
 

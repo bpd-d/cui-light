@@ -342,7 +342,7 @@ export function replacePrefix(value: string, prefix: string): string {
  */
 export function generateCUID(element?: string) {
     let starter = is(element) ? element : "cui-element"
-    return `${starter}-${COMPONENTS_COUNTER.next().value}}`;
+    return `${starter}-${COMPONENTS_COUNTER.next().value}`;
 }
 
 /**
@@ -377,6 +377,7 @@ export function registerCuiElement(node: any, components: ICuiComponent[], attri
     element.$handlers = {};
     let matching: string[] = getMatchingAttributes(node, attributes)
     if (is(matching)) {
+        element.$cuid = generateCUID(node.tagName)
         matching.forEach(match => {
             let component = components.find(c => { return c.attribute === match });
             if (is(component)) {
@@ -390,7 +391,7 @@ export function registerCuiElement(node: any, components: ICuiComponent[], attri
                 }
             }
         })
-        element.$cuid = generateCUID(node.tagName)
+
     }
 }
 
@@ -402,5 +403,24 @@ export function* counter() {
             idx = 0
         }
     }
+}
 
+export function getHandlerExtendingOrNull<T>(target: CuiElement, fName: string): T {
+    if (!is(target.$handlers)) {
+        return null;
+    }
+
+    for (let handler in target.$handlers) {
+
+        if (target.$handlers.hasOwnProperty(handler)) {
+            let h: any = target.$handlers[handler];
+            if (hasFunction(h, fName))
+                return h;
+        }
+    }
+    return null;
+}
+
+export function hasFunction(obj: any, fName: string) {
+    return is(obj[fName]) && typeof obj[fName] === 'function'
 }

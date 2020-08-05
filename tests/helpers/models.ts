@@ -82,3 +82,14 @@ export class SampleMutationPlugin implements ICuiPlugin, ICuiMutiationPlugin {
         return true;
     }
 }
+
+export class SampleTask {
+    flag: boolean;
+    constructor() {
+        this.flag = false;
+    }
+
+    setFlag(val: boolean) {
+        this.flag = val;
+    }
+}

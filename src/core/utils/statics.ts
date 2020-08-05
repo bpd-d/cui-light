@@ -72,6 +72,8 @@ export const CSS_THEMES = {
     }
 }
 
+export const SCOPE_SELECTOR = ":scope ";
+
 export const CSS_VARIABLES: any = {
     fontSize: "--{prefix}-font-size",
     lineHeight: "--{prefix}-line-height",
@@ -145,7 +147,8 @@ export const EVENTS = {
     ON_TARGET_CHANGE: 'targetchange',
     ON_INTERSECTION: 'intersection',
     ON_KEYDOWN: 'keydown',
-    ON_SCROLLBY: 'scrollby'
+    ON_SCROLLBY: 'scrollby',
+    ON_WINDOW_CLICK: 'windowclick'
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";

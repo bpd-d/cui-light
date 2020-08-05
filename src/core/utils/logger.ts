@@ -36,7 +36,7 @@ export class CuiLogger implements ICuiLogger {
     exception(e: Error, functionName?: string): void {
         console.error(this.prepString(`An exception occured: ${e.name}: ${e.message}`, functionName))
         if (this.level === 'debug')
-            console.exception(e.stack)
+            console.error(e.stack)
     }
 
     performance(callback: () => void, functionName?: string): void {

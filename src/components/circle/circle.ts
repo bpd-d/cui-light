@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler, CuiObservables, CuiContext } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, CuiObservables, CuiContext } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { is, getRangeValue } from "../../core/utils/functions";
@@ -17,12 +17,12 @@ export class CuiCircleComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiCircleHandler(element, utils, this.attribute);
     }
 }
 
-export class CuiCircleHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiCircleHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #isInitialized: boolean;
     #factor: number;
     #full: number;

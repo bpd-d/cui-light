@@ -33,6 +33,9 @@ export class CuiMediaQueryListener implements ICuiEventListener<MediaQueryListEv
         }
     }
 
+    isAttached(): boolean {
+        return this.#isInitialized;
+    }
 
     private event(ev: MediaQueryListEvent): void {
         if (this.#inProgress) {

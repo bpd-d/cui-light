@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
@@ -32,12 +32,12 @@ export class CuiToggleComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiToggleHandler(element, utils, this.attribute);
     }
 }
 
-export class CuiToggleHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiToggleHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #attribute: string;
     #args: CuiToggleArgs;
     #target: Element;

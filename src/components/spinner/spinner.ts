@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
 import { CuiHandlerBase } from "../../app/handlers/base";
@@ -16,12 +16,12 @@ export class CuiSpinnerComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiSpinnerHandler(element, utils, this.attribute);
     }
 }
 
-export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiSpinnerHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #attribute: string;
     #isInitialized: boolean;
     constructor(element: Element, utils: CuiUtils, attribute: string) {

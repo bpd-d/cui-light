@@ -1,6 +1,6 @@
-import { ICuiComponent, ICuiMutationHandler } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
 import { CuiIntersectionObserver } from "../../app/observers/intersection";
 import { CuiActionsFatory, ICuiComponentAction } from "../../core/utils/actions";
 import { is, parseAttributeString, getRangeValueOrDefault, clone } from "../../core/utils/functions";
@@ -33,26 +33,23 @@ export class CuiIntersectionComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiMutationHandler {
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
         return new CuiIntersectionHandler(element, utils, this.attribute);
     }
 }
 
-export class CuiIntersectionHandler extends CuiHandlerBase implements ICuiMutationHandler {
-    #attribute: string;
+export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes> implements ICuiComponentHandler {
+
     #observer: CuiIntersectionObserver;
-    #args: CuiIntersectionAttributes;
     #targets: Element[];
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiIntersectionHandler", element, utils);
-        this.#attribute = attribute
+        super("CuiIntersectionHandler", element, new CuiIntersectionAttributes(), utils);
         this.#observer = new CuiIntersectionObserver(this.element);
-        this.#args = new CuiIntersectionAttributes();
         this.#targets = []
     }
 
-    handle(args: any): void {
-        this.parseArguments(null, args);
+    onInit(): void {
+        this.parseArguments();
         this.#observer.setCallback(this.onIntersection.bind(this))
         this.#observer.connect();
         this.#targets.forEach(target => {
@@ -60,19 +57,21 @@ export class CuiIntersectionHandler extends CuiHandlerBase implements ICuiMutati
         })
     }
 
-    refresh(args: any): void {
-        let prev = clone(this.#args)
-        this.parseArguments(prev, args);
+    onUpdate(): void {
+        this.parseArguments();
     }
 
-    destroy(): void {
+    onDestroy(): void {
         this.#observer.disconnect();
     }
 
-    parseArguments(prev: CuiIntersectionAttributes, args: any) {
-        this.#args.parse(args);
-        if (prev === null || prev.target !== this.#args.target) {
-            this.#targets = [...document.querySelectorAll(this.#args.target)];
+    refresh(args: any): void {
+        this.parseArguments();
+    }
+
+    parseArguments() {
+        if (this.prevArgs === null || this.prevArgs.target !== this.args.target) {
+            this.#targets = [...document.querySelectorAll(this.args.target)];
         }
     }
 
@@ -83,7 +82,7 @@ export class CuiIntersectionHandler extends CuiHandlerBase implements ICuiMutati
         let action = null;
         entries.forEach(entry => {
             action = this.getAction(entry.target);
-            if (entry.isIntersecting && entry.intersectionRatio > this.#args.offset) {
+            if (entry.isIntersecting && entry.intersectionRatio > this.args.offset) {
                 action.add(entry.target)
             } else {
                 action.remove(entry.target)
@@ -93,13 +92,13 @@ export class CuiIntersectionHandler extends CuiHandlerBase implements ICuiMutati
     }
 
     getAction(element: Element) {
-        return element.hasAttribute('action') ? CuiActionsFatory.get(element.getAttribute('action')) : this.#args.action;
+        return element.hasAttribute('action') ? CuiActionsFatory.get(element.getAttribute('action')) : this.args.action;
     }
 
     emitIntersection(entry: IntersectionObserverEntry) {
         this.emitEvent(EVENTS.ON_INTERSECTION, {
             entry: entry,
-            offset: this.#args.offset,
+            offset: this.args.offset,
             timestamp: Date.now()
         })
     }

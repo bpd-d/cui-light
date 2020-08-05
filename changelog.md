@@ -1,7 +1,13 @@
 # bpd cUI Light changelog
-# [0.1.4] 2020-07-15
+# [0.1.4] 
 * [Fixed] More adjustments to mutation observer
 * [Chnaged] Mutation observer now gets attribute value and passed ready to use argument object to handle and refresh
+* [Changed] Open and close components will first try to call corresponding open/close function in specifi cUI component
+* [Added] New components: dialog and offcanvas, accordion
+* [Added] New component: dialog - initial implementation
+* [Added] New plugin - Window click - captures click on window and emits event - handy for openable components to capture whether click was in or outside of target
+* [Added] New component: offset - similiar
+* [Added] New components: switch and switcher
 
 # [0.1.3] 2020-07-13
 * [Fixed] Unit test references

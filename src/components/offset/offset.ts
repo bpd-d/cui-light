@@ -1,0 +1,118 @@
+import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
+import { CuiUtils } from "../../core/models/utils";
+import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
+import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
+import { getIntOrDefault } from "../../core/utils/functions";
+
+export const ON_OFFSET_EVENT_NAME = "offset"
+
+export interface CuiOffsetEvent {
+    matches: boolean;
+    timestamp: number;
+}
+
+export interface CuiOffsetAttribute {
+    target?: string;
+    action?: string;
+    offsetY?: number;
+    offsetX?: number;
+}
+
+export class CuiOffsetArgs {
+    target: string;
+    action: ICuiComponentAction[];
+    offsetY?: number;
+    offsetX?: number
+
+    constructor() {
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.target = null;
+    }
+    parse(args: any) {
+        this.target = args.target;
+        this.action = CuiActionsListFactory.get(args.action);
+        this.offsetX = getIntOrDefault(args.offsetX, -1);
+        this.offsetY = getIntOrDefault(args.offsetY, -1);
+    }
+}
+export class CuiOffsetComponent implements ICuiComponent {
+    attribute: string;
+    constructor(prefix?: string) {
+        this.attribute = `${prefix ?? 'cui'}-offset`;
+    }
+
+    getStyle(): string {
+        return null;
+    }
+
+    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+        return new CuiOffsetHandler(element, utils, this.attribute);
+    }
+}
+
+export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
+
+    #listener: CuiScrollListener;
+    #target: Element;
+    #utils: CuiUtils;
+    #matched: boolean;
+
+    constructor(element: Element, utils: CuiUtils, attribute: string) {
+        super("CuiOffsetHandler", element, new CuiOffsetArgs(), utils);
+        this.element = element as HTMLElement;
+        this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
+        this.#target = this.element;
+        this.#utils = utils;
+        this.#matched = false;
+    }
+
+    onInit(): void {
+        this.parseAttribute();
+        this.#listener.setCallback(this.onScroll.bind(this));
+        this.#listener.attach();
+    }
+    onUpdate(): void {
+        this.parseAttribute();
+    }
+    onDestroy(): void {
+        this.#listener.detach();
+    }
+
+    private onScroll(ev: CuiScrollEvent): void {
+        this.checkAndPerformActions(ev.top, ev.left);
+    }
+
+    private parseAttribute() {
+        this.#target = this.args.target ? this.element.querySelector(this.args.target) : this.element;
+        this.checkAndPerformActions(this.element.scrollTop, this.element.scrollLeft);
+
+    }
+
+    private matchesOffset(top: number, left: number) {
+        return (this.args.offsetX > 0 && left >= this.args.offsetX) ||
+            (this.args.offsetY > 0 && top >= this.args.offsetY)
+    }
+
+    private checkAndPerformActions(top: number, left: number) {
+        let matchesOffset = this.matchesOffset(top, left);
+        if (matchesOffset && !this.#matched) {
+            this.args.action.forEach(action => action.add(this.#target, this.#utils));
+            this.#matched = true;
+            this.callEvent();
+        } else if (!matchesOffset && this.#matched) {
+            this.args.action.forEach(action => action.remove(this.#target, this.#utils));
+            this.#matched = false;
+            this.callEvent();
+        }
+    }
+
+    private callEvent() {
+        this.emitEvent(ON_OFFSET_EVENT_NAME, {
+            matches: this.#matched,
+            timestamp: Date.now()
+        })
+    }
+
+}

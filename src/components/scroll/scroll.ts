@@ -1,4 +1,4 @@
-import { ICuiComponent, ICuiMutationHandler, CuiObservables } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
 import { CuiHandlerBase } from "../../app/handlers/base";
@@ -15,7 +15,7 @@ export class CuiScrollComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: HTMLElement, utils: CuiUtils): ICuiMutationHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiScrollHandler(element, utils, this.attribute);
     }
 }
@@ -26,7 +26,7 @@ export interface CuiScrollAttribute {
     behavior?: 'auto' | 'smooth';
 }
 
-export class CuiScrollHandler extends CuiHandlerBase implements ICuiMutationHandler {
+export class CuiScrollHandler extends CuiHandlerBase implements ICuiComponentHandler {
     #attribute: string;
     #args: CuiScrollAttribute;
     #parent: HTMLElement;

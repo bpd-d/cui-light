@@ -32,10 +32,22 @@ export interface ICuiDictionaryItem<T> {
     value: T;
 }
 
-export interface ICuiMutationHandler {
+export interface ICuiComponentHandler {
     handle(args: any): void;
     refresh(args: any): void;
     destroy(): void;
+}
+
+export interface ICuiOpenable {
+    open(): Promise<boolean>;
+}
+
+export interface ICuiSwitchable {
+    switch(index: number): Promise<boolean>;
+}
+
+export interface ICuiClosable {
+    close(): Promise<boolean>;
 }
 
 export interface CuiCachable {
@@ -113,13 +125,13 @@ export interface CuiInitResult {
 }
 
 export interface ICuiComponentFactory {
-    get(element: Element, sutils: CuiUtils): ICuiMutationHandler;
+    get(element: Element, sutils: CuiUtils): ICuiComponentHandler;
 }
 
 export interface ICuiComponent {
     attribute: string;
     getStyle(): string;
-    get(element: HTMLElement, sutils: CuiUtils): ICuiMutationHandler;
+    get(element: HTMLElement, sutils: CuiUtils): ICuiComponentHandler;
 }
 
 export interface ICuiPluginManager {
@@ -140,7 +152,7 @@ export interface CuiObservables {
 }
 
 export interface CuiHandlers {
-    [id: string]: ICuiMutationHandler;
+    [id: string]: ICuiComponentHandler;
 }
 
 
@@ -161,4 +173,5 @@ export interface ICuiEventListener<T> {
     isInProgress(): boolean;
     attach(): void;
     detach(): void;
+    isAttached(): boolean;
 }
