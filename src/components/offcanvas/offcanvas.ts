@@ -124,6 +124,7 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
             document.body.classList.remove(this.#bodyClass);
             const scrollY = document.body.style.top;
             document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
             AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
         });
     }

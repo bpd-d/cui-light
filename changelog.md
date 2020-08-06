@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.8] WIP
+# [0.1.9] WIP
+# [0.1.8] 2020-08-06
+* [Fix] Offcanvas background
 # [0.1.7] 2020-08-06
 * [Fixed] Dialog and offcanvas background when opened
 # [0.1.6] 2020-08-06
