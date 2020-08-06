@@ -1,6 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.7] 2020-08-07
-
+# [0.1.8] WIP
+# [0.1.7] 2020-08-06
+* [Fixed] Dialog and offcanvas background when opened
 # [0.1.6] 2020-08-06
 * [Fixed] Offset element now supports root element
 * [Fixed] Blinking dialog and offcanvas when closed via keys or outside click

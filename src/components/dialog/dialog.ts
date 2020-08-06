@@ -53,12 +53,14 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
     #prefix: string;
     #timeout: number;
     #bodyClass: string;
+    #scrollY: number;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiDialogHandler", element, new CuiDialogArgs(), utils);
 
         this.#prefix = prefix;
         this.#timeout = utils.setup.animationTimeLong;
         this.#bodyClass = replacePrefix(bodyClass, prefix);
+        this.#scrollY = 0;
     }
 
     onInit(): void {
@@ -84,10 +86,12 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
         this.isLocked = true;
         this._log.debug(`Dialog ${this.cuid}`, 'open')
         let action = this.getAction(DIALOG_OPEN_ANIMATION_CLASS);
+        let scrollY = window.pageYOffset;
         return this.performAction(action, this.#timeout, this.onOpen.bind(this, args), () => {
             this.element.classList.add(this.activeClassName);
             document.body.classList.add(this.#bodyClass);
-            AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
+            AriaAttributes.setAria(this.element, 'aria-expanded', 'true');
+            document.body.style.top = `-${scrollY}px`;
         });
     }
 
@@ -106,6 +110,9 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
     }
 
     onClose(state: any) {
+        const scrollY = document.body.style.top;
+        document.body.style.top = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
         this.detachEvent(EVENTS.ON_KEYDOWN);
         this.detachEvent(EVENTS.ON_WINDOW_CLICK);
         this.emitEvent(EVENTS.ON_CLOSE, {

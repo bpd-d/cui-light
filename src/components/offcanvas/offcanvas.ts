@@ -102,11 +102,13 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
         }
         this.isLocked = true;
         this._log.debug(`Offcanvas ${this.cuid}`, 'open')
+        let scrollY = window.pageYOffset;
         let action = CuiActionsFatory.get(this.args.open);
         return this.performAction(action, this.args.timeout, this.onOpen.bind(this, args), () => {
             this.element.classList.add(this.activeClassName);
             document.body.classList.add(this.#bodyClass);
             AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
+            document.body.style.top = `-${scrollY}px`;
         });
     }
 
@@ -120,6 +122,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
         return this.performAction(action, this.args.timeout, this.onClose.bind(this, args), () => {
             this.element.classList.remove(this.activeClassName);
             document.body.classList.remove(this.#bodyClass);
+            const scrollY = document.body.style.top;
+            document.body.style.top = '';
             AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
         });
     }
