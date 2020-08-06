@@ -15,12 +15,14 @@ export class CuiScrollListener implements ICuiEventListener<CuiScrollEvent> {
     #prevY: number;
     #callback: (ev: CuiScrollEvent) => void;
     #isAttached: boolean;
+    #isRoot: boolean;
     constructor(target: Element, threshold?: number) {
         this.#target = target;
         this.#inProgress = false;
         this.#threshold = getRangeValueOrDefault(threshold, 0, 100, 0);
         this.#prevX = this.#prevY = 0;
         this.#isAttached = false;
+        this.#isRoot = target instanceof Window;
     }
 
     setCallback(callback: (ev: CuiScrollEvent) => void) {
@@ -46,8 +48,10 @@ export class CuiScrollListener implements ICuiEventListener<CuiScrollEvent> {
     }
 
     private listener(ev: Event) {
-        this.#prevX += this.#target.scrollLeft;
-        this.#prevY += this.#target.scrollTop;
+        let left = this.getLeft();
+        let top = this.getTop();
+        this.#prevX += left;
+        this.#prevY += top;
         if (this.#inProgress || !this.passedThreshold()) {
             return;
         }
@@ -56,8 +60,8 @@ export class CuiScrollListener implements ICuiEventListener<CuiScrollEvent> {
         requestAnimationFrame(() => {
             this.#callback({
                 base: ev,
-                top: this.#target.scrollTop,
-                left: this.#target.scrollLeft
+                top: top,
+                left: left
             })
             this.#inProgress = false
             this.#prevX = 0;
@@ -67,5 +71,13 @@ export class CuiScrollListener implements ICuiEventListener<CuiScrollEvent> {
 
     private passedThreshold() {
         return this.#threshold <= 0 || (this.#prevX >= this.#threshold || this.#prevY >= this.#threshold);
+    }
+
+    getTop() {
+        return this.#isRoot ? window.pageYOffset : this.#target.scrollTop;
+    }
+
+    getLeft(): number {
+        return this.#isRoot ? window.pageXOffset : this.#target.scrollLeft;
     }
 }

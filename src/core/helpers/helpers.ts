@@ -9,7 +9,7 @@ export class CuiActionsHelper {
         this.#interactions = interactions;
     }
 
-    async performAction(target: Element, action: ICuiComponentAction, timeout: number): Promise<boolean> {
+    async performAction(target: Element, action: ICuiComponentAction, timeout: number, callback?: () => void): Promise<boolean> {
         return new Promise((resolve) => {
             this.#interactions.mutate(() => {
                 action.add(target);
@@ -18,6 +18,8 @@ export class CuiActionsHelper {
                     this.#interactions.mutate(() => {
                         action.remove(target);
                         target.classList.remove(CLASSES.animProgress);
+                        if (callback)
+                            callback();
                         resolve(true)
                     }, null)
                 }, timeout)

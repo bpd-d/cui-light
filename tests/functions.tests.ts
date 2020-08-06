@@ -1,4 +1,5 @@
-import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt, getMatchingAttributes } from "../src/core/utils/functions";
+import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt, getMatchingAttributes, hasFunction } from "../src/core/utils/functions";
+import { SampleTask } from "./helpers/models";
 
 /**
  * Tests check function is
@@ -648,5 +649,23 @@ describe("Tests checking method [getMatchingAttributes]", function () {
         element.setAttribute('XXX', "sss")
         let matching: string[] = null;
         matching = getMatchingAttributes(element, attrs);
+        expect(matching.length).toEqual(1);
+        expect(matching[0]).toEqual('XXX')
+    })
+})
+
+describe("Tests checking method [hasFunction]", function () {
+    it("Normal case", function () {
+        let obj = new SampleTask();
+        let has = hasFunction(obj, 'setFlag');
+
+        expect(has).toBeTrue();
+    })
+
+    it("Not existing", function () {
+        let obj = new SampleTask();
+        let has = hasFunction(obj, 'setFlag1');
+
+        expect(has).toBeFalse();
     })
 })

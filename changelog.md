@@ -1,5 +1,13 @@
 # bpd cUI Light changelog
-# [0.1.5] 
+# [0.1.7] 2020-08-07
+
+# [0.1.6] 2020-08-06
+* [Fixed] Offset element now supports root element
+* [Fixed] Blinking dialog and offcanvas when closed via keys or outside click
+* [Fixed] Scrollspy now sets action on init
+* [Changed] Added possibility to set additional state on openable/closable component
+
+# [0.1.5] 2020-08-05
 * [Fixed] More adjustments to mutation observer
 * [Chnaged] Mutation observer now gets attribute value and passed ready to use argument object to handle and refresh
 * [Changed] Open and close components will first try to call corresponding open/close function in specifi cUI component

@@ -92,7 +92,7 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
         //throw new Error("Method not implemented.");
     }
 
-    async open(): Promise<boolean> {
+    async open(args?: any): Promise<boolean> {
         if (this.checkLockAndWarn('open')) {
             return false;
         }
@@ -103,35 +103,39 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
         this.isLocked = true;
         this._log.debug(`Offcanvas ${this.cuid}`, 'open')
         let action = CuiActionsFatory.get(this.args.open);
-        return this.performAction(action, this.args.timeout, this.mutate.bind(this, this.onOpen));
+        return this.performAction(action, this.args.timeout, this.onOpen.bind(this, args), () => {
+            this.element.classList.add(this.activeClassName);
+            document.body.classList.add(this.#bodyClass);
+            AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
+        });
     }
 
-    async close(): Promise<boolean> {
+    async close(args?: any): Promise<boolean> {
         if (this.checkLockAndWarn("close") || !this.isActive()) {
             return false;
         }
         this.isLocked = true;
         this._log.debug(`Offcanvas ${this.cuid}`, 'close')
         let action = CuiActionsFatory.get(this.args.close);
-        return this.performAction(action, this.args.timeout, this.mutate.bind(this, this.onClose));
+        return this.performAction(action, this.args.timeout, this.onClose.bind(this, args), () => {
+            this.element.classList.remove(this.activeClassName);
+            document.body.classList.remove(this.#bodyClass);
+            AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
+        });
     }
 
-    onClose() {
-        this.element.classList.remove(this.activeClassName);
-        document.body.classList.remove(this.#bodyClass);
-        AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
+    onClose(state?: any) {
         this.detachEvent(EVENTS.ON_KEYDOWN);
         this.detachEvent(EVENTS.ON_WINDOW_CLICK);
         this.emitEvent(EVENTS.ON_CLOSE, {
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            state: state
         })
         this.isLocked = false;
     }
 
-    onOpen() {
-        this.element.classList.add(this.activeClassName);
-        document.body.classList.add(this.#bodyClass);
-        AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
+    onOpen(state?: any) {
+
         if (this.args.escClose) {
             this.onEvent(EVENTS.ON_KEYDOWN, this.onEscClose.bind(this))
         }
@@ -139,7 +143,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
             this.onEvent(EVENTS.ON_WINDOW_CLICK, this.onWindowClick.bind(this));
         }
         this.emitEvent(EVENTS.ON_OPEN, {
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            state: state
         })
         this.isLocked = false;
     }

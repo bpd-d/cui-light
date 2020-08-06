@@ -39,7 +39,7 @@ export interface ICuiComponentHandler {
 }
 
 export interface ICuiOpenable {
-    open(): Promise<boolean>;
+    open(args?: any): Promise<boolean>;
 }
 
 export interface ICuiSwitchable {
@@ -47,7 +47,7 @@ export interface ICuiSwitchable {
 }
 
 export interface ICuiClosable {
-    close(): Promise<boolean>;
+    close(args?: any): Promise<boolean>;
 }
 
 export interface CuiCachable {

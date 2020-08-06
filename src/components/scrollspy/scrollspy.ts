@@ -3,7 +3,7 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
-import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft } from "../../core/utils/functions";
+import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft, clone } from "../../core/utils/functions";
 import { EVENTS } from "../../core/utils/statics";
 import { CuiScrollSpyOutOfRangeError } from "../../core/models/errors";
 
@@ -69,7 +69,7 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponent
         this.#args = new CuiScrollSpyArgs();
         this.#links = [];
         this.#targets = [];
-        this.#currentIdx = this.#targetsLength = this.#linksLength - 1;
+        this.#currentIdx = this.#targetsLength = this.#linksLength = -1;
     }
 
     handle(args: any): void {
@@ -77,7 +77,10 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponent
         this.#prevScrollTop = this.element.scrollTop;
         this.#prevScrollLeft = this.element.scrollLeft;
         this.parseAttribute(args);
-        this.calculateCurrent(this.#prevScrollTop);
+        let current = this.calculateCurrent(this.#prevScrollTop);
+        this.setCurrent(current);
+        this.setCurrentLink(current, -1);
+        this.#currentIdx = current;
         this.#listener.setCallback(this.onScroll.bind(this));
         this.#listener.attach();
     }
@@ -103,6 +106,8 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponent
         }
         if (idx !== this.#currentIdx) {
             let newTarget = this.setCurrent(idx)
+            this.setCurrentLink(idx, this.#currentIdx);
+            this.#currentIdx = idx;
             this.emitEvent(EVENTS.ON_TARGET_CHANGE, {
                 top: ev.top,
                 left: ev.left,
@@ -138,6 +143,7 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponent
             return offset + ratio <= scroll && scroll < offset + target.clientWidth + ratio;
         })
     }
+
     /**
      * Performs action on current, new target and on links if there are any.
      * Returns new target element or null if index is out of range
@@ -152,15 +158,17 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponent
         let ret = this.#targets[idx]
         this.#args.action.add(ret)
         this.#args.action.remove(this.#targets[this.#currentIdx]);
+        return ret;
+    }
+
+    private setCurrentLink(idx: number, prev: number) {
         if (this.#linksLength > 0) {
             if (isInRange(idx, 0, this.#linksLength)) {
                 this.#args.linkAction.add(this.#links[idx]);
             }
-            if (isInRange(this.#currentIdx, 0, this.#linksLength)) {
-                this.#args.linkAction.remove(this.#links[this.#currentIdx]);
+            if (isInRange(prev, 0, this.#linksLength)) {
+                this.#args.linkAction.remove(this.#links[prev]);
             }
         }
-        this.#currentIdx = idx;
-        return ret;
     }
 }

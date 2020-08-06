@@ -15,6 +15,7 @@ export class CuiHandlerBase implements CuiContext {
         this.element = element;
         this.cuid = (<any>element).$cuid;
         this.isLocked = false;
+        this._log.setId(this.cuid);
     }
 
 
@@ -75,8 +76,8 @@ export abstract class CuiHandler<T extends ICuiParsable> extends CuiHandlerBase 
     }
 
 
-    async performAction(action: ICuiComponentAction, timeout: number, onFinish: () => void): Promise<boolean> {
-        if (await this.actionsHelper.performAction(this.element, action, timeout)) {
+    async performAction(action: ICuiComponentAction, timeout: number, onFinish: () => void, callback?: () => void): Promise<boolean> {
+        if (await this.actionsHelper.performAction(this.element, action, timeout, callback)) {
             onFinish();
             return true;
         }

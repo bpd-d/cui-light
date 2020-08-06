@@ -424,3 +424,8 @@ export function getHandlerExtendingOrNull<T>(target: CuiElement, fName: string):
 export function hasFunction(obj: any, fName: string) {
     return is(obj[fName]) && typeof obj[fName] === 'function'
 }
+
+export function getParentCuiElement(element: Element): Element {
+    let parent = element.parentElement as any;
+    return is(parent) && is(parent.$cuid) ? parent : getParentCuiElement(parent);
+}

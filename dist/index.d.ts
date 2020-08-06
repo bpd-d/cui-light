@@ -50,13 +50,13 @@ export interface ICuiComponentHandler {
     destroy(): void;
 }
 export interface ICuiOpenable {
-    open(): Promise<boolean>;
+    open(args?: any): Promise<boolean>;
 }
 export interface ICuiSwitchable {
     switch(index: number): Promise<boolean>;
 }
 export interface ICuiClosable {
-    close(): Promise<boolean>;
+    close(args?: any): Promise<boolean>;
 }
 export interface CuiCachable {
     refresh(): boolean;

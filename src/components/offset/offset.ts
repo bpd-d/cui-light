@@ -3,7 +3,7 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
-import { getIntOrDefault } from "../../core/utils/functions";
+import { getIntOrDefault, isStringTrue } from "../../core/utils/functions";
 
 export const ON_OFFSET_EVENT_NAME = "offset"
 
@@ -17,6 +17,7 @@ export interface CuiOffsetAttribute {
     action?: string;
     offsetY?: number;
     offsetX?: number;
+    root?: boolean;
 }
 
 export class CuiOffsetArgs {
@@ -24,17 +25,20 @@ export class CuiOffsetArgs {
     action: ICuiComponentAction[];
     offsetY?: number;
     offsetX?: number
-
+    root: boolean;
     constructor() {
         this.offsetX = 0;
         this.offsetY = 0;
         this.target = null;
+        this.root = false;
     }
+
     parse(args: any) {
         this.target = args.target;
         this.action = CuiActionsListFactory.get(args.action);
         this.offsetX = getIntOrDefault(args.offsetX, -1);
         this.offsetY = getIntOrDefault(args.offsetY, -1);
+        this.root = isStringTrue(args.root)
     }
 }
 export class CuiOffsetComponent implements ICuiComponent {
@@ -62,7 +66,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiOffsetHandler", element, new CuiOffsetArgs(), utils);
         this.element = element as HTMLElement;
-        this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
+
         this.#target = this.element;
         this.#utils = utils;
         this.#matched = false;
@@ -70,6 +74,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
 
     onInit(): void {
         this.parseAttribute();
+        this.#listener = new CuiScrollListener(this.args.root ? (window as any) : this.element, this.utils.setup.scrollThreshold);
         this.#listener.setCallback(this.onScroll.bind(this));
         this.#listener.attach();
     }
@@ -85,7 +90,8 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     }
 
     private parseAttribute() {
-        this.#target = this.args.target ? this.element.querySelector(this.args.target) : this.element;
+
+        this.#target = this.args.target ? this.getRoot().querySelector(this.args.target) : this.element;
         this.checkAndPerformActions(this.element.scrollTop, this.element.scrollLeft);
 
     }
@@ -115,4 +121,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
         })
     }
 
+    getRoot(): Element | Document {
+        return this.args.root ? document : this.element;
+    }
 }

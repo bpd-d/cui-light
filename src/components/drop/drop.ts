@@ -169,7 +169,6 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
         AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
         this.detachEvent(EVENTS.ON_KEYDOWN);
         this.detachEvent(EVENTS.ON_WINDOW_CLICK);
-
     }
 
     onOpen() {
