@@ -84,15 +84,22 @@ export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements
     #items: Element[];
     #activeCls: string;
     #targets: CuiAccordionTarget[];
-
+    #mutations: MutationObserver;
+    #mutationsOptions: MutationObserverInit;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiAccordionHandler", element, new CuiAccordionArgs(prefix, utils.setup.animationTime), utils);
 
         this.#isInitialized = false;
         this.#activeCls = getActiveClass(prefix);
+        this.#mutationsOptions = {
+            childList: true,
+            subtree: true
+        }
+        this.#mutations = new MutationObserver(this.onMutation.bind(this));
     }
 
     onInit(): void {
+
         if (this.args.isValid()) {
             try {
                 this.#items = this.queryItems();
@@ -103,6 +110,7 @@ export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements
                     this.setListener(target, index)
                     this.#targets.push(target);
                 })
+                this.#mutations.observe(this.element, this.#mutationsOptions)
             } catch (e) {
                 this._log.exception(e, 'handle')
             }
@@ -110,6 +118,7 @@ export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements
             this._log.debug("Initialized", "handle")
         }
     }
+
     onUpdate(): void {
         if (this.args.isValid() && !this.#isInitialized) {
             this.#isInitialized = true;
@@ -131,9 +140,19 @@ export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements
     }
 
     onDestroy(): void {
-        //
+        this.#mutations.disconnect();
     }
 
+    onMutation(mutations: MutationRecord[]) {
+        this.#items = this.queryItems();
+        const t = this.element.querySelectorAll(this.args.selector);
+        this.#targets = [];
+        t.forEach((item: Element, index: number) => {
+            let target: CuiAccordionTarget = { element: item };
+            this.setListener(target, index)
+            this.#targets.push(target);
+        })
+    }
 
     async switch(index: number): Promise<boolean> {
         this._log.debug("Switch to: " + index);

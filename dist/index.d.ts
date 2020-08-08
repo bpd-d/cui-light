@@ -238,6 +238,21 @@ export class CuiUtils {
     setProperty(name: string, value: string): void;
 }
 
+export class CuiInstance {
+    #private;
+    plugins: ICuiPluginManager;
+    constructor(setup: CuiSetupInit, plugins: ICuiPlugin[], components: ICuiComponent[]);
+    init(): CuiInstance;
+    finish(): void;
+    get(selector: string): ElementManager;
+    collection(selector: string): CollectionManager;
+    toast(message: string): Promise<boolean>;
+    select(selector: string): Element;
+    all(selector: string): Element[];
+    getUtils(): CuiUtils;
+    on(event: string, callback: any, context: CuiContext, element?: CuiElement): void;
+}
+
 export interface ICuiComponentAction {
     add(element: Element, utils?: CuiUtils): void;
     remove(element: Element, utils?: CuiUtils): void;
@@ -297,6 +312,53 @@ export class CuiInstanceColorHandler {
     setDarkenFactor(factor: number): void;
     setProperty(propertyName: string, value: string): void;
     setPropertyIn(propertyName: string, value: string): void;
+}
+
+export class ElementManager implements CuiCachable {
+    #private;
+    constructor(elements: Element[], utils: CuiUtils);
+    toggleClass(className: string): Promise<boolean>;
+    toggleClassAs(className: string): Promise<boolean>;
+    setClass(className: string): Promise<boolean>;
+    setClassAs(className: string): Promise<boolean>;
+    removeClass(className: string): Promise<boolean>;
+    removeClassAs(className: string): Promise<boolean>;
+    getAttribute(attributeName: string): string[];
+    setAttribute(attributeName: string, attributeValue?: string): Promise<boolean>;
+    setAttributeAs(attributeName: string, attributeValue?: string): Promise<boolean>;
+    removeAttribute(attributeName: string): Promise<boolean>;
+    removeAttributeAs(attributeName: string): Promise<boolean>;
+    toggleAttribute(attributeName: string, attributeValue?: string): Promise<boolean>;
+    toggleAttributeAs(attributeName: string, attributeValue?: string): Promise<boolean>;
+    click(onClick: (ev: MouseEvent) => void): Promise<boolean>;
+    event(eventName: string, callback: any): Promise<boolean>;
+    call(callback: (element: Element, index: Number) => void, functionName?: string): Promise<boolean>;
+    animate(className: string, timeout?: number): Promise<boolean>;
+    open(openClass: string, animationClass: string, timeout?: number): Promise<boolean>;
+    close(closeClass: string, animationClass: string, timeout?: number): Promise<boolean>;
+    read(callback: any, ...args: any[]): void;
+    change(callback: any, ...args: any[]): void;
+    elements(): Element[];
+    count(): number;
+    lock(): void;
+    unlock(): void;
+    isLocked(): boolean;
+    refresh(): boolean;
+}
+
+export class CollectionManager implements CuiCachable {
+    #private;
+    constructor(elements: Element[], interactions: IUIInteractionProvider);
+    setToggle(className: string): void;
+    setElements(elements: Element[]): void;
+    click(callback: (element: Element, index: number) => void): void;
+    next(): Promise<boolean>;
+    previous(): Promise<boolean>;
+    set(index: number): Promise<boolean>;
+    setWithAnimation(index: number, animClassIn: string, animClassOut: string, duration: number): Promise<boolean>;
+    getCurrentIndex(): number;
+    length(): number;
+    refresh(): boolean;
 }
 
 export class CuiColor {
