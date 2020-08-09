@@ -12,6 +12,14 @@ export interface ICuiMutionObserver {
     stop(): ICuiMutionObserver;
 }
 
+export interface ICuiComponentMutationObserver {
+    observe(): void;
+    unobserve(): void;
+    isObserving(): boolean;
+    onMutation(callback: (record: MutationRecord[]) => void): void;
+    disable(flag: boolean): void;
+}
+
 
 export class CuiMutationObserver implements ICuiMutionObserver {
     _log: ICuiLogger;
@@ -151,4 +159,52 @@ export class CuiMutationObserver implements ICuiMutionObserver {
             }
         }
     }
+}
+
+
+export class CuiComponentMutationHandler implements ICuiComponentMutationObserver {
+    #isObserving: boolean;
+    #observer: MutationObserver;
+    #element: Element;
+    #disabled: boolean;
+    #options: MutationObserverInit = {
+        childList: true,
+        subtree: true
+    }
+    constructor(target: Element) {
+        this.#observer = null;
+        this.#isObserving = false;
+        this.#element = target;
+    }
+
+    observe(): void {
+        if (!this.#isObserving && !this.#disabled) {
+            this.#observer.observe(this.#element, this.#options);
+            this.#isObserving = true;
+        }
+    }
+    unobserve(): void {
+        if (this.#isObserving) {
+            this.#observer.disconnect();
+            this.#isObserving = false;
+        }
+    }
+
+    isObserving(): boolean {
+        return this.#isObserving;
+    }
+
+    disable(flag: boolean): void {
+        this.#disabled = flag;
+        if (this.#disabled) {
+            this.unobserve();
+        }
+    }
+
+    onMutation(callback: (record: MutationRecord[]) => void): void {
+        if (this.#isObserving)
+            this.unobserve();
+        this.#observer = new MutationObserver(callback)
+    }
+
 }

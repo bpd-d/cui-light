@@ -1,8 +1,8 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiSwitchable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
 import { getIntOrDefault, is, getActiveClass, isStringTrue, replacePrefix, getStringOrDefault } from "../../core/utils/functions";
-import { SCOPE_SELECTOR } from "../../core/index";
+import { SCOPE_SELECTOR, EVENTS } from "../../core/index";
 
 export interface CuiAccordionEvent {
     index: number;
@@ -20,8 +20,6 @@ interface CuiAccordionTarget {
 const ACCORDION_TITLE_CLS = '> * > .{prefix}-accordion-title';
 const ACCORDION_CONTENT_CLS = '> * > .{prefix}-accordion-content';
 const ACCORDION_ITEMS_CLS = '> *';
-
-const ACCORDION_EVENT = "switch"
 
 export class CuiAccordionArgs {
     single: boolean;
@@ -78,72 +76,79 @@ export class CuiAccordionComponent implements ICuiComponent {
     }
 }
 
-export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements ICuiSwitchable {
-
-    #isInitialized: boolean;
+export class CuiAccordionHandler extends CuiMutableHandler<CuiAccordionArgs> implements ICuiSwitchable {
     #items: Element[];
-    #activeCls: string;
     #targets: CuiAccordionTarget[];
-    #mutations: MutationObserver;
-    #mutationsOptions: MutationObserverInit;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiAccordionHandler", element, new CuiAccordionArgs(prefix, utils.setup.animationTime), utils);
-
-        this.#isInitialized = false;
-        this.#activeCls = getActiveClass(prefix);
-        this.#mutationsOptions = {
-            childList: true,
-            subtree: true
-        }
-        this.#mutations = new MutationObserver(this.onMutation.bind(this));
     }
 
     onInit(): void {
-
         if (this.args.isValid()) {
             try {
-                this.#items = this.queryItems();
-                const t = this.element.querySelectorAll(this.args.selector);
-                this.#targets = [];
-                t.forEach((item: Element, index: number) => {
-                    let target: CuiAccordionTarget = { element: item };
-                    this.setListener(target, index)
-                    this.#targets.push(target);
-                })
-                this.#mutations.observe(this.element, this.#mutationsOptions)
+                this.initTargets();
+                this.onEvent(EVENTS.SWITCH, this.onSwitch.bind(this))
             } catch (e) {
                 this._log.exception(e, 'handle')
             }
-            this.#isInitialized = true;
             this._log.debug("Initialized", "handle")
         }
     }
 
     onUpdate(): void {
-        if (this.args.isValid() && !this.#isInitialized) {
-            this.#isInitialized = true;
-            this._log.debug("Initialized", "refresh")
-        }
         try {
-            this.#items = this.queryItems();
-            this.#targets.forEach(x => this.removeListener(x))
-            const t = this.element.querySelectorAll(this.args.selector);
-            this.#targets = [];
-            t.forEach((item: Element, index: number) => {
-                let target: CuiAccordionTarget = { element: item };
-                this.setListener(target, index)
-                this.#targets.push(target);
-            })
+            this.initTargets();
         } catch (e) {
             this._log.exception(e, 'handle')
         }
     }
 
     onDestroy(): void {
-        this.#mutations.disconnect();
+        this.detachEvent(EVENTS.SWITCH)
     }
 
-    onMutation(mutations: MutationRecord[]) {
+    onMutation(mutations: CuiChildMutation) {
+        if (mutations.added.length > 0 || mutations.removed.length > 0)
+            this.initTargets();
+    }
+
+    async switch(index: number): Promise<boolean> {
+        this._log.debug("Switch to: " + index);
+        if (index < 0 || this.isLocked || !this.isInitialized) {
+            return false;
+        }
+
+        this.#items = this.queryItems();
+        if (this.#items.length <= index) {
+            return false;
+        }
+        this.isLocked = true;
+        const current = this.#items[index]
+        if (this.helper.hasClass(this.activeClassName, current)) {
+            this.helper.removeClassesAs(current, this.activeClassName)
+        } else {
+            if (this.args.single) {
+                this.closeAllExcept(index)
+            }
+            this.helper.setClassesAs(current, this.activeClassName)
+
+        }
+        this.emitEvent(EVENTS.SWITCHED, {
+            index: index,
+            currentTarget: current,
+            timestamp: Date.now()
+        })
+        this.isLocked = false;
+        return true;
+    }
+
+    onSwitch(index: any): void {
+        this.switch(getIntOrDefault(index, -1)).then(() => {
+            this._log.debug("Switch from event to " + index);
+        });
+    }
+
+    initTargets() {
         this.#items = this.queryItems();
         const t = this.element.querySelectorAll(this.args.selector);
         this.#targets = [];
@@ -154,43 +159,11 @@ export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements
         })
     }
 
-    async switch(index: number): Promise<boolean> {
-        this._log.debug("Switch to: " + index);
-        if (index < 0 || this.isLocked || !this.#isInitialized) {
-            return false;
-        }
-
-        this.#items = this.queryItems();
-        if (this.#items.length <= index) {
-            return false;
-        }
-        this.isLocked = true;
-        const current = this.#items[index]
-        if (current.classList.contains(this.#activeCls))
-            this.mutate(() => {
-                current.classList.remove(this.#activeCls)
-            })
-
-        else {
-            if (this.args.single) {
-                this.closeAllExcept(index)
-            }
-            this.mutate(() => { current.classList.add(this.#activeCls) })
-        }
-        this.emitEvent(ACCORDION_EVENT, {
-            index: index,
-            currentTarget: current,
-            timestamp: Date.now()
-        })
-        this.isLocked = false;
-        return true;
-    }
-
     closeAllExcept(current: number) {
         this.mutate(() => {
             this.#items.forEach((item: Element, index: number) => {
-                if (current !== index && item.classList.contains(this.#activeCls)) {
-                    item.classList.remove(this.#activeCls)
+                if (current !== index && this.helper.hasClass(this.activeClassName, item)) {
+                    item.classList.remove(this.activeClassName)
                 }
             })
         })
@@ -210,6 +183,6 @@ export class CuiAccordionHandler extends CuiHandler<CuiAccordionArgs> implements
     }
 
     queryItems(): Element[] {
-        return this.#items = [...this.element.querySelectorAll(this.args.items)]
+        return [...this.element.querySelectorAll(this.args.items)]
     }
 }

@@ -1,11 +1,10 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
 import { getIntOrDefault, isStringTrue } from "../../core/utils/functions";
-
-export const ON_OFFSET_EVENT_NAME = "offset"
+import { EVENTS } from "../../core/index";
 
 export interface CuiOffsetEvent {
     matches: boolean;
@@ -90,7 +89,6 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     }
 
     private parseAttribute() {
-
         this.#target = this.args.target ? this.getRoot().querySelector(this.args.target) : this.element;
         this.checkAndPerformActions(this.element.scrollTop, this.element.scrollLeft);
 
@@ -115,7 +113,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     }
 
     private callEvent() {
-        this.emitEvent(ON_OFFSET_EVENT_NAME, {
+        this.emitEvent(EVENTS.OFFSET, {
             matches: this.#matched,
             timestamp: Date.now()
         })

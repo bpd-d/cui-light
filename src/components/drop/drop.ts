@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiOpenable, ICuiClosable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandler } from "../../app/handlers/base";
+import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { getIntOrDefault, parseAttribute, is, getActiveClass, isString, getName, replacePrefix, isStringTrue, getStringOrDefault, boolStringOrDefault } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiClassAction } from "../../core/utils/actions";
 import { CLASSES, EVENTS } from "../../core/utils/statics";
@@ -114,7 +114,6 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
 
     }
 
-
     async open(): Promise<boolean> {
         if (this.checkLockAndWarn('open')) {
             return false;
@@ -128,7 +127,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
         this.isLocked = true;
         this._log.debug(`Drop ${this.cuid}`, 'open');
         this.mutate(this.onOpen, this);
-        this.emitEvent(EVENTS.ON_OPEN, {
+        this.emitEvent(EVENTS.OPEN, {
             timestamp: Date.now()
         })
         this.#hoverListener.attach();
@@ -146,7 +145,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
         this.isLocked = true;
         this._log.debug(`Drop ${this.cuid}`, 'close');
         this.mutate(this.onClose, this);
-        this.emitEvent(EVENTS.ON_CLOSE, {
+        this.emitEvent(EVENTS.CLOSE, {
             timestamp: Date.now()
         })
         this.#hoverListener.detach();
@@ -164,22 +163,22 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
     }
 
     onClose() {
-        this.element.classList.remove(this.activeClassName);
-        document.body.classList.remove(this.#bodyClass);
+        this.helper.removeClass(this.activeClassName, this.element)
+        this.helper.removeClass(this.#bodyClass, document.body)
         AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
-        this.detachEvent(EVENTS.ON_KEYDOWN);
-        this.detachEvent(EVENTS.ON_WINDOW_CLICK);
+        this.detachEvent(EVENTS.KEYDOWN);
+        this.detachEvent(EVENTS.WINDOW_CLICK);
     }
 
     onOpen() {
-        this.element.classList.add(this.activeClassName);
-        document.body.classList.add(this.#bodyClass);
+        this.helper.setClass(this.activeClassName, this.element)
+        this.helper.setClass(this.#bodyClass, document.body)
         AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
         if (this.args.escClose) {
-            this.onEvent(EVENTS.ON_KEYDOWN, this.onEscClose.bind(this))
+            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
         }
         if (this.args.outClose) {
-            this.onEvent(EVENTS.ON_WINDOW_CLICK, this.onWindowClick.bind(this));
+            this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
     }
 
@@ -196,7 +195,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
     }
 
     isAnyActive(): boolean {
-        return document.body.classList.contains(this.#bodyClass);
+        return this.helper.hasClass(this.#bodyClass, document.body);
     }
 
     getAction(className: string): ICuiComponentAction {

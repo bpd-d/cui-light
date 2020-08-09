@@ -1,6 +1,13 @@
 # bpd cUI Light changelog
 
-# [0.1.10] WIP
+# [0.1.11] WIP
+# [0.1.10] 2020-08-09
+* [Fixed] Multiple adjustments across components
+* [Changed] Comppnents now react on event calls
+* [Added] New API option - Handler whith mutation observer attached to capture child changes within component
+* [Added] Emit to instance and element manager
+* [Added] Cuid will be automatically added to cUI elements
+
 # [0.1.9] 2020-08-08
 * [Fixed] Export CuiInstance class
 * [Change] Add mutation observer to accordion to detect children changes

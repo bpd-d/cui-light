@@ -1,7 +1,7 @@
 import { ICuiComponent, ICuiComponentHandler, CuiObservables, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { ICONS, EVENTS } from "../../core/utils/statics";
 import { is, parseAttributeString, getOffsetTop, getStringOrDefault } from "../../core/utils/functions";
 

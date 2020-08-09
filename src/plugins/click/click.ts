@@ -22,6 +22,6 @@ export class CuiWindowClickPlugin implements ICuiPlugin {
     }
 
     onWindowClick(ev: MouseEvent) {
-        this.#bus.emit(EVENTS.ON_WINDOW_CLICK, null, ev)
+        this.#bus.emit(EVENTS.WINDOW_CLICK, null, ev)
     }
 }

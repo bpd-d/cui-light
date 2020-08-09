@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiComponentBase } from "../../app/handlers/base";
 
 export class CuiDummyComponent implements ICuiComponent {
     attribute: string;
@@ -17,7 +17,7 @@ export class CuiDummyComponent implements ICuiComponent {
     }
 }
 
-export class CuiDummyHandler extends CuiHandlerBase implements ICuiComponentHandler {
+export class CuiDummyHandler extends CuiComponentBase implements ICuiComponentHandler {
 
     #attribute: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {

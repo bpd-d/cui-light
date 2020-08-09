@@ -79,7 +79,7 @@ export class CuiResizeObserver implements ICuiResizableObserver {
                     height: window.innerHeight,
                     timestamp: Date.now()
                 };
-                this.#bus.emit(EVENTS.ON_RESIZE, null, resizeData)
+                this.#bus.emit(EVENTS.RESIZE, null, resizeData)
                 if (this.#items.length > 0) {
                     this.#promises = [];
                     this.#items.forEach(x => {

@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiComponentBase } from "../../app/handlers/base";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { is, isString, getStringOrDefault, getName, parseAttribute } from "../../core/utils/functions";
 import { EVENTS } from "../../core/utils/statics";
@@ -37,7 +37,7 @@ export class CuiToggleComponent implements ICuiComponent {
     }
 }
 
-export class CuiToggleHandler extends CuiHandlerBase implements ICuiComponentHandler {
+export class CuiToggleHandler extends CuiComponentBase implements ICuiComponentHandler {
     #attribute: string;
     #args: CuiToggleArgs;
     #target: Element;
@@ -54,6 +54,8 @@ export class CuiToggleHandler extends CuiHandlerBase implements ICuiComponentHan
         this.#args.parse(args);
         this.#target = this.getTarget();
         this.element.addEventListener('click', this.onClick.bind(this));
+        this.onEvent(EVENTS.TOGGLE, this.toggle.bind(this));
+
     }
 
     refresh(args: any): void {
@@ -63,15 +65,20 @@ export class CuiToggleHandler extends CuiHandlerBase implements ICuiComponentHan
 
     destroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this));
+        this.detachEvent(EVENTS.TOGGLE);
     }
 
-    onClick(ev: MouseEvent) {
+    toggle() {
         this.#args.action.toggle(this.#target, this.#utils)
-        this.emitEvent(EVENTS.ON_TOGGLE, {
+        this.emitEvent(EVENTS.TOGGLED, {
             action: this.#args.action,
             target: this.#target,
             timestamp: Date.now()
         })
+    }
+
+    onClick(ev: MouseEvent) {
+        this.toggle();
         ev.preventDefault();
     }
 

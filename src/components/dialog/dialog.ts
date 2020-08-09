@@ -6,7 +6,7 @@ import { CLASSES, EVENTS } from "../../core/utils/statics";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
 import { KeyDownEvent } from "../../plugins/keys/observer";
 import { AriaAttributes } from "../../core/utils/aria";
-import { CuiHandler } from "../../app/handlers/base";
+import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 
 const DIALOG_OPEN_ANIMATION_CLASS = '{prefix}-dialog-default-in';
 const DIALOG_CLOSE_ANIMATION_CLASS = '{prefix}-dialog-default-out';
@@ -65,14 +65,18 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
 
     onInit(): void {
         AriaAttributes.setAria(this.element, 'aria-modal', "");
+        this.onEvent(EVENTS.CLOSE, this.close.bind(this));
+        this.onEvent(EVENTS.OPEN, this.open.bind(this));
         this._log.debug("Initialized", "handle")
     }
+
     onUpdate(): void {
 
     }
 
     onDestroy(): void {
-
+        this.detachEvent(EVENTS.CLOSE);
+        this.detachEvent(EVENTS.OPEN);
     }
 
     async open(args?: any): Promise<boolean> {
@@ -88,8 +92,8 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
         let action = this.getAction(DIALOG_OPEN_ANIMATION_CLASS);
         let scrollY = window.pageYOffset;
         return this.performAction(action, this.#timeout, this.onOpen.bind(this, args), () => {
-            this.element.classList.add(this.activeClassName);
-            document.body.classList.add(this.#bodyClass);
+            this.helper.setClass(this.activeClassName, this.element)
+            this.helper.setClass(this.#bodyClass, document.body)
             AriaAttributes.setAria(this.element, 'aria-expanded', 'true');
             document.body.style.top = `-${scrollY}px`;
         });
@@ -103,8 +107,8 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
         this._log.debug(`Dialog ${this.cuid}`, 'close')
         let action = this.getAction(DIALOG_CLOSE_ANIMATION_CLASS);
         return this.performAction(action, this.#timeout, this.onClose.bind(this, args), () => {
-            this.element.classList.remove(this.activeClassName);
-            document.body.classList.remove(this.#bodyClass);
+            this.helper.removeClass(this.activeClassName, this.element)
+            this.helper.removeClass(this.#bodyClass, document.body)
             AriaAttributes.setAria(this.element, 'aria-expanded', 'false');
         });
     }
@@ -113,9 +117,9 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
         const scrollY = document.body.style.top;
         document.body.style.top = '';
         window.scrollTo(0, parseInt(scrollY || '0') * -1);
-        this.detachEvent(EVENTS.ON_KEYDOWN);
-        this.detachEvent(EVENTS.ON_WINDOW_CLICK);
-        this.emitEvent(EVENTS.ON_CLOSE, {
+        this.detachEvent(EVENTS.KEYDOWN);
+        this.detachEvent(EVENTS.WINDOW_CLICK);
+        this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now(),
             state: state
         })
@@ -124,12 +128,12 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
 
     onOpen(state?: any) {
         if (this.args.escClose) {
-            this.onEvent(EVENTS.ON_KEYDOWN, this.onEscClose.bind(this))
+            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
         }
         if (this.args.outClose) {
-            this.onEvent(EVENTS.ON_WINDOW_CLICK, this.onWindowClick.bind(this));
+            this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
-        this.emitEvent(EVENTS.ON_OPEN, {
+        this.emitEvent(EVENTS.OPENED, {
             timestamp: Date.now(),
             state: state
         })
@@ -152,7 +156,7 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
     }
 
     isAnyActive(): boolean {
-        return document.body.classList.contains(this.#bodyClass);
+        return this.helper.hasClass(this.#bodyClass, document.body);
     }
 
     getAction(className: string): ICuiComponentAction {

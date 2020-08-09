@@ -1,8 +1,7 @@
-import { ICuiComponent, ICuiComponentHandler, ICuiParsable, ICuiSwitchable, CuiElement } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, ICuiParsable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, are } from "../../core/index";
-import { CuiSwitchHandler, SWITCH_EVENT_PUSH_SWITCH } from "./switch";
+import { CuiHandler } from "../../app/handlers/base";
+import { EVENTS, is } from "../../core/index";
 
 const SWITCHER_LIST_ITEM_SELECTOR = "li > a";
 
@@ -112,7 +111,7 @@ export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
         if (!is(this.#targetId)) {
             return;
         }
-        this.utils.bus.emit(SWITCH_EVENT_PUSH_SWITCH, this.#targetId, index);
+        this.utils.bus.emit(EVENTS.SWITCH, this.#targetId, index);
     }
 
 }

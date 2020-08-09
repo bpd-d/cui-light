@@ -25,7 +25,7 @@ export class CuiKeysObserver {
     }
 
     onKeyDown(ev: KeyboardEvent) {
-        this.#bus.emit(EVENTS.ON_KEYDOWN, null, {
+        this.#bus.emit(EVENTS.KEYDOWN, null, {
             timestamp: Date.now(),
             event: ev
         })

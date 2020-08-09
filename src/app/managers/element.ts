@@ -1,5 +1,5 @@
 import { is, are } from "../../core/utils/functions";
-import { ICuiLogger, IUIInteractionProvider, CuiCachable } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, CuiCachable, CuiElement } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CLASSES } from "../../core/utils/statics";
 import { CuiUtils } from "../../core/models/utils";
@@ -256,6 +256,20 @@ export class ElementManager implements CuiCachable {
                 element.classList.remove(closeClass);
             })
         });
+    }
+
+    emit(event: string, ...args: any[]): void {
+        if (!is(event)) {
+            this.#logger.warning("Not enough data to emit event", "emit")
+            return;
+        }
+        this.call((element: Element) => {
+            let cuid = (<CuiElement>(element as any)).$cuid;
+            if (is(cuid)) {
+                this.#logger.debug(`Emitting event ${event} to ${cuid}`)
+                this.#utils.bus.emit(event, cuid, ...args);
+            }
+        }, "emit")
     }
 
     read(callback: any, ...args: any[]): void {

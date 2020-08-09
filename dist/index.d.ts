@@ -251,6 +251,7 @@ export class CuiInstance {
     all(selector: string): Element[];
     getUtils(): CuiUtils;
     on(event: string, callback: any, context: CuiContext, element?: CuiElement): void;
+    emit(event: string, element: Element, ...args: any[]): void;
 }
 
 export interface ICuiComponentAction {
@@ -336,6 +337,7 @@ export class ElementManager implements CuiCachable {
     animate(className: string, timeout?: number): Promise<boolean>;
     open(openClass: string, animationClass: string, timeout?: number): Promise<boolean>;
     close(closeClass: string, animationClass: string, timeout?: number): Promise<boolean>;
+    emit(event: string, ...args: any[]): void;
     read(callback: any, ...args: any[]): void;
     change(callback: any, ...args: any[]): void;
     elements(): Element[];

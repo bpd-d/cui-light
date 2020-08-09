@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, CuiObservables, CuiContext } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiComponentBase } from "../../app/handlers/base";
 import { is, getRangeValue } from "../../core/utils/functions";
 import { IconBuilder } from "../icon/icon";
 import { ICONS } from "../../core/utils/statics";
@@ -22,7 +22,7 @@ export class CuiCircleComponent implements ICuiComponent {
     }
 }
 
-export class CuiCircleHandler extends CuiHandlerBase implements ICuiComponentHandler {
+export class CuiCircleHandler extends CuiComponentBase implements ICuiComponentHandler {
     #isInitialized: boolean;
     #factor: number;
     #full: number;

@@ -2,7 +2,7 @@ import { CuiLightMode, CuiWindowSize } from "./types";
 import { ArgumentError, RegisterElementError } from "../models/errors";
 import { ICuiComponent, CuiElement } from "../models/interfaces";
 import { CuiUtils } from "../models/utils";
-import { COMPONENTS_COUNTER } from "./statics";
+import { COMPONENTS_COUNTER, CUID_ATTRIBUTE } from "./statics";
 
 /**
  * Checks if value is defined an is not null
@@ -377,7 +377,8 @@ export function registerCuiElement(node: any, components: ICuiComponent[], attri
     element.$handlers = {};
     let matching: string[] = getMatchingAttributes(node, attributes)
     if (is(matching)) {
-        element.$cuid = generateCUID(node.tagName)
+        element.$cuid = node.hasAttribute(CUID_ATTRIBUTE) ? node.getAttribute(CUID_ATTRIBUTE) : generateCUID(node.tagName)
+        node.setAttribute(CUID_ATTRIBUTE, element.$cuid);
         matching.forEach(match => {
             let component = components.find(c => { return c.attribute === match });
             if (is(component)) {

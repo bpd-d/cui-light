@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiOpenable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandler } from "../../app/handlers/base";
+import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { getStringOrDefault, getIntOrDefault, is, getActiveClass, isString, getHandlerExtendingOrNull, isStringTrue } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { EVENTS } from "../../core/utils/statics";
@@ -57,23 +57,30 @@ export class CuiOpenComponent implements ICuiComponent {
 }
 
 export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
-    #prefix: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiOpenHandler", element, new CuiOpenArgs(utils.setup.animationTime), utils);
-        this.#prefix = prefix;
     }
 
     onInit(): void {
         this.element.addEventListener('click', this.onClick.bind(this))
+        this.onEvent(EVENTS.OPEN, this.onOpen.bind(this));
     }
     onUpdate(): void {
         //
     }
     onDestroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this))
+        this.detachEvent(EVENTS.OPEN);
     }
 
     onClick(ev: MouseEvent) {
+        this.onOpen(ev);
+        if (this.args.prevent) {
+            ev.preventDefault();
+        }
+    }
+
+    onOpen(ev: MouseEvent) {
         if (this.isLocked) {
             return;
         }
@@ -84,36 +91,35 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
         }
         this.isLocked = true;
         this.run(target).then((result) => {
-            this.activateTarget(ev, target);
+            this.activateTarget(ev, target, result);
         }).catch((e) => {
             this._log.exception(e);
         }).finally(() => {
             this.isLocked = false;
         })
-        if (this.args.prevent) {
-            ev.preventDefault();
-        }
     }
 
     private async run(target: Element): Promise<boolean> {
         let openable = getHandlerExtendingOrNull<ICuiOpenable>(target as any, 'open');
         if (is(openable)) {
-            return openable.open(this.args.state);
+            await openable.open(this.args.state);
+            return false;
         } else {
-            return this.actionsHelper.performAction(target, this.args.action, this.args.timeout);
+            await this.actionsHelper.performAction(target, this.args.action, this.args.timeout);
+            return true;
         }
     }
 
-    private activateTarget(ev: MouseEvent, target: Element): void {
-        let activeCls = getActiveClass(this.#prefix);
-        if (is(target) && !target.classList.contains(activeCls)) {
-            target.classList.add(activeCls);
+    private activateTarget(ev: MouseEvent, target: Element, shouldEmit: boolean): void {
+        if (is(target) && this.helper.hasClass(this.activeClassName, target)) {
+            this.helper.setClassesAs(target, this.activeClassName);
         }
-        this.emitOpen(ev);
+        if (shouldEmit)
+            this.emitOpen(ev);
     }
 
     emitOpen(ev: MouseEvent) {
-        this.emitEvent(EVENTS.ON_OPEN, {
+        this.emitEvent(EVENTS.OPENED, {
             event: ev,
             state: this.args.state,
             timestamp: Date.now()

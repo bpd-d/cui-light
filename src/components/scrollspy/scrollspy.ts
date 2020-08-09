@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiComponentBase } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft, clone } from "../../core/utils/functions";
@@ -52,7 +52,7 @@ export class CuiScrollspyComponent implements ICuiComponent {
     }
 }
 
-export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponentHandler {
+export class CuiScrollspyHandler extends CuiComponentBase implements ICuiComponentHandler {
     #listener: CuiScrollListener;
     #args: CuiScrollSpyArgs;
     #links: Element[];
@@ -108,7 +108,7 @@ export class CuiScrollspyHandler extends CuiHandlerBase implements ICuiComponent
             let newTarget = this.setCurrent(idx)
             this.setCurrentLink(idx, this.#currentIdx);
             this.#currentIdx = idx;
-            this.emitEvent(EVENTS.ON_TARGET_CHANGE, {
+            this.emitEvent(EVENTS.TARGET_CHANGE, {
                 top: ev.top,
                 left: ev.left,
                 target: newTarget,

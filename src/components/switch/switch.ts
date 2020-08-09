@@ -1,15 +1,12 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable, ICuiSwitchable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue } from "../../core/index";
+import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
+import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS } from "../../core/index";
 import { ICuiTask, CuiTaskRunner } from "../../core/utils/task";
 
 const SWITCH_DEFAULT_ACTION_IN = ".{prefix}-switch-animation-default-in";
 const SWITCH_DEFAULT_ACTION_OUT = ".{prefix}-switch-animation-default-out";
 const SWITCH_DEFAULT_TARGETS = "li";
-const SWITCH_EVENT_ON_SWITCH = 'switch';
-
-export const SWITCH_EVENT_PUSH_SWITCH = 'pushswitch';
 
 export class CuiSwitchArgs implements ICuiParsable {
 
@@ -57,7 +54,7 @@ export class CuiSwitchComponent implements ICuiComponent {
     }
 }
 
-export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiSwitchable {
+export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implements ICuiSwitchable {
     #targets: Element[];
     #currentIdx: number;
     #links: Element[];
@@ -73,7 +70,7 @@ export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiS
     }
 
     onInit(): void {
-        this.onEvent(SWITCH_EVENT_PUSH_SWITCH, this.onPushSwitch)
+        this.onEvent(EVENTS.SWITCH, this.onPushSwitch)
         this.getTargets();
         this.getLinks();
         this.getActiveIndex();
@@ -90,7 +87,11 @@ export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiS
 
     onDestroy(): void {
         this.#task.stop();
-        this.detachEvent(SWITCH_EVENT_PUSH_SWITCH)
+        this.detachEvent(EVENTS.SWITCH)
+    }
+
+    onMutation(record: CuiChildMutation): void {
+
     }
 
     async switch(index: any): Promise<boolean> {
@@ -122,7 +123,7 @@ export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiS
             },
             this.args.timeout,
         )
-        this.emitEvent(SWITCH_EVENT_ON_SWITCH, {
+        this.emitEvent(EVENTS.SWITCHED, {
             timestamp: Date.now(),
             index: nextIdx
         })
@@ -136,7 +137,7 @@ export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiS
     }
 
     getActiveIndex(): void {
-        this.#currentIdx = is(this.#targets) ? this.#targets.findIndex(target => target.classList.contains(this.activeClassName)) : -1;
+        this.#currentIdx = is(this.#targets) ? this.#targets.findIndex(target => this.helper.hasClass(this.activeClassName, target)) : -1;
     }
 
     getNextIndex(val: any): number {
@@ -184,10 +185,10 @@ export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiS
             return
         }
         if (isInRange(current, 0, this.#links.length - 1)) {
-            this.#links[current].classList.remove(this.activeClassName);
+            this.helper.removeClass(this.activeClassName, this.#links[current])
         }
         if (isInRange(next, 0, this.#links.length - 1)) {
-            this.#links[next].classList.add(this.activeClassName);
+            this.helper.setClass(this.activeClassName, this.#links[current])
         }
     }
     /**
@@ -208,7 +209,7 @@ export class CuiSwitchHandler extends CuiHandler<CuiSwitchArgs> implements ICuiS
      */
     setLinkSwitch(id: string, index: number) {
         if (is(id))
-            this.utils.bus.emit(SWITCH_EVENT_PUSH_SWITCH, id, index);
+            this.utils.bus.emit(EVENTS.SWITCH, id, index);
     }
 
     /**

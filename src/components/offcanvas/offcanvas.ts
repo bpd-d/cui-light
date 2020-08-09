@@ -1,6 +1,6 @@
 import { isStringTrue, replacePrefix, EVENTS, ICuiComponentAction, CuiClassAction, is, getStringOrDefault, getIntOrDefault, CuiActionsFatory, getName } from "../../core/index";
 import { ICuiComponent, CuiUtils, ICuiComponentHandler, ICuiOpenable, ICuiClosable } from "../../index";
-import { CuiHandler } from "../../app/handlers/base";
+import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { KeyDownEvent } from "../../plugins/keys/observer";
 import { AriaAttributes } from "../../core/utils/aria";
 
@@ -83,6 +83,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
             this.setPositionLeft();
             AriaAttributes.setAria(this.element, 'aria-modal', "");
         })
+        this.onEvent(EVENTS.OPEN, this.open.bind(this));
+        this.onEvent(EVENTS.CLOSE, this.close.bind(this));
         this._log.debug("Initialized", "onInit")
     }
     onUpdate(): void {
@@ -90,6 +92,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     }
     onDestroy(): void {
         //throw new Error("Method not implemented.");
+        this.detachEvent(EVENTS.CLOSE);
+        this.detachEvent(EVENTS.OPEN);
     }
 
     async open(args?: any): Promise<boolean> {
@@ -105,8 +109,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
         let scrollY = window.pageYOffset;
         let action = CuiActionsFatory.get(this.args.open);
         return this.performAction(action, this.args.timeout, this.onOpen.bind(this, args), () => {
-            this.element.classList.add(this.activeClassName);
-            document.body.classList.add(this.#bodyClass);
+            this.helper.setClass(this.activeClassName, this.element)
+            this.helper.setClass(this.#bodyClass, document.body)
             AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
             document.body.style.top = `-${scrollY}px`;
         });
@@ -120,8 +124,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
         this._log.debug(`Offcanvas ${this.cuid}`, 'close')
         let action = CuiActionsFatory.get(this.args.close);
         return this.performAction(action, this.args.timeout, this.onClose.bind(this, args), () => {
-            this.element.classList.remove(this.activeClassName);
-            document.body.classList.remove(this.#bodyClass);
+            this.helper.removeClass(this.activeClassName, this.element)
+            this.helper.removeClass(this.#bodyClass, document.body)
             const scrollY = document.body.style.top;
             document.body.style.top = '';
             window.scrollTo(0, parseInt(scrollY || '0') * -1);
@@ -130,9 +134,9 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     }
 
     onClose(state?: any) {
-        this.detachEvent(EVENTS.ON_KEYDOWN);
-        this.detachEvent(EVENTS.ON_WINDOW_CLICK);
-        this.emitEvent(EVENTS.ON_CLOSE, {
+        this.detachEvent(EVENTS.KEYDOWN);
+        this.detachEvent(EVENTS.WINDOW_CLICK);
+        this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now(),
             state: state
         })
@@ -142,12 +146,12 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     onOpen(state?: any) {
 
         if (this.args.escClose) {
-            this.onEvent(EVENTS.ON_KEYDOWN, this.onEscClose.bind(this))
+            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
         }
         if (this.args.outClose) {
-            this.onEvent(EVENTS.ON_WINDOW_CLICK, this.onWindowClick.bind(this));
+            this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
-        this.emitEvent(EVENTS.ON_OPEN, {
+        this.emitEvent(EVENTS.OPENED, {
             timestamp: Date.now(),
             state: state
         })
@@ -168,15 +172,15 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     }
 
     isAnyActive(): boolean {
-        return document.body.classList.contains(this.#bodyClass);
+        return this.helper.hasClass(this.#bodyClass, document.body);
     }
 
     setPositionLeft() {
         let cls = getName(this.#prefix, 'left');
-        if (this.args.position === 'left' && !this.element.classList.contains(cls)) {
-            this.element.classList.add(cls);
-        } else if (this.args.position == 'right' && this.element.classList.contains(cls)) {
-            this.element.classList.remove(cls);
+        if (this.args.position === 'left' && !this.helper.hasClass(cls, this.element)) {
+            this.helper.setClass(cls, this.element)
+        } else if (this.args.position == 'right' && this.helper.hasClass(cls, this.element)) {
+            this.helper.removeClass(cls, this.element)
         }
     }
 }

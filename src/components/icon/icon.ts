@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
 import { is, createElementFromString, isString, getStringOrDefault } from "../../core/utils/functions";
 

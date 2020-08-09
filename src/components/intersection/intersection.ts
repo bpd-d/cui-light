@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { CuiIntersectionObserver } from "../../app/observers/intersection";
 import { CuiActionsFatory, ICuiComponentAction } from "../../core/utils/actions";
 import { is, parseAttributeString, getRangeValueOrDefault, clone } from "../../core/utils/functions";
@@ -65,10 +65,6 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
         this.#observer.disconnect();
     }
 
-    refresh(args: any): void {
-        this.parseArguments();
-    }
-
     parseArguments() {
         if (this.prevArgs === null || this.prevArgs.target !== this.args.target) {
             this.#targets = [...document.querySelectorAll(this.args.target)];
@@ -96,7 +92,7 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
     }
 
     emitIntersection(entry: IntersectionObserverEntry) {
-        this.emitEvent(EVENTS.ON_INTERSECTION, {
+        this.emitEvent(EVENTS.INTERSECTION, {
             entry: entry,
             offset: this.args.offset,
             timestamp: Date.now()

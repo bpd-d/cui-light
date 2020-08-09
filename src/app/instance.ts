@@ -136,4 +136,17 @@ export class CuiInstance {
         }
         this.#utils.bus.on(event, callback, context, element);
     }
+
+    emit(event: string, element: Element, ...args: any[]): void {
+        if (!are(event, element)) {
+            this.#log.warning("Not enough data to emit event", "emit")
+            return;
+        }
+        let cuid = (<CuiElement>(element as any)).$cuid;
+        if (!is(cuid)) {
+            this.#log.warning("Element is not a cUI element", "emit")
+            return
+        }
+        this.#utils.bus.emit(event, cuid, ...args);
+    }
 }

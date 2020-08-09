@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiClosable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase, CuiHandler } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, isStringTrue, getHandlerExtendingOrNull, getParentCuiElement } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { CLASSES, EVENTS } from "../../core/utils/statics";
@@ -58,7 +58,6 @@ export class CuiCloseComponent implements ICuiComponent {
 }
 
 export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
-
     #prefix: string;
     #actionHelper: CuiActionsHelper;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
@@ -68,16 +67,24 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
 
     onInit(): void {
         this.element.addEventListener('click', this.onClick.bind(this))
-        this._log.debug("Initialized", "onInit")
+        this.onEvent(EVENTS.CLOSE, this.onClose.bind(this));
     }
+
     onUpdate(): void {
         //
     }
     onDestroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this))
+        this.detachEvent(EVENTS.CLOSE);
     }
 
     onClick(ev: MouseEvent) {
+        this.onClose(ev);
+        if (this.args.prevent)
+            ev.preventDefault();
+    }
+
+    onClose(ev: MouseEvent) {
         if (this.isLocked) {
             return;
         }
@@ -88,33 +95,33 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
         }
         this.isLocked = true;
         this.run(target).then((result) => {
-            this.onActionFinish(ev, target);
+            this.onActionFinish(ev, target, result);
         }).catch((e) => {
             this._log.exception(e);
         }).finally(() => {
             this.isLocked = false;
         })
-        if (this.args.prevent)
-            ev.preventDefault();
     }
 
     private async run(target: Element): Promise<boolean> {
         let closable = getHandlerExtendingOrNull<ICuiClosable>(target as any, 'close');
         if (closable) {
-            return closable.close(this.args.state);
+            await closable.close(this.args.state);
+            return false;
         } else if (this.args.action) {
-            return this.#actionHelper.performAction(target, this.args.action, this.args.timeout);
+            await this.#actionHelper.performAction(target, this.args.action, this.args.timeout);
+            return true
         } else {
             return true;
         }
     }
 
-    private onActionFinish(ev: MouseEvent, target: Element) {
-        let activeCls = getActiveClass(this.#prefix);
-        if (is(target) && target.classList.contains(activeCls)) {
-            target.classList.remove(activeCls);
+    private onActionFinish(ev: MouseEvent, target: Element, shouldEmit: boolean) {
+        if (is(target) && this.helper.hasClass(this.activeClassName, target)) {
+            this.helper.removeClassesAs(target, this.activeClassName);
         }
-        this.emitClose(ev);
+        if (shouldEmit)
+            this.emitClose(ev);
     }
 
     private getTarget(): Element {
@@ -122,7 +129,7 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     }
 
     private emitClose(ev: MouseEvent) {
-        this.emitEvent(EVENTS.ON_CLOSE, {
+        this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now(),
             state: this.args.state,
             event: ev

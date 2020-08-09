@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, CuiContext, ICuiEventBus } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiHandlerBase } from "../../app/handlers/base";
+import { CuiComponentBase } from "../../app/handlers/base";
 import { ICuiResizable, CuiResizeData } from "../../app/observers/resize";
 import { generateCUID } from "../../core/utils/functions";
 import { EVENTS } from "../../core/utils/statics";
@@ -20,7 +20,7 @@ export class CuiResizeComponent implements ICuiComponent {
     }
 }
 
-export class CuiResizeHandler extends CuiHandlerBase implements ICuiComponentHandler, CuiContext {
+export class CuiResizeHandler extends CuiComponentBase implements ICuiComponentHandler, CuiContext {
 
     #attribute: string;
     #bus: ICuiEventBus;
@@ -33,7 +33,7 @@ export class CuiResizeHandler extends CuiHandlerBase implements ICuiComponentHan
 
     handle(args: any): void {
         //   this._log.debug(this.#element.getAttribute(this.#attribute));
-        this.#bus.on(EVENTS.ON_RESIZE, this.resize, this);
+        this.#bus.on(EVENTS.RESIZE, this.resize, this);
     }
 
     refresh(args: any): void {
@@ -41,14 +41,10 @@ export class CuiResizeHandler extends CuiHandlerBase implements ICuiComponentHan
     }
 
     destroy(): void {
-        this.#bus.detach(EVENTS.ON_RESIZE, this);
+        this.#bus.detach(EVENTS.RESIZE, this);
     }
 
     resize(data: CuiResizeData) {
         console.log(data);
-    }
-
-    getId(): string {
-        return generateCUID(this.#attribute);
     }
 }

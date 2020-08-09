@@ -1,6 +1,7 @@
 import { CuiLogLevel } from "./types";
 import { CuiColorPair } from "../models/colors";
 import { counter } from "./functions";
+export const CUID_ATTRIBUTE = "cuid";
 
 export const CLASSES = {
     dark: 'dark',
@@ -139,16 +140,22 @@ export class STATICS {
 export const EVENTS = {
     INSTANCE_INITIALIZED: 'instance-initialized',
     INSTANCE_FINISHED: 'instance-finished',
-    ON_RESIZE: "resize",
-    ON_OPEN: "open",
-    ON_CLOSE: "close",
-    ON_TOGGLE: "toggle",
+    RESIZE: "resize",
+    OPEN: "open",
+    OPENED: "opened",
+    CLOSE: "close",
+    CLOSED: "closed",
+    TOGGLE: "toggle",
+    TOGGLED: 'toggled',
+    SWITCH: "switch",
+    SWITCHED: "switched",
     ON_SCROLL: "scroll",
-    ON_TARGET_CHANGE: 'targetchange',
-    ON_INTERSECTION: 'intersection',
-    ON_KEYDOWN: 'keydown',
-    ON_SCROLLBY: 'scrollby',
-    ON_WINDOW_CLICK: 'windowclick'
+    TARGET_CHANGE: 'targetchange',
+    INTERSECTION: 'intersection',
+    KEYDOWN: 'keydown',
+    SCROLLBY: 'scrollby',
+    WINDOW_CLICK: 'windowclick',
+    OFFSET: 'offset'
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";
