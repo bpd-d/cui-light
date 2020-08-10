@@ -155,7 +155,11 @@ export const EVENTS = {
     KEYDOWN: 'keydown',
     SCROLLBY: 'scrollby',
     WINDOW_CLICK: 'windowclick',
-    OFFSET: 'offset'
+    OFFSET: 'offset',
+    PROGRESS_CHANGE: "progresschange",
+    PROGRESS_CHANGED: "progresschanged",
+    CHANGE: "change",
+    CHANGED: "changed"
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";

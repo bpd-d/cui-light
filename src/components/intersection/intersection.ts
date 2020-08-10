@@ -38,7 +38,7 @@ export class CuiIntersectionComponent implements ICuiComponent {
     }
 }
 
-export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes> implements ICuiComponentHandler {
+export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes> {
 
     #observer: CuiIntersectionObserver;
     #targets: Element[];

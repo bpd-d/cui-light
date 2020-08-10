@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft, clone } from "../../core/utils/functions";
@@ -52,9 +52,9 @@ export class CuiScrollspyComponent implements ICuiComponent {
     }
 }
 
-export class CuiScrollspyHandler extends CuiComponentBase implements ICuiComponentHandler {
+export class CuiScrollspyHandler extends CuiHandler<CuiScrollSpyArgs> {
+
     #listener: CuiScrollListener;
-    #args: CuiScrollSpyArgs;
     #links: Element[];
     #targets: Element[];
     #currentIdx: number;
@@ -63,20 +63,18 @@ export class CuiScrollspyHandler extends CuiComponentBase implements ICuiCompone
     #prevScrollTop: number;
     #prevScrollLeft: number;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiScrollspyHandler", element, utils);
+        super("CuiScrollspyHandler", element, new CuiScrollSpyArgs(), utils);
         this.element = element as HTMLElement;
         this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
-        this.#args = new CuiScrollSpyArgs();
         this.#links = [];
         this.#targets = [];
         this.#currentIdx = this.#targetsLength = this.#linksLength = -1;
     }
 
-    handle(args: any): void {
-        this._log.debug("Handle", "handle");
+    onInit(): void {
         this.#prevScrollTop = this.element.scrollTop;
         this.#prevScrollLeft = this.element.scrollLeft;
-        this.parseAttribute(args);
+        this.parseAttribute();
         let current = this.calculateCurrent(this.#prevScrollTop);
         this.setCurrent(current);
         this.setCurrentLink(current, -1);
@@ -85,15 +83,14 @@ export class CuiScrollspyHandler extends CuiComponentBase implements ICuiCompone
         this.#listener.attach();
     }
 
-    refresh(args: any): void {
-        this._log.debug("Refresh")
-        this.parseAttribute(args);
+    onUpdate(): void {
         this.#prevScrollTop = this.element.scrollTop;
         this.#prevScrollLeft = this.element.scrollLeft;
+        this.parseAttribute();
         this.calculateCurrent(this.#prevScrollTop);
     }
 
-    destroy() {
+    onDestroy(): void {
         this.#listener.detach();
     }
 
@@ -120,10 +117,9 @@ export class CuiScrollspyHandler extends CuiComponentBase implements ICuiCompone
         this.#prevScrollLeft = this.element.scrollLeft;
     }
 
-    private parseAttribute(args: any) {
-        this.#args.parse(args);
-        this.#targets = [...this.element.querySelectorAll(this.#args.selector)];
-        this.#links = this.#args.link ? [...document.querySelectorAll(this.#args.link)] : [];
+    private parseAttribute() {
+        this.#targets = [...this.element.querySelectorAll(this.args.selector)];
+        this.#links = this.args.link ? [...document.querySelectorAll(this.args.link)] : [];
         this.#targetsLength = this.#targets.length;
         this.#linksLength = this.#links.length;
     }
@@ -131,7 +127,7 @@ export class CuiScrollspyHandler extends CuiComponentBase implements ICuiCompone
     private calculateCurrent(scroll: number): number {
         return this.#targets.findIndex((target: HTMLElement) => {
             let offset = getOffsetTop(target) - (<any>this.element).offsetTop;
-            let ratio = offset * this.#args.offset
+            let ratio = offset * this.args.offset
             return offset + ratio <= scroll && scroll < offset + target.clientHeight + ratio;
         })
     }
@@ -139,7 +135,7 @@ export class CuiScrollspyHandler extends CuiComponentBase implements ICuiCompone
     private calculateCurrentLeft(scroll: number): number {
         return this.#targets.findIndex((target: HTMLElement) => {
             let offset = getOffsetLeft(target) - (<any>this.element).offsetLeft;
-            let ratio = offset * this.#args.offset
+            let ratio = offset * this.args.offset
             return offset + ratio <= scroll && scroll < offset + target.clientWidth + ratio;
         })
     }
@@ -156,18 +152,18 @@ export class CuiScrollspyHandler extends CuiComponentBase implements ICuiCompone
             throw new CuiScrollSpyOutOfRangeError("New index is out of targets length")
         }
         let ret = this.#targets[idx]
-        this.#args.action.add(ret)
-        this.#args.action.remove(this.#targets[this.#currentIdx]);
+        this.args.action.add(ret)
+        this.args.action.remove(this.#targets[this.#currentIdx]);
         return ret;
     }
 
     private setCurrentLink(idx: number, prev: number) {
         if (this.#linksLength > 0) {
             if (isInRange(idx, 0, this.#linksLength)) {
-                this.#args.linkAction.add(this.#links[idx]);
+                this.args.linkAction.add(this.#links[idx]);
             }
             if (isInRange(prev, 0, this.#linksLength)) {
-                this.#args.linkAction.remove(this.#links[prev]);
+                this.args.linkAction.remove(this.#links[prev]);
             }
         }
     }

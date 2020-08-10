@@ -1,6 +1,6 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler } from "../../app/handlers/base";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { is, isString, getStringOrDefault, getName, parseAttribute } from "../../core/utils/functions";
 import { EVENTS } from "../../core/utils/statics";
@@ -37,41 +37,33 @@ export class CuiToggleComponent implements ICuiComponent {
     }
 }
 
-export class CuiToggleHandler extends CuiComponentBase implements ICuiComponentHandler {
-    #attribute: string;
-    #args: CuiToggleArgs;
+export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     #target: Element;
     #utils: CuiUtils;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiToggleHandler", element, utils);
-        this.#attribute = attribute
-        this.#args = new CuiToggleArgs();
+        super("CuiToggleHandler", element, new CuiToggleArgs(), utils);
         this.#target = this.element;
         this.#utils = utils;
     }
 
-    handle(args: any): void {
-        this.#args.parse(args);
+    onInit(): void {
         this.#target = this.getTarget();
         this.element.addEventListener('click', this.onClick.bind(this));
         this.onEvent(EVENTS.TOGGLE, this.toggle.bind(this));
 
     }
-
-    refresh(args: any): void {
-        this.#args.parse(args);
+    onUpdate(): void {
         this.#target = this.getTarget();
     }
-
-    destroy(): void {
+    onDestroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this));
         this.detachEvent(EVENTS.TOGGLE);
     }
 
     toggle() {
-        this.#args.action.toggle(this.#target, this.#utils)
+        this.args.action.toggle(this.#target, this.#utils)
         this.emitEvent(EVENTS.TOGGLED, {
-            action: this.#args.action,
+            action: this.args.action,
             target: this.#target,
             timestamp: Date.now()
         })
@@ -83,6 +75,6 @@ export class CuiToggleHandler extends CuiComponentBase implements ICuiComponentH
     }
 
     getTarget(): Element {
-        return is(this.#args.target) ? document.querySelector(this.#args.target) : this.element;
+        return is(this.args.target) ? document.querySelector(this.args.target) : this.element;
     }
 }

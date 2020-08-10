@@ -46,7 +46,7 @@ export class CuiScrollArgs implements ICuiParsable {
 
 }
 
-export class CuiScrollHandler extends CuiHandler<CuiScrollArgs> implements ICuiComponentHandler {
+export class CuiScrollHandler extends CuiHandler<CuiScrollArgs> {
     #parent: HTMLElement;
     #target: HTMLElement;
     constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {

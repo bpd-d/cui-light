@@ -1,6 +1,8 @@
 # bpd cUI Light changelog
 
-# [0.1.11] WIP
+# [0.1.11] 2020-08-10
+* [Fixed] Adjusted all component to use new API and events system
+
 # [0.1.10] 2020-08-09
 * [Fixed] Multiple adjustments across components
 * [Changed] Comppnents now react on event calls

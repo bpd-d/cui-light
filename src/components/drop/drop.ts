@@ -41,7 +41,7 @@ export class CuiDropArgs {
         this.trigger = getStringOrDefault(args.trigger, DROP_DEFAULT_TRIGGER);
         this.prevent = isStringTrue(args.prevent);
         this.autoClose = isStringTrue(args.autoClose);
-        this.outClose = isStringTrue(args.closeOut);
+        this.outClose = args.outClose ? isStringTrue(args.outClose) : true;
     }
 }
 
@@ -62,10 +62,7 @@ export class CuiDropComponenet implements ICuiComponent {
     }
 }
 
-export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiComponentHandler, ICuiOpenable, ICuiClosable {
-
-
-    #isInitialized: boolean;
+export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpenable, ICuiClosable {
     #prefix: string;
     #bodyClass: string;
     #attribute: string;
@@ -77,7 +74,6 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuidropHandler", element, new CuiDropArgs(), utils);
         this.#attribute = attribute;
-        this.#isInitialized = false;
         this.#prefix = prefix;
         this.#clearId = null;
         this.#bodyClass = replacePrefix(bodyClass, prefix);
@@ -89,7 +85,6 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
         this.#trigger = this.element.parentElement.querySelector(this.args.trigger)
         this.#triggerHoverListener = new CuiHoverListener(this.#trigger);
         this.setTriggerEvent();
-        this.#isInitialized = true;
         AriaAttributes.setAria(this.element, 'aria-dropdown', "");
         this._log.debug("Initialized", "handle")
     }
@@ -103,11 +98,6 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
         this.#trigger = this.element.parentElement.querySelector(this.args.trigger)
         this.#triggerHoverListener = new CuiHoverListener(this.#trigger);
         this.setTriggerEvent();
-        if (!this.#isInitialized) {
-            this.#isInitialized = true;
-            AriaAttributes.setAria(this.element, 'aria-dropdown', "");
-            this._log.debug("Initialized", "refresh")
-        }
     }
 
     onDestroy(): void {
@@ -189,7 +179,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiCompo
     }
 
     onWindowClick(ev: MouseEvent) {
-        if (this.element.contains((ev.target as Node))) {
+        if (!this.element.contains((ev.target as Node))) {
             this.close();
         }
     }

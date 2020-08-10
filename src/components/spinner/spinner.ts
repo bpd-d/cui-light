@@ -1,9 +1,27 @@
-import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, CuiObservables, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { IconBuilder } from "../icon/icon";
-import { CuiComponentBase } from "../../app/handlers/base";
+import { CuiComponentBase, CuiHandler } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
-import { is } from "../../core/utils/functions";
+import { is, isString, getStringOrDefault } from "../../core/utils/functions";
+import { CuiCloseHandler } from "../close/close";
+
+export class CuiSpinnerArgs implements ICuiParsable {
+    spinner: string;
+
+    constructor() {
+        this.spinner = null;
+    }
+
+    parse(args: any) {
+        if (isString(args)) {
+            this.spinner = args
+        } else {
+            this.spinner = getStringOrDefault(args.spinner, null);
+        }
+    }
+
+}
 
 export class CuiSpinnerComponent implements ICuiComponent {
     attribute: string;
@@ -21,39 +39,27 @@ export class CuiSpinnerComponent implements ICuiComponent {
     }
 }
 
-export class CuiSpinnerHandler extends CuiComponentBase implements ICuiComponentHandler {
-    #attribute: string;
-    #isInitialized: boolean;
+export class CuiSpinnerHandler extends CuiHandler<CuiSpinnerArgs> {
+
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiSpinnerHandler", element, utils);
-        this.element = element;
-        this.#attribute = attribute
-        this.#isInitialized = false;
+        super("CuiSpinnerHandler", element, new CuiSpinnerArgs(), utils);
     }
 
-    handle(args: any): void {
-        if (this.#isInitialized) {
-            return
-        }
-        const spinnerName = this.element.getAttribute(this.#attribute);
-        const svgIcon = is(spinnerName) ? ICONS[`spinner_${spinnerName}`] : null;
+    onInit(): void {
+        const svgIcon = is(this.args.spinner) ? ICONS[`spinner_${this.args.spinner}`] : null;
         if (!is(svgIcon)) {
             return;
         }
         const iconElement = new IconBuilder(svgIcon).build();
         this.element.innerHTML = "";
-        this.#isInitialized = true
-        this.mutate(this.addSpinner, iconElement, spinnerName);
+        this.mutate(this.addSpinner, iconElement, this.args.spinner);
     }
 
-    refresh(args: any): void {
-        if (this.#isInitialized) {
-            return
-        }
+    onUpdate(): void {
+        throw new Error("Method not implemented.");
     }
 
-    destroy(): void {
-        this.#isInitialized = false;
+    onDestroy(): void {
         this.element.innerHTML = "";
     }
 

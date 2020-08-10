@@ -188,7 +188,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
             this.helper.removeClass(this.activeClassName, this.#links[current])
         }
         if (isInRange(next, 0, this.#links.length - 1)) {
-            this.helper.setClass(this.activeClassName, this.#links[current])
+            this.helper.setClass(this.activeClassName, this.#links[next])
         }
     }
     /**
