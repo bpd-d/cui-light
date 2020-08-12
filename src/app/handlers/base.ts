@@ -1,7 +1,7 @@
 import { ICuiLogger, IUIInteractionProvider, CuiElement, CuiContext, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CuiUtils } from "../../core/models/utils";
-import { getActiveClass, CuiActionsHelper, ICuiComponentAction } from "../../core/index";
+import { getActiveClass, CuiActionsHelper, ICuiComponentAction, is } from "../../core/index";
 import { ICuiComponentMutationObserver, CuiComponentMutationHandler } from "../observers/mutations";
 import { ICuiIntersectionHandler } from "../observers/intersection";
 
@@ -46,6 +46,12 @@ export class ComponentHelper {
 
     removeClassesAs(element: Element, ...classes: string[]) {
         this.#interactions.mutate(this.removeClasses, this, classes, element);
+    }
+
+    setStyle(element: any, property: string, value: string) {
+        if (element["style"] && is(value)) {
+            element.style[property] = value
+        }
     }
 
 
@@ -217,7 +223,7 @@ export abstract class CuiMutableHandler<T extends ICuiParsable> extends CuiHandl
     constructor(componentName: string, element: Element, args: T, utils: CuiUtils) {
         super(componentName, element, args, utils);
         this.#mutionHandler = new CuiComponentMutationHandler(element);
-        this.#mutionHandler.onMutation(this.mutation)
+        this.#mutionHandler.onMutation(this.mutation.bind(this))
     }
 
     onHandle() {

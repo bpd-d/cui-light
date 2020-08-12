@@ -1,7 +1,7 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable, ICuiSwitchable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS } from "../../core/index";
+import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS, getChildrenHeight } from "../../core/index";
 import { ICuiTask, CuiTaskRunner } from "../../core/utils/task";
 
 const SWITCH_DEFAULT_ACTION_IN = ".{prefix}-switch-animation-default-in";
@@ -16,8 +16,8 @@ export class CuiSwitchArgs implements ICuiParsable {
     timeout: number;
     links: string;
     switch: string;
-    auto: boolean;
     autoTimeout: number;
+    height: 'auto' | string;
 
     #prefix: string;
     #defTimeout: number;
@@ -33,8 +33,8 @@ export class CuiSwitchArgs implements ICuiParsable {
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
         this.links = args.links;
         this.switch = args.switch;
-        this.auto = isStringTrue(args.auto)
-        this.autoTimeout = getIntOrDefault(args.autoTimeout, 5000);
+        this.autoTimeout = getIntOrDefault(args.autoTimeout, -1);
+        this.height = getStringOrDefault(args.height, 'auto')
     }
 
 }
@@ -77,6 +77,9 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
         this.getSwitches();
         this.setSwitchesActive(this.#currentIdx);
         this.setLinkActive(-1, this.#currentIdx);
+        this.mutate(() => {
+            this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
+        })
         this.#task = new CuiTaskRunner(this.args.autoTimeout, true, this.switch.bind(this, 'next'));
         this.startTask();
     }
@@ -109,15 +112,18 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
         }
         this.isLocked = true;
         this.setSwitchesActive(nextIdx);
-        await this.actionsHelper.performSwitchAction(this.#targets[nextIdx],
+        let nextItem = this.#targets[nextIdx];
+
+        await this.actionsHelper.performSwitchAction(nextItem,
             this.#currentIdx > -1 ? this.#targets[this.#currentIdx] : null,
             this.args.in,
             this.args.out,
             () => {
-                this.#targets[nextIdx].classList.add(this.activeClassName);
+                nextItem.classList.add(this.activeClassName);
                 if (this.#currentIdx > -1)
                     this.#targets[this.#currentIdx].classList.remove(this.activeClassName)
                 this.setLinkActive(this.#currentIdx, nextIdx);
+                this.helper.setStyle(this.element, 'height', this.getElementHeight(nextItem))
                 this.startTask();
                 this.isLocked = false;
             },
@@ -159,6 +165,16 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
                 break;
         }
         return idx;
+    }
+
+    getElementHeight(current: Element): string {
+        let height: number = 0;
+        if (this.args.height === 'auto') {
+            height = getChildrenHeight(current);
+        } else {
+            return this.args.height.match(/\d+/g).length > 0 ? this.args.height + "px" : this.args.height;
+        }
+        return height + 'px';
     }
 
     getTargets() {
@@ -217,7 +233,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
      */
     startTask() {
         this.#task.stop();
-        if (this.args.auto) {
+        if (this.args.autoTimeout) {
             this.#task.start();
         }
     }

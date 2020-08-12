@@ -422,11 +422,35 @@ export function getHandlerExtendingOrNull<T>(target: CuiElement, fName: string):
     return null;
 }
 
+/**
+ * Checks whether property exists on the object and it is a function
+ * @param obj - object
+ * @param fName - property name
+ */
 export function hasFunction(obj: any, fName: string) {
     return is(obj[fName]) && typeof obj[fName] === 'function'
 }
 
+/**
+ * Gets closest parent element which is a cUI element
+ * @param element 
+ */
 export function getParentCuiElement(element: Element): Element {
     let parent = element.parentElement as any;
     return is(parent) && is(parent.$cuid) ? parent : getParentCuiElement(parent);
+}
+
+/**
+ * Calculates element height by calculating childerns heights
+ * @param element
+ */
+export function getChildrenHeight(element: Element): number {
+    let height: number = 0;
+    if (!element) {
+        return -1;
+    }
+    Array.from(element.children).forEach((child: HTMLElement) => {
+        height += child.clientHeight;
+    })
+    return height;
 }
