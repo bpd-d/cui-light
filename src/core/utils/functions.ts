@@ -246,7 +246,6 @@ export function getOffsetTop(element: HTMLElement) {
     }
     let val = element.offsetTop - parseInt(getStyleValue(element, 'margin-top')) - parseInt(getStyleValue(element, 'padding-top')) - parseInt(getStyleValue(element, 'border-top-width'))
     return val < 0 ? element.offsetTop : val;
-
 }
 
 export function getOffsetLeft(element: HTMLElement) {
@@ -450,7 +449,18 @@ export function getChildrenHeight(element: Element): number {
         return -1;
     }
     Array.from(element.children).forEach((child: HTMLElement) => {
-        height += child.clientHeight;
+        height += child.offsetHeight;
     })
-    return height;
+    return height > 0 ? height + 2 : height;
+}
+
+export function enumerateObject<T>(object: T, callback: (property: string, value: any) => void) {
+    if (!are(object, callback)) {
+        return;
+    }
+    for (let prop in object) {
+        if (object.hasOwnProperty(prop)) {
+            callback(prop, object[prop]);
+        }
+    }
 }

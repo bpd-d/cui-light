@@ -1,5 +1,5 @@
 import { is, are } from "../../core/utils/functions";
-import { ICuiLogger, IUIInteractionProvider, CuiCachable, CuiElement } from "../../core/models/interfaces";
+import { ICuiLogger, IUIInteractionProvider, CuiCachable, CuiElement, CuiContext } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CLASSES } from "../../core/utils/statics";
 import { CuiUtils } from "../../core/models/utils";
@@ -270,6 +270,19 @@ export class ElementManager implements CuiCachable {
                 this.#utils.bus.emit(event, cuid, ...args);
             }
         }, "emit")
+    }
+
+    on(event: string, callback: any, ctx: CuiContext): void {
+        if (!are(event, callback)) {
+            this.#logger.error("Incorrect arguments", "on")
+        }
+        this.call((element: Element) => {
+            let cuiElement = (<CuiElement>(element as any));
+            if (is(cuiElement)) {
+                this.#utils.bus.on(event, callback, ctx, cuiElement);
+            }
+        }, "on")
+
     }
 
     read(callback: any, ...args: any[]): void {

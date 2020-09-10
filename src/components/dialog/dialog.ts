@@ -1,12 +1,11 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiOpenable, ICuiClosable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, getName, replacePrefix, isStringTrue } from "../../core/utils/functions";
+import { replacePrefix, isStringTrue } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory, CuiClassAction } from "../../core/utils/actions";
-import { CLASSES, EVENTS } from "../../core/utils/statics";
-import { CuiActionsHelper } from "../../core/helpers/helpers";
+import { EVENTS } from "../../core/utils/statics";
 import { KeyDownEvent } from "../../plugins/keys/observer";
 import { AriaAttributes } from "../../core/utils/aria";
-import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
+import { CuiHandler } from "../../app/handlers/base";
 
 const DIALOG_OPEN_ANIMATION_CLASS = '{prefix}-dialog-default-in';
 const DIALOG_CLOSE_ANIMATION_CLASS = '{prefix}-dialog-default-out';

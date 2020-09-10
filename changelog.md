@@ -1,5 +1,8 @@
 # bpd cUI Light changelog
-# [0.1.13] WIP
+# [0.1.14] WIP
+# [0.1.13] 2020-09-10
+* [Added] Shorthand for simple dialogs: "Info", "OkCancel", "YesNoCancel" - you can easily create simple alert dialogs in one line of code.
+* [Fixed] Height calculation on components using height auto
 # [0.1.12] 2020-08-12
 * [Fixed] Mutation handler does not update component
 * [Added] Option 'height' to switch component

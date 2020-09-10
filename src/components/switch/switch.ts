@@ -1,12 +1,12 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable, ICuiSwitchable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS, getChildrenHeight } from "../../core/index";
+import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS, getChildrenHeight, SCOPE_SELECTOR } from "../../core/index";
 import { ICuiTask, CuiTaskRunner } from "../../core/utils/task";
 
 const SWITCH_DEFAULT_ACTION_IN = ".{prefix}-switch-animation-default-in";
 const SWITCH_DEFAULT_ACTION_OUT = ".{prefix}-switch-animation-default-out";
-const SWITCH_DEFAULT_TARGETS = "li";
+const SWITCH_DEFAULT_TARGETS = "> li";
 
 export class CuiSwitchArgs implements ICuiParsable {
 
@@ -27,7 +27,7 @@ export class CuiSwitchArgs implements ICuiParsable {
     }
 
     parse(args: any): void {
-        this.targets = getStringOrDefault(args.targets, SWITCH_DEFAULT_TARGETS)
+        this.targets = getStringOrDefault(args.targets, SCOPE_SELECTOR + SWITCH_DEFAULT_TARGETS)
         this.in = CuiActionsFatory.get(args.in ?? replacePrefix(SWITCH_DEFAULT_ACTION_IN, this.#prefix))
         this.out = CuiActionsFatory.get(args.out ?? replacePrefix(SWITCH_DEFAULT_ACTION_OUT, this.#prefix))
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);

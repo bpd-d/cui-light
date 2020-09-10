@@ -28,10 +28,15 @@ export class CuiEventBus implements ICuiEventBus {
         }
         // When context is not provided (e.g. anonymous function) then generate random
         let id = this.prepareEventId(ctx);
-        this.#log.debug(`Attaching new event: [${name}] for: [${id}]`)
+
+
         if (!this.#events[name]) {
             this.#events[name] = {}
         }
+        if (this.isAttached(this.#events[name], id, cui)) {
+            return null;
+        }
+        this.#log.debug(`Attaching new event: [${name}] for: [${id}]`)
 
         this.#events[name][id] = { ctx: ctx, callback: callback, $cuid: this.getCuid(cui) }
         return id;
@@ -99,7 +104,7 @@ export class CuiEventBus implements ICuiEventBus {
 
     private isAttached(ev: CuiEventReceiver, id: string, cui?: CuiElement): boolean {
         if (is(cui)) {
-            return is(ev) && is(id) && is(ev[id]) && is(ev[id].$cuid === cui.$cuid);
+            return is(ev) && is(id) && is(ev[id]) && ev[id].$cuid == cui.$cuid;
         }
         return is(ev) && is(id) && is(ev[id]);
     }

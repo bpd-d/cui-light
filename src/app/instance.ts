@@ -2,7 +2,7 @@ import { CuiSetupInit } from "../core/models/setup";
 import { is, joinAttributesForQuery, are, registerCuiElement } from "../core/utils/functions";
 import { ElementManager } from "./managers/element";
 import { STATICS, EVENTS, CSS_VARIABLES } from "../core/utils/statics";
-import { ICuiLogger, ICuiPlugin, ICuiComponent, ICuiPluginManager, CuiContext, CuiElement } from "../core/models/interfaces";
+import { ICuiLogger, ICuiPlugin, ICuiComponent, ICuiPluginManager, CuiContext, CuiElement, CuiAlertData } from "../core/models/interfaces";
 import { ICuiMutionObserver, CuiMutationObserver } from "./observers/mutations";
 import { CuiLoggerFactory } from "../core/factories/logger";
 import { CuiToastHandler } from "./managers/toast";
@@ -10,6 +10,8 @@ import { CollectionManager } from "./managers/collection";
 import { CuiUtils } from "../core/models/utils";
 import { CuiInstanceInitError } from "../core/models/errors";
 import { CuiPluginManager } from "./managers/plugins";
+import { CuiAlertHandler, CuiAlertFactory } from "./handlers/alert";
+import { CuiAlertType } from "../core/index";
 
 
 export class CuiInstance {
@@ -137,16 +139,22 @@ export class CuiInstance {
         this.#utils.bus.on(event, callback, context, element);
     }
 
-    emit(event: string, element: Element, ...args: any[]): void {
+    emit(event: string, element: Element | string, ...args: any[]): void {
         if (!are(event, element)) {
             this.#log.warning("Not enough data to emit event", "emit")
             return;
         }
-        let cuid = (<CuiElement>(element as any)).$cuid;
+        let el = typeof element === 'string' ? document.querySelector(element) : element;
+        let cuid = (<CuiElement>(el as any)).$cuid;
         if (!is(cuid)) {
             this.#log.warning("Element is not a cUI element", "emit")
             return
         }
         this.#utils.bus.emit(event, cuid, ...args);
+    }
+
+    alert(id: string, type: CuiAlertType, data: CuiAlertData): void {
+        let popup = CuiAlertFactory.get(id, type, data, this.#utils);
+        popup.show(this.#rootElement);
     }
 }

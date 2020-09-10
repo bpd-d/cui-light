@@ -175,3 +175,12 @@ export interface ICuiEventListener<T> {
     detach(): void;
     isAttached(): boolean;
 }
+
+export interface CuiAlertData {
+    title: string;
+    message: string;
+    onCancel?: () => void;
+    onOk?: () => void;
+    onYes?: () => void;
+    onNo?: () => void;
+}
