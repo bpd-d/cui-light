@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.15] WIP
+# [0.1.16] WIP
+# [0.1.15] 2020-09-13
+* [Added] Alert will update title and content everytime on show.
 # [0.1.14] 2020-09-13
 * [Added] New component: Float
 # [0.1.13] 2020-09-10

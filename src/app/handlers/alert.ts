@@ -13,12 +13,14 @@ interface AlertCallbacks {
 
 abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
     #callbacks: AlertCallbacks;
-
     #utils: CuiUtils;
     #id: string;
     #manager: ElementManager;
     closeStr: string;
     iconStr: string;
+    content: string;
+    title: string;
+    prefix: string;
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         this.#callbacks = {
             "yes": data.onYes,
@@ -26,6 +28,9 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
             "cancel": data.onCancel,
             "ok": data.onOk
         }
+        this.content = data.message;
+        this.title = data.title;
+        this.prefix = setup.setup.prefix;
         this.#utils = setup;
         this.#id = id;
         this.closeStr = `${this.#utils.setup.prefix}-close`;
@@ -41,6 +46,8 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
         if (!is(element)) {
             element = this.createElement();
             root.appendChild(element);
+        } else {
+            this.updateElement(element);
         }
         setTimeout(() => {
             this.#manager = new ElementManager([element], this.#utils);
@@ -48,6 +55,19 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
             this.#manager.on('closed', this.onClose, this)
             this.#manager.emit("open");
         }, 100);
+    }
+
+    updateElement(element: HTMLElement) {
+        let title = element.querySelector(`.${this.prefix}-dialog-title`);
+        let content = element.querySelector(`.${this.prefix}-dialog-body>p`);
+        this.#utils.interactions.mutate(() => {
+            if (title) {
+                title.innerHTML = this.title;
+            }
+            if (content) {
+                content.innerHTML = this.content;
+            }
+        }, null)
     }
 
     onClose(arg: any) {
@@ -65,32 +85,26 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
 
 export class CuiAlertHandler extends CuiAlertHandlerBase {
     #id: string;
-    #content: string;
-    #title: string;
-    #prefix: string;
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         super(setup, id, data);
         this.#id = id;
-        this.#content = data.message;
-        this.#title = data.title;
-        this.#prefix = setup.setup.prefix;
     }
 
     createElement() {
-        let dialogBuilder = new DialogBuilder(this.#prefix);
+        let dialogBuilder = new DialogBuilder(this.prefix);
 
-        dialogBuilder.createHeader(this.#title, null, [
-            new ElementBuilder('a').setClasses(`${this.#prefix}-icon`).setAttributes({
+        dialogBuilder.createHeader(this.title, null, [
+            new ElementBuilder('a').setClasses(`${this.prefix}-icon`).setAttributes({
                 [this.closeStr]: "state: cancel",
                 [this.iconStr]: "close"
             }).build()
         ]);
         dialogBuilder.createBody(null, [
-            new ElementBuilder('p').build(this.#content)
+            new ElementBuilder('p').build(this.content)
         ]);
-        dialogBuilder.createFooter([`${this.#prefix}-flex`, `${this.#prefix}-right`], [
-            new ElementBuilder('button').setClasses(`${this.#prefix}-button` , `${this.#prefix}-margin-small-right`).setAttributes({ [this.closeStr]: "state: cancel" }).build("Cancel"),
-            new ElementBuilder('button').setClasses(`${this.#prefix}-button`, `${this.#prefix}-accent`).setAttributes({ [this.closeStr]: "state: ok" }).build("Ok")
+        dialogBuilder.createFooter([`${this.prefix}-flex`, `${this.prefix}-right`], [
+            new ElementBuilder('button').setClasses(`${this.prefix}-button`, `${this.prefix}-margin-small-right`).setAttributes({ [this.closeStr]: "state: cancel" }).build("Cancel"),
+            new ElementBuilder('button').setClasses(`${this.prefix}-button`, `${this.prefix}-accent`).setAttributes({ [this.closeStr]: "state: ok" }).build("Ok")
         ])
         return dialogBuilder.build(this.#id);
     }
@@ -98,25 +112,22 @@ export class CuiAlertHandler extends CuiAlertHandlerBase {
 
 export class CuiInfoAlertUpHandler extends CuiAlertHandlerBase {
     #id: string;
-    #content: string;
-    #title: string;
-    #prefix: string;
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         super(setup, id, data);
         this.#id = id;
-        this.#content = data.message;;
-        this.#title = data.title;
-        this.#prefix = setup.setup.prefix;
+        this.content = data.message;;
+        this.title = data.title;
+        this.prefix = setup.setup.prefix;
     }
 
     createElement() {
-        let dialogBuilder = new DialogBuilder(this.#prefix);
-        dialogBuilder.createHeader(this.#title, null, null);
+        let dialogBuilder = new DialogBuilder(this.prefix);
+        dialogBuilder.createHeader(this.title, null, null);
         dialogBuilder.createBody(null, [
-            new ElementBuilder('p').build(this.#content)
+            new ElementBuilder('p').build(this.content)
         ]);
-        dialogBuilder.createFooter([`${this.#prefix}-flex`, `${this.#prefix}-right`], [
-            new ElementBuilder('button').setClasses(`${this.#prefix}-button`, `${this.#prefix}-accent`).setAttributes({ [this.closeStr]: "state: ok" }).build("Ok")
+        dialogBuilder.createFooter([`${this.prefix}-flex`, `${this.prefix}-right`], [
+            new ElementBuilder('button').setClasses(`${this.prefix}-button`, `${this.prefix}-accent`).setAttributes({ [this.closeStr]: "state: ok" }).build("Ok")
         ])
 
         return dialogBuilder.build(this.#id);
@@ -125,32 +136,29 @@ export class CuiInfoAlertUpHandler extends CuiAlertHandlerBase {
 
 export class CuiYesNoPopUpHandler extends CuiAlertHandlerBase {
     #id: string;
-    #content: string;
-    #title: string;
-    #prefix: string;
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         super(setup, id, data);
         this.#id = id;
-        this.#content = data.message;
-        this.#title = data.title;
-        this.#prefix = setup.setup.prefix;
+        this.content = data.message;
+        this.title = data.title;
+        this.prefix = setup.setup.prefix;
     }
 
     createElement() {
-        let dialogBuilder = new DialogBuilder(this.#prefix);
+        let dialogBuilder = new DialogBuilder(this.prefix);
 
-        dialogBuilder.createHeader(this.#title, null, [
-            new ElementBuilder('a').setClasses(`${this.#prefix}-icon`).setAttributes({
+        dialogBuilder.createHeader(this.title, null, [
+            new ElementBuilder('a').setClasses(`${this.prefix}-icon`).setAttributes({
                 [this.closeStr]: "state: cancel",
                 [this.iconStr]: "close"
             }).build()
         ]);
         dialogBuilder.createBody(null, [
-            new ElementBuilder('p').build(this.#content)
+            new ElementBuilder('p').build(this.content)
         ]);
-        dialogBuilder.createFooter([`${this.#prefix}-flex`, `${this.#prefix}-right`], [
-            new ElementBuilder('button').setClasses(`${this.#prefix}-button`, `${this.#prefix}-margin-small-right`).setAttributes({ [this.closeStr]: "state: no" }).build("No"),
-            new ElementBuilder('button').setClasses(`${this.#prefix}-button`, `${this.#prefix}-accent`).setAttributes({ [this.closeStr]: "state: yes" }).build("Yes")
+        dialogBuilder.createFooter([`${this.prefix}-flex`, `${this.prefix}-right`], [
+            new ElementBuilder('button').setClasses(`${this.prefix}-button`, `${this.prefix}-margin-small-right`).setAttributes({ [this.closeStr]: "state: no" }).build("No"),
+            new ElementBuilder('button').setClasses(`${this.prefix}-button`, `${this.prefix}-accent`).setAttributes({ [this.closeStr]: "state: yes" }).build("Yes")
         ])
         return dialogBuilder.build(this.#id);
     }
