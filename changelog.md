@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.14] WIP
+# [0.1.15] WIP
+# [0.1.14] 2020-09-13
+* [Added] New component: Float
 # [0.1.13] 2020-09-10
 * [Added] Shorthand for simple dialogs: "Info", "OkCancel", "YesNoCancel" - you can easily create simple alert dialogs in one line of code.
 * [Fixed] Height calculation on components using height auto
