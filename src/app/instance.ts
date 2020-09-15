@@ -81,30 +81,30 @@ export class CuiInstance {
     }
 
     get(selector: string): ElementManager {
-        const existing = this.#utils.cache.get(selector);
-        if (is(existing)) {
-            return existing as ElementManager;
-        }
+        // const existing = this.#utils.cache.get(selector);
+        // if (is(existing)) {
+        //     return existing as ElementManager;
+        // }
         const elements = this.all(selector);
         if (!elements) {
             return undefined
         }
         const newElement = new ElementManager(elements, this.#utils);
-        this.#utils.cache.put(selector, newElement)
+        //this.#utils.cache.put(selector, newElement)
         return newElement
     }
 
     collection(selector: string): CollectionManager {
-        const existing = this.#utils.cache.get(selector);
-        if (is(existing)) {
-            return existing as CollectionManager;
-        }
+        // const existing = this.#utils.cache.get(selector);
+        // if (is(existing)) {
+        //     return existing as CollectionManager;
+        // }
         const elements = this.all(selector);
         if (!is(elements)) {
             return undefined;
         }
         let manager = new CollectionManager(elements, this.#utils.interactions);
-        this.#utils.cache.put(selector, manager)
+        //this.#utils.cache.put(selector, manager)
         return manager;
     }
 
