@@ -58,7 +58,7 @@ export class CuiOpenComponent implements ICuiComponent {
 
 export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiOpenHandler", element, new CuiOpenArgs(utils.setup.animationTime), utils);
+        super("CuiOpenHandler", element, attribute, new CuiOpenArgs(utils.setup.animationTime), utils);
     }
 
     onInit(): void {

@@ -1,10 +1,20 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
+import { CuiHandler } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
-import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
+import { ICuiComponentAction, CuiActionsListFactory } from "../../core/utils/actions";
 import { getIntOrDefault, isStringTrue } from "../../core/utils/functions";
 import { EVENTS } from "../../core/index";
+
+/**
+ * Toggles an action after specified offset is reached in relation to the element or document
+ * 
+ * target?: string - target which action shall be triggered on
+ * action?: string - action to trigger
+ * offsetY?: number - vertical offset
+ * offsetX?: number - horizontal offset
+ * root?: boolean - set true if scroll listener shall be set on document element
+ */
 
 export interface CuiOffsetEvent {
     matches: boolean;
@@ -63,7 +73,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     #matched: boolean;
 
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiOffsetHandler", element, new CuiOffsetArgs(), utils);
+        super("CuiOffsetHandler", element, attribute, new CuiOffsetArgs(), utils);
         this.element = element as HTMLElement;
 
         this.#target = this.element;

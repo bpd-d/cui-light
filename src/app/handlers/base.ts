@@ -128,13 +128,15 @@ abstract class CuiHandlerBase<T extends ICuiParsable> extends CuiComponentBase i
     isInitialized: boolean;
     activeClassName: string;
     actionsHelper: CuiActionsHelper;
-    constructor(componentName: string, element: Element, args: T, utils: CuiUtils) {
+    #attribute: string;
+    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
         super(componentName, element, utils);
         this.args = args;
 
         this.actionsHelper = new CuiActionsHelper(utils.interactions)
         this.prevArgs = null;
         this.isInitialized = false;
+        this.#attribute = attribute;
     }
 
     handle(args: any): void {
@@ -144,6 +146,9 @@ abstract class CuiHandlerBase<T extends ICuiParsable> extends CuiComponentBase i
             return;
         }
         this.args.parse(args);
+        if (!this.element.classList.contains(this.#attribute)) {
+            this.element.classList.add(this.#attribute);
+        }
         this.onHandle();
         this.isInitialized = true;
     }
@@ -178,8 +183,8 @@ export abstract class CuiHandler<T extends ICuiParsable> extends CuiHandlerBase<
     isInitialized: boolean;
 
     actionsHelper: CuiActionsHelper;
-    constructor(componentName: string, element: Element, args: T, utils: CuiUtils) {
-        super(componentName, element, args, utils);
+    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
+        super(componentName, element, attribute, args, utils);
     }
 
     onHandle() {
@@ -220,8 +225,8 @@ export abstract class CuiHandler<T extends ICuiParsable> extends CuiHandlerBase<
 
 export abstract class CuiMutableHandler<T extends ICuiParsable> extends CuiHandlerBase<T> {
     #mutionHandler: ICuiComponentMutationObserver;
-    constructor(componentName: string, element: Element, args: T, utils: CuiUtils) {
-        super(componentName, element, args, utils);
+    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
+        super(componentName, element, attribute, args, utils);
         this.#mutionHandler = new CuiComponentMutationHandler(element);
         this.#mutionHandler.onMutation(this.mutation.bind(this))
     }

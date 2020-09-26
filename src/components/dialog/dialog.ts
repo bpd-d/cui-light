@@ -54,7 +54,7 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
     #bodyClass: string;
     #scrollY: number;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiDialogHandler", element, new CuiDialogArgs(), utils);
+        super("CuiDialogHandler", element, attribute, new CuiDialogArgs(), utils);
 
         this.#prefix = prefix;
         this.#timeout = utils.setup.animationTimeLong;

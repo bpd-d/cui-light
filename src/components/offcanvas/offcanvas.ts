@@ -73,7 +73,7 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     #prefix: string;
     #bodyClass: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiOffCanvasHandler", element, new CuiOffCanvasArgs(prefix, utils.setup.animationTimeLong), utils);
+        super("CuiOffCanvasHandler", element, attribute, new CuiOffCanvasArgs(prefix, utils.setup.animationTimeLong), utils);
         this.#prefix = prefix;
         this.#bodyClass = replacePrefix(OFFCANVAS_BODY, prefix);
     }

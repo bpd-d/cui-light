@@ -52,7 +52,7 @@ export class CuiCircleHandler extends CuiHandler<CuiCircleArgs> {
     #path: any;
     #attr: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiCircleHandler", element, new CuiCircleArgs(), utils);
+        super("CuiCircleHandler", element, attribute, new CuiCircleArgs(), utils);
         this.#factor = this.#full = 0;
         this.#path = null
         this.#attr = attribute;

@@ -21,6 +21,7 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
     content: string;
     title: string;
     prefix: string;
+    reverse: boolean;
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         this.#callbacks = {
             "yes": data.onYes,
@@ -33,6 +34,7 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
         this.prefix = setup.setup.prefix;
         this.#utils = setup;
         this.#id = id;
+        this.reverse = false;
         this.closeStr = `${this.#utils.setup.prefix}-close`;
         this.iconStr = `${this.#utils.setup.prefix}-icon`;
     }
@@ -88,10 +90,11 @@ export class CuiAlertHandler extends CuiAlertHandlerBase {
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         super(setup, id, data);
         this.#id = id;
+        this.reverse = data.reverse ?? false;
     }
 
     createElement() {
-        let dialogBuilder = new DialogBuilder(this.prefix);
+        let dialogBuilder = new DialogBuilder(this.prefix, this.reverse);
 
         dialogBuilder.createHeader(this.title, null, [
             new ElementBuilder('a').setClasses(`${this.prefix}-icon`).setAttributes({
@@ -118,10 +121,12 @@ export class CuiInfoAlertUpHandler extends CuiAlertHandlerBase {
         this.content = data.message;;
         this.title = data.title;
         this.prefix = setup.setup.prefix;
+        this.reverse = data.reverse ?? false;
+
     }
 
     createElement() {
-        let dialogBuilder = new DialogBuilder(this.prefix);
+        let dialogBuilder = new DialogBuilder(this.prefix, this.reverse);
         dialogBuilder.createHeader(this.title, null, null);
         dialogBuilder.createBody(null, [
             new ElementBuilder('p').build(this.content)
@@ -142,10 +147,11 @@ export class CuiYesNoPopUpHandler extends CuiAlertHandlerBase {
         this.content = data.message;
         this.title = data.title;
         this.prefix = setup.setup.prefix;
+        this.reverse = data.reverse ?? false;
     }
 
     createElement() {
-        let dialogBuilder = new DialogBuilder(this.prefix);
+        let dialogBuilder = new DialogBuilder(this.prefix, this.reverse);
 
         dialogBuilder.createHeader(this.title, null, [
             new ElementBuilder('a').setClasses(`${this.prefix}-icon`).setAttributes({

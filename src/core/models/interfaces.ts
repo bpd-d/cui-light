@@ -179,6 +179,7 @@ export interface ICuiEventListener<T> {
 export interface CuiAlertData {
     title: string;
     message: string;
+    reverse?: boolean;
     onCancel?: () => void;
     onOk?: () => void;
     onYes?: () => void;

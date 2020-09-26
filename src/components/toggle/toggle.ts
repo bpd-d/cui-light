@@ -41,7 +41,7 @@ export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     #target: Element;
     #utils: CuiUtils;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiToggleHandler", element, new CuiToggleArgs(), utils);
+        super("CuiToggleHandler", element, attribute, new CuiToggleArgs(), utils);
         this.#target = this.element;
         this.#utils = utils;
     }

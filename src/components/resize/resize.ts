@@ -32,7 +32,7 @@ export class CuiResizeComponent implements ICuiComponent {
 
 export class CuiResizeHandler extends CuiHandler<CuiResizeArgs> {
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiResizeHandler", element, new CuiResizeArgs(), utils);
+        super("CuiResizeHandler", element, attribute, new CuiResizeArgs(), utils);
     }
 
     onInit(): void {

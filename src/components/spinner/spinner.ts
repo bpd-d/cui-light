@@ -42,7 +42,7 @@ export class CuiSpinnerComponent implements ICuiComponent {
 export class CuiSpinnerHandler extends CuiHandler<CuiSpinnerArgs> {
 
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiSpinnerHandler", element, new CuiSpinnerArgs(), utils);
+        super("CuiSpinnerHandler", element, attribute, new CuiSpinnerArgs(), utils);
     }
 
     onInit(): void {

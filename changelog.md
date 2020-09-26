@@ -1,5 +1,8 @@
 # bpd cUI Light changelog
-# [0.1.17] WIP
+# [0.1.18] WIP
+# [0.1.17] 2020-09-26
+* [Added] Automatic addition of class to component based on attribute value
+* [Added] Option to reverse dialog in alert
 # [0.1.16] 2020-09-15
 * [Fixed] Remove cache from Element and Collection managers as they don't work properly with reactive frameworks
 # [0.1.15] 2020-09-13

@@ -63,7 +63,7 @@ export class CuiScrollspyHandler extends CuiHandler<CuiScrollSpyArgs> {
     #prevScrollTop: number;
     #prevScrollLeft: number;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiScrollspyHandler", element, new CuiScrollSpyArgs(), utils);
+        super("CuiScrollspyHandler", element, attribute, new CuiScrollSpyArgs(), utils);
         this.element = element as HTMLElement;
         this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
         this.#links = [];

@@ -43,7 +43,7 @@ export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
     #targetId: string;
     #isList: boolean;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiSwitcherHandler", element, new CuiSwitcherArgs(), utils);
+        super("CuiSwitcherHandler", element, attribute, new CuiSwitcherArgs(), utils);
         this.#targetId = null;
         this.#isList = element.tagName === 'UL';
     }

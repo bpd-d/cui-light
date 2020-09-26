@@ -7,10 +7,12 @@ export class DialogBuilder {
     #footer: Element;
     #prefix: string;
     #switches: string;
-    constructor(prefix: string, switches?: string) {
+    #reverse: boolean;
+    constructor(prefix: string, reverse: boolean, switches?: string) {
         this.#prefix = prefix;
         this.#header = this.#footer = this.#body = null;
         this.#switches = switches ?? "";
+        this.#reverse = reverse;
     }
 
     createHeader(title: string, classes: string[], elements?: Element[]) {
@@ -54,7 +56,11 @@ export class DialogBuilder {
     }
 
     build(id: string): HTMLElement {
-        let dialog = new ElementBuilder('div').setId(id).setClasses(this.getPrefixedString("-dialog")).setAttributes({
+        let classes = [this.getPrefixedString("-dialog")]
+        if (this.#reverse) {
+            classes.push(this.getPrefixedString('-reverse-auto'));
+        }
+        let dialog = new ElementBuilder('div').setId(id).setClasses(...classes).setAttributes({
             [this.getPrefixedString('-dialog')]: this.#switches
         }).build();
         let container = new ElementBuilder('div').setClasses(this.getPrefixedString("-dialog-container")).build();

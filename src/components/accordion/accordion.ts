@@ -4,6 +4,10 @@ import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } fro
 import { getIntOrDefault, is, getActiveClass, isStringTrue, replacePrefix, getStringOrDefault } from "../../core/utils/functions";
 import { SCOPE_SELECTOR, EVENTS } from "../../core/index";
 
+/**
+ * 
+ */
+
 export interface CuiAccordionEvent {
     index: number;
     previous: number;
@@ -80,7 +84,7 @@ export class CuiAccordionHandler extends CuiMutableHandler<CuiAccordionArgs> imp
     #items: Element[];
     #targets: CuiAccordionTarget[];
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiAccordionHandler", element, new CuiAccordionArgs(prefix, utils.setup.animationTime), utils);
+        super("CuiAccordionHandler", element, attribute, new CuiAccordionArgs(prefix, utils.setup.animationTime), utils);
     }
 
     onInit(): void {

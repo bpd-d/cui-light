@@ -58,7 +58,7 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
     #positionCalculator: ICuiFloatPositionCalculator;
     #resizeCalculator: ICuiFloatResizeCalculator;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiFloatHandler", element, new CuiFloatArgs(), utils);
+        super("CuiFloatHandler", element, attribute, new CuiFloatArgs(), utils);
 
         this.#prefix = prefix;
         this.#timeout = utils.setup.animationTimeLong;

@@ -61,7 +61,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     #switches: CuiElement[];
     #task: ICuiTask;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiSwitchHandler", element, new CuiSwitchArgs(utils.setup.prefix, utils.setup.animationTime), utils);
+        super("CuiSwitchHandler", element, attribute, new CuiSwitchArgs(utils.setup.prefix, utils.setup.animationTime), utils);
         this.#targets = [];
         this.#currentIdx = -1;
         this.#links = [];

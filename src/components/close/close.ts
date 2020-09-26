@@ -61,7 +61,7 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     #prefix: string;
     #actionHelper: CuiActionsHelper;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiCloseHandler", element, new CuiCloseArgs(utils.setup.animationTime), utils);
+        super("CuiCloseHandler", element, attribute, new CuiCloseArgs(utils.setup.animationTime), utils);
         this.#prefix = prefix;
     }
 

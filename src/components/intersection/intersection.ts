@@ -43,7 +43,7 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
     #observer: CuiIntersectionObserver;
     #targets: Element[];
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiIntersectionHandler", element, new CuiIntersectionAttributes(), utils);
+        super("CuiIntersectionHandler", element, attribute, new CuiIntersectionAttributes(), utils);
         this.#observer = new CuiIntersectionObserver(this.element);
         this.#targets = []
     }

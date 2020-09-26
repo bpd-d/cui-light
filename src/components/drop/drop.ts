@@ -72,7 +72,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     #clearId: any;
 
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuidropHandler", element, new CuiDropArgs(), utils);
+        super("CuidropHandler", element, attribute, new CuiDropArgs(), utils);
         this.#attribute = attribute;
         this.#prefix = prefix;
         this.#clearId = null;

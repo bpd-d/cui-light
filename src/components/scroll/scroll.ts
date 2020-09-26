@@ -1,9 +1,17 @@
-import { ICuiComponent, ICuiComponentHandler, CuiObservables, ICuiParsable } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { IconBuilder } from "../icon/icon";
-import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
-import { ICONS, EVENTS } from "../../core/utils/statics";
-import { is, parseAttributeString, getOffsetTop, getStringOrDefault } from "../../core/utils/functions";
+import { CuiHandler } from "../../app/handlers/base";
+import { EVENTS } from "../../core/utils/statics";
+import { is, getOffsetTop, getStringOrDefault } from "../../core/utils/functions";
+
+/**
+ * Component scrolls to specified target in the document
+ * Arguments: 
+ * target - selector to target element where page should be scrolled to.
+ * parent - set parent selector if parent should be different than html parent
+ * behavior - auto/smooth - choose between step and smooth scrolling
+ * 
+ */
 
 export class CuiScrollComponent implements ICuiComponent {
     attribute: string;
@@ -50,7 +58,7 @@ export class CuiScrollHandler extends CuiHandler<CuiScrollArgs> {
     #parent: HTMLElement;
     #target: HTMLElement;
     constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
-        super("CuiScrollHandler", element, new CuiScrollArgs(), utils);
+        super("CuiScrollHandler", element, attribute, new CuiScrollArgs(), utils);
         this.element = element;
         this.#parent = null;
         this.#target = null;

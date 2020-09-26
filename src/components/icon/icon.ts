@@ -2,7 +2,7 @@ import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/mo
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
-import { is, createElementFromString, isString, getStringOrDefault } from "../../core/utils/functions";
+import { is, createElementFromString, isString, getStringOrDefault, isTouchSupported } from "../../core/utils/functions";
 
 export class CuiIconArgs implements ICuiParsable {
     icon: string;
@@ -40,7 +40,7 @@ export class CuiIconHandler extends CuiHandler<CuiIconArgs> {
 
     #currentIcon: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiIconHandler", element, new CuiIconArgs(), utils);
+        super("CuiIconHandler", element, attribute, new CuiIconArgs(), utils);
         this.#currentIcon = null;
 
     }
