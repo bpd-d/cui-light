@@ -350,6 +350,7 @@ export class ElementManager implements CuiCachable {
     close(closeClass: string, animationClass: string, timeout?: number): Promise<boolean>;
     emit(event: string, ...args: any[]): void;
     on(event: string, callback: any, ctx: CuiContext): void;
+    detach(event: string, ctx: CuiContext): void;
     read(callback: any, ...args: any[]): void;
     change(callback: any, ...args: any[]): void;
     elements(): Element[];

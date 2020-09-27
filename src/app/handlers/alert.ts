@@ -22,6 +22,7 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
     title: string;
     prefix: string;
     reverse: boolean;
+    #element: HTMLElement
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         this.#callbacks = {
             "yes": data.onYes,
@@ -53,7 +54,6 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
         }
         setTimeout(() => {
             this.#manager = new ElementManager([element], this.#utils);
-            //   if (!this.#utils.bus.isSubscribing('closed', this, element as any))
             this.#manager.on('closed', this.onClose, this)
             this.#manager.emit("open");
         }, 100);
@@ -73,10 +73,15 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
     }
 
     onClose(arg: any) {
-        if (is(arg) && (arg.state)) {
-            if (is(this.#callbacks[arg.state])) {
-                this.#callbacks[arg.state]();
+        try {
+            if (is(arg) && (arg.state)) {
+                if (is(this.#callbacks[arg.state])) {
+                    this.#callbacks[arg.state]();
+                }
             }
+        } finally {
+            this.#manager.detach('closed', this);
+            this.#manager = null;
         }
     }
 

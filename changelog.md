@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.18] WIP
+# [0.1.19] WIP
+# [0.1.18] 2020-09-27
+* [Fixed] Issues with alert onClose callback
 # [0.1.17] 2020-09-26
 * [Added] Automatic addition of class to component based on attribute value
 * [Added] Option to reverse dialog in alert
@@ -35,7 +37,6 @@
 
 # [0.1.7] 2020-08-06
 * [Fixed] Dialog and offcanvas background when opened
-
 # [0.1.6] 2020-08-06
 * [Fixed] Offset element now supports root element
 * [Fixed] Blinking dialog and offcanvas when closed via keys or outside click
