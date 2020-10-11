@@ -1,5 +1,8 @@
 # bpd cUI Light changelog
-# [0.1.21] WIP
+# [0.1.22] WIP
+# [0.1.21] 2020-10-11
+* [Fixed] - Performance improvements
+* [Fixed] - Security - toast set textContent instead of innerHTML
 # [0.1.20] 2020-10-11
 * [Changed] Don't pass context to event bus **on** method
 # [0.1.19] 2020-10-11

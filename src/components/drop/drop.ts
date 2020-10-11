@@ -120,6 +120,12 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.isLocked = true;
         this._log.debug(`Drop ${this.cuid}`, 'open');
         this.mutate(this.onOpen, this);
+        if (this.args.escClose) {
+            this.#keyEventId = this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
+        }
+        if (this.args.outClose) {
+            this.#windowClickEventId = this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
+        }
         this.emitEvent(EVENTS.OPEN, {
             timestamp: Date.now()
         })
@@ -138,6 +144,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.isLocked = true;
         this._log.debug(`Drop ${this.cuid}`, 'close');
         this.mutate(this.onClose, this);
+        this.detachEvent(EVENTS.KEYDOWN, this.#keyEventId);
+        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
         this.emitEvent(EVENTS.CLOSE, {
             timestamp: Date.now()
         })
@@ -159,8 +167,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.helper.removeClass(this.activeClassName, this.element)
         this.helper.removeClass(this.#bodyClass, document.body)
         AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
-        this.detachEvent(EVENTS.KEYDOWN, this.#keyEventId);
-        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
+
 
     }
 
@@ -168,12 +175,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.helper.setClass(this.activeClassName, this.element)
         this.helper.setClass(this.#bodyClass, document.body)
         AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
-        if (this.args.escClose) {
-            this.#keyEventId = this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
-        }
-        if (this.args.outClose) {
-            this.#windowClickEventId = this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
-        }
+
     }
 
     onEscClose(ev: KeyDownEvent) {

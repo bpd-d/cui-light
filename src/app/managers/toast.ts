@@ -32,10 +32,11 @@ export class CuiToastHandler {
             toastElement = document.createElement('div');
             toastElement.classList.add(this.#className);
             document.body.appendChild(toastElement);
+            await sleep(10);
         }
 
         this.#interactions.mutate(() => {
-            toastElement.innerHTML = message;
+            toastElement.textContent = message;
             toastElement.classList.add(CLASSES.animProgress);
             toastElement.classList.add(this.#animClsIn);
         }, this);
