@@ -72,7 +72,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     }
 
     onInit(): void {
-        this.#switchEventId = this.onEvent(EVENTS.SWITCH, this.onPushSwitch)
+        this.#switchEventId = this.onEvent(EVENTS.SWITCH, this.onPushSwitch.bind(this))
         this.getTargets();
         this.getLinks();
         this.getActiveIndex();

@@ -132,11 +132,25 @@ export class CuiInstance {
         return this.#utils;
     }
 
-    on(event: string, callback: any, context: CuiContext, element?: CuiElement): void {
+    on(event: string, callback: any, element?: CuiElement): void {
         if (!are(event, callback)) {
             this.#log.error("Incorrect arguments", "on")
         }
-        this.#utils.bus.on(event, callback, context, element);
+        this.#utils.bus.on(event, callback, element);
+    }
+
+    detach(event: string, id: string): void {
+        if (!are(event, id)) {
+            this.#log.error("Incorrect arguments", "detach")
+        }
+        this.#utils.bus.detach(event, id);
+    }
+
+    detachAll(event: string): void {
+        if (!is(event)) {
+            this.#log.error("Incorrect arguments", "detachAll")
+        }
+        this.#utils.bus.detachAll(event);
     }
 
     emit(event: string, element: Element | string, ...args: any[]): void {

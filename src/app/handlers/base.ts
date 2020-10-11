@@ -94,7 +94,7 @@ export class CuiComponentBase implements CuiContext {
     }
 
     onEvent(event: string, callback: any): string {
-        return this.utils.bus.on(event, callback, this, this.element as any)
+        return this.utils.bus.on(event, callback, this.element as any)
     }
 
     detachEvent(event: string, id: string) {

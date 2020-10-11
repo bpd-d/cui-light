@@ -16,14 +16,14 @@ describe("Tests for class [CuiCallbackExecutor]", function () {
         let value: boolean = false;
         await executor.execute(() => {
             value = true;
-        }, null, null)
+        }, null)
 
         expect(value).toBeTrue();
     })
 
     it("Case for method [execute] - with context", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
-        await executor.execute(item.setValue, item, [true]);
+        await executor.execute(item.setValue.bind(item), [true]);
 
         expect(item.value).toBeTrue();
     })
@@ -42,7 +42,7 @@ describe("Tests for class [TaskedEventEmitHandler]", function () {
     it("Case for method [handle] - no context", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue, $cuid: "000" }
+            "task": { callback: item.setValue.bind(item), $cuid: "000" }
         }
         await handler.handle(tasks, null, [true])
 
@@ -52,7 +52,7 @@ describe("Tests for class [TaskedEventEmitHandler]", function () {
     it("Case for method [handle] - no args", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue, $cuid: null }
+            "task": { callback: item.setValue.bind(item), $cuid: null }
         }
         await handler.handle(tasks, null, null)
 
@@ -63,8 +63,8 @@ describe("Tests for class [TaskedEventEmitHandler]", function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let item2: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue, $cuid: null },
-            "task2": { ctx: item2, callback: item2.setValue, $cuid: "000" }
+            "task": { callback: item.setValue.bind(item), $cuid: null },
+            "task2": { callback: item2.setValue.bind(item2), $cuid: "000" }
         }
         await handler.handle(tasks, null, [true])
 
@@ -86,7 +86,7 @@ describe("Tests for class [SimpleEventEmitHandler]", function () {
     it("Case for method [handle] - no context", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue, $cuid: null }
+            "task": { callback: item.setValue.bind(item), $cuid: null }
         }
         await handler.handle(tasks, null, [true])
 
@@ -96,7 +96,7 @@ describe("Tests for class [SimpleEventEmitHandler]", function () {
     it("Case for method [handle] - no args", async function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue, $cuid: null }
+            "task": { callback: item.setValue.bind(item), $cuid: null }
         }
         await handler.handle(tasks, null, null)
 
@@ -107,8 +107,8 @@ describe("Tests for class [SimpleEventEmitHandler]", function () {
         let item: ExecutorTestItem = new ExecutorTestItem();
         let item2: ExecutorTestItem = new ExecutorTestItem();
         let tasks: CuiEventReceiver = {
-            "task": { ctx: item, callback: item.setValue, $cuid: null },
-            "task2": { ctx: item2, callback: item2.setValue, $cuid: null }
+            "task": { callback: item.setValue.bind(item), $cuid: null },
+            "task2": { callback: item2.setValue.bind(item2), $cuid: null }
         }
         await handler.handle(tasks, null, [true])
 
@@ -131,7 +131,7 @@ describe("Tests for class [CuiEventBus]", function () {
     it("Case for method [on]", function () {
         let item = new ExecutorTestItemExt('001');
         let subscribing: boolean = false;
-        let id = bus.on('test', item.setValue, item);
+        let id = bus.on('test', item.setValue.bind(item));
         subscribing = bus.isSubscribing('test', id)
         expect(subscribing).toBeTrue();
     })
@@ -141,7 +141,7 @@ describe("Tests for class [CuiEventBus]", function () {
         let failed: boolean = false;
 
         try {
-            bus.on('', item.setValue, item);
+            bus.on('', item.setValue.bind(item));
         } catch (e) {
             failed = true;
         }
@@ -153,7 +153,7 @@ describe("Tests for class [CuiEventBus]", function () {
         let item = new ExecutorTestItemExt('');
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
+            bus.on('test', item.setValue.bind(item));
         } catch (e) {
             failed = true;
         }
@@ -167,8 +167,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            let id = bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            let id = bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item2));
 
             bus.detach('test', id);
             subscribing = bus.isSubscribing('test', id)
@@ -186,8 +186,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            let id = bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            let id = bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item2));
 
             bus.detach('test', null);
             subscribing = bus.isSubscribing('test', id)
@@ -205,8 +205,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            let id = bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            let id = bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item2));
 
             bus.detachAll('test');
             subscribing = bus.isSubscribing('test', id)
@@ -224,8 +224,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            let id = bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            let id = bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item2));
 
             bus.detachAll('');
             subscribing = bus.isSubscribing('test', id)
@@ -242,8 +242,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let item2 = new ExecutorTestItemExt('002');
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item2));
             await bus.emit('test', null, true);
 
         } catch (e) {
@@ -261,8 +261,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let item2 = new ExecutorTestItemExt('002');
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item));
 
             await bus.emit('', null, true);
         } catch (e) {
@@ -279,8 +279,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let item2 = new ExecutorTestItemExt('002');
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
-            bus.on('test', item2.setValue, item2);
+            bus.on('test', item.setValue.bind(item));
+            bus.on('test', item2.setValue.bind(item));
 
             await bus.emit('test_2', null, true);
         } catch (e) {
@@ -311,8 +311,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let element: CuiElement = { $cuid: "000-000-01" }
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item, element);
-            bus.on('test', item2.setValue, item2);
+            bus.on('test', item.setValue.bind(item), element);
+            bus.on('test', item2.setValue.bind(item2));
 
             await bus.emit('test', element.$cuid, true);
         } catch (e) {
@@ -330,8 +330,8 @@ describe("Tests for class [CuiEventBus]", function () {
         let element: CuiElement = { $cuid: "000-000-01" }
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item, element);
-            bus.on('test', item2.setValue, item2);
+            bus.on('test', item.setValue.bind(item), element);
+            bus.on('test', item2.setValue.bind(item2));
 
             await bus.emit('test', null, true);
         } catch (e) {

@@ -83,7 +83,7 @@ export interface ICuiMutiationPlugin {
 }
 
 export interface ICuiEventBus {
-    on(name: string, callback: any, ctx: CuiContext, cui?: CuiElement): string;
+    on(name: string, callback: any, cui?: CuiElement): string;
     //detach(name: string, ctx: CuiContext, cui?: CuiElement): void;
     detach(name: string, id: string, cui?: CuiElement): void;
     detachAll(name: string, cui?: CuiElement): void;
@@ -92,11 +92,10 @@ export interface ICuiEventBus {
 }
 
 export interface ICuiCallbackExecutor {
-    execute(callback: any, ctx: any, args: any[]): Promise<void>;
+    execute(callback: any, args: any[]): Promise<void>;
 }
 
 export interface CuiEventObj {
-    ctx: any;
     callback: any;
     $cuid: string;
 }

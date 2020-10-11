@@ -272,7 +272,7 @@ export class ElementManager implements CuiCachable {
         }, "emit")
     }
 
-    on(event: string, callback: any, ctx: CuiContext): string[] {
+    on(event: string, callback: any): string[] {
         let ids: string[] = []
         if (!are(event, callback)) {
             this.#logger.error("Incorrect arguments", "on")
@@ -282,7 +282,7 @@ export class ElementManager implements CuiCachable {
         this.call((element: Element) => {
             let cuiElement = (<CuiElement>(element as any));
             if (is(cuiElement)) {
-                ids.push(this.#utils.bus.on(event, callback, ctx, cuiElement));
+                ids.push(this.#utils.bus.on(event, callback, cuiElement));
             }
         }, "on")
         return ids;

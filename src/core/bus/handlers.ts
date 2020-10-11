@@ -58,7 +58,7 @@ export class SimpleEventEmitHandler extends EmitHandlerBase implements ICuiEvent
             let event = task.events[id]
             try {
                 if (this.idMatches(task.cuid, event.$cuid))
-                    await this.#executor.execute(event.callback, event.ctx, task.args)
+                    await this.#executor.execute(event.callback, task.args)
             }
             catch (e) {
                 this.#log.error(e)
@@ -100,7 +100,7 @@ export class TaskedEventEmitHandler extends EmitHandlerBase implements ICuiEvent
         for (let id in task.events) {
             let event = task.events[id]
             if (this.idMatches(task.cuid, event.$cuid))
-                promises.push(this.#executor.execute(event.callback, event.ctx, task.args))
+                promises.push(this.#executor.execute(event.callback, task.args))
         }
         return Promise.all(promises)
     }

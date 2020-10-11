@@ -22,12 +22,12 @@ export class CuiEventBus implements ICuiEventBus {
      * @param {CuiContext} ctx - callback context with id
      * @param {CuiElement} cui - optional - cui element which event shall be attached to 
      */
-    on(name: string, callback: any, ctx: CuiContext, cui?: CuiElement): string {
+    on(name: string, callback: any, cui?: CuiElement): string {
         if (!are(name, callback)) {
             throw new ArgumentError("Missing argument")
         }
         // When context is not provided (e.g. anonymous function) then generate random
-        let id = this.prepareEventId(ctx);
+        let id = generateRandomString();
 
 
         if (!this.#events[name]) {
@@ -38,7 +38,7 @@ export class CuiEventBus implements ICuiEventBus {
         }
         this.#log.debug(`Attaching new event: [${name}] for: [${id}]`)
 
-        this.#events[name][id] = { ctx: ctx, callback: callback, $cuid: this.getCuid(cui) }
+        this.#events[name][id] = { callback: callback, $cuid: this.getCuid(cui) }
         return id;
     }
 

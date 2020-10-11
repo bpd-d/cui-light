@@ -55,7 +55,7 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
         }
         setTimeout(() => {
             this.#manager = new ElementManager([element], this.#utils);
-            let ids = this.#manager.on('closed', this.onClose, this);
+            let ids = this.#manager.on('closed', this.onClose.bind(this));
             this.#attid = ids.length > 0 ? ids[0] : null;
             this.#manager.emit("open");
         }, 100);

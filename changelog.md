@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.20] WIP
+# [0.1.21] WIP
+# [0.1.20] 2020-10-11
+* [Changed] Don't pass context to event bus **on** method
 # [0.1.19] 2020-10-11
 * [Changed] Event bus detach will be done by event id not event context
 * [Fixed] Intersection imports cleanup and fix in dealing with offset values

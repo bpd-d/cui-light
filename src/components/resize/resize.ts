@@ -38,7 +38,7 @@ export class CuiResizeHandler extends CuiHandler<CuiResizeArgs> {
     }
 
     onInit(): void {
-        this.#eventId = this.utils.bus.on(EVENTS.RESIZE, this.resize, this);
+        this.#eventId = this.utils.bus.on(EVENTS.RESIZE, this.resize.bind(this));
     }
     onUpdate(): void {
 
