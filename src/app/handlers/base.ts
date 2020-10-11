@@ -93,12 +93,15 @@ export class CuiComponentBase implements CuiContext {
         this.utils.bus.emit(event, this.cuid, ...data)
     }
 
-    onEvent(event: string, callback: any) {
-        this.utils.bus.on(event, callback, this, this.element as any)
+    onEvent(event: string, callback: any): string {
+        return this.utils.bus.on(event, callback, this, this.element as any)
     }
 
-    detachEvent(event: string) {
-        this.utils.bus.detach(event, this)
+    detachEvent(event: string, id: string) {
+        if (id != null) {
+            this.utils.bus.detach(event, id);
+            id = null;
+        }
     }
 
     getId(): string {
@@ -169,6 +172,8 @@ abstract class CuiHandlerBase<T extends ICuiParsable> extends CuiComponentBase i
         this.onRemove();
         this.isInitialized = false;
     }
+
+
 
     // Abstract
     abstract onHandle(): void;

@@ -1,6 +1,4 @@
-import { is } from "../../core/utils/functions";
-import { ICuiObserver, CuiElement } from "../../core/models/interfaces";
-import { OBSERVABLE_INTERSECTION } from "../../core/utils/statics";
+import { ICuiObserver } from "../../core/models/interfaces";
 
 export interface ICuiIntersectionObserver {
     observe(target: Element): void;
@@ -17,35 +15,18 @@ export interface ICuiIntersectionHandler {
     onIntersection(entry: CuiIntersectionEntry): Promise<boolean>;
 }
 
-// export interface ICuiObserverHandler {
-//     callback(entries: IntersectionObserverEntry[], observer: IntersectionObserver): void;
-// }
-
-// export class CuiObserverHandler implements ICuiObserverHandler {
-//     callback(entries: IntersectionObserverEntry[], observer: IntersectionObserver): void {
-//         entries.forEach((entry: any) => {
-//             Object.values(entry.target.$handlers).forEach((handler: any) => {
-//                 if (is(handler['onIntersection'])) {
-//                     handler.onIntersection({
-//                         isInView: entry.isIntersecting,
-//                         ratio: entry.intersectionRatio
-//                     });
-//                 }
-//             })
-//         })
-//     }
-// }
-
+/**
+ * Creates a wrapper for intersection observer
+ * Constructor gets a root element for observer and optional array of threshold values [0...1]
+ */
 export class CuiIntersectionObserver implements ICuiObserver {
     private observer: IntersectionObserver
-    // #handler: ICuiObserverHandler;
     #root: Element;
     #threshold: number[];
     #callback: IntersectionObserverCallback;
     constructor(root: Element, threshold?: number[]) {
         this.#root = root;
-        this.#threshold = threshold ?? [0, 0.1, 0.25, 0.5, 0.75];
-        //this.#handler = observerHandler;
+        this.#threshold = threshold ?? [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
     }
 
     setCallback(callback: IntersectionObserverCallback) {

@@ -60,17 +60,19 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     #links: Element[];
     #switches: CuiElement[];
     #task: ICuiTask;
+    #switchEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiSwitchHandler", element, attribute, new CuiSwitchArgs(utils.setup.prefix, utils.setup.animationTime), utils);
         this.#targets = [];
         this.#currentIdx = -1;
         this.#links = [];
         this.#switches = [];
+        this.#switchEventId = null;
 
     }
 
     onInit(): void {
-        this.onEvent(EVENTS.SWITCH, this.onPushSwitch)
+        this.#switchEventId = this.onEvent(EVENTS.SWITCH, this.onPushSwitch)
         this.getTargets();
         this.getLinks();
         this.getActiveIndex();
@@ -90,7 +92,8 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
 
     onDestroy(): void {
         this.#task.stop();
-        this.detachEvent(EVENTS.SWITCH)
+        this.detachEvent(EVENTS.SWITCH, this.#switchEventId)
+
     }
 
     onMutation(record: CuiChildMutation): void {

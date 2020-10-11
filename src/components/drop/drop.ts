@@ -70,7 +70,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     #hoverListener: CuiHoverListener;
     #trigger: Element;
     #clearId: any;
-
+    #keyEventId: string;
+    #windowClickEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuidropHandler", element, attribute, new CuiDropArgs(), utils);
         this.#attribute = attribute;
@@ -79,6 +80,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#bodyClass = replacePrefix(bodyClass, prefix);
         this.#hoverListener = new CuiHoverListener(this.element);
         this.#hoverListener.setCallback(this.onTargetHover.bind(this))
+        this.#keyEventId = null;
+        this.#windowClickEventId = null;
     }
 
     onInit(): void {
@@ -156,8 +159,9 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.helper.removeClass(this.activeClassName, this.element)
         this.helper.removeClass(this.#bodyClass, document.body)
         AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
-        this.detachEvent(EVENTS.KEYDOWN);
-        this.detachEvent(EVENTS.WINDOW_CLICK);
+        this.detachEvent(EVENTS.KEYDOWN, this.#keyEventId);
+        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
+
     }
 
     onOpen() {
@@ -165,10 +169,10 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.helper.setClass(this.#bodyClass, document.body)
         AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
         if (this.args.escClose) {
-            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
+            this.#keyEventId = this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
         }
         if (this.args.outClose) {
-            this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
+            this.#windowClickEventId = this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
     }
 

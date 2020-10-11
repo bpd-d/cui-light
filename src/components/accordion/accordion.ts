@@ -83,15 +83,17 @@ export class CuiAccordionComponent implements ICuiComponent {
 export class CuiAccordionHandler extends CuiMutableHandler<CuiAccordionArgs> implements ICuiSwitchable {
     #items: Element[];
     #targets: CuiAccordionTarget[];
+    #switchEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiAccordionHandler", element, attribute, new CuiAccordionArgs(prefix, utils.setup.animationTime), utils);
+        this.#switchEventId = null;
     }
 
     onInit(): void {
         if (this.args.isValid()) {
             try {
                 this.initTargets();
-                this.onEvent(EVENTS.SWITCH, this.onSwitch.bind(this))
+                this.#switchEventId = this.onEvent(EVENTS.SWITCH, this.onSwitch.bind(this))
             } catch (e) {
                 this._log.exception(e, 'handle')
             }
@@ -108,7 +110,7 @@ export class CuiAccordionHandler extends CuiMutableHandler<CuiAccordionArgs> imp
     }
 
     onDestroy(): void {
-        this.detachEvent(EVENTS.SWITCH)
+        this.detachEvent(EVENTS.SWITCH, this.#switchEventId)
     }
 
     onMutation(mutations: CuiChildMutation) {

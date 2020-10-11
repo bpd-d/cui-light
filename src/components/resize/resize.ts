@@ -31,18 +31,23 @@ export class CuiResizeComponent implements ICuiComponent {
 }
 
 export class CuiResizeHandler extends CuiHandler<CuiResizeArgs> {
+    #eventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiResizeHandler", element, attribute, new CuiResizeArgs(), utils);
+        this.#eventId = null;
     }
 
     onInit(): void {
-        this.utils.bus.on(EVENTS.RESIZE, this.resize, this);
+        this.#eventId = this.utils.bus.on(EVENTS.RESIZE, this.resize, this);
     }
     onUpdate(): void {
 
     }
     onDestroy(): void {
-        this.utils.bus.detach(EVENTS.RESIZE, this);
+        if (this.#eventId !== null) {
+            this.utils.bus.detach(EVENTS.RESIZE, this.#eventId);
+            this.#eventId = null
+        }
     }
 
     resize(data: CuiResizeData) {

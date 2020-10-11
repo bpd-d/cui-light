@@ -22,7 +22,7 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
     title: string;
     prefix: string;
     reverse: boolean;
-    #element: HTMLElement
+    #attid: string;
     constructor(setup: CuiUtils, id: string, data: CuiAlertData) {
         this.#callbacks = {
             "yes": data.onYes,
@@ -36,6 +36,7 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
         this.#utils = setup;
         this.#id = id;
         this.reverse = false;
+        this.#attid = null;
         this.closeStr = `${this.#utils.setup.prefix}-close`;
         this.iconStr = `${this.#utils.setup.prefix}-icon`;
     }
@@ -54,7 +55,8 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
         }
         setTimeout(() => {
             this.#manager = new ElementManager([element], this.#utils);
-            this.#manager.on('closed', this.onClose, this)
+            let ids = this.#manager.on('closed', this.onClose, this);
+            this.#attid = ids.length > 0 ? ids[0] : null;
             this.#manager.emit("open");
         }, 100);
     }
@@ -80,7 +82,11 @@ abstract class CuiAlertHandlerBase implements ICuiAlertHandler, CuiContext {
                 }
             }
         } finally {
-            this.#manager.detach('closed', this);
+            if (this.#attid != null) {
+                this.#manager.detach('closed', this.#attid);
+                this.#attid = null;
+            }
+
             this.#manager = null;
         }
     }

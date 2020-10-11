@@ -131,8 +131,8 @@ describe("Tests for class [CuiEventBus]", function () {
     it("Case for method [on]", function () {
         let item = new ExecutorTestItemExt('001');
         let subscribing: boolean = false;
-        bus.on('test', item.setValue, item);
-        subscribing = bus.isSubscribing('test', item)
+        let id = bus.on('test', item.setValue, item);
+        subscribing = bus.isSubscribing('test', id)
         expect(subscribing).toBeTrue();
     })
 
@@ -167,11 +167,11 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
+            let id = bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
 
-            bus.detach('test', item);
-            subscribing = bus.isSubscribing('test', item)
+            bus.detach('test', id);
+            subscribing = bus.isSubscribing('test', id)
         } catch (e) {
             failed = true;
         }
@@ -186,11 +186,11 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
+            let id = bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
 
-            bus.detach('test', item);
-            subscribing = bus.isSubscribing('test', null)
+            bus.detach('test', null);
+            subscribing = bus.isSubscribing('test', id)
         } catch (e) {
             failed = true;
         }
@@ -205,11 +205,11 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
+            let id = bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
 
             bus.detachAll('test');
-            subscribing = bus.isSubscribing('test', item)
+            subscribing = bus.isSubscribing('test', id)
         } catch (e) {
             failed = true;
         }
@@ -224,11 +224,11 @@ describe("Tests for class [CuiEventBus]", function () {
         let subscribing: boolean = false;
         let failed: boolean = false;
         try {
-            bus.on('test', item.setValue, item);
+            let id = bus.on('test', item.setValue, item);
             bus.on('test', item2.setValue, item2);
 
             bus.detachAll('');
-            subscribing = bus.isSubscribing('test', item)
+            subscribing = bus.isSubscribing('test', id)
         } catch (e) {
             failed = true;
         }

@@ -272,28 +272,32 @@ export class ElementManager implements CuiCachable {
         }, "emit")
     }
 
-    on(event: string, callback: any, ctx: CuiContext): void {
+    on(event: string, callback: any, ctx: CuiContext): string[] {
+        let ids: string[] = []
         if (!are(event, callback)) {
             this.#logger.error("Incorrect arguments", "on")
+            return ids;
         }
+
         this.call((element: Element) => {
             let cuiElement = (<CuiElement>(element as any));
             if (is(cuiElement)) {
-                this.#utils.bus.on(event, callback, ctx, cuiElement);
+                ids.push(this.#utils.bus.on(event, callback, ctx, cuiElement));
             }
         }, "on")
+        return ids;
     }
 
-    detach(event: string, ctx: CuiContext): void {
-        if (!are(event)) {
+    detach(event: string, id: string): void {
+        if (!are(event, id)) {
             this.#logger.error("Incorrect arguments", "detach")
         }
         this.call((element: Element) => {
             let cuiElement = (<CuiElement>(element as any));
             if (is(cuiElement)) {
-                this.#utils.bus.detach(event, ctx);
+                this.#utils.bus.detach(event, id, cuiElement);
             }
-        }, "on")
+        }, "detach")
     }
 
     read(callback: any, ...args: any[]): void {

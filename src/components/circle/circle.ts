@@ -51,11 +51,13 @@ export class CuiCircleHandler extends CuiHandler<CuiCircleArgs> {
     #full: number;
     #path: any;
     #attr: string;
+    #progressEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiCircleHandler", element, attribute, new CuiCircleArgs(), utils);
         this.#factor = this.#full = 0;
         this.#path = null
         this.#attr = attribute;
+        this.#progressEventId = null;
     }
 
     onInit(): void {
@@ -69,7 +71,7 @@ export class CuiCircleHandler extends CuiHandler<CuiCircleArgs> {
         this.#full = this.#path.getTotalLength();
         this.#factor = this.#full / 100;
         this.fetch(this.readStyle)
-        this.onEvent(EVENTS.PROGRESS_CHANGE, this.onSetProgress.bind(this))
+        this.#progressEventId = this.onEvent(EVENTS.PROGRESS_CHANGE, this.onSetProgress.bind(this))
     }
 
     onUpdate(): void {
@@ -81,7 +83,7 @@ export class CuiCircleHandler extends CuiHandler<CuiCircleArgs> {
     }
 
     onDestroy(): void {
-        this.detachEvent(EVENTS.PROGRESS_CHANGE);
+        this.detachEvent(EVENTS.PROGRESS_CHANGE, this.#progressEventId);
     }
 
     onSetProgress(val: any) {

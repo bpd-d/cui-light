@@ -40,16 +40,18 @@ export class CuiToggleComponent implements ICuiComponent {
 export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     #target: Element;
     #utils: CuiUtils;
+    #toggleEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiToggleHandler", element, attribute, new CuiToggleArgs(), utils);
         this.#target = this.element;
         this.#utils = utils;
+        this.#toggleEventId = null;
     }
 
     onInit(): void {
         this.#target = this.getTarget();
         this.element.addEventListener('click', this.onClick.bind(this));
-        this.onEvent(EVENTS.TOGGLE, this.toggle.bind(this));
+        this.#toggleEventId = this.onEvent(EVENTS.TOGGLE, this.toggle.bind(this));
 
     }
     onUpdate(): void {
@@ -57,7 +59,7 @@ export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     }
     onDestroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this));
-        this.detachEvent(EVENTS.TOGGLE);
+        this.detachEvent(EVENTS.TOGGLE, this.#toggleEventId);
     }
 
     toggle() {

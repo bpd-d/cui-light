@@ -57,9 +57,14 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
     #moveListener: CuiMoveEventListener;
     #positionCalculator: ICuiFloatPositionCalculator;
     #resizeCalculator: ICuiFloatResizeCalculator;
+    #eventIdOpen: string;
+    #eventIdClose: string;
+    #eventIdKey: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiFloatHandler", element, attribute, new CuiFloatArgs(), utils);
-
+        this.#eventIdOpen = null;
+        this.#eventIdClose = null;
+        this.#eventIdKey = null;
         this.#prefix = prefix;
         this.#timeout = utils.setup.animationTimeLong;
         this.#isMoving = false;
@@ -73,8 +78,8 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
 
     onInit(): void {
         AriaAttributes.setAria(this.element, 'aria-modal', "");
-        this.onEvent(EVENTS.CLOSE, this.close.bind(this));
-        this.onEvent(EVENTS.OPEN, this.open.bind(this));
+        this.#eventIdClose = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
+        this.#eventIdOpen = this.onEvent(EVENTS.OPEN, this.open.bind(this));
         this.#moveBtn = this.element.querySelector(replacePrefix(MOVE, this.#prefix))
         this.#resizeBtn = this.element.querySelector(replacePrefix(RESIZE, this.#prefix))
         this.#moveListener.setCallback(this.onMove.bind(this));
@@ -89,8 +94,9 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
 
     onDestroy(): void {
         this.#moveListener.detach();
-        this.detachEvent(EVENTS.CLOSE);
-        this.detachEvent(EVENTS.OPEN);
+        this.detachEvent(EVENTS.CLOSE, this.#eventIdClose);
+        this.detachEvent(EVENTS.OPEN, this.#eventIdOpen);
+
     }
 
     async open(args?: any): Promise<boolean> {
@@ -124,7 +130,10 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
     }
 
     onClose(state: any) {
-        this.detachEvent(EVENTS.KEYDOWN);
+
+
+        this.detachEvent(EVENTS.KEYDOWN, this.#eventIdKey);
+
         this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now(),
             state: state
@@ -134,7 +143,7 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
 
     onOpen(state?: any) {
         if (this.args.escClose) {
-            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
+            this.#eventIdKey = this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
         }
         this.emitEvent(EVENTS.OPENED, {
             timestamp: Date.now(),

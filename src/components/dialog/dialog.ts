@@ -53,6 +53,11 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
     #timeout: number;
     #bodyClass: string;
     #scrollY: number;
+    #openEventId: string;
+    #closeEventId: string;
+    #keyEventId: string;
+    #windowClickEventId: string;
+
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiDialogHandler", element, attribute, new CuiDialogArgs(), utils);
 
@@ -60,12 +65,17 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
         this.#timeout = utils.setup.animationTimeLong;
         this.#bodyClass = replacePrefix(bodyClass, prefix);
         this.#scrollY = 0;
+        this.#openEventId = null;
+        this.#closeEventId = null;
+        this.#keyEventId = null;
+        this.#windowClickEventId = null;
+
     }
 
     onInit(): void {
         AriaAttributes.setAria(this.element, 'aria-modal', "");
-        this.onEvent(EVENTS.CLOSE, this.close.bind(this));
-        this.onEvent(EVENTS.OPEN, this.open.bind(this));
+        this.#closeEventId = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
+        this.#openEventId = this.onEvent(EVENTS.OPEN, this.open.bind(this));
         this._log.debug("Initialized", "handle")
     }
 
@@ -74,8 +84,9 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
     }
 
     onDestroy(): void {
-        this.detachEvent(EVENTS.CLOSE);
-        this.detachEvent(EVENTS.OPEN);
+        this.detachEvent(EVENTS.OPEN, this.#openEventId);
+        this.detachEvent(EVENTS.CLOSE, this.#closeEventId);
+
     }
 
     async open(args?: any): Promise<boolean> {
@@ -116,8 +127,9 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
         const scrollY = document.body.style.top;
         document.body.style.top = '';
         window.scrollTo(0, parseInt(scrollY || '0') * -1);
-        this.detachEvent(EVENTS.KEYDOWN);
-        this.detachEvent(EVENTS.WINDOW_CLICK);
+        this.detachEvent(EVENTS.KEYDOWN, this.#keyEventId);
+        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
+
         this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now(),
             state: state
@@ -127,10 +139,10 @@ export class CuiDialogHandler extends CuiHandler<CuiDialogArgs> implements ICuiC
 
     onOpen(state?: any) {
         if (this.args.escClose) {
-            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
+            this.#keyEventId = this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
         }
         if (this.args.outClose) {
-            this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
+            this.#windowClickEventId = this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
         this.emitEvent(EVENTS.OPENED, {
             timestamp: Date.now(),

@@ -84,10 +84,11 @@ export interface ICuiMutiationPlugin {
 
 export interface ICuiEventBus {
     on(name: string, callback: any, ctx: CuiContext, cui?: CuiElement): string;
-    detach(name: string, ctx: CuiContext, cui?: CuiElement): void;
+    //detach(name: string, ctx: CuiContext, cui?: CuiElement): void;
+    detach(name: string, id: string, cui?: CuiElement): void;
     detachAll(name: string, cui?: CuiElement): void;
     emit(event: string, cuid: string, ...args: any[]): Promise<boolean>;
-    isSubscribing(name: string, ctx: CuiContext, cui?: CuiElement): boolean;
+    isSubscribing(name: string, id: string, cui?: CuiElement): boolean;
 }
 
 export interface ICuiCallbackExecutor {

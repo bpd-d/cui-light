@@ -1,5 +1,8 @@
 # bpd cUI Light changelog
-# [0.1.19] WIP
+# [0.1.20] WIP
+# [0.1.19] 2020-10-11
+* [Changed] Event bus detach will be done by event id not event context
+* [Fixed] Intersection imports cleanup and fix in dealing with offset values
 # [0.1.18] 2020-09-27
 * [Fixed] Issues with alert onClose callback
 # [0.1.17] 2020-09-26

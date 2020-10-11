@@ -49,12 +49,11 @@ export class CuiEventBus implements ICuiEventBus {
     * @param {CuiContext} ctx - callback context with id
     * @param {CuiElement} cui - optional - cui element which event shall be attached to
     */
-    detach(name: string, ctx: CuiContext, cui?: CuiElement): void {
-        if (!are(name, ctx)) {
+    detach(name: string, id: string, cui?: CuiElement): void {
+        if (!are(name, id)) {
             throw new ArgumentError("Missing argument")
         }
         let ev = this.#events[name]
-        let id = ctx.getId();
         this.#log.debug(`Detaching item: [${id}] from [${name}]`)
         if (this.isAttached(ev, id)) {
             delete ev[id];
@@ -97,9 +96,9 @@ export class CuiEventBus implements ICuiEventBus {
     * @param {CuiContext} ctx - callback context with id
     * @param {CuiElement} cui - optional - cui element which event shall be attached to
     */
-    isSubscribing(name: string, ctx: CuiContext, cui?: CuiElement) {
+    isSubscribing(name: string, id: string, cui?: CuiElement) {
         let ev = this.#events[name]
-        return this.isAttached(ev, ctx.getId(), cui)
+        return this.isAttached(ev, id, cui)
     }
 
     private isAttached(ev: CuiEventReceiver, id: string, cui?: CuiElement): boolean {

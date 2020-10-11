@@ -57,20 +57,22 @@ export class CuiOpenComponent implements ICuiComponent {
 }
 
 export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
+    #eventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiOpenHandler", element, attribute, new CuiOpenArgs(utils.setup.animationTime), utils);
+        this.#eventId = null;
     }
 
     onInit(): void {
         this.element.addEventListener('click', this.onClick.bind(this))
-        this.onEvent(EVENTS.OPEN, this.onOpen.bind(this));
+        this.#eventId = this.onEvent(EVENTS.OPEN, this.onOpen.bind(this));
     }
     onUpdate(): void {
         //
     }
     onDestroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this))
-        this.detachEvent(EVENTS.OPEN);
+        this.detachEvent(EVENTS.OPEN, this.#eventId);
     }
 
     onClick(ev: MouseEvent) {

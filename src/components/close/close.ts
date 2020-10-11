@@ -43,9 +43,11 @@ export class CuiCloseArgs {
 export class CuiCloseComponent implements ICuiComponent {
     attribute: string;
     #prefix: string;
+
     constructor(prefix?: string) {
         this.#prefix = prefix ?? 'cui';
         this.attribute = `${this.#prefix}-close`;
+
     }
 
     getStyle(): string {
@@ -58,16 +60,16 @@ export class CuiCloseComponent implements ICuiComponent {
 }
 
 export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
-    #prefix: string;
     #actionHelper: CuiActionsHelper;
+    #eventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiCloseHandler", element, attribute, new CuiCloseArgs(utils.setup.animationTime), utils);
-        this.#prefix = prefix;
+        this.#eventId = null;
     }
 
     onInit(): void {
         this.element.addEventListener('click', this.onClick.bind(this))
-        this.onEvent(EVENTS.CLOSE, this.onClose.bind(this));
+        this.#eventId = this.onEvent(EVENTS.CLOSE, this.onClose.bind(this));
     }
 
     onUpdate(): void {
@@ -75,7 +77,7 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     }
     onDestroy(): void {
         this.element.removeEventListener('click', this.onClick.bind(this))
-        this.detachEvent(EVENTS.CLOSE);
+        this.detachEvent(EVENTS.CLOSE, this.#eventId);
     }
 
     onClick(ev: MouseEvent) {

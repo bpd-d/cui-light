@@ -1,10 +1,20 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
+import { CuiHandler } from "../../app/handlers/base";
 import { CuiIntersectionObserver } from "../../app/observers/intersection";
 import { CuiActionsFatory, ICuiComponentAction } from "../../core/utils/actions";
-import { is, parseAttributeString, getRangeValueOrDefault, clone } from "../../core/utils/functions";
+import { is, getRangeValueOrDefault, clone } from "../../core/utils/functions";
 import { EVENTS } from "../../core/utils/statics";
+
+/**
+ * Intersection
+ * Toggles action in/out when target is intersecting with the screen
+ * 
+ * Set this on scrollable element
+ * target - children selector
+ * offset - 0...1 - tells how much target must intersecting with the screen
+ * action - action to trigger
+ */
 
 export class CuiIntersectionAttributes {
     target: string;
@@ -78,7 +88,7 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
         let action = null;
         entries.forEach(entry => {
             action = this.getAction(entry.target);
-            if (entry.isIntersecting && entry.intersectionRatio > this.args.offset) {
+            if (entry.isIntersecting && entry.intersectionRatio >= this.args.offset) {
                 action.add(entry.target)
             } else {
                 action.remove(entry.target)

@@ -72,10 +72,18 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
 
     #prefix: string;
     #bodyClass: string;
+    #openEventId: string;
+    #closeEventId: string;
+    #keyDownEventId: string;
+    #windowClickEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiOffCanvasHandler", element, attribute, new CuiOffCanvasArgs(prefix, utils.setup.animationTimeLong), utils);
         this.#prefix = prefix;
         this.#bodyClass = replacePrefix(OFFCANVAS_BODY, prefix);
+        this.#openEventId = null;
+        this.#closeEventId = null;
+        this.#windowClickEventId = null;
+        this.#keyDownEventId = null;
     }
 
     onInit(): void {
@@ -83,8 +91,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
             this.setPositionLeft();
             AriaAttributes.setAria(this.element, 'aria-modal', "");
         })
-        this.onEvent(EVENTS.OPEN, this.open.bind(this));
-        this.onEvent(EVENTS.CLOSE, this.close.bind(this));
+        this.#openEventId = this.onEvent(EVENTS.OPEN, this.open.bind(this));
+        this.#closeEventId = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
         this._log.debug("Initialized", "onInit")
     }
     onUpdate(): void {
@@ -92,8 +100,12 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     }
     onDestroy(): void {
         //throw new Error("Method not implemented.");
-        this.detachEvent(EVENTS.CLOSE);
-        this.detachEvent(EVENTS.OPEN);
+        if (this.#closeEventId !== null)
+            this.detachEvent(EVENTS.CLOSE, this.#closeEventId);
+        if (this.#openEventId !== null)
+            this.detachEvent(EVENTS.OPEN, this.#openEventId);
+        this.#openEventId = null;
+        this.#closeEventId = null;
     }
 
     async open(args?: any): Promise<boolean> {
@@ -134,8 +146,8 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
     }
 
     onClose(state?: any) {
-        this.detachEvent(EVENTS.KEYDOWN);
-        this.detachEvent(EVENTS.WINDOW_CLICK);
+        this.detachEvent(EVENTS.KEYDOWN, this.#keyDownEventId);
+        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
         this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now(),
             state: state
