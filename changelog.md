@@ -1,5 +1,9 @@
 # bpd cUI Light changelog
 # [0.1.22] WIP
+* [Added] Slider and swiping engine
+* [Added] Support for open/close events in drop
+* [Fixed] Accordion not properly initialized when attribute is empty
+* [Fixed] Possible fix for switch not properly resizing on content change 
 # [0.1.21] 2020-10-11
 * [Fixed] - Performance improvements
 * [Fixed] - Security - toast set textContent instead of innerHTML

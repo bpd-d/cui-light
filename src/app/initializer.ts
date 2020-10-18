@@ -26,6 +26,7 @@ import { CuiOffsetComponent } from "../components/offset/offset";
 import { CuiSwitchArgs, CuiSwitchComponent } from "../components/switch/switch";
 import { CuiSwitcherComponent } from "../components/switch/switcher";
 import { CuiFloatComponent } from "../components/float/float";
+import { CuiSliderComponent } from "../components/switch/slider";
 
 export class CuiInitializer {
     #window: any;
@@ -99,7 +100,8 @@ export class CuiInit {
             new CuiOffsetComponent(),
             new CuiSwitchComponent(),
             new CuiSwitcherComponent(),
-            new CuiFloatComponent()
+            new CuiFloatComponent(),
+            new CuiSliderComponent(),
         ];
 
         let result = await initializer.init({

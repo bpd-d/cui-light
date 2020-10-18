@@ -464,3 +464,9 @@ export function enumerateObject<T>(object: T, callback: (property: string, value
         }
     }
 }
+
+export function round(value: number, decimalPlaces: number): number {
+    const multiplier = 10 ** decimalPlaces;
+    const semiValue = value * multiplier;
+    return Math.floor(value) / multiplier;
+}

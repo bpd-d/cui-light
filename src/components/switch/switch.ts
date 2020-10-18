@@ -87,17 +87,21 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     }
 
     onUpdate(): void {
+        this.mutate(() => {
+            this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
+        })
         this.startTask();
     }
 
     onDestroy(): void {
         this.#task.stop();
         this.detachEvent(EVENTS.SWITCH, this.#switchEventId)
-
     }
 
     onMutation(record: CuiChildMutation): void {
-
+        this.mutate(() => {
+            this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
+        })
     }
 
     async switch(index: any): Promise<boolean> {
@@ -141,7 +145,6 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     }
 
     onPushSwitch(index: string) {
-        this._log.debug("Intercepted event");
         this.switch(index);
     }
 
@@ -171,13 +174,11 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     }
 
     getElementHeight(current: Element): string {
-        let height: number = 0;
-        if (this.args.height === 'auto') {
-            height = getChildrenHeight(current);
+        if (!is(this.args.height) || this.args.height === 'auto') {
+            return getChildrenHeight(current) + "px";
         } else {
-            return this.args.height.match(/\d+/g).length > 0 ? this.args.height + "px" : this.args.height;
+            return this.args.height;
         }
-        return height + 'px';
     }
 
     getTargets() {

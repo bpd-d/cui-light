@@ -22,7 +22,6 @@ interface CuiAccordionTarget {
 }
 
 const ACCORDION_TITLE_CLS = '> * > .{prefix}-accordion-title';
-const ACCORDION_CONTENT_CLS = '> * > .{prefix}-accordion-content';
 const ACCORDION_ITEMS_CLS = '> *';
 
 export class CuiAccordionArgs {
@@ -41,8 +40,8 @@ export class CuiAccordionArgs {
         this.#defItemsSelector = replacePrefix(ACCORDION_ITEMS_CLS, prefix);
         this.#defTimeout = timeout;
         this.single = false;
-        this.selector = this.#defTitleSelector;
-        this.items = this.#defItemsSelector;
+        this.selector = SCOPE_SELECTOR + this.#defTitleSelector;
+        this.items = SCOPE_SELECTOR + this.#defItemsSelector;
         this.timeout = this.#defTimeout;
     }
 

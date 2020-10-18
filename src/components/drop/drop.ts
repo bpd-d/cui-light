@@ -3,14 +3,14 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { getIntOrDefault, parseAttribute, is, getActiveClass, isString, getName, replacePrefix, isStringTrue, getStringOrDefault, boolStringOrDefault } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiClassAction } from "../../core/utils/actions";
-import { CLASSES, EVENTS } from "../../core/utils/statics";
+import { CLASSES, EVENTS, SCOPE_SELECTOR } from "../../core/utils/statics";
 import { KeyDownEvent } from "../../plugins/keys/observer";
 import { AriaAttributes } from "../../core/utils/aria";
 import { CuiHoverListener, CuiHoverEvent } from "../../core/listeners/hover";
 
 const bodyClass = '{prefix}-drop-open';
 
-const DROP_DEFAULT_TRIGGER = "a, button";
+const DROP_DEFAULT_TRIGGER = "> a, button";
 
 
 export interface CuiDropEvent {
@@ -20,7 +20,6 @@ export interface CuiDropEvent {
 export class CuiDropArgs {
     escClose: boolean;
     mode: "click" | "hover";
-    match: string;
     trigger: string;
     prevent: boolean;
     autoClose: boolean;
@@ -28,17 +27,16 @@ export class CuiDropArgs {
     constructor() {
         this.escClose = false;
         this.mode = "click";
-        this.match = null;
         this.trigger = DROP_DEFAULT_TRIGGER;
         this.autoClose = false;
         this.outClose = false;
+        this.prevent = false;
     }
 
     parse(args: any) {
         this.escClose = args.escClose && isStringTrue(args.escClose);
         this.mode = getStringOrDefault(args.mode, 'click').toLowerCase();
-        this.match = args.match;
-        this.trigger = getStringOrDefault(args.trigger, DROP_DEFAULT_TRIGGER);
+        this.trigger = SCOPE_SELECTOR + getStringOrDefault(args.trigger, DROP_DEFAULT_TRIGGER);
         this.prevent = isStringTrue(args.prevent);
         this.autoClose = isStringTrue(args.autoClose);
         this.outClose = args.outClose ? isStringTrue(args.outClose) : true;
@@ -72,6 +70,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     #clearId: any;
     #keyEventId: string;
     #windowClickEventId: string;
+    #openEventId: string;
+    #closeEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuidropHandler", element, attribute, new CuiDropArgs(), utils);
         this.#attribute = attribute;
@@ -82,6 +82,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#hoverListener.setCallback(this.onTargetHover.bind(this))
         this.#keyEventId = null;
         this.#windowClickEventId = null;
+        this.#openEventId = null;
+        this.#closeEventId = null;
     }
 
     onInit(): void {
@@ -89,6 +91,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#triggerHoverListener = new CuiHoverListener(this.#trigger);
         this.setTriggerEvent();
         AriaAttributes.setAria(this.element, 'aria-dropdown', "");
+        this.#openEventId = this.onEvent(EVENTS.OPEN, this.open.bind(this));
+        this.#closeEventId = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
         this._log.debug("Initialized", "handle")
     }
     onUpdate(): void {
@@ -104,7 +108,8 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     }
 
     onDestroy(): void {
-
+        this.detachEvent(EVENTS.OPEN, this.#openEventId);
+        this.detachEvent(EVENTS.CLOSE, this.#closeEventId);
     }
 
     async open(): Promise<boolean> {

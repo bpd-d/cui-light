@@ -48,6 +48,11 @@ export class ComponentHelper {
         this.#interactions.mutate(this.removeClasses, this, classes, element);
     }
 
+    removeAttribute(attributeName: string, element: Element) {
+        if (element.hasAttribute(attributeName))
+            element.removeAttribute(attributeName);
+    }
+
     setStyle(element: any, property: string, value: string) {
         if (element["style"] && is(value)) {
             element.style[property] = value
