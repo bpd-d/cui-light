@@ -42,10 +42,12 @@ export class CuiSwitcherComponent implements ICuiComponent {
 export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
     #targetId: string;
     #isList: boolean;
+    #swtichEventID: string;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiSwitcherHandler", element, attribute, new CuiSwitcherArgs(), utils);
         this.#targetId = null;
         this.#isList = element.tagName === 'UL';
+        this.#swtichEventID = undefined;
     }
 
     onInit(): void {

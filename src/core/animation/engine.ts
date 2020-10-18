@@ -1,102 +1,18 @@
+import { is } from "../utils/functions";
 import { OpacityAnimator, TransformAnimator, PropertyAnimator } from "./animators";
 import { ICuiPropertyAnimator, AnimationProperty, AnimatorPropertyValue, TransformAnimatorProperty, OnAnimationFinishCallback } from "./interfaces";
 
 export type PropsTypes = AnimatorPropertyValue | TransformAnimatorProperty;
 
-// export class CuiAnimation {
-//     element: Element;
-//     start: number;
-//     timeout: number;
-//     inProgress: boolean;
-//     state: "idle" | "running" | "cancel";
-//     callback: () => void;
-//     animators: ICuiPropertyAnimator<PropsTypes>[];
-//     factor: number;
-//     constructor(element?: Element) {
-//         this.element = element;
-//         this.start = undefined;
-//         this.callback = undefined;
-//         this.animators = [];
-//         this.state = 'idle';
-//         this.factor = 1;
-//     }
-
-//     setElement(element: Element) {
-//         this.element = element;
-//     }
-
-//     setTimeout(timeout: number) {
-//         this.timeout = timeout;
-//     }
-
-//     cancel() {
-//         if (this.state === 'running') {
-//             this.state = 'cancel';
-//         }
-//     }
-
-//     onFinish(callback: () => void) {
-//         this.callback = callback;
-//     }
-
-//     callEnd() {
-//         this.inProgress = false;
-//         this.state = 'idle';
-//         this.start = undefined;
-//         this.factor = 1;
-//         this.animators = [];
-//         if (this.callback) {
-//             this.callback();
-//         }
-//     }
-
-//     perform(props: AnimationProperty<PropsTypes>, timeout?: number, factor?: number) {
-//         if (this.state === 'running') {
-//             return;
-//         }
-//         for (let prop in props) {
-//             let animator = new AnimatorFactory().get(prop);
-//             if (!animator) return;
-//             animator.setProperty(props[prop]);
-//             this.animators.push(animator);
-//         }
-//         this.timeout = timeout ?? this.timeout;
-//         this.factor = factor ?? this.factor;
-//         window.requestAnimationFrame(this.animate.bind(this));
-//     }
-
-//     animate(timestamp: number) {
-//         if (this.state === 'cancel') {
-//             this.callEnd();
-//             return;
-//         }
-//         this.state = 'running';
-//         this.inProgress = true;
-//         if (!this.start) {
-//             this.start = timestamp;
-//         }
-//         this.factor = this.factor === 1 ? 1 : Math.max(this.factor * 0.85, 1);
-//         let progress = timestamp - this.start;
-//         this.publishProgress(progress, progress / this.timeout);
-//         if (progress < this.timeout) {
-//             window.requestAnimationFrame(this.animate.bind(this));
-//         } else {
-//             this.callEnd();
-//         }
-//     }
-
-//     private publishProgress(currentTime: number, progress: number) {
-//         this.animators.forEach(animator => animator.perform(this.element, Math.min(progress, 1), this.factor))
-//     }
-// }
-
 export class CuiAnimation {
     #engine: CuiAnimationEngine;
     #timeout: number;
+    #factory: AnimatorFactory;
     constructor(element?: Element) {
         this.#engine = new CuiAnimationEngine(true);
         this.#engine.setElement(element);
         this.#timeout = 0;
+        this.#factory = new AnimatorFactory();
     }
 
     setElement(element: Element) {
@@ -112,15 +28,23 @@ export class CuiAnimation {
     }
 
     perform(props: AnimationProperty<PropsTypes>, timeout?: number, factor?: number) {
-        let animators = [];
-        for (let prop in props) {
-            let animator = new AnimatorFactory().get(prop);
-            if (!animator) return;
-            animator.setProperty(props[prop]);
-            animators.push(animator);
+        if (!is(props)) {
+            return;
         }
-        this.#engine.setAnimators(animators);
-        this.#engine.animate(timeout ?? this.#timeout)
+        let animators = [];
+        try {
+            for (let prop in props) {
+                let animator = this.#factory.get(prop);
+                if (!animator) return;
+                animator.setProperty(props[prop]);
+                animators.push(animator);
+                this.#engine.setAnimators(animators);
+                this.#engine.animate(timeout ?? this.#timeout)
+            }
+        } catch (e) {
+            console.error(e);
+            return;
+        }
     }
 }
 
@@ -128,6 +52,9 @@ export class CuiAnimation {
 
 class AnimatorFactory {
     get(id: string): ICuiPropertyAnimator<AnimatorPropertyValue | TransformAnimatorProperty> {
+        if (!id) {
+            return undefined;
+        }
         switch (id) {
             case "opacity":
                 return new OpacityAnimator();
@@ -234,10 +161,12 @@ export class CuiSwipeAnimationEngine {
     #element: Element;
     #animators: ICuiPropertyAnimator<PropsTypes>[];
     #animationEngine: CuiAnimationEngine;
+    #factory: AnimatorFactory;
     constructor(shouldCleanOnFinish?: boolean) {
         this.#element = undefined;
         this.#animators = [];
         this.#animationEngine = new CuiAnimationEngine(shouldCleanOnFinish);
+        this.#factory = new AnimatorFactory();
     }
 
     setElement(element: Element) {
@@ -249,12 +178,19 @@ export class CuiSwipeAnimationEngine {
     }
 
     setProps(props: AnimationProperty<PropsTypes>) {
+        if (!is(props)) {
+            return;
+        }
         this.#animators = [];
-        for (let prop in props) {
-            let animator = new AnimatorFactory().get(prop);
-            if (!animator) return;
-            animator.setProperty(props[prop]);
-            this.#animators.push(animator);
+        try {
+            for (let prop in props) {
+                let animator = this.#factory.get(prop);
+                if (!animator) return;
+                animator.setProperty(props[prop]);
+                this.#animators.push(animator);
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
@@ -286,7 +222,12 @@ export class CuiSwipeAnimationEngine {
     finish(progress: number, timeout: number, revert: boolean) {
         this.#animationEngine.setElement(this.#element);
         this.#animationEngine.setAnimators(this.#animators);
-        this.#animationEngine.animate(timeout, progress, revert);
+        try {
+            this.#animationEngine.animate(timeout, progress, revert);
+        } catch (e) {
+            console.log(e);
+        }
+
     }
 
 }

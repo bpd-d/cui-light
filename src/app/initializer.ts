@@ -27,6 +27,8 @@ import { CuiSwitchArgs, CuiSwitchComponent } from "../components/switch/switch";
 import { CuiSwitcherComponent } from "../components/switch/switcher";
 import { CuiFloatComponent } from "../components/float/float";
 import { CuiSliderComponent } from "../components/switch/slider";
+import { SWIPE_ANIMATIONS_DEFINITIONS } from "./animation/definitions";
+import { CuiBanerComponent } from "../components/banner/banner";
 
 export class CuiInitializer {
     #window: any;
@@ -48,6 +50,12 @@ export class CuiInitializer {
             for (let icon in setup.icons) {
                 ICONS[icon] = setup.icons[icon];
             }
+        }
+        if (is(setup.swipeAnimations)) {
+            for (let animation in setup.swipeAnimations) {
+                SWIPE_ANIMATIONS_DEFINITIONS[animation] = setup.swipeAnimations[animation];
+            }
+
         }
         try {
             this.#window[appPrefix] = new CuiInstance(settings, setup.plugins, setup.components)
@@ -102,13 +110,15 @@ export class CuiInit {
             new CuiSwitcherComponent(),
             new CuiFloatComponent(),
             new CuiSliderComponent(),
+            new CuiBanerComponent()
         ];
 
         let result = await initializer.init({
             setup: data.setup,
             icons: data.icons,
             plugins: is(data.plugins) ? [...pluginList, ...data.plugins] : pluginList,
-            components: is(data.components) ? [...componentList, ...data.components] : componentList
+            components: is(data.components) ? [...componentList, ...data.components] : componentList,
+            swipeAnimations: data.swipeAnimations
         })
         if (result.result) {
             this.#isInitialized = true;

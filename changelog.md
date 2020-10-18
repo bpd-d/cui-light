@@ -1,7 +1,9 @@
 # bpd cUI Light changelog
-# [0.1.22] WIP
+# [0.1.23] WIP
+# [0.1.22] 2020-10-18
 * [Added] Slider and swiping engine
 * [Added] Support for open/close events in drop
+* [Added] Banner component
 * [Fixed] Accordion not properly initialized when attribute is empty
 * [Fixed] Possible fix for switch not properly resizing on content change 
 # [0.1.21] 2020-10-11

@@ -1,5 +1,6 @@
 import { CuiUtils } from "./utils";
 import { CuiSetupInit } from "./setup";
+import { CuiAnimationsDefinition } from "../../app/animation/definitions";
 
 export interface ICuiLogger {
     debug(message: string, functionName?: string): void;
@@ -117,6 +118,7 @@ export interface CuiInitData {
     components?: ICuiComponent[];
     setup?: CuiSetupInit;
     icons?: any;
+    swipeAnimations?: CuiAnimationsDefinition;
 }
 
 export interface CuiInitResult {

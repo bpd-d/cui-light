@@ -159,7 +159,8 @@ export const EVENTS = {
     PROGRESS_CHANGE: "progresschange",
     PROGRESS_CHANGED: "progresschanged",
     CHANGE: "change",
-    CHANGED: "changed"
+    CHANGED: "changed",
+    
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";

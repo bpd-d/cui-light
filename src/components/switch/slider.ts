@@ -4,21 +4,27 @@ import { CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
 import { is, getStringOrDefault, getIntOrDefault, isInRange, EVENTS, getChildrenHeight, SCOPE_SELECTOR, CLASSES } from "../../core/index";
 import { ICuiTask, CuiTaskRunner } from "../../core/utils/task";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
-import { CuiAnimation, CuiSwipeAnimationEngine } from "../../core/animation/engine";
-import { AnimationDefinition } from "./slider/interfaces";
-import { FadeAnimationDefnition, PushAnimationDefnition, SlideAnimationDefnition } from "./slider/animations";
+import { CuiSwipeAnimationEngine } from "../../core/animation/engine";
+import { AnimationDefinition, SWIPE_ANIMATIONS_DEFINITIONS } from "../../app/animation/definitions";
 
-
+/**
+ * 
+ *   targets: string - slider elements
+ *   timeout: number - animation timeout
+ *   links: string; - link to switcher (indicator, tab, etc)
+ *   autoTimeout: number - if defined, slider will switch item automatically
+ *   height: 'auto' | string - element height
+ *      animation: string - animation name
+ */
 const SWITCH_DEFAULT_TARGETS = "> li";
 
 export class CuiSliderArgs implements ICuiParsable {
-
     targets: string;
     timeout: number;
     links: string;
-    switch: string;
     autoTimeout: number;
     height: 'auto' | string;
+    animation: string;
 
     #prefix: string;
     #defTimeout: number;
@@ -31,9 +37,9 @@ export class CuiSliderArgs implements ICuiParsable {
         this.targets = getStringOrDefault(args.targets, SCOPE_SELECTOR + SWITCH_DEFAULT_TARGETS)
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
         this.links = args.links;
-        this.switch = args.switch;
         this.autoTimeout = getIntOrDefault(args.autoTimeout, -1);
         this.height = getStringOrDefault(args.height, 'auto')
+        this.animation = getStringOrDefault(args.animation, 'slide');
     }
 
 }
@@ -70,7 +76,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
     #nextSlider: CuiSwipeAnimationEngine;
     #animationDef: AnimationDefinition;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
-        super("CuiSLiderHandler", element, attribute, new CuiSliderArgs(utils.setup.prefix, utils.setup.animationTime), utils);
+        super("CuiSliderHandler", element, attribute, new CuiSliderArgs(utils.setup.prefix, utils.setup.animationTime), utils);
         this.#targets = [];
         this.#currentIdx = -1;
         this.#nextIdx = -1;
@@ -85,7 +91,6 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         this.#currSlider = new CuiSwipeAnimationEngine();
         this.#nextSlider = new CuiSwipeAnimationEngine();
         this.#currSlider.setOnFinish(this.onAnimationFinish.bind(this));
-        this.#animationDef = PushAnimationDefnition;
     }
 
     onInit(): void {
@@ -101,6 +106,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
             this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
         })
         this.#task = new CuiTaskRunner(this.args.autoTimeout, true, this.switch.bind(this, 'next'));
+        this.#animationDef = SWIPE_ANIMATIONS_DEFINITIONS[this.args.animation];
         this.startTask();
     }
 
@@ -108,6 +114,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         this.mutate(() => {
             this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
         })
+        this.#animationDef = SWIPE_ANIMATIONS_DEFINITIONS[this.args.animation];
         this.startTask();
     }
 
@@ -120,44 +127,52 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
     onMutation(record: CuiChildMutation): void {
 
     }
-
+    /**
+     * Move listener callback
+     * @param data move listener data
+     */
     onMove(data: ICuiMoveEvent) {
-        if (this.isLocked) {
+        if (this.isLocked || !this.#animationDef) {
             return;
         }
         let current = this.#targets[this.#currentIdx] as HTMLElement;
         switch (data.type) {
             case "down":
-                if (current.contains((data.target as Node))) {
-                    this.#isTracking = true;
-                    this.#startX = data.x;
-                    this.#currSlider.setElement(current);
+                if (this.#isTracking || !current.contains((data.target as Node))) {
+                    return;
                 }
+                this.#isTracking = true;
+                this.#startX = data.x;
+                this.#currSlider.setElement(current);
                 break;
             case "up":
                 if (!this.#isTracking) {
                     break;
                 }
+                // Lock component until animation is finished
                 this.isLocked = true;
-                let timeout = Math.abs(this.#ratio * this.args.timeout);
-                let back = Math.abs(this.#ratio) <= this.#ratioThreshold;
-                this.#currSlider.finish(Math.abs(this.#ratio), timeout, back);
-                this.#nextSlider.finish(Math.abs(this.#ratio), timeout, back);
+                let absRatio = Math.abs(this.#ratio);
+                let timeout = absRatio * this.args.timeout;
+                let back = absRatio <= this.#ratioThreshold;
+                this.#currSlider.finish(absRatio, timeout, back);
+                this.#nextSlider.finish(absRatio, timeout, back);
                 this.#isTracking = false;
                 break;
             case "move":
                 if (this.#isTracking) {
                     this.#ratio = (data.x - this.#startX) / current.offsetWidth;
-
                     let nextIdx = this.getNextIndex(this.#ratio > 0 ? "next" : "prev");
                     if (nextIdx !== this.#nextIdx) {
                         this.#nextElement && this.helper.removeClass(CLASSES.animProgress, this.#nextElement);
                         this.#nextElement = this.#targets[nextIdx] as HTMLElement;
                         this.#nextIdx = nextIdx;
-                        this.helper.setClass(CLASSES.animProgress, this.#nextElement);
+
                         this.#nextSlider.setElement(this.#nextElement)
                         this.#nextSlider.setProps(this.#ratio > 0 ? this.#animationDef.previous.right : this.#animationDef.previous.left);
                         this.#currSlider.setProps(this.#ratio > 0 ? this.#animationDef.current.right : this.#animationDef.current.left);
+                        this.mutate(() => {
+                            this.helper.setClass(CLASSES.animProgress, this.#nextElement);
+                        })
                     }
                     this.mutate(() => {
                         this.#currSlider.update(Math.abs(this.#ratio));
@@ -179,14 +194,18 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         return true;
     }
 
+    /**
+     * 
+     * @param element element this animation was perfromed on
+     * @param reverted - flag inidicating whether animation was performed to the end or reverted back to start
+     * @param errorOccured - tells whether animation was finished with error
+     */
     onAnimationFinish(element: Element, reverted: boolean, errorOccured: boolean) {
-        console.log("Finish")
         this.isLocked = false;
         // If not go back or from push then switch, else was go back
         let next = this.#targets[this.#nextIdx];
         let current = this.#targets[this.#currentIdx];
         if (!reverted) {
-            //if (Math.abs(this.#ratio) > this.#ratioThreshold || this.#ratio === 0) {
             if (this.#nextIdx > -1) {
                 this.mutate(() => {
                     this.helper.removeClass(CLASSES.animProgress, next);
@@ -194,6 +213,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                     this.helper.removeClass(this.activeClassName, current);
                     this.helper.removeAttribute("style", current);
                     this.helper.removeAttribute("style", next);
+                    this.setLinkActive(this.#currentIdx, this.#nextIdx);
                     this.emitEvent(EVENTS.SWITCHED, {
                         timestamp: Date.now(),
                         index: this.#nextIdx
@@ -206,7 +226,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         } else {
             this.helper.removeClass(CLASSES.animProgress, this.#nextElement);
             this.helper.removeAttribute("style", current);
-            this.helper.removeAttribute("style", next);
+            this.helper.removeAttribute("style", this.#nextElement);
             this.#nextIdx = -1;
         }
         this.#nextElement = null;
@@ -216,7 +236,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
     }
 
     onPushSwitch(index: string) {
-        if (this.isLocked) {
+        if (this.isLocked || !this.#animationDef) {
             return;
         }
         this.isLocked = true;
@@ -233,9 +253,9 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         this.#currSlider.setProps(this.#animationDef.current.right);
         this.#nextSlider.setProps(this.#animationDef.previous.right);
         this.mutate(() => {
-            this.helper.setClass(CLASSES.animProgress, next);
             this.#currSlider.finish(0, this.args.timeout, false);
             this.#nextSlider.finish(0, this.args.timeout, false);
+            this.helper.setClass(CLASSES.animProgress, next);
         })
 
     }
@@ -278,30 +298,31 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         this.#targets = t.length > 0 ? [...t] : [];
     }
 
+    /**
+     * Get linked switcher elements
+     */
     getLinks() {
         this.#links = is(this.args.links) ? [...document.querySelectorAll(this.args.links)] : []
     }
 
+    /**
+     * Set active class on linked switcher if set
+     * @param current - current index (to remove active from)
+     * @param next - next index (to set action on)
+     */
     setLinkActive(current: number, next: number) {
         if (!is(this.#links)) {
             return
         }
-        if (isInRange(current, 0, this.#links.length - 1)) {
-            this.helper.removeClass(this.activeClassName, this.#links[current])
-        }
-        if (isInRange(next, 0, this.#links.length - 1)) {
-            this.helper.setClass(this.activeClassName, this.#links[next])
-        }
-    }
+        this.mutate(() => {
+            if (isInRange(current, 0, this.#links.length - 1)) {
+                this.helper.removeClass(this.activeClassName, this.#links[current])
+            }
+            if (isInRange(next, 0, this.#links.length - 1)) {
+                this.helper.setClass(this.activeClassName, this.#links[next])
+            }
+        })
 
-    /**
-     * Emits push event to attached switch to set proper index
-     * @param id - cuid of element
-     * @param index - index to be set on element
-     */
-    setLinkSwitch(id: string, index: number) {
-        if (is(id))
-            this.utils.bus.emit(EVENTS.SWITCH, id, index);
     }
 
     /**

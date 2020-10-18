@@ -113,6 +113,7 @@ export interface CuiInitData {
     components?: ICuiComponent[];
     setup?: CuiSetupInit;
     icons?: any;
+    swipeAnimations?: CuiAnimationsDefinition;
 }
 export interface CuiInitResult {
     result: boolean;
@@ -266,6 +267,19 @@ export class CuiInstance {
     alert(id: string, type: CuiAlertType, data: CuiAlertData): void;
 }
 
+export interface AnimationDefinition {
+    previous: DefinitionItem;
+    current: DefinitionItem;
+}
+export interface DefinitionItem {
+    left: AnimationProperty<PropsTypes>;
+    right: AnimationProperty<PropsTypes>;
+}
+export interface CuiAnimationsDefinition {
+    [id: string]: AnimationDefinition;
+}
+export const SWIPE_ANIMATIONS_DEFINITIONS: CuiAnimationsDefinition;
+
 export interface ICuiComponentAction {
     add(element: Element, utils?: CuiUtils): void;
     remove(element: Element, utils?: CuiUtils): void;
@@ -378,6 +392,68 @@ export class CollectionManager implements CuiCachable {
     refresh(): boolean;
 }
 
+export type PropsTypes = AnimatorPropertyValue | TransformAnimatorProperty;
+export class CuiAnimation {
+        #private;
+        constructor(element?: Element);
+        setElement(element: Element): void;
+        setTimeout(timeout: number): void;
+        onFinish(callback: OnAnimationFinishCallback): void;
+        perform(props: AnimationProperty<PropsTypes>, timeout?: number, factor?: number): void;
+}
+export class CuiAnimationEngine {
+        #private;
+        constructor(cleanOnFinish?: boolean);
+        onFinish(callback: OnAnimationFinishCallback): void;
+        setAnimators(animators: ICuiPropertyAnimator<PropsTypes>[]): void;
+        setElement(element: Element): void;
+        animate(timeout: number, progress?: number, revert?: boolean): void;
+        isLocked(): boolean;
+}
+export class CuiSwipeAnimationEngine {
+        #private;
+        constructor(shouldCleanOnFinish?: boolean);
+        setElement(element: Element): void;
+        setOnFinish(callback: OnAnimationFinishCallback): void;
+        setProps(props: AnimationProperty<PropsTypes>): void;
+        /**
+            * Perform single update on animators
+            * @param progress - progress value to be set to animators 0..1
+            */
+        update(progress: number): void;
+        /**
+            * Perform single update on animators in RAF
+            * @param progress - progress value to be set to animators 0..1
+            */
+        updateAsync(progress: number): void;
+        /**
+            * Finish swipe animation using animation engine
+            * @param progress - initial progress value 0..1
+            * @param timeout - time for animation to perform
+            * @param revert - whether animation should return back to 0 or progress to the end
+            */
+        finish(progress: number, timeout: number, revert: boolean): void;
+}
+
+export interface ICuiPropertyAnimator<T> {
+    perform(element: any, progress: number, factor: number): void;
+    setProperty(prop: T): void;
+}
+export interface AnimationProperty<T> {
+    [id: string]: T;
+}
+export interface AnimatorPropertyValue {
+    from: number;
+    to: number;
+    unit?: string;
+}
+export interface TransformAnimatorProperty {
+    [name: string]: AnimatorPropertyValue;
+}
+export interface OnAnimationFinishCallback {
+    (element: Element, reverted: boolean, error: boolean): void;
+}
+
 export class CuiColor {
     #private;
     constructor(red: number, green: number, blue: number, alpha?: number);
@@ -422,6 +498,9 @@ export class CuiScrollSpyOutOfRangeError extends ErrorBase {
     constructor(message?: string);
 }
 export class RegisterElementError extends ErrorBase {
+    constructor(message?: string);
+}
+export class AnimatorError extends ErrorBase {
     constructor(message?: string);
 }
 

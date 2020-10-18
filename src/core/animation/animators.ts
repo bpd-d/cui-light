@@ -1,55 +1,78 @@
+import { AnimatorError } from "../models/errors";
+import { is } from "../utils/functions";
 import { ICuiPropertyAnimator, AnimatorPropertyValue, TransformAnimatorProperty } from "./interfaces";
 
+/**
+ * Changes the opacity of the element from 0 to 1
+ */
 export class OpacityAnimator implements ICuiPropertyAnimator<AnimatorPropertyValue> {
-    lenght: number;
+    length: number;
     from: number;
     to: number;
     rtl: boolean;
     constructor() {
-        this.lenght = this.to = this.from = -1;
+        this.length = this.to = this.from = -1;
         this.rtl = false;
     }
 
     setProperty(prop: AnimatorPropertyValue): void {
+        if (!prop || !is(prop.from) || !is(prop.to)) {
+            throw new AnimatorError("[OpacityAnimator] Property has incorrect format");
+        }
         this.from = prop.from;
         this.to = prop.to;
-        this.lenght = Math.abs(this.to - this.from);
+        this.length = Math.abs(this.to - this.from);
         this.rtl = this.from > this.to;
     }
 
     perform(element: any, progress: number, factor: number) {
-        let current = this.lenght * progress
+        if (this.to < 0) {
+            return;
+        }
+        let current = this.length * progress
         if (element["style"]) {
-            element.style.opacity = this.rtl ? this.from - current : this.from + current;
+            element.style.opacity = this.rtl ? Math.max(this.from - current, 0) : Math.max(this.from + current, 1);
         }
 
     }
 }
 
+/**
+ * Changes any style property of the element
+ */
 export class PropertyAnimator implements ICuiPropertyAnimator<AnimatorPropertyValue> {
-    lenght: number;
+    length: number;
     from: number;
     to: number;
     rtl: boolean;
     property: string;
     #unit: string;
     constructor(property: string) {
+        if (!is(property)) {
+            throw new AnimatorError("[PropertyAnimator] Valid property is required");
+        }
         this.property = property;
-        this.lenght = this.to = this.from = -1;
+        this.length = this.to = this.from = -1;
         this.rtl = false;
         this.#unit = "";
     }
 
     setProperty(prop: AnimatorPropertyValue) {
+        if (!prop || !is(prop.from) || !is(prop.to)) {
+            throw new AnimatorError("[PropertyAnimator] Property has incorrect format");
+        }
         this.from = prop.from;
         this.to = prop.to;
-        this.lenght = Math.abs(this.to - this.from);
+        this.length = Math.abs(this.to - this.from);
         this.rtl = this.from > this.to;
         this.#unit = prop.unit;
     }
 
     perform(element: any, progress: number, factor: number) {
-        let current = this.lenght * progress
+        if (!this.property) {
+            return;
+        }
+        let current = this.length * progress
         if (element["style"]) {
             element.style[this.property] = this.createValue(this.rtl ? this.from - current : this.from + current, this.#unit);
         }
@@ -60,6 +83,9 @@ export class PropertyAnimator implements ICuiPropertyAnimator<AnimatorPropertyVa
     }
 }
 
+/**
+ * Changes transform property of the element. Supports mulitple properties at the time
+ */
 export class TransformAnimator implements ICuiPropertyAnimator<TransformAnimatorProperty> {
     prop: TransformAnimatorProperty;
     constructor() {
@@ -67,6 +93,9 @@ export class TransformAnimator implements ICuiPropertyAnimator<TransformAnimator
     }
 
     setProperty(prop: TransformAnimatorProperty) {
+        if (!prop) {
+            throw new AnimatorError("[TransformAnimator] Property has incorrect format");
+        }
         this.prop = prop;
     }
 
@@ -88,6 +117,9 @@ export class TransformAnimator implements ICuiPropertyAnimator<TransformAnimator
     }
 
     perform(element: any, progress: number, factor: number) {
+        if (!this.prop) {
+            return;
+        }
         if (element["style"]) {
             element.style.transform = this.build(progress);
         }

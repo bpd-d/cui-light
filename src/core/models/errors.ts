@@ -42,3 +42,9 @@ export class RegisterElementError extends ErrorBase {
         super("RegisterElementError", message);
     }
 }
+
+export class AnimatorError extends ErrorBase {
+    constructor(message?: string) {
+        super("AnimatorError", message);
+    }
+}
