@@ -28,7 +28,7 @@ export class CuiClassAction implements ICuiComponentAction {
 
     toggle(element: Element, utils?: CuiUtils): void {
         if (are(element, this.#class)) {
-            if (!element.classList.contains(this.#class)) {
+            if (element.classList.contains(this.#class)) {
                 element.classList.remove(this.#class);
             } else {
                 element.classList.add(this.#class);
@@ -85,6 +85,42 @@ export class CuiInboundAction implements ICuiComponentAction {
     }
 }
 
+export class AttributeAction implements ICuiComponentAction {
+    #attributeName: string;
+    #attributeValue: string;
+    constructor(attribute: string) {
+        [this.#attributeName, this.#attributeValue] = attribute.split(',')
+    }
+
+    add(element: Element, utils?: CuiUtils): void {
+        if (!are(element, this.#attributeName, this.#attributeValue)) {
+            return;
+        }
+        element.setAttribute(this.#attributeName, this.#attributeValue)
+    }
+
+    remove(element: Element, utils?: CuiUtils): void {
+        if (!are(element, this.#attributeName, this.#attributeValue)) {
+            return;
+        }
+        if (element.hasAttribute(this.#attributeName)) {
+            element.removeAttribute(this.#attributeName)
+        }
+
+    }
+
+    toggle(element: Element, utils?: CuiUtils): void {
+        if (!are(element, this.#attributeName, this.#attributeValue)) {
+            return;
+        }
+        if (element.hasAttribute(this.#attributeName)) {
+            element.removeAttribute(this.#attributeName)
+        } else {
+            element.setAttribute(this.#attributeName, this.#attributeValue)
+        }
+    }
+}
+
 export class DummyAction implements ICuiComponentAction {
     constructor() {
     }
@@ -110,7 +146,9 @@ export class CuiActionsFatory {
             case '.':
                 return new CuiClassAction(value.substring(1));
             case '~':
-                return new CuiInboundAction(value.substring(1))
+                return new CuiInboundAction(value.substring(1));
+            case "&":
+                return new AttributeAction(value.substring(1));
             default:
                 return new CuiClassAction(value);
         }

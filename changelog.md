@@ -1,5 +1,15 @@
 # bpd cUI Light changelog
-# [0.1.23] WIP
+# [0.1.25] WIP
+# [0.1.24] 2020-10-20
+* [Added] Logger print log level to console
+* [Added] Animation engine to push error to callback if set
+* [Changed] Move listener is not a globally attached rather than using separate listener per component 
+* [Changed] Components Dialog, Offcanvas, Banner and Float now have common core
+* [Fixed] Component toggle not toggeling class
+* [Fixed] Event bus - call handler only when there are callbacks to call
+# [0.1.23] 2020-10-19
+* [Added] Option loop to slider - by default sliding will not occur in loop
+* [Added] Option open to banner - banner may dis opened again after closing
 # [0.1.22] 2020-10-18
 * [Added] Slider and swiping engine
 * [Added] Support for open/close events in drop

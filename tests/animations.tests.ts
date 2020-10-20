@@ -26,14 +26,18 @@ describe("Tests checking class [CuiAnimationEngine]", function () {
 
     it("Case no setup", function () {
         let failed = false;
-
+        let reported = false;
         try {
             let engine = new CuiAnimationEngine();
+            engine.setOnError(() => {
+                reported = true;
+            })
             engine.animate(300);
         } catch (e) {
             failed = true;
         }
-        expect(failed).toBeTrue();
+        expect(failed).toBeFalse();
+        expect(reported).toBeTrue();
     })
 
     it("Case normal", async function () {
@@ -168,28 +172,38 @@ describe("Tests checking class [CuiAnimation]", function () {
 
     it("Incorrect animation property", async function () {
         let failed = false;
+        let reported = false;
         try {
             let animation = new CuiAnimation();
             animation.setElement(element);
+            animation.onError(() => {
+                reported = true;
+            })
             animation.perform(null, 50, 1);
         } catch (e) {
             failed = true;
         }
         await sleep(60);
         expect(failed).toBeFalse();
+        expect(reported).toBeTrue();
     })
 
     it("Incorrect animation missing element", async function () {
         let failed = false;
+        let reported = false;
         try {
             let animation = new CuiAnimation();
             animation.setElement(null);
+            animation.onError(() => {
+                reported = true;
+            })
             animation.perform(prop, 50, 1);
         } catch (e) {
             failed = true;
         }
         await sleep(60);
         expect(failed).toBeFalse();
+        expect(reported).toBeTrue();
     })
 
     it("Case normal with finish", async function () {
@@ -234,7 +248,7 @@ describe("Tests checking class [CuiAnimation]", function () {
 })
 
 
-describe("Tests checking class [CuiAnimation]", function () {
+describe("Tests checking class [CuiSwipeAnimationEngine]", function () {
     let element: Element;
     let prop = {
         opacity: {
@@ -321,11 +335,15 @@ describe("Tests checking class [CuiAnimation]", function () {
 
     it("Case no element", async function () {
         let failed = false;
+        let reported = false;
         let result = false;
         try {
             let animation = new CuiSwipeAnimationEngine(true);
             animation.setElement(null);
             animation.setProps(prop);
+            animation.setOnError(() => {
+                reported = true;
+            })
             animation.setOnFinish(() => {
                 result = true;
             })
@@ -338,15 +356,20 @@ describe("Tests checking class [CuiAnimation]", function () {
         await sleep(100);
         expect(failed).toBeFalse();
         expect(result).toBeFalse();
+        expect(reported).toBeTrue();
     })
 
     it("Case no prop", async function () {
         let failed = false;
+        let reported = false;
         let result = false;
         try {
             let animation = new CuiSwipeAnimationEngine(true);
             animation.setElement(element);
             animation.setProps(null);
+            animation.setOnError(() => {
+                reported = true;
+            })
             animation.setOnFinish(() => {
                 result = true;
             })
@@ -359,6 +382,7 @@ describe("Tests checking class [CuiAnimation]", function () {
         await sleep(100);
         expect(failed).toBeFalse();
         expect(result).toBeFalse();
+        expect(reported).toBeTrue();
     })
 
     it("Case update no prop", function () {

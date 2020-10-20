@@ -470,3 +470,24 @@ export function round(value: number, decimalPlaces: number): number {
     const semiValue = value * multiplier;
     return Math.floor(value) / multiplier;
 }
+
+export function calculateNextIndex(val: any, currentIndex: number, totalLength: number): number {
+    let idx = -1;
+    switch (val) {
+        case 'prev':
+            idx = currentIndex <= 0 ? totalLength - 1 : currentIndex - 1;
+            break;
+        case 'next':
+            idx = currentIndex < totalLength - 1 ? currentIndex + 1 : 0
+            break;
+        case 'first':
+            idx = 0;
+            break;
+        case 'last':
+            idx = totalLength - 1;
+        default:
+            idx = getIntOrDefault(val, -1);
+            break;
+    }
+    return idx;
+}

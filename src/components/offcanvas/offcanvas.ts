@@ -1,7 +1,6 @@
-import { isStringTrue, replacePrefix, EVENTS, ICuiComponentAction, CuiClassAction, is, getStringOrDefault, getIntOrDefault, CuiActionsFatory, getName } from "../../core/index";
-import { ICuiComponent, CuiUtils, ICuiComponentHandler, ICuiOpenable, ICuiClosable } from "../../index";
-import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
-import { KeyDownEvent } from "../../plugins/keys/observer";
+import { isStringTrue, replacePrefix, EVENTS, is, getStringOrDefault, getIntOrDefault, getName, ICuiParsable } from "../../core/index";
+import { ICuiComponent, CuiUtils, ICuiComponentHandler } from "../../index";
+import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 import { AriaAttributes } from "../../core/utils/aria";
 
 const OFFCANVAS_RIGHT_ANIM_DEFAULT_IN = ".{prefix}-offcanvas-default-right-in";
@@ -12,33 +11,39 @@ const OFFCANVAS_LEFT_ANIM_DEFAULT_OUT = ".{prefix}-offcanvas-default-left-out";
 const OFFCANVAS_BODY = "{prefix}-off-canvas-open";
 const OFFCANVAS_CONTAINER_CLS = '.{prefix}-off-canvas-container';
 
-export class CuiOffCanvasArgs {
+export class CuiOffCanvasArgs implements ICuiParsable, CuiInteractableArgs {
     escClose: boolean;
     outClose: boolean;
-    open: string;
-    close: string;
+    openAct: string;
+    closeAct: string;
+    keyClose: string;
     position: 'left' | 'right';
     timeout: number;
+
     #prefix: string;
     #defTimeout: number;
     constructor(prefix: string, timeout: number) {
         this.#prefix = prefix;
         this.escClose = false;
         this.position = 'right';
-        this.open = this.getDefaultOpenClass();
-        this.close = this.getDefaultCloseClass();
+        this.openAct = this.getDefaultOpenClass();
+        this.closeAct = this.getDefaultCloseClass();
         this.#defTimeout = timeout;
         this.timeout = timeout;
+        this.outClose = false;
+        this.keyClose = undefined;
     }
+
 
     parse(args: any) {
         if (is(args)) {
             this.escClose = isStringTrue(args.escClose);
             this.outClose = isStringTrue(args.outClose);
             this.position = getStringOrDefault(args.position, 'right');
-            this.open = getStringOrDefault(args.openCls, this.getDefaultOpenClass())
-            this.close = getStringOrDefault(args.closeCls, this.getDefaultCloseClass());
+            this.openAct = getStringOrDefault(args.openAct, this.getDefaultOpenClass())
+            this.closeAct = getStringOrDefault(args.closeAct, this.getDefaultCloseClass());
             this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
+            this.keyClose = args.keyClose;
         }
     }
 
@@ -68,22 +73,19 @@ export class CuiOffCanvasComponent implements ICuiComponent {
     }
 }
 
-export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements ICuiOpenable, ICuiClosable {
+export class CuiOffCanvasHandler extends CuiInteractableHandler<CuiOffCanvasArgs>  {
 
     #prefix: string;
     #bodyClass: string;
-    #openEventId: string;
-    #closeEventId: string;
-    #keyDownEventId: string;
+    #scrollY: number;
     #windowClickEventId: string;
+
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiOffCanvasHandler", element, attribute, new CuiOffCanvasArgs(prefix, utils.setup.animationTimeLong), utils);
         this.#prefix = prefix;
         this.#bodyClass = replacePrefix(OFFCANVAS_BODY, prefix);
-        this.#openEventId = null;
-        this.#closeEventId = null;
         this.#windowClickEventId = null;
-        this.#keyDownEventId = null;
+        this.#scrollY = 0;
     }
 
     onInit(): void {
@@ -91,89 +93,36 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
             this.setPositionLeft();
             AriaAttributes.setAria(this.element, 'aria-modal', "");
         })
-        this.#openEventId = this.onEvent(EVENTS.OPEN, this.open.bind(this));
-        this.#closeEventId = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
-        this._log.debug("Initialized", "onInit")
     }
     onUpdate(): void {
         this.setPositionLeft();
     }
     onDestroy(): void {
-        //throw new Error("Method not implemented.");
-        if (this.#closeEventId !== null)
-            this.detachEvent(EVENTS.CLOSE, this.#closeEventId);
-        if (this.#openEventId !== null)
-            this.detachEvent(EVENTS.OPEN, this.#openEventId);
-        this.#openEventId = null;
-        this.#closeEventId = null;
-    }
 
-    async open(args?: any): Promise<boolean> {
-        if (this.checkLockAndWarn('open')) {
+    }
+    onBeforeOpen(): boolean {
+        if (this.isAnyActive()) {
             return false;
         }
-        if (this.isAnyActive() || this.isActive()) {
-            this._log.warning("Offcanvas is already opened");
-            return false;
-        }
-        this.isLocked = true;
-        this._log.debug(`Offcanvas ${this.cuid}`, 'open')
-        let scrollY = window.pageYOffset;
-        let action = CuiActionsFatory.get(this.args.open);
-        return this.performAction(action, this.args.timeout, this.onOpen.bind(this, args), () => {
-            this.helper.setClass(this.activeClassName, this.element)
-            this.helper.setClass(this.#bodyClass, document.body)
-            AriaAttributes.setAria(this.element, 'aria-expanded', 'true')
-            document.body.style.top = `-${scrollY}px`;
-        });
+        this.#scrollY = window.pageYOffset;
+        return true;
     }
 
-    async close(args?: any): Promise<boolean> {
-        if (this.checkLockAndWarn("close") || !this.isActive()) {
-            return false;
-        }
-        this.isLocked = true;
-        this._log.debug(`Offcanvas ${this.cuid}`, 'close')
-        let action = CuiActionsFatory.get(this.args.close);
-        return this.performAction(action, this.args.timeout, this.onClose.bind(this, args), () => {
-            this.helper.removeClass(this.activeClassName, this.element)
-            this.helper.removeClass(this.#bodyClass, document.body)
-            const scrollY = document.body.style.top;
-            document.body.style.top = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
-            AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
-        });
-    }
-
-    onClose(state?: any) {
-        this.detachEvent(EVENTS.KEYDOWN, this.#keyDownEventId);
-        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
-        this.emitEvent(EVENTS.CLOSED, {
-            timestamp: Date.now(),
-            state: state
-        })
-        this.isLocked = false;
-    }
-
-    onOpen(state?: any) {
-
-        if (this.args.escClose) {
-            this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
-        }
+    onAfterOpen(): void {
         if (this.args.outClose) {
             this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
-        this.emitEvent(EVENTS.OPENED, {
-            timestamp: Date.now(),
-            state: state
-        })
-        this.isLocked = false;
+        this.helper.setClass(this.#bodyClass, document.body);
+        document.body.style.top = `-${scrollY}px`;
     }
-
-    onEscClose(ev: KeyDownEvent) {
-        if (ev.event.key === "Escape") {
-            this.close();
-        }
+    onAfterClose(): void {
+        this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
+        this.helper.removeClass(this.#bodyClass, document.body);
+        document.body.style.top = '';
+        window.scrollTo(0, this.#scrollY * -1);
+    }
+    onBeforeClose(): boolean {
+        return true;
     }
 
     onWindowClick(ev: MouseEvent) {
@@ -195,4 +144,6 @@ export class CuiOffCanvasHandler extends CuiHandler<CuiOffCanvasArgs> implements
             this.helper.removeClass(cls, this.element)
         }
     }
+
+
 }

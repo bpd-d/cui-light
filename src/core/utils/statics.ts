@@ -160,7 +160,7 @@ export const EVENTS = {
     PROGRESS_CHANGED: "progresschanged",
     CHANGE: "change",
     CHANGED: "changed",
-    
+    GLOBAL_MOVE: "global_move",
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";

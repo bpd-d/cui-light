@@ -12,6 +12,7 @@ import { CuiInstanceInitError } from "../core/models/errors";
 import { CuiPluginManager } from "./managers/plugins";
 import { CuiAlertHandler, CuiAlertFactory } from "./handlers/alert";
 import { CuiAlertType } from "../core/index";
+import { CuiMoveObserver } from "./observers/move";
 
 
 export class CuiInstance {
@@ -22,6 +23,7 @@ export class CuiInstance {
     plugins: ICuiPluginManager;
     #components: ICuiComponent[];
     #rootElement: HTMLElement;
+    #moveObserver: CuiMoveObserver;
     constructor(setup: CuiSetupInit, plugins: ICuiPlugin[], components: ICuiComponent[]) {
         STATICS.prefix = setup.prefix;
         STATICS.logLevel = setup.logLevel;
@@ -30,6 +32,7 @@ export class CuiInstance {
         this.#utils = new CuiUtils(setup);
         this.#log = CuiLoggerFactory.get('CuiInstance')
         this.#rootElement = setup.root;
+        this.#moveObserver = new CuiMoveObserver(this.#utils.bus);
     }
 
     init(): CuiInstance {
@@ -69,7 +72,7 @@ export class CuiInstance {
             this.#utils.setProperty(CSS_VARIABLES.animationTime, `${this.#utils.setup.animationTime}ms`);
             this.#utils.setProperty(CSS_VARIABLES.animationTimeShort, `${this.#utils.setup.animationTimeShort}ms`);
         }, null)
-
+        this.#moveObserver.attach();
 
         this.#utils.bus.emit(EVENTS.INSTANCE_INITIALIZED, null)
         return this;
@@ -77,6 +80,7 @@ export class CuiInstance {
 
     finish(): void {
         this.#mutationObserver.stop();
+        this.#moveObserver.detach();
         this.#utils.bus.emit(EVENTS.INSTANCE_FINISHED, null)
     }
 

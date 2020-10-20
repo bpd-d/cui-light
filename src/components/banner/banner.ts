@@ -1,23 +1,42 @@
 import { AnimationDefinition, SWIPE_ANIMATIONS_DEFINITIONS } from "../../app/animation/definitions";
-import { CuiHandler } from "../../app/handlers/base";
+import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 import { CuiSwipeAnimationEngine } from "../../core/animation/engine";
-import { boolStringOrDefault, EVENTS, getIntOrDefault, ICuiClosable } from "../../core/index";
+import { boolStringOrDefault, getIntOrDefault, getStringOrDefault, ICuiParsable, replacePrefix } from "../../core/index";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
+import { AriaAttributes } from "../../core/utils/aria";
 import { ICuiComponent, CuiUtils, ICuiComponentHandler } from "../../index";
 
+const BANNER_OPEN_ANIMATION: string = ".{prefix}-animation-fade-in";
+const BANNER_CLOSE_ANIMATION: string = ".{prefix}-animation-fade-out";
 
-export class CuiBannerArgs {
+export class CuiBannerArgs implements ICuiParsable, CuiInteractableArgs {
     timeout: number;
     swipe: boolean;
 
+    openAct: string;
+    closeAct: string;
+    // Not in use
+    escClose: boolean;
+    keyClose: string;
+
     #defTimeout: number;
-    constructor(timeout: number) {
+    #prefix: string;
+    constructor(prefix: string, timeout: number) {
         this.#defTimeout = timeout;
+        this.#prefix = prefix;
+
+        this.escClose = false;
+        this.keyClose = undefined;
     }
+
 
     parse(args: any) {
         this.swipe = boolStringOrDefault(args.swipe, false);
+        this.escClose = false;
+        this.keyClose = undefined;
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
+        this.openAct = getStringOrDefault(args.openAct, replacePrefix(BANNER_OPEN_ANIMATION, this.#prefix))
+        this.closeAct = getStringOrDefault(args.closeAct, replacePrefix(BANNER_CLOSE_ANIMATION, this.#prefix))
     }
 }
 
@@ -40,18 +59,16 @@ export class CuiBanerComponent implements ICuiComponent {
     }
 }
 
-export class CuiBannerHandler extends CuiHandler<CuiBannerArgs> implements ICuiClosable {
+export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
 
-    #eventId: string;
     #moveListener: CuiMoveEventListener;
     #swipeEngine: CuiSwipeAnimationEngine;
     #isTracking: boolean;
     #startX: number;
     #ratio: number;
-    #animation: AnimationDefinition;
+    #swipeAnimation: AnimationDefinition;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiBannerHandler", element, attribute, new CuiBannerArgs(utils.setup.animationTime), utils);
-        this.#eventId = null;
+        super("CuiBannerHandler", element, attribute, new CuiBannerArgs(prefix, utils.setup.animationTime), utils);
         this.#moveListener = new CuiMoveEventListener();
         this.#moveListener.setCallback(this.onMove.bind(this));
         this.#swipeEngine = new CuiSwipeAnimationEngine(true);
@@ -59,33 +76,36 @@ export class CuiBannerHandler extends CuiHandler<CuiBannerArgs> implements ICuiC
         this.#swipeEngine.setElement(this.element)
         this.#startX = -1;
         this.#ratio = 0;
-        this.#animation = SWIPE_ANIMATIONS_DEFINITIONS["slide"];
+        this.#swipeAnimation = SWIPE_ANIMATIONS_DEFINITIONS["fade"];
     }
 
-
     onInit(): void {
-        this.#eventId = this.onEvent(EVENTS.CLOSE, this.onClose.bind(this));
-        if (!this.helper.hasClass(this.activeClassName, this.element)) {
-            this.helper.setClassesAs(this.element, this.activeClassName);
+        if (this.isActive) {
+            this.open();
         }
+    }
+    onUpdate(): void {
+
+    }
+    onDestroy(): void {
+
+    }
+
+    onBeforeOpen(): boolean {
+        return true;
+    }
+    onAfterOpen(): void {
         if (this.args.swipe) {
             this.#moveListener.attach();
         }
     }
-
-    onUpdate(): void {
-        if (this.args.swipe && !this.#moveListener.isAttached()) {
-            this.#moveListener.attach();
-        } else if (!this.args.swipe && this.#moveListener.isAttached()) {
-            this.#moveListener.detach();
-        }
-    }
-
-    onDestroy(): void {
-        this.detachEvent(EVENTS.CLOSE, this.#eventId);
+    onAfterClose(): void {
         if (this.#moveListener.isAttached()) {
             this.#moveListener.detach();
         }
+    }
+    onBeforeClose(): boolean {
+        return true;
     }
 
     onMove(data: ICuiMoveEvent) {
@@ -117,8 +137,7 @@ export class CuiBannerHandler extends CuiHandler<CuiBannerArgs> implements ICuiC
                 if (this.#isTracking) {
                     let newRatio = (data.x - this.#startX) / current.offsetWidth;
                     if (this.#ratio >= 0 && newRatio <= 0 || this.#ratio <= 0 && newRatio > 0) {
-                        console.log(this.#animation);
-                        this.#swipeEngine.setProps(newRatio > 0 ? this.#animation.current.right : this.#animation.current.left);
+                        this.#swipeEngine.setProps(newRatio > 0 ? this.#swipeAnimation.current.right : this.#swipeAnimation.current.left);
                     }
                     this.#ratio = newRatio;
                     console.log(this.#ratio);
@@ -132,31 +151,14 @@ export class CuiBannerHandler extends CuiHandler<CuiBannerArgs> implements ICuiC
         }
     }
 
-
     onSwipeFinish(element: Element, reverted: boolean, error: boolean) {
         this.isLocked = false;
         if (!reverted) {
-            this.close();
+            this.helper.removeClass(this.activeClassName, this.element)
+            AriaAttributes.setAria(this.element, 'aria-expanded', 'false');
         }
         this.#ratio = 0;
         this.#startX = 0;
 
-    }
-
-    async close(args?: any): Promise<boolean> {
-        if (this.isLocked) {
-            return false;
-        }
-        if (this.helper.hasClass(this.activeClassName, this.element)) {
-            this.helper.removeClassesAs(this.element, this.activeClassName);
-        }
-        this.emitEvent(EVENTS.CLOSED, {
-            timestamp: Date.now(),
-        })
-        return true
-    }
-
-    onClose(ev: MouseEvent) {
-        this.close();
     }
 }

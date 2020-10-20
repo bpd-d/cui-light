@@ -20,21 +20,21 @@ export class CuiLogger implements ICuiLogger {
     }
     debug(message: string, functionName?: string): void {
         if (this.level === 'debug') {
-            console.log(this.prepString(message, functionName))
+            console.log(this.prepString(message, "debug", functionName))
         }
     }
     error(message: string, functionName?: string): void {
         if (this.level === 'error' || this.level === 'debug' || this.level === 'warning')
-            console.error(this.prepString(message, functionName))
+            console.error(this.prepString(message, "error", functionName))
     }
 
     warning(message: string, functionName?: string): void {
         if (this.level === 'warning' || this.level === 'debug')
-            console.warn(this.prepString(message, functionName))
+            console.warn(this.prepString(message, "warning", functionName))
     }
 
     exception(e: Error, functionName?: string): void {
-        console.error(this.prepString(`An exception occured: ${e.name}: ${e.message}`, functionName))
+        console.error(this.prepString(`An exception occured: ${e.name}: ${e.message}`, "exception", functionName))
         if (this.level === 'debug')
             console.error(e.stack)
     }
@@ -45,10 +45,10 @@ export class CuiLogger implements ICuiLogger {
         }
         let start = Date.now();
         callback();
-        console.log(this.prepString(`Performance measure: ${Date.now() - start}ms`, functionName))
+        console.log(this.prepString(`Performance measure: ${Date.now() - start}ms`, "performance", functionName))
     }
 
-    private prepString(message: string, functionName?: string) {
-        return `[${new Date().toLocaleString()}][${this.component}][${functionName ?? '-'}][${this.id}][${message}]`
+    private prepString(message: string, level: string, functionName?: string) {
+        return `[${new Date().toLocaleString()}][${level}][${this.component}][${functionName ?? '-'}][${this.id}][${message}]`
     }
 }

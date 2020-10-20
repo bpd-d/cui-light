@@ -1,7 +1,7 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable, ICuiSwitchable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS, getChildrenHeight, SCOPE_SELECTOR } from "../../core/index";
+import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS, getChildrenHeight, SCOPE_SELECTOR, calculateNextIndex } from "../../core/index";
 import { ICuiTask, CuiTaskRunner } from "../../core/utils/task";
 
 const SWITCH_DEFAULT_ACTION_IN = ".{prefix}-switch-animation-default-in";
@@ -112,7 +112,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
         this.getLinks();
         this.getSwitches();
         this.getActiveIndex();
-        let nextIdx = this.getNextIndex(index);
+        let nextIdx = calculateNextIndex(index, this.#currentIdx, this.#targets.length);
         if (nextIdx == this.#currentIdx || nextIdx < 0 || nextIdx >= this.#targets.length) {
             this._log.warning(`Index ${index} is not within the suitable range`);
             return false;
@@ -150,27 +150,6 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
 
     getActiveIndex(): void {
         this.#currentIdx = is(this.#targets) ? this.#targets.findIndex(target => this.helper.hasClass(this.activeClassName, target)) : -1;
-    }
-
-    getNextIndex(val: any): number {
-        let idx = -1;
-        switch (val) {
-            case 'prev':
-                idx = this.#currentIdx <= 0 ? this.#targets.length - 1 : this.#currentIdx - 1;
-                break;
-            case 'next':
-                idx = this.#currentIdx < this.#targets.length - 1 ? this.#currentIdx + 1 : 0
-                break;
-            case 'first':
-                idx = 0;
-                break;
-            case 'last':
-                idx = this.#targets.length - 1;
-            default:
-                idx = getIntOrDefault(val, -1);
-                break;
-        }
-        return idx;
     }
 
     getElementHeight(current: Element): string {

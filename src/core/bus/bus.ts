@@ -84,8 +84,12 @@ export class CuiEventBus implements ICuiEventBus {
         if (!is(event)) {
             throw new ArgumentError("Event name is incorrect");
         }
-        this.#log.debug(`Emit: [${event}]`)
-        await this.#eventHandler.handle(this.#events[event], cuid, args)
+
+        let callbacks = this.#events[event];
+        if (is(callbacks)) {
+            this.#log.debug(`Emit: [${event}]`)
+            await this.#eventHandler.handle(this.#events[event], cuid, args)
+        }
         return true;
     }
 

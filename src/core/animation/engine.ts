@@ -8,6 +8,7 @@ export class CuiAnimation {
     #engine: CuiAnimationEngine;
     #timeout: number;
     #factory: AnimatorFactory;
+    #onError: (e: Error) => void;
     constructor(element?: Element) {
         this.#engine = new CuiAnimationEngine(true);
         this.#engine.setElement(element);
@@ -22,13 +23,18 @@ export class CuiAnimation {
     setTimeout(timeout: number) {
         this.#timeout = timeout;
     }
-
+    
+    onError(callback: (e: Error) => void) {
+        this.#onError = callback;
+        this.#engine.setOnError(callback)
+    }
     onFinish(callback: OnAnimationFinishCallback) {
         this.#engine.onFinish(callback);
     }
 
     perform(props: AnimationProperty<PropsTypes>, timeout?: number, factor?: number) {
         if (!is(props)) {
+            this.reportError(new Error("Animation property cannot be empty"))
             return;
         }
         let animators = [];
@@ -42,8 +48,16 @@ export class CuiAnimation {
                 this.#engine.animate(timeout ?? this.#timeout)
             }
         } catch (e) {
-            console.error(e);
+            this.reportError(e);
             return;
+        }
+    }
+
+    private reportError(e: Error) {
+        if (this.#onError) {
+            this.#onError(e)
+        } else {
+            console.error(e);
         }
     }
 }
@@ -75,6 +89,7 @@ export class CuiAnimationEngine {
     #element: Element;
     #cleanOnFinish: boolean;
     #errorOccured: boolean;
+    #onError: (e: Error) => void;
     constructor(cleanOnFinish?: boolean) {
         this.#animators = [];
         this.#element = undefined;
@@ -95,12 +110,17 @@ export class CuiAnimationEngine {
         this.#element = element;
     }
 
+    setOnError(callback: (e: Error) => void) {
+        this.#onError = callback;
+    }
+
     animate(timeout: number, progress?: number, revert?: boolean): void {
         if (this.#lock) {
             return;
         }
         if (!this.#element || this.#animators.length === 0) {
-            throw new Error("Animation cannot be performed: element or animators are not set");
+            this.reportError(new Error("Animation cannot be performed: element or animators are not set"));
+            return;
         }
         let animationProgress = progress ?? 0;
         let shouldCalcRevert = revert ? revert : false;
@@ -133,7 +153,7 @@ export class CuiAnimationEngine {
     }
 
     private endAnimation(reverted: boolean) {
-        if (this.#cleanOnFinish) {
+        if (this.#cleanOnFinish && this.#element) {
             this.#element.removeAttribute("style");
         }
         if (this.#onFinishCallback) {
@@ -148,10 +168,19 @@ export class CuiAnimationEngine {
         try {
             this.#animators.forEach(animator => animator.perform(this.#element, progress, factor));
         } catch (e) {
-            console.error(e);
+            this.reportError(e);
             this.#errorOccured = true;
         }
 
+    }
+
+    private reportError(e: Error) {
+        if (this.#onError) {
+            this.#onError(e);
+        } else {
+            console.error("An error occured in CuiAnimtionEngine");
+            console.error(e);
+        }
     }
 }
 
@@ -162,6 +191,7 @@ export class CuiSwipeAnimationEngine {
     #animators: ICuiPropertyAnimator<PropsTypes>[];
     #animationEngine: CuiAnimationEngine;
     #factory: AnimatorFactory;
+    #onError: (e: Error) => void;
     constructor(shouldCleanOnFinish?: boolean) {
         this.#element = undefined;
         this.#animators = [];
@@ -177,6 +207,11 @@ export class CuiSwipeAnimationEngine {
         this.#animationEngine.onFinish(callback);
     }
 
+    setOnError(callback: (e: Error) => void) {
+        this.#onError = callback;
+        this.#animationEngine.setOnError(callback);
+    }
+
     setProps(props: AnimationProperty<PropsTypes>) {
         if (!is(props)) {
             return;
@@ -190,7 +225,7 @@ export class CuiSwipeAnimationEngine {
                 this.#animators.push(animator);
             }
         } catch (e) {
-            console.log(e)
+            this.reportError(e);
         }
     }
 
@@ -222,12 +257,15 @@ export class CuiSwipeAnimationEngine {
     finish(progress: number, timeout: number, revert: boolean) {
         this.#animationEngine.setElement(this.#element);
         this.#animationEngine.setAnimators(this.#animators);
-        try {
-            this.#animationEngine.animate(timeout, progress, revert);
-        } catch (e) {
-            console.log(e);
-        }
+        this.#animationEngine.animate(timeout, progress, revert);
+    }
 
+    private reportError(e: Error) {
+        if (this.#onError) {
+            this.#onError(e);
+        } else {
+            console.log(e)
+        }
     }
 
 }

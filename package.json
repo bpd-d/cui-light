@@ -1,6 +1,6 @@
 {
   "name": "cui-light",
-  "version": "0.1.23",
+  "version": "0.1.25",
   "description": "cUI light framework for the web",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -34,7 +34,7 @@
     "@types/jasmine": "^3.5.12",
     "clean-webpack-plugin": "^3.0.0",
     "dts-bundle": "^0.7.3",
-    "jasmine": "^3.6.1",
+    "jasmine": "^3.6.2",
     "karma-typescript": "^5.0.3",
     "serialize-javascript": ">=2.1.1",
     "terser-webpack-plugin": "^3.1.0",

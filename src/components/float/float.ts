@@ -1,29 +1,44 @@
-import { ICuiComponent, ICuiComponentHandler, ICuiOpenable, ICuiClosable } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { replacePrefix, isStringTrue, getOffsetLeft, is } from "../../core/utils/functions";
-import { ICuiComponentAction, CuiActionsFatory, CuiClassAction } from "../../core/utils/actions";
-import { EVENTS } from "../../core/utils/statics";
-import { KeyDownEvent } from "../../plugins/keys/observer";
+import { replacePrefix, isStringTrue, is, getIntOrDefault, getStringOrDefault } from "../../core/utils/functions";
 import { AriaAttributes } from "../../core/utils/aria";
-import { CuiHandler } from "../../app/handlers/base";
+import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 import { BasePositionCalculator, BaseResizeCalculator, ICuiFloatPositionCalculator, ICuiFloatResizeCalculator } from "./helpers";
 
-const FLOAT_OPEN_ANIMATION_CLASS = '{prefix}-float-default-in';
-const FLOAT_CLOSE_ANIMATION_CLASS = '{prefix}-float-default-out';
-const CONTAINER = '.{prefix}-float-container';
+const FLOAT_OPEN_ANIMATION_CLASS = '.{prefix}-float-default-in';
+const FLOAT_CLOSE_ANIMATION_CLASS = '.{prefix}-float-default-out';
 const MOVE = '.{prefix}-float-move';
 const RESIZE = '.{prefix}-float-resize';
 
 
-export class CuiFloatArgs {
+export class CuiFloatArgs implements CuiInteractableArgs, ICuiParsable {
     escClose: boolean;
-    constructor() {
+    timeout: number;
+    openAct: string;
+    closeAct: string;
+    keyClose: string;
+
+    #defTimeout: number;
+    #prefix: string;
+    constructor(prefix: string, defTimeout: number) {
         this.escClose = false;
+        this.keyClose = undefined;
+        this.openAct = "";
+        this.closeAct = "";
+        this.timeout = defTimeout;
+
+        this.#defTimeout = defTimeout;
+        this.#prefix = prefix;
     }
+
 
     parse(args: any) {
         this.escClose = isStringTrue(args.escClose);
+        this.keyClose = args.keyClose;
+        this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
+        this.openAct = getStringOrDefault(args.openAct, replacePrefix(FLOAT_OPEN_ANIMATION_CLASS, this.#prefix))
+        this.closeAct = getStringOrDefault(args.closeAct, replacePrefix(FLOAT_CLOSE_ANIMATION_CLASS, this.#prefix))
     }
 }
 
@@ -44,29 +59,19 @@ export class CuiFloatComponent implements ICuiComponent {
     }
 }
 
-export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiComponentHandler, ICuiOpenable, ICuiClosable {
-
-    #prefix: string;
-    #timeout: number;
-    #resizeBtn: HTMLElement;
-    #moveBtn: HTMLElement;
+export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
     #isMoving: boolean;
     #isResizing: boolean;
     #prevX: number;
     #prevY: number;
+    #prefix: string;
     #moveListener: CuiMoveEventListener;
     #positionCalculator: ICuiFloatPositionCalculator;
     #resizeCalculator: ICuiFloatResizeCalculator;
-    #eventIdOpen: string;
-    #eventIdClose: string;
-    #eventIdKey: string;
+    #resizeBtn: HTMLElement;
+    #moveBtn: HTMLElement;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiFloatHandler", element, attribute, new CuiFloatArgs(), utils);
-        this.#eventIdOpen = null;
-        this.#eventIdClose = null;
-        this.#eventIdKey = null;
-        this.#prefix = prefix;
-        this.#timeout = utils.setup.animationTimeLong;
+        super("CuiFloatHandler", element, attribute, new CuiFloatArgs(prefix, utils.setup.animationTimeLong), utils);
         this.#isMoving = false;
         this.#isResizing = false;
         this.#prevX = 0;
@@ -74,18 +79,15 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
         this.#moveListener = new CuiMoveEventListener();
         this.#positionCalculator = new BasePositionCalculator();
         this.#resizeCalculator = new BaseResizeCalculator(element as HTMLElement)
+        this.#prefix = prefix;
     }
 
     onInit(): void {
         AriaAttributes.setAria(this.element, 'aria-modal', "");
-        this.#eventIdClose = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
-        this.#eventIdOpen = this.onEvent(EVENTS.OPEN, this.open.bind(this));
         this.#moveBtn = this.element.querySelector(replacePrefix(MOVE, this.#prefix))
         this.#resizeBtn = this.element.querySelector(replacePrefix(RESIZE, this.#prefix))
         this.#moveListener.setCallback(this.onMove.bind(this));
-        this.#moveListener.preventDefault(true);
-        this.#moveListener.attach();
-        this._log.debug("Initialized", "handle")
+
     }
 
     onUpdate(): void {
@@ -93,69 +95,18 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
     }
 
     onDestroy(): void {
+    }
+    onBeforeOpen(): boolean {
+        return true
+    }
+    onAfterOpen(): void {
+        this.#moveListener.attach();
+    }
+    onAfterClose(): void {
         this.#moveListener.detach();
-        this.detachEvent(EVENTS.CLOSE, this.#eventIdClose);
-        this.detachEvent(EVENTS.OPEN, this.#eventIdOpen);
-
     }
-
-    async open(args?: any): Promise<boolean> {
-        if (this.checkLockAndWarn('open')) {
-            return false;
-        }
-        if (this.isActive()) {
-            this._log.warning("Float is already opened");
-            return false;
-        }
-        this.isLocked = true;
-        this._log.debug(`Float ${this.cuid}`, 'open')
-        let action = this.getAction(FLOAT_OPEN_ANIMATION_CLASS);
-        return this.performAction(action, this.#timeout, this.onOpen.bind(this, args), () => {
-            this.helper.setClass(this.activeClassName, this.element)
-            AriaAttributes.setAria(this.element, 'aria-expanded', 'true');
-        });
-    }
-
-    async close(args: any): Promise<boolean> {
-        if (this.checkLockAndWarn("close") || !this.isActive()) {
-            return false;
-        }
-        this.isLocked = true;
-        this._log.debug(`Dialog ${this.cuid}`, 'close')
-        let action = this.getAction(FLOAT_CLOSE_ANIMATION_CLASS);
-        return this.performAction(action, this.#timeout, this.onClose.bind(this, args), () => {
-            this.helper.removeClass(this.activeClassName, this.element)
-            AriaAttributes.setAria(this.element, 'aria-expanded', 'false');
-        });
-    }
-
-    onClose(state: any) {
-
-
-        this.detachEvent(EVENTS.KEYDOWN, this.#eventIdKey);
-
-        this.emitEvent(EVENTS.CLOSED, {
-            timestamp: Date.now(),
-            state: state
-        })
-        this.isLocked = false;
-    }
-
-    onOpen(state?: any) {
-        if (this.args.escClose) {
-            this.#eventIdKey = this.onEvent(EVENTS.KEYDOWN, this.onEscClose.bind(this))
-        }
-        this.emitEvent(EVENTS.OPENED, {
-            timestamp: Date.now(),
-            state: state
-        })
-        this.isLocked = false;
-    }
-
-    async onEscClose(ev: KeyDownEvent) {
-        if (ev.event.key === "Escape") {
-            await this.close('Clesed by key');
-        }
+    onBeforeClose(): boolean {
+        return true;
     }
 
     onMove(ev: ICuiMoveEvent) {
@@ -206,6 +157,7 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
     }
 
     onMouseDown(ev: ICuiMoveEvent) {
+        console.log(this.#moveBtn)
         if (ev.target === this.#moveBtn) {
             this.#isMoving = true;
         } else if (ev.target === this.#resizeBtn) {
@@ -219,10 +171,6 @@ export class CuiFloatHandler extends CuiHandler<CuiFloatArgs> implements ICuiCom
         this.#isMoving = false;
         this.#isResizing = false;
 
-    }
-
-    getAction(className: string): ICuiComponentAction {
-        return new CuiClassAction(replacePrefix(className, this.#prefix));
     }
 
     fitsWindow(top: number, left: number, width: number, height: number) {

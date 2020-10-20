@@ -18,6 +18,7 @@ export class CuiToggleArgs {
             this.action = CuiActionsFatory.get(args)
         } else {
             this.target = getStringOrDefault(args.target, null);
+            console.log(args.action)
             this.action = CuiActionsFatory.get(args.action)
         }
     }
@@ -63,6 +64,7 @@ export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     }
 
     toggle() {
+        console.log(this.args.action)
         this.args.action.toggle(this.#target, this.#utils)
         this.emitEvent(EVENTS.TOGGLED, {
             action: this.args.action,
