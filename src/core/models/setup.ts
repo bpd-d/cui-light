@@ -1,5 +1,5 @@
+import { ICuiEventBusQueueSetup } from "../bus/interfaces";
 import { CuiLogLevel, CuiInteractionsType } from "../utils/types";
-import { CuiColorSet } from "./colors";
 
 interface CuiSetupCommon {
     prefix?: string;
@@ -60,6 +60,7 @@ export class CuiSetupInit implements CuiSetupCommon {
     animationTimeLong?: number;
     scrollThreshold?: number;
     resizeThreshold?: number;
+    busSetup?: ICuiEventBusQueueSetup[];
     root: HTMLElement;
 
     constructor() {
@@ -75,5 +76,6 @@ export class CuiSetupInit implements CuiSetupCommon {
         this.scrollThreshold = 20;
         this.resizeThreshold = 20;
         this.root = document.body;
+        this.busSetup = undefined;
     }
 }

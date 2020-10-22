@@ -305,7 +305,7 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
     }
 
     async close(args?: any): Promise<boolean> {
-        if (this.checkLockAndWarn("open")) {
+        if (this.checkLockAndWarn("close")) {
             return false;
         }
         if (!this.isActive()) {

@@ -110,7 +110,7 @@ export class CuiOffCanvasHandler extends CuiInteractableHandler<CuiOffCanvasArgs
 
     onAfterOpen(): void {
         if (this.args.outClose) {
-            this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
+            this.#windowClickEventId = this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
         this.helper.setClass(this.#bodyClass, document.body);
         document.body.style.top = `-${scrollY}px`;
@@ -127,7 +127,7 @@ export class CuiOffCanvasHandler extends CuiInteractableHandler<CuiOffCanvasArgs
 
     onWindowClick(ev: MouseEvent) {
         const container = this.element.querySelector(replacePrefix(OFFCANVAS_CONTAINER_CLS, this.#prefix));
-        if (!container.contains((ev.target as Node))) {
+        if (container && !container.contains((ev.target as Node))) {
             this.close();
         }
     }

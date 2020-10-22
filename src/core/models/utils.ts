@@ -3,7 +3,7 @@ import { CuiSetup, CuiSetupInit } from "./setup";
 import { CuiLightMode } from "../utils/types";
 import { CuiInteractionsFactory } from "../factories/interactions";
 import { CuiCacheManager } from "../../app/managers/cache";
-import { CuiEventBus } from "../bus/bus";
+import { CuiEventBus, CuiEventBusFactory } from "../bus/bus";
 import { TaskedEventEmitHandler } from "../bus/handlers";
 import { CuiCallbackExecutor } from "../bus/executors";
 import { getName, replacePrefix } from "../utils/functions";
@@ -24,7 +24,7 @@ export class CuiUtils {
         this.setup = new CuiSetup().fromInit(initialSetup);
         this.interactions = CuiInteractionsFactory.get(initialSetup.interaction)
         this.cache = new CuiCacheManager(this.setup.cacheSize);
-        this.bus = new CuiEventBus(new TaskedEventEmitHandler(new CuiCallbackExecutor()));
+        this.bus = CuiEventBusFactory.get(initialSetup.busSetup);
         this.colors = new CuiInstanceColorHandler(this.interactions);
         this.styleAppender = new CuiDocumentStyleAppender(this.interactions);
         this.#resizeObserver = new CuiResizeObserver(this.bus, this.setup.resizeThreshold);

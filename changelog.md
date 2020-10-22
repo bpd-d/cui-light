@@ -1,5 +1,10 @@
 # bpd cUI Light changelog
-# [0.1.25] WIP
+# [0.1.26] WIP
+# [0.1.25] 2020-10-22
+* [Added] New event bus implementation that works along with old
+* [Changed] Component open redux - for cUI emits open event, if target not set looks for first cUI in parent
+* [Changed] Component close redux - for cUI emits close event
+* [Fixed] Open/close issues on interactive components
 # [0.1.24] 2020-10-20
 * [Added] Logger print log level to console
 * [Added] Animation engine to push error to callback if set

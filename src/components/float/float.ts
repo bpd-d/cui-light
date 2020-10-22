@@ -157,7 +157,6 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
     }
 
     onMouseDown(ev: ICuiMoveEvent) {
-        console.log(this.#moveBtn)
         if (ev.target === this.#moveBtn) {
             this.#isMoving = true;
         } else if (ev.target === this.#resizeBtn) {

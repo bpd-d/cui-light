@@ -169,28 +169,29 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                 this.#isTracking = false;
                 break;
             case "move":
-                if (this.#isTracking) {
-                    let newRatio = (data.x - this.#startX) / current.offsetWidth;
-                    let nextIdx = calculateNextIndex(this.#swipeRatio > 0 ? "next" : "prev", this.#currentIdx, this.#targetsCount);
-                    this.#swipeRatio = this.adjustMoveRatio(newRatio);
+                if (!this.#isTracking) {
+                    break;
+                }
+                let newRatio = (data.x - this.#startX) / current.offsetWidth;
+                let nextIdx = calculateNextIndex(this.#swipeRatio > 0 ? "next" : "prev", this.#currentIdx, this.#targetsCount);
+                this.#swipeRatio = this.adjustMoveRatio(newRatio);
 
-                    if (nextIdx !== this.#nextIdx) {
-                        this.#nextElement && this.helper.removeClass(CLASSES.animProgress, this.#nextElement);
-                        this.#nextElement = this.#targets[nextIdx] as HTMLElement;
-                        this.#nextIdx = nextIdx;
+                if (nextIdx !== this.#nextIdx) {
+                    this.#nextElement && this.helper.removeClass(CLASSES.animProgress, this.#nextElement);
+                    this.#nextElement = this.#targets[nextIdx] as HTMLElement;
+                    this.#nextIdx = nextIdx;
 
-                        this.#nextSlider.setElement(this.#nextElement)
-                        this.#nextSlider.setProps(this.#swipeRatio > 0 ? this.#animationDef.previous.right : this.#animationDef.previous.left);
-                        this.#currSlider.setProps(this.#swipeRatio > 0 ? this.#animationDef.current.right : this.#animationDef.current.left);
-                        this.mutate(() => {
-                            this.helper.setClass(CLASSES.animProgress, this.#nextElement);
-                        })
-                    }
+                    this.#nextSlider.setElement(this.#nextElement)
+                    this.#nextSlider.setProps(this.#swipeRatio > 0 ? this.#animationDef.previous.right : this.#animationDef.previous.left);
+                    this.#currSlider.setProps(this.#swipeRatio > 0 ? this.#animationDef.current.right : this.#animationDef.current.left);
                     this.mutate(() => {
-                        this.#currSlider.update(Math.abs(this.#swipeRatio));
-                        this.#nextSlider.update(Math.abs(this.#swipeRatio));
+                        this.helper.setClass(CLASSES.animProgress, this.#nextElement);
                     })
                 }
+                this.mutate(() => {
+                    this.#currSlider.update(Math.abs(this.#swipeRatio));
+                    this.#nextSlider.update(Math.abs(this.#swipeRatio));
+                })
                 break;
             default:
                 break;

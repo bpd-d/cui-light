@@ -1,17 +1,28 @@
 import { ICuiEventBus, CuiEventReceiver, ICuiLogger, ICuiEventEmitHandler, CuiContext, CuiElement } from "../models/interfaces";
-import { is, are, generateRandomString } from "../utils/functions";
+import { is, are, generateRandomString, enumerateObject } from "../utils/functions";
 import { ArgumentError } from "../models/errors";
 import { CuiLoggerFactory } from "../factories/logger";
+import { CuiEventEmitHandlerFactory, TaskedEventEmitHandler } from "./handlers";
+import { CuiCallbackExecutor } from "./executors";
+import { CuiBusExtStatistics, ICuiEventBusQueueSetup } from "./interfaces";
+
+interface ICuiBusMapping {
+    [name: string]: number;
+}
+
+
+
 
 export class CuiEventBus implements ICuiEventBus {
     #events: { [event: string]: CuiEventReceiver }
     #log: ICuiLogger;
     #eventHandler: ICuiEventEmitHandler;
-
-    constructor(emitHandler: ICuiEventEmitHandler) {
+    #name: string;
+    constructor(emitHandler: ICuiEventEmitHandler, name?: string) {
         this.#events = {};
         this.#eventHandler = emitHandler;
-        this.#log = CuiLoggerFactory.get("CuiEventBus");
+        this.#name = name ?? "CuiEventBus"
+        this.#log = CuiLoggerFactory.get(this.#name);
     }
 
     /**
@@ -27,7 +38,7 @@ export class CuiEventBus implements ICuiEventBus {
             throw new ArgumentError("Missing argument")
         }
         // When context is not provided (e.g. anonymous function) then generate random
-        let id = generateRandomString();
+        let id = this.#name + "-" + generateRandomString();
 
 
         if (!this.#events[name]) {
@@ -115,8 +126,186 @@ export class CuiEventBus implements ICuiEventBus {
     private getCuid(cui: CuiElement) {
         return is(cui) ? cui.$cuid : null;
     }
+}
 
-    private prepareEventId(ctx: CuiContext) {
-        return are(ctx) ? ctx.getId() : generateRandomString();
+
+export class CuiEventExtBus implements ICuiEventBus {
+    #events: { [event: string]: number };
+    #log: ICuiLogger;
+    #buses: ICuiEventBus[];
+    #last: number;
+    constructor(setup: ICuiEventBusQueueSetup[]) {
+        this.#log = CuiLoggerFactory.get("CuiEventBus");
+        this.#buses = [];
+        if (is(setup)) {
+            this.#log.debug("Initiating buses")
+            let sorted = setup.length === 1 ? setup : setup.sort((first, second) => {
+                return first.priority - second.priority
+            })
+            sorted.forEach((item, index) => {
+                this.#buses.push(this.initBusInstance(item.name, item.handler))
+                this.#events = {
+                    ...this.#events,
+                    ...this.mapEvents(item.eventsDef, index),
+                }
+                this.#log.debug(`Bus ${item.name} has been initialized with number: ${index}`)
+            })
+
+            this.#buses.push(this.initBusInstance("DefaultEventBus", 'tasked'))
+            this.#last = this.#buses.length - 1;
+            this.#log.debug(`Bus initialization finished`);
+        }
     }
-}   
+
+    /**
+     * Attaches event to event bus
+     * 
+     * @param {string} name - Event name
+     * @param {any} callback - callback function
+     * @param {CuiContext} ctx - callback context with id
+     * @param {CuiElement} cui - optional - cui element which event shall be attached to 
+     */
+    on(name: string, callback: any, cui?: CuiElement): string {
+
+        if (!are(name, callback)) {
+            throw new ArgumentError("Missing argument")
+        }
+        return this.get(name).on(name, callback, cui);
+    }
+
+    /**
+    * Detaches specific event from event bus
+    *
+    * @param {string} name - Event name
+    * @param {CuiContext} ctx - callback context with id
+    * @param {CuiElement} cui - optional - cui element which event shall be attached to
+    */
+    detach(name: string, id: string, cui?: CuiElement): void {
+        if (!are(name, id)) {
+            throw new ArgumentError("Missing argument")
+        }
+        this.get(name).detach(name, id, cui);
+    }
+
+    /**
+    * Detaches all callbacks from event
+    *
+    * @param {string} name - Event name
+    */
+    detachAll(name: string): void {
+        this.get(name).detachAll(name);
+    }
+
+    /**
+    * Emits event call to event bus
+    *
+    * @param {string} name - Event name
+    * @param {string} cuid - id of component which emits the event
+    * @param {any[]} args  - event arguments
+    */
+    async emit(event: string, cuid: string, ...args: any[]): Promise<boolean> {
+        if (!is(event)) {
+            throw new ArgumentError("Event name is incorrect");
+        }
+        return this.get(event).emit(event, cuid, ...args);
+    }
+
+    /**
+    * Checks whether given context is already attached to specific event
+    *
+    * @param {string} name - Event name
+    * @param {CuiContext} ctx - callback context with id
+    * @param {CuiElement} cui - optional - cui element which event shall be attached to
+    */
+    isSubscribing(name: string, id: string, cui?: CuiElement) {
+        return this.get(name).isSubscribing(name, id, cui);
+    }
+
+    /**
+     * Creates and initializes event bus instance
+     * @param busName Event bus name for logger
+     * @param handlerName handler name to create proper handler instance
+     */
+    private initBusInstance(busName: string, handlerName: string): ICuiEventBus {
+        if (!are(busName, handlerName)) {
+            throw new ArgumentError("Bus name or handler name is incorrect");
+        }
+        let executor = new CuiCallbackExecutor();
+        let handler = CuiEventEmitHandlerFactory.get(handlerName, executor);
+        return new CuiEventBus(handler, busName);
+    }
+
+    /**
+     * Creates mapping object from events array
+     * @param events events array
+     * @param index queue number
+     */
+    private mapEvents(events: string[], index: number): ICuiBusMapping {
+        return events.reduce((result: ICuiBusMapping, current: string) => {
+            if (!result[current]) {
+                return {
+                    ...result,
+                    [current]: index
+                }
+            }
+            return result;
+        }, {})
+    }
+
+    /**
+     * Retrives porper event bus based on event name
+     * @param event 
+     */
+    private get(event: string): ICuiEventBus {
+        let idx = this.#events[event];
+        return this.#buses[idx ?? this.#last];
+    }
+}
+
+export class CuiEventBusFactory {
+    static get(setup: ICuiEventBusQueueSetup[]): ICuiEventBus {
+        return is(setup) ? new CuiEventExtBus(setup) : new CuiEventBus(new TaskedEventEmitHandler(new CuiCallbackExecutor));
+    }
+}
+
+export class CuiBusExtStatisticsHandler {
+    #isOn: boolean;
+    #statistics: CuiBusExtStatistics;
+    constructor(gather: boolean, queueCount: number) {
+        this.#isOn = gather;
+        this.#statistics = {
+            queueCount: queueCount,
+            events: {}
+        }
+    }
+
+    addEvent(event: string, queueNumber: number, emitCount?: number) {
+        this.#statistics.events[event] = {
+            name: event,
+            queueNumber: queueNumber,
+            emits: emitCount ?? 0
+        }
+    }
+
+    addQueue() {
+        this.#statistics.queueCount += 1;
+    }
+
+    addEmit(event: string, queueNumber?: number) {
+        if (!this.#isOn) {
+            return;
+        }
+
+        if (this.#statistics.events[event]) {
+            this.#statistics.events[event].emits += 1;
+        } else {
+            this.addEvent(event, queueNumber ?? -1, 1);
+        }
+
+    }
+
+    getStatistics(): CuiBusExtStatistics {
+        return this.#statistics;
+    }
+
+}

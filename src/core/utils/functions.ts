@@ -491,3 +491,27 @@ export function calculateNextIndex(val: any, currentIndex: number, totalLength: 
     }
     return idx;
 }
+
+export function getFirstMatching<T>(array: T[], callback: (t: T, index: number) => boolean): T | undefined {
+    let count = array.length;
+    if (!array || count === 0) {
+        return undefined;
+    }
+
+    for (let idx = 0; idx < count; idx++) {
+        if (callback(array[idx], idx)) {
+            return array[idx];
+        }
+    }
+    return undefined;
+}
+
+export function mapObject<T, V>(input: T, callback: (t: T) => V): V | undefined {
+    return input ? callback(input) : undefined;
+}
+
+export function mapObjectArray<T, V>(input: T[], callback: (t: T) => V): V[] {
+    return input.map((item: T) => {
+        return mapObject(item, callback);
+    })
+} 

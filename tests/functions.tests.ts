@@ -1,4 +1,4 @@
-import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt, getMatchingAttributes, hasFunction } from "../src/core/utils/functions";
+import { is, getName, createElementFromString, getRangeValue, joinAttributesForQuery, clone, are, getMatchingAttribute, getRangeValueOrDefault, getStyleValue, getOffsetTop, getOffsetLeft, parseJsonString, parseAttributeString, prepLogString, jsonify, isInRange, getIntOrDefault, isString, replacePrefix, parseAttribute, isStringTrue, boolStringOrDefault, getStringOrDefault, generateCUID, generateRandomString, getRandomInt, getMatchingAttributes, hasFunction, mapObject, mapObjectArray } from "../src/core/utils/functions";
 import { SampleTask } from "./helpers/models";
 
 /**
@@ -667,5 +667,72 @@ describe("Tests checking method [hasFunction]", function () {
         let has = hasFunction(obj, 'setFlag1');
 
         expect(has).toBeFalse();
+    })
+})
+
+describe("Tests checking method [mapObject]", function () {
+    it("Normal case", function () {
+        let obj = {
+            a: 1
+        }
+        let mapped = mapObject(obj, (input) => {
+            return {
+                a: input.a,
+                b: input.a + 10
+            }
+        })
+        expect(mapped.a).toEqual(1);
+        expect(mapped.b).toEqual(11);
+    })
+
+    it("Not existing", function () {
+        let obj = undefined;
+        let mapped = mapObject(obj, (input) => {
+            return {
+                a: input.a,
+                b: input.a + 10
+            }
+        })
+
+        expect(mapped).toBeUndefined();
+    })
+})
+
+describe("Tests checking method [mapObjects]", function () {
+    it("Normal case", function () {
+        let obj = [{
+            a: 1
+        },
+        {
+            a: 2
+        }
+        ]
+        let mapped = mapObjectArray(obj, (input) => {
+            return {
+                a: input.a,
+                b: input.a + 10
+            }
+        })
+        expect(mapped[0].a).toEqual(1);
+        expect(mapped[0].b).toEqual(11);
+        expect(mapped[1].a).toEqual(2);
+        expect(mapped[1].b).toEqual(12);
+    })
+
+    it("Not existing", function () {
+        let obj = [{
+            a: 1
+        },
+            undefined
+        ]
+        let mapped = mapObjectArray(obj, (input) => {
+            return {
+                a: input.a,
+                b: input.a + 10
+            }
+        })
+        expect(mapped[0].a).toEqual(1);
+        expect(mapped[0].b).toEqual(11);
+        expect(mapped[1]).toBeUndefined();
     })
 })

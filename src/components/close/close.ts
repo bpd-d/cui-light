@@ -1,14 +1,14 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiClosable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
-import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, isStringTrue, getHandlerExtendingOrNull, getParentCuiElement } from "../../core/utils/functions";
+import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, isStringTrue, getHandlerExtendingOrNull, getParentCuiElement, are } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
 import { CLASSES, EVENTS } from "../../core/utils/statics";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
 
 export class CuiCloseArgs {
     target: string;
-    action: ICuiComponentAction;
+    action: string;
     timeout: number;
     prevent: boolean;
     state: string;
@@ -33,7 +33,7 @@ export class CuiCloseArgs {
             return;
         }
         this.target = getStringOrDefault(args.target, null);
-        this.action = CuiActionsFatory.get(args.action)
+        this.action = args.action;
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
         this.prevent = args.prevent && isStringTrue(args.prevent)
         this.state = args.state;
@@ -106,13 +106,12 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     }
 
     private async run(target: Element): Promise<boolean> {
-        let closable = getHandlerExtendingOrNull<ICuiClosable>(target as any, 'close');
-        if (closable) {
-            await closable.close(this.args.state);
-            return false;
-        } else if (this.args.action) {
-            await this.#actionHelper.performAction(target, this.args.action, this.args.timeout);
-            return true
+        let cuiId = (target as any).$cuid;
+        if (is(cuiId)) {
+            return this.utils.bus.emit(EVENTS.CLOSE, cuiId, this.args.state);
+        } else if (are(this.args.action, this.args.timeout)) {
+            let action = CuiActionsFatory.get(this.args.action);
+            return this.#actionHelper.performAction(target, action, this.args.timeout);
         } else {
             return true;
         }

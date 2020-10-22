@@ -140,7 +140,6 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
                         this.#swipeEngine.setProps(newRatio > 0 ? this.#swipeAnimation.current.right : this.#swipeAnimation.current.left);
                     }
                     this.#ratio = newRatio;
-                    console.log(this.#ratio);
                     this.mutate(() => {
                         this.#swipeEngine.update(Math.abs(this.#ratio));
                     })

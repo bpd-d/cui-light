@@ -119,7 +119,7 @@ export class CuiDialogHandler extends CuiInteractableHandler<CuiDialogArgs> {
 
     onWindowClick(ev: MouseEvent) {
         let container = this.element.querySelector(replacePrefix(CONTAINER, this.#prefix));
-        if (!container.contains((ev.target as Node))) {
+        if (container && !container.contains((ev.target as Node))) {
             this.close('out').then(() => {
                 this._log.debug("Closed by click outside")
             });

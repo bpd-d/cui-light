@@ -1,13 +1,13 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiOpenable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
-import { getStringOrDefault, getIntOrDefault, is, getActiveClass, isString, getHandlerExtendingOrNull, isStringTrue } from "../../core/utils/functions";
+import { getStringOrDefault, getIntOrDefault, is, getActiveClass, isString, getHandlerExtendingOrNull, isStringTrue, are, getFirstMatching } from "../../core/utils/functions";
 import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
-import { EVENTS } from "../../core/utils/statics";
+import { CUID_ATTRIBUTE, EVENTS } from "../../core/utils/statics";
 
 export class CuiOpenArgs {
     target: string;
-    action: ICuiComponentAction;
+    action: string;
     timeout: number;
     prevent: boolean;
     state: string;
@@ -15,7 +15,7 @@ export class CuiOpenArgs {
     #defTimeout: number;
     constructor(timeout: number) {
         this.target = "";
-        this.action = CuiActionsFatory.get("dummy");
+        this.action = undefined;
         this.timeout = 0;
         this.prevent = false;
         this.state = "";
@@ -25,14 +25,14 @@ export class CuiOpenArgs {
     parse(args: any) {
         if (is(args) && isString(args)) {
             this.target = args;
-            this.action = CuiActionsFatory.get("dummy");
+            this.action = args.actions;
             this.timeout = this.#defTimeout;
             this.prevent = false;
             this.state = "";
             return;
         }
         this.target = getStringOrDefault(args.target, null);
-        this.action = CuiActionsFatory.get(args.action)
+        this.action = args.action;
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
         this.prevent = isStringTrue(args.prevent)
         this.state = args.state;
@@ -67,6 +67,7 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
         this.element.addEventListener('click', this.onClick.bind(this))
         this.#eventId = this.onEvent(EVENTS.OPEN, this.onOpen.bind(this));
     }
+
     onUpdate(): void {
         //
     }
@@ -86,7 +87,7 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
         if (this.isLocked) {
             return;
         }
-        const target = document.querySelector(this.args.target);
+        const target = this.getTarget(this.args.target);
         if (!is(target)) {
             this._log.warning(`Target ${this.args.target} not found`, 'onClick')
             return;
@@ -102,12 +103,14 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
     }
 
     private async run(target: Element): Promise<boolean> {
-        let openable = getHandlerExtendingOrNull<ICuiOpenable>(target as any, 'open');
-        if (is(openable)) {
-            await openable.open(this.args.state);
-            return false;
+        let cuiId = (target as any).$cuid;
+        if (is(cuiId)) {
+            return this.utils.bus.emit(EVENTS.OPEN, cuiId, this.args.state);;
         } else {
-            await this.actionsHelper.performAction(target, this.args.action, this.args.timeout);
+            if (are(this.args.timeout, this.args.action)) {
+                let action = CuiActionsFatory.get(this.args.action)
+                return this.actionsHelper.performAction(target, action, this.args.timeout);
+            }
             return true;
         }
     }
@@ -120,11 +123,26 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
             this.emitOpen(ev);
     }
 
-    emitOpen(ev: MouseEvent) {
+    private emitOpen(ev: MouseEvent) {
         this.emitEvent(EVENTS.OPENED, {
             event: ev,
             state: this.args.state,
             timestamp: Date.now()
+        })
+    }
+
+    private getTarget(target: string) {
+        if (is(target)) {
+            return document.querySelector(target);
+        }
+        let parent = this.element.parentElement;
+        let result = is(parent) ? parent.querySelectorAll(`[${CUID_ATTRIBUTE}]`) : undefined;
+        if (!result || result.length < 2) {
+            return undefined;
+        }
+
+        return getFirstMatching([...result], (el: Element) => {
+            return el !== this.element;
         })
     }
 }

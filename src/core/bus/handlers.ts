@@ -105,3 +105,15 @@ export class TaskedEventEmitHandler extends EmitHandlerBase implements ICuiEvent
         return Promise.all(promises)
     }
 }
+
+
+export class CuiEventEmitHandlerFactory {
+    static get(name: string, executor: ICuiCallbackExecutor): ICuiEventEmitHandler {
+        switch (name) {
+            case "tasked":
+                return new TaskedEventEmitHandler(executor);
+            default:
+                return new SimpleEventEmitHandler(executor);
+        }
+    }
+}

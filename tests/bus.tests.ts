@@ -1,8 +1,9 @@
 import { ICuiEventBus, ICuiCallbackExecutor, ICuiEventEmitHandler, CuiEventReceiver, CuiElement } from "../src/core/models/interfaces"
-import { CuiEventBus } from "../src/core/bus/bus";
+import { CuiEventBus, CuiEventExtBus } from "../src/core/bus/bus";
 import { CuiCallbackExecutor } from "../src/core/bus/executors";
 import { TaskedEventEmitHandler } from "../src/core/bus/handlers";
 import { ExecutorTestItem, ExecutorTestItemExt } from "./helpers/models";
+import { ICuiEventBusQueueSetup } from "../src/core/bus/interfaces";
 
 describe("Tests for class [CuiCallbackExecutor]", function () {
 
@@ -343,4 +344,40 @@ describe("Tests for class [CuiEventBus]", function () {
         expect(item2.value).toBeTrue();
     })
 
+})
+
+
+describe("Tests for class [CuiEventExtBus]", function () {
+    const setup: ICuiEventBusQueueSetup[] = [
+        {
+            name: "CustomQueue",
+            eventsDef: ["AAA"],
+            handler: 'tasked',
+            priority: 0
+        },
+        {
+            name: "CustomQueue2",
+            eventsDef: ["BBB"],
+            handler: 'tasked',
+            priority: 1
+        }
+    ]
+
+    beforeEach(() => {
+    })
+
+    it("Initialization", function () {
+        let extBus = new CuiEventExtBus(setup);
+        expect(extBus).toBeDefined();
+    })
+
+
+    it("Method on", function () {
+        let extBus = new CuiEventExtBus(setup);
+        let id = extBus.on("AAA", () => {
+        });
+        expect(extBus).toBeDefined();
+        expect(id).toBeDefined();
+        expect(id).toContain(setup[0].name);
+    })
 })
