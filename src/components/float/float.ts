@@ -5,6 +5,7 @@ import { AriaAttributes } from "../../core/utils/aria";
 import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 import { BasePositionCalculator, BaseResizeCalculator, ICuiFloatPositionCalculator, ICuiFloatResizeCalculator } from "./helpers";
+import { CLASSES, EVENTS } from "../../core/index";
 
 const FLOAT_OPEN_ANIMATION_CLASS = '.{prefix}-float-default-in';
 const FLOAT_CLOSE_ANIMATION_CLASS = '.{prefix}-float-default-out';
@@ -77,6 +78,7 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
         this.#prevX = 0;
         this.#prevY = 0;
         this.#moveListener = new CuiMoveEventListener();
+        this.#moveListener.preventDefault(true);
         this.#positionCalculator = new BasePositionCalculator();
         this.#resizeCalculator = new BaseResizeCalculator(element as HTMLElement)
         this.#prefix = prefix;
@@ -123,12 +125,36 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
         }
     }
 
+
+    onMouseDown(ev: ICuiMoveEvent) {
+        if (ev.target === this.#moveBtn) {
+            this.#isMoving = true;
+        } else if (ev.target === this.#resizeBtn) {
+            this.#isResizing = true;
+        }
+        this.#prevX = ev.x;
+        this.#prevY = ev.y;
+        this.helper.setClassesAs(document.body, CLASSES.swipingOn);
+        // Lock global move handler
+        this.utils.bus.emit(EVENTS.MOVE_LOCK, null, true);
+    }
+
     onMouseMove(ev: ICuiMoveEvent) {
         if (this.#isMoving) {
             this.peform(ev, this.move.bind(this))
         } else if (this.#isResizing) {
             this.peform(ev, this.resize.bind(this))
         }
+    }
+
+
+    onMouseUp(ev: ICuiMoveEvent) {
+        this.#isMoving = false;
+        this.#isResizing = false;
+        this.helper.removeClassesAs(document.body, CLASSES.swipingOn);
+        // Unlock global handler
+        this.utils.bus.emit(EVENTS.MOVE_LOCK, null, true);
+
     }
 
     peform(ev: ICuiMoveEvent, callback: (element: HTMLElement, x: number, y: number, diffX: number, diffY: number) => void) {
@@ -143,34 +169,24 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
     resize(element: HTMLElement, x: number, y: number, diffX: number, diffY: number): void {
         let [newWidth, newHeight] = this.#resizeCalculator.calculate(x, y, diffX, diffY);
         if (this.fitsWindow(element.offsetTop, element.offsetLeft, newWidth, newHeight)) {
-            element.style.width = newWidth + "px";
-            element.style.height = newHeight + "px";
+            this.mutate(() => {
+                element.style.width = newWidth + "px";
+                element.style.height = newHeight + "px";
+            })
         }
     }
 
     move(element: HTMLElement, x: number, y: number, diffX: number, diffY: number): void {
         let [newX, newY] = this.#positionCalculator.calculate(x, y, diffX, diffY)
         if (this.fitsWindow(newY, newX, element.offsetWidth, element.offsetHeight)) {
-            element.style.left = newX + "px";
-            element.style.top = newY + "px";
+            this.mutate(() => {
+                element.style.left = newX + "px";
+                element.style.top = newY + "px";
+            })
         }
     }
 
-    onMouseDown(ev: ICuiMoveEvent) {
-        if (ev.target === this.#moveBtn) {
-            this.#isMoving = true;
-        } else if (ev.target === this.#resizeBtn) {
-            this.#isResizing = true;
-        }
-        this.#prevX = ev.x;
-        this.#prevY = ev.y;
-    }
 
-    onMouseUp(ev: ICuiMoveEvent) {
-        this.#isMoving = false;
-        this.#isResizing = false;
-
-    }
 
     fitsWindow(top: number, left: number, width: number, height: number) {
         return (top + height < window.innerHeight - 10) &&

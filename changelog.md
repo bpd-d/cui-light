@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.26] WIP
+# [0.1.27] WIP
+# [0.1.26] 2020-10-22
+* [Fixed] Performance improvements in move/swipe listeners
 # [0.1.25] 2020-10-22
 * [Added] New event bus implementation that works along with old
 * [Changed] Component open redux - for cUI emits open event, if target not set looks for first cUI in parent

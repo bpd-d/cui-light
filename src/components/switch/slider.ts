@@ -154,6 +154,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                 this.#isTracking = true;
                 this.#startX = data.x;
                 this.#currSlider.setElement(current);
+                this.helper.setClassesAs(document.body, CLASSES.swipingOn);
                 break;
             case "up":
                 if (!this.#isTracking) {
@@ -166,6 +167,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                 let back = absRatio <= this.#ratioThreshold;
                 this.#currSlider.finish(absRatio, timeout, back);
                 this.#nextSlider.finish(absRatio, timeout, back);
+                this.helper.removeClassesAs(document.body, CLASSES.swipingOn);
                 this.#isTracking = false;
                 break;
             case "move":
@@ -173,6 +175,9 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                     break;
                 }
                 let newRatio = (data.x - this.#startX) / current.offsetWidth;
+                if (Math.abs(newRatio - this.#swipeRatio) < 0.02) {
+                    break;
+                }
                 let nextIdx = calculateNextIndex(this.#swipeRatio > 0 ? "next" : "prev", this.#currentIdx, this.#targetsCount);
                 this.#swipeRatio = this.adjustMoveRatio(newRatio);
 

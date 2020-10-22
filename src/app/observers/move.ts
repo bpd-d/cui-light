@@ -1,4 +1,4 @@
-import { CuiUtils, EVENTS, ICuiEventBus } from "../../core/index";
+import { EVENTS, ICuiEventBus } from "../../core/index";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 
 export class CuiMoveObserver {
@@ -6,6 +6,7 @@ export class CuiMoveObserver {
     #moveListener: CuiMoveEventListener;
     #stack: ICuiMoveEvent[];
     #isLocked: boolean;
+    #eventId: string;
     constructor(bus: ICuiEventBus) {
         this.#bus = bus;
         this.#moveListener = new CuiMoveEventListener();
@@ -14,13 +15,20 @@ export class CuiMoveObserver {
     }
 
     attach() {
-        if (!this.#moveListener.isAttached())
+        if (!this.#moveListener.isAttached()) {
             this.#moveListener.attach();
+            this.#eventId = this.#bus.on(EVENTS.MOVE_LOCK, this.onMoveLock.bind(this))
+        }
+
+
     }
 
     detach() {
-        if (this.#moveListener.isAttached())
+        if (this.#moveListener.isAttached()) {
             this.#moveListener.detach();
+            this.#eventId && this.#bus.detach(EVENTS.MOVE_LOCK, this.#eventId);
+        }
+
     }
 
     isAttached() {
@@ -28,26 +36,12 @@ export class CuiMoveObserver {
     }
 
     private onMove(data: ICuiMoveEvent) {
-        // this.#stack.push(data);
-        // this.handle();
-        this.#bus.emit(EVENTS.GLOBAL_MOVE, null, data);
+        if (!this.#isLocked)
+            this.#bus.emit(EVENTS.GLOBAL_MOVE, null, data);
 
     }
 
-    private handle() {
-        if (this.#isLocked) {
-            return;
-        }
-        this.#isLocked = true;
-        if (this.#stack.length === 0) {
-            this.#isLocked = false;
-        } else {
-            this.#bus.emit(EVENTS.GLOBAL_MOVE, null, this.#stack.shift()).catch((e) => {
-                console.error(e);
-            }).finally(() => {
-                this.#isLocked = false;
-                this.handle();
-            });
-        }
+    private onMoveLock(flag: boolean) {
+        this.#isLocked = flag;
     }
 }

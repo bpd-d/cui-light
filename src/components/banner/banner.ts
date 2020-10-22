@@ -1,7 +1,7 @@
 import { AnimationDefinition, SWIPE_ANIMATIONS_DEFINITIONS } from "../../app/animation/definitions";
 import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 import { CuiSwipeAnimationEngine } from "../../core/animation/engine";
-import { boolStringOrDefault, getIntOrDefault, getStringOrDefault, ICuiParsable, replacePrefix } from "../../core/index";
+import { boolStringOrDefault, CLASSES, getIntOrDefault, getStringOrDefault, ICuiParsable, replacePrefix } from "../../core/index";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 import { AriaAttributes } from "../../core/utils/aria";
 import { ICuiComponent, CuiUtils, ICuiComponentHandler } from "../../index";
@@ -120,6 +120,7 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
                 }
                 this.#isTracking = true;
                 this.#startX = data.x;
+                this.helper.setClassesAs(document.body, CLASSES.swipingOn);
                 break;
             case "up":
                 if (!this.#isTracking && this.#ratio == 0) {
@@ -131,6 +132,7 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
                 let timeout = absRatio * this.args.timeout;
                 let back = absRatio <= 0.4;
                 this.#swipeEngine.finish(absRatio, timeout, back);
+                this.helper.removeClassesAs(document.body, CLASSES.swipingOn);
                 this.#isTracking = false;
                 break;
             case "move":

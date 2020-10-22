@@ -30,7 +30,7 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     #preventDefault: boolean;
     constructor(element?: HTMLElement) {
         this.#isLocked = false;
-        this.#element = element ?? document;
+        this.#element = element ?? document.body;
         this.#isAttached = false;
         this.#preventDefault = false;
     }
@@ -93,6 +93,9 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     onMouseMove(ev: MouseEvent) {
         if (this.#isLocked) {
             this.publishMouseEvent("move", ev)
+            // if (this.#preventDefault) {
+            //     ev.preventDefault();
+            // }
         }
     }
 
@@ -115,13 +118,16 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     onTouchMove(ev: TouchEvent) {
         if (this.#isLocked) {
             this.publishTouchEvent('move', ev);
+            // if (this.#preventDefault) {
+            //     ev.preventDefault();
+            // }
         }
     }
 
     private publishMouseEvent(type: CuiMoveEventState, ev: MouseEvent) {
-        if (this.#preventDefault && ev.cancelable) {
-            ev.preventDefault();
-        }
+        // if (this.#preventDefault && ev.cancelable) {
+        //     ev.preventDefault();
+        // }
         if (is(this.#onEvent)) {
             this.#onEvent({
                 type: type,
@@ -136,8 +142,8 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     }
 
     private publishTouchEvent(type: CuiMoveEventState, ev: TouchEvent) {
-        if (this.#preventDefault && ev.cancelable)
-            ev.preventDefault();
+        // if (this.#preventDefault && ev.cancelable)
+        //     ev.preventDefault();
         if (is(this.#onEvent)) {
             let touch = null;
             if (ev.touches.length > 0) {
