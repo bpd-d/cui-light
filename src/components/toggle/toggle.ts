@@ -1,13 +1,13 @@
 import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
+import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
 import { is, isString, getStringOrDefault, getName, parseAttribute } from "../../core/utils/functions";
 import { EVENTS } from "../../core/utils/statics";
 
 export class CuiToggleArgs {
     target: string;
-    action: ICuiComponentAction;
+    action: string;
     constructor() {
         this.action = null;
         this.target = null;
@@ -15,11 +15,10 @@ export class CuiToggleArgs {
 
     parse(args: any) {
         if (is(args) && isString(args)) {
-            this.action = CuiActionsFatory.get(args)
+            this.action = args;
         } else {
             this.target = getStringOrDefault(args.target, null);
-            console.log(args.action)
-            this.action = CuiActionsFatory.get(args.action)
+            this.action = args.action;
         }
     }
 }
@@ -42,30 +41,35 @@ export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     #target: Element;
     #utils: CuiUtils;
     #toggleEventId: string;
+    #actions: ICuiComponentAction[];
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiToggleHandler", element, attribute, new CuiToggleArgs(), utils);
         this.#target = this.element;
         this.#utils = utils;
         this.#toggleEventId = null;
+        this.#actions = [];
+        this.onClick = this.onClick.bind(this);
     }
 
     onInit(): void {
         this.#target = this.getTarget();
-        this.element.addEventListener('click', this.onClick.bind(this));
+        this.#actions = CuiActionsListFactory.get(this.args.action);
+        this.element.addEventListener('click', this.onClick);
         this.#toggleEventId = this.onEvent(EVENTS.TOGGLE, this.toggle.bind(this));
 
     }
     onUpdate(): void {
         this.#target = this.getTarget();
+        this.#actions = CuiActionsListFactory.get(this.args.action);
     }
+
     onDestroy(): void {
-        this.element.removeEventListener('click', this.onClick.bind(this));
+        this.element.removeEventListener('click', this.onClick);
         this.detachEvent(EVENTS.TOGGLE, this.#toggleEventId);
     }
 
     toggle() {
-        console.log(this.args.action)
-        this.args.action.toggle(this.#target, this.#utils)
+        this.#actions.forEach(action => action.toggle(this.#target, this.#utils));
         this.emitEvent(EVENTS.TOGGLED, {
             action: this.args.action,
             target: this.#target,

@@ -1,5 +1,5 @@
-import { ICuiEventBus, CuiEventReceiver, ICuiLogger, ICuiEventEmitHandler, CuiContext, CuiElement } from "../models/interfaces";
-import { is, are, generateRandomString, enumerateObject } from "../utils/functions";
+import { ICuiEventBus, CuiEventReceiver, ICuiLogger, ICuiEventEmitHandler, CuiContext, CuiElement, CuiEventObj } from "../models/interfaces";
+import { is, are, generateRandomString, enumerateObject, mapObject } from "../utils/functions";
 import { ArgumentError } from "../models/errors";
 import { CuiLoggerFactory } from "../factories/logger";
 import { CuiEventEmitHandlerFactory, TaskedEventEmitHandler } from "./handlers";
@@ -60,7 +60,7 @@ export class CuiEventBus implements ICuiEventBus {
     * @param {CuiContext} ctx - callback context with id
     * @param {CuiElement} cui - optional - cui element which event shall be attached to
     */
-    detach(name: string, id: string, cui?: CuiElement): void {
+    detach(name: string, id: string): void {
         if (!are(name, id)) {
             throw new ArgumentError("Missing argument")
         }
@@ -116,6 +116,26 @@ export class CuiEventBus implements ICuiEventBus {
         return this.isAttached(ev, id, cui)
     }
 
+    /**
+     * Detaches callbacks by component cuid - this is used to clean up attachments on component deletion
+     * @param {string} event - event name
+     * @param {string} cuid - cuid of the component
+     */
+    detachByCuid(event: string, cuid: string): void {
+        if (!are(event, cuid)) {
+            return;
+        }
+        let ev = this.#events[event];
+        if (!is(ev)) {
+            return;
+        }
+        enumerateObject({ ...ev }, (evId: string, evValue: CuiEventObj) => {
+            if (evValue.$cuid === cuid) {
+                delete ev[evId]
+            }
+        })
+    }
+
     private isAttached(ev: CuiEventReceiver, id: string, cui?: CuiElement): boolean {
         if (is(cui)) {
             return is(ev) && is(id) && is(ev[id]) && ev[id].$cuid == cui.$cuid;
@@ -126,6 +146,8 @@ export class CuiEventBus implements ICuiEventBus {
     private getCuid(cui: CuiElement) {
         return is(cui) ? cui.$cuid : null;
     }
+
+
 }
 
 
@@ -220,6 +242,19 @@ export class CuiEventExtBus implements ICuiEventBus {
     isSubscribing(name: string, id: string, cui?: CuiElement) {
         return this.get(name).isSubscribing(name, id, cui);
     }
+
+    /**
+    * Detaches callbacks by component cuid - this is used to clean up attachments on component deletion
+    * @param {string} event - event name
+    * @param {string} cuid - cuid of the component
+    */
+    detachByCuid(event: string, cuid: string): void {
+        if (!are(event, cuid)) {
+            return
+        }
+        this.get(event).detachByCuid(event, cuid);
+    }
+
 
     /**
      * Creates and initializes event bus instance

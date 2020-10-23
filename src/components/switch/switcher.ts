@@ -43,11 +43,14 @@ export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
     #targetId: string;
     #isList: boolean;
     #swtichEventID: string;
+    #listeners: ((ev: MouseEvent) => void)[];
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiSwitcherHandler", element, attribute, new CuiSwitcherArgs(), utils);
         this.#targetId = null;
         this.#isList = element.tagName === 'UL';
         this.#swtichEventID = undefined;
+        this.onClickEvent = this.onClickEvent.bind(this);
+        this.#listeners = [];
     }
 
     onInit(): void {
@@ -78,10 +81,12 @@ export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
         if (this.#isList) {
             let elements = this.element.querySelectorAll(SWITCHER_LIST_ITEM_SELECTOR);
             elements.forEach((el: Element, index: number) => {
-                el.addEventListener('click', this.onListItemClick.bind(this, index))
+                let list = this.onListItemClick.bind(this, index)
+                this.#listeners.push(list)
+                el.addEventListener('click', list)
             })
         } else {
-            this.element.addEventListener('click', this.onClickEvent.bind(this))
+            this.element.addEventListener('click', this.onClickEvent)
         }
     }
 
@@ -89,10 +94,12 @@ export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
         if (this.#isList) {
             let elements = this.element.querySelectorAll(SWITCHER_LIST_ITEM_SELECTOR);
             elements.forEach((el: Element, index: number) => {
-                el.removeEventListener('click', this.onListItemClick.bind(this, index))
+                if (this.#listeners.length > index)
+                    el.removeEventListener('click', this.#listeners[index])
             })
+            this.#listeners = [];
         } else {
-            this.element.removeEventListener('click', this.onClickEvent.bind(this));
+            this.element.removeEventListener('click', this.onClickEvent);
         }
     }
 

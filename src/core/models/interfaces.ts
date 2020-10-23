@@ -90,6 +90,7 @@ export interface ICuiEventBus {
     detachAll(name: string, cui?: CuiElement): void;
     emit(event: string, cuid: string, ...args: any[]): Promise<boolean>;
     isSubscribing(name: string, id: string, cui?: CuiElement): boolean;
+    detachByCuid(event: string, cuid: string): void;
 }
 
 export interface ICuiCallbackExecutor {

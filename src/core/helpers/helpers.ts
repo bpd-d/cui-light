@@ -27,6 +27,24 @@ export class CuiActionsHelper {
         })
     }
 
+    async performActions(target: Element, actions: ICuiComponentAction[], timeout: number, callback?: () => void): Promise<boolean> {
+        return new Promise((resolve) => {
+            this.#interactions.mutate(() => {
+                actions.forEach(x => x.add(target));
+                target.classList.add(CLASSES.animProgress);
+                setTimeout(() => {
+                    this.#interactions.mutate(() => {
+                        actions.forEach(x => x.remove(target));
+                        target.classList.remove(CLASSES.animProgress);
+                        if (callback)
+                            callback();
+                        resolve(true)
+                    }, null)
+                }, timeout)
+            }, null)
+        })
+    }
+
     async performSwitchAction(inTarget: Element, outTarget: Element, inAction: ICuiComponentAction, outAction: ICuiComponentAction, onFinish: () => void, timeout: number): Promise<boolean> {
         return new Promise((resolve) => {
             this.#interactions.mutate(() => {

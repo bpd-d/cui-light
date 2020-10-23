@@ -4,14 +4,14 @@ import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 export class CuiMoveObserver {
     #bus: ICuiEventBus;
     #moveListener: CuiMoveEventListener;
-    #stack: ICuiMoveEvent[];
     #isLocked: boolean;
     #eventId: string;
+    #firstEvent: ICuiMoveEvent;
     constructor(bus: ICuiEventBus) {
         this.#bus = bus;
         this.#moveListener = new CuiMoveEventListener();
         this.#moveListener.setCallback(this.onMove.bind(this));
-        this.#stack = [];
+        this.#firstEvent = null;
     }
 
     attach() {
@@ -19,8 +19,6 @@ export class CuiMoveObserver {
             this.#moveListener.attach();
             this.#eventId = this.#bus.on(EVENTS.MOVE_LOCK, this.onMoveLock.bind(this))
         }
-
-
     }
 
     detach() {
@@ -36,8 +34,33 @@ export class CuiMoveObserver {
     }
 
     private onMove(data: ICuiMoveEvent) {
-        if (!this.#isLocked)
-            this.#bus.emit(EVENTS.GLOBAL_MOVE, null, data);
+        if (this.#isLocked) {
+            return;
+        }
+        switch (data.type) {
+            case "down":
+                this.#firstEvent = data;
+                break;
+            case "move":
+                if (this.#firstEvent) {
+                    this.#bus.emit(EVENTS.GLOBAL_MOVE, null, this.#firstEvent);
+                    this.#firstEvent = null;
+                }
+                this.#bus.emit(EVENTS.GLOBAL_MOVE, null, data);
+                break;
+            case "up":
+                if (this.#firstEvent) {
+                    this.#firstEvent = null;
+                    return;
+                }
+
+                this.#bus.emit(EVENTS.GLOBAL_MOVE, null, data);
+                break;
+        }
+
+
+
+
 
     }
 

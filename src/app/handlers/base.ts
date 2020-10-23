@@ -1,7 +1,7 @@
 import { ICuiLogger, IUIInteractionProvider, CuiContext, ICuiComponentHandler, ICuiParsable, ICuiOpenable, ICuiClosable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CuiUtils } from "../../core/models/utils";
-import { getActiveClass, CuiActionsHelper, ICuiComponentAction, is, EVENTS, CuiActionsFatory } from "../../core/index";
+import { getActiveClass, CuiActionsHelper, ICuiComponentAction, is, EVENTS, CuiActionsFatory, CuiActionsListFactory } from "../../core/index";
 import { ICuiComponentMutationObserver, CuiComponentMutationHandler } from "../observers/mutations";
 import { AriaAttributes } from "../../core/utils/aria";
 import { KeyDownEvent } from "../../plugins/keys/observer";
@@ -71,6 +71,7 @@ export class CuiComponentBase implements CuiContext {
     isLocked: boolean;
     activeClassName: string;
     helper: ComponentHelper;
+    #emittedEvents: string[];
     constructor(componentName: string, element: Element, utils: CuiUtils) {
         this._log = CuiLoggerFactory.get(componentName);
         this.utils = utils;
@@ -80,6 +81,7 @@ export class CuiComponentBase implements CuiContext {
         this._log.setId(this.cuid);
         this.activeClassName = getActiveClass(utils.setup.prefix);
         this.helper = new ComponentHelper(utils.interactions);
+        this.#emittedEvents = [];
     }
 
 
@@ -96,6 +98,8 @@ export class CuiComponentBase implements CuiContext {
     }
 
     emitEvent(event: string, ...data: any[]) {
+        if (!this.#emittedEvents.includes(event))
+            this.#emittedEvents.push(event);
         this.utils.bus.emit(event, this.cuid, ...data)
     }
 
@@ -127,6 +131,14 @@ export class CuiComponentBase implements CuiContext {
      */
     isActive(): boolean {
         return this.element.classList.contains(this.activeClassName);
+    }
+
+    detachEmiitedEvents() {
+        this.#emittedEvents.forEach(event => {
+            this.utils.bus.detachByCuid(event, this.cuid);
+            this._log.debug("Detaching event: " + event + " on component delete");
+        })
+
     }
 
 }
@@ -176,6 +188,7 @@ abstract class CuiHandlerBase<T extends ICuiParsable> extends CuiComponentBase i
     destroy(): void {
         this._log.debug("Destroy", "destroy");
         this.onRemove();
+        this.detachEmiitedEvents();
         this.isInitialized = false;
     }
 
@@ -219,8 +232,8 @@ export abstract class CuiHandler<T extends ICuiParsable> extends CuiHandlerBase<
      * @param onFinish - callback to be performed after action is finished after removal
      * @param callback - optional - callback to be executed in mutation on action removal, e.g. additional DOM changes on element
      */
-    async performAction(action: ICuiComponentAction, timeout: number, onFinish: () => void, callback?: () => void): Promise<boolean> {
-        if (await this.actionsHelper.performAction(this.element, action, timeout, callback)) {
+    async performAction(actions: ICuiComponentAction[], timeout: number, onFinish: () => void, callback?: () => void): Promise<boolean> {
+        if (await this.actionsHelper.performActions(this.element, actions, timeout, callback)) {
             onFinish();
             return true;
         }
@@ -250,8 +263,8 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
     #openEventId: string;
     #closeEventId: string;
     #keyCloseEventId: string;
-    #openAct: ICuiComponentAction;
-    #closeAct: ICuiComponentAction;
+    #openAct: ICuiComponentAction[];
+    #closeAct: ICuiComponentAction[];
     constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
         super(componentName, element, attribute, args, utils);
     }
@@ -260,18 +273,18 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
     onHandle() {
         this.#openEventId = this.onEvent(EVENTS.OPEN, this.openFromEvent.bind(this))
         this.#closeEventId = this.onEvent(EVENTS.CLOSE, this.closeFromEvent.bind(this))
-        this.#openAct = CuiActionsFatory.get(this.args.openAct)
-        this.#closeAct = CuiActionsFatory.get(this.args.closeAct)
+        this.#openAct = CuiActionsListFactory.get(this.args.openAct)
+        this.#closeAct = CuiActionsListFactory.get(this.args.closeAct)
         this.onInit();
     }
 
 
     onRefresh() {
         if (this.args.openAct !== this.prevArgs.openAct) {
-            this.#openAct = CuiActionsFatory.get(this.args.openAct)
+            this.#openAct = CuiActionsListFactory.get(this.args.openAct)
         }
         if (this.args.closeAct !== this.prevArgs.closeAct) {
-            this.#closeAct = CuiActionsFatory.get(this.args.closeAct)
+            this.#closeAct = CuiActionsListFactory.get(this.args.closeAct)
         }
         this.onUpdate();
     }
@@ -333,8 +346,8 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
      * @param onFinish - callback to be performed after action is finished after removal
      * @param callback - optional - callback to be executed in mutation on action removal, e.g. additional DOM changes on element
      */
-    async performAction(action: ICuiComponentAction, timeout: number, onFinish: () => void, callback?: () => void): Promise<boolean> {
-        if (await this.actionsHelper.performAction(this.element, action, timeout, callback)) {
+    async performAction(actions: ICuiComponentAction[], timeout: number, onFinish: () => void, callback?: () => void): Promise<boolean> {
+        if (await this.actionsHelper.performActions(this.element, actions, timeout, callback)) {
             onFinish();
             return true;
         }

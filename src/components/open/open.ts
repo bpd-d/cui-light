@@ -2,7 +2,7 @@ import { ICuiComponent, ICuiComponentHandler, ICuiOpenable } from "../../core/mo
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { getStringOrDefault, getIntOrDefault, is, getActiveClass, isString, getHandlerExtendingOrNull, isStringTrue, are, getFirstMatching } from "../../core/utils/functions";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
+import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
 import { CUID_ATTRIBUTE, EVENTS } from "../../core/utils/statics";
 
 export class CuiOpenArgs {
@@ -61,18 +61,20 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiOpenHandler", element, attribute, new CuiOpenArgs(utils.setup.animationTime), utils);
         this.#eventId = null;
+        this.onClick = this.onClick.bind(this);
     }
 
     onInit(): void {
-        this.element.addEventListener('click', this.onClick.bind(this))
+        this.element.addEventListener('click', this.onClick)
         this.#eventId = this.onEvent(EVENTS.OPEN, this.onOpen.bind(this));
     }
 
     onUpdate(): void {
         //
     }
+
     onDestroy(): void {
-        this.element.removeEventListener('click', this.onClick.bind(this))
+        this.element.removeEventListener('click', this.onClick)
         this.detachEvent(EVENTS.OPEN, this.#eventId);
     }
 
@@ -108,8 +110,8 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
             return this.utils.bus.emit(EVENTS.OPEN, cuiId, this.args.state);;
         } else {
             if (are(this.args.timeout, this.args.action)) {
-                let action = CuiActionsFatory.get(this.args.action)
-                return this.actionsHelper.performAction(target, action, this.args.timeout);
+                let actions = CuiActionsListFactory.get(this.args.action)
+                return this.actionsHelper.performActions(target, actions, this.args.timeout);
             }
             return true;
         }

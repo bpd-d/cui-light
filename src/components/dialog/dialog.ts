@@ -5,8 +5,8 @@ import { EVENTS } from "../../core/utils/statics";
 import { AriaAttributes } from "../../core/utils/aria";
 import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 
-const DIALOG_OPEN_ANIMATION_CLASS = '{prefix}-dialog-default-in';
-const DIALOG_CLOSE_ANIMATION_CLASS = '{prefix}-dialog-default-out';
+const DIALOG_OPEN_ANIMATION_CLASS = '.{prefix}-dialog-default-in';
+const DIALOG_CLOSE_ANIMATION_CLASS = '.{prefix}-dialog-default-out';
 const bodyClass = '{prefix}-dialog-open';
 const CONTAINER = '.{prefix}-dialog-container';
 

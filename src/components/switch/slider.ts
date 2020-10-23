@@ -89,7 +89,6 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         this.#switchEventId = null;
         this.#isTracking = false;
         this.#startX = -1;
-        // this.#moveListener = new CuiMoveEventListener();
         this.#swipeRatio = 0;
         this.#nextElement = null;
         this.#ratioThreshold = 0.5;
@@ -106,9 +105,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
         this.getLinks();
         this.getActiveIndex();
         this.setLinkActive(-1, this.#currentIdx);
-        // this.#moveListener.setCallback(this.onMove.bind(this));
-        // this.#moveListener.preventDefault(true);
-        //   this.#moveListener.attach();
+
         this.mutate(() => {
             this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
         })
@@ -127,15 +124,12 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
 
     onDestroy(): void {
         this.#task.stop();
-        //  this.#moveListener.detach();
         this.detachEvent(EVENTS.SWITCH, this.#switchEventId)
         this.detachEvent(EVENTS.GLOBAL_MOVE, this.#moveEventId)
     }
 
     onMutation(record: CuiChildMutation): void {
-        // this.getTargets();
-        // this.getActiveIndex();
-        // this.setLinkActive(-1, this.#currentIdx);
+
     }
     /**
      * Move listener callback

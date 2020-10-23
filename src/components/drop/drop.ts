@@ -84,6 +84,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#windowClickEventId = null;
         this.#openEventId = null;
         this.#closeEventId = null;
+        this.onTriggerClick = this.onTriggerClick.bind(this)
     }
 
     onInit(): void {
@@ -99,7 +100,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         if (this.#triggerHoverListener.isAttached()) {
             this.#triggerHoverListener.detach();
         } else if (this.prevArgs.mode === 'click') {
-            this.#trigger.removeEventListener('click', this.onTriggerClick.bind(this))
+            this.#trigger.removeEventListener('click', this.onTriggerClick)
         }
 
         this.#trigger = this.element.parentElement.querySelector(this.args.trigger)
@@ -242,7 +243,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
             this.#triggerHoverListener.setCallback(this.onHoverEvent.bind(this));
             this.#triggerHoverListener.attach();
         } else {
-            this.#trigger.addEventListener('click', this.onTriggerClick.bind(this))
+            this.#trigger.addEventListener('click', this.onTriggerClick)
         }
     }
 

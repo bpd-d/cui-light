@@ -344,6 +344,70 @@ describe("Tests for class [CuiEventBus]", function () {
         expect(item2.value).toBeTrue();
     })
 
+    it("Case for method [detachByCuid] - normal case", function () {
+        let item = new ExecutorTestItemExt('001');
+        let element: CuiElement = { $cuid: "000-000-01" }
+        let subscribing: boolean = false;
+        let failed: boolean = false;
+        try {
+            let id = bus.on('test', item.setValue.bind(item), element);
+
+            bus.detachByCuid('test', element.$cuid);
+            subscribing = bus.isSubscribing('test', id)
+        } catch (e) {
+            failed = true;
+            console.log(e)
+        }
+
+        // expect(failed).toBeFalse();
+        expect(subscribing).toBeFalse();
+    })
+
+    it("Case for method [detachByCuid] - incorrect argument", function () {
+        let item = new ExecutorTestItemExt('001');
+        let element: CuiElement = { $cuid: "000-000-01" }
+        let subscribing: boolean = false;
+        let failed: boolean = false;
+        try {
+            let id = bus.on('test', item.setValue.bind(item), element);
+
+            bus.detachByCuid('test', null);
+            subscribing = bus.isSubscribing('test', id)
+        } catch (e) {
+            failed = true;
+        }
+
+        expect(failed).toBeFalse();
+        expect(subscribing).toBeTrue();
+    })
+
+    it("Case for method [detachByCuid] - incorrect argument", function () {
+        let item = new ExecutorTestItemExt('001');
+        let item2 = new ExecutorTestItemExt('002');
+        let element: CuiElement = { $cuid: "000-000-01" }
+        let subscribing: boolean = false;
+        let subscribing2: boolean = false;
+        let subscribing3: boolean = false;
+        let failed: boolean = false;
+        try {
+            let id = bus.on('test', item.setValue.bind(item), element);
+            let id2 = bus.on('test', item2.setValue.bind(item2), element);
+            let id3 = bus.on('test', item2.setValue.bind(item2));
+
+            bus.detachByCuid('test', element.$cuid);
+            subscribing = bus.isSubscribing('test', id)
+            subscribing2 = bus.isSubscribing('test', id2)
+            subscribing3 = bus.isSubscribing('test', id3)
+        } catch (e) {
+            failed = true;
+        }
+
+        expect(failed).toBeFalse();
+        expect(subscribing).toBeFalse();
+        expect(subscribing2).toBeFalse();
+        expect(subscribing3).toBeTrue();
+    })
+
 })
 
 

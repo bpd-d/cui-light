@@ -2,7 +2,7 @@ import { ICuiComponent, ICuiComponentHandler, ICuiClosable } from "../../core/mo
 import { CuiUtils } from "../../core/models/utils";
 import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
 import { getStringOrDefault, getIntOrDefault, parseAttribute, is, getActiveClass, isString, isStringTrue, getHandlerExtendingOrNull, getParentCuiElement, are } from "../../core/utils/functions";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
+import { ICuiComponentAction, CuiActionsFatory, CuiActionsListFactory } from "../../core/utils/actions";
 import { CLASSES, EVENTS } from "../../core/utils/statics";
 import { CuiActionsHelper } from "../../core/helpers/helpers";
 
@@ -65,10 +65,11 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiCloseHandler", element, attribute, new CuiCloseArgs(utils.setup.animationTime), utils);
         this.#eventId = null;
+        this.onClick = this.onClick.bind(this);
     }
 
     onInit(): void {
-        this.element.addEventListener('click', this.onClick.bind(this))
+        this.element.addEventListener('click', this.onClick)
         this.#eventId = this.onEvent(EVENTS.CLOSE, this.onClose.bind(this));
     }
 
@@ -76,7 +77,7 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
         //
     }
     onDestroy(): void {
-        this.element.removeEventListener('click', this.onClick.bind(this))
+        this.element.removeEventListener('click', this.onClick)
         this.detachEvent(EVENTS.CLOSE, this.#eventId);
     }
 
@@ -110,8 +111,8 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
         if (is(cuiId)) {
             return this.utils.bus.emit(EVENTS.CLOSE, cuiId, this.args.state);
         } else if (are(this.args.action, this.args.timeout)) {
-            let action = CuiActionsFatory.get(this.args.action);
-            return this.#actionHelper.performAction(target, action, this.args.timeout);
+            let actions = CuiActionsListFactory.get(this.args.action);
+            return this.#actionHelper.performActions(target, actions, this.args.timeout);
         } else {
             return true;
         }

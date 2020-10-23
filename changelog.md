@@ -1,5 +1,11 @@
 # bpd cUI Light changelog
-# [0.1.27] WIP
+# [0.1.28] WIP
+# [0.1.27] 2020-10-23
+* [Added] On component deletion - detach all events subscribed to component
+* [Added] Offset - Emit offset event every few pixels scrolled - add limitX and limitY properties which indicate whether scrolling reached end of the container
+* [Changed] Action support in open, close, toggle components has been extended
+* [Changed] Behavior of global move listener - events will be emitted only if there was move after down
+* [Fixed] Properly remove event listeners from elements
 # [0.1.26] 2020-10-22
 * [Fixed] Performance improvements in move/swipe listeners
 # [0.1.25] 2020-10-22

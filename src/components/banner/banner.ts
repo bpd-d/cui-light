@@ -1,7 +1,7 @@
 import { AnimationDefinition, SWIPE_ANIMATIONS_DEFINITIONS } from "../../app/animation/definitions";
 import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/base";
 import { CuiSwipeAnimationEngine } from "../../core/animation/engine";
-import { boolStringOrDefault, CLASSES, getIntOrDefault, getStringOrDefault, ICuiParsable, replacePrefix } from "../../core/index";
+import { boolStringOrDefault, CLASSES, EVENTS, getIntOrDefault, getStringOrDefault, ICuiParsable, replacePrefix } from "../../core/index";
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 import { AriaAttributes } from "../../core/utils/aria";
 import { ICuiComponent, CuiUtils, ICuiComponentHandler } from "../../index";
@@ -61,25 +61,28 @@ export class CuiBanerComponent implements ICuiComponent {
 
 export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
 
-    #moveListener: CuiMoveEventListener;
+    //  #moveListener: CuiMoveEventListener;
     #swipeEngine: CuiSwipeAnimationEngine;
     #isTracking: boolean;
     #startX: number;
     #ratio: number;
     #swipeAnimation: AnimationDefinition;
+    #moveEventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiBannerHandler", element, attribute, new CuiBannerArgs(prefix, utils.setup.animationTime), utils);
-        this.#moveListener = new CuiMoveEventListener();
-        this.#moveListener.setCallback(this.onMove.bind(this));
+        // this.#moveListener = new CuiMoveEventListener();
+        // this.#moveListener.setCallback(this.onMove.bind(this));
         this.#swipeEngine = new CuiSwipeAnimationEngine(true);
         this.#swipeEngine.setOnFinish(this.onSwipeFinish.bind(this));
         this.#swipeEngine.setElement(this.element)
         this.#startX = -1;
         this.#ratio = 0;
         this.#swipeAnimation = SWIPE_ANIMATIONS_DEFINITIONS["fade"];
+        this.#moveEventId = null;
     }
 
     onInit(): void {
+        this.#moveEventId = this.onEvent(EVENTS.GLOBAL_MOVE, this.onMove.bind(this));
         if (this.isActive) {
             this.open();
         }
@@ -87,8 +90,9 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
     onUpdate(): void {
 
     }
-    onDestroy(): void {
 
+    onDestroy(): void {
+        this.detachEvent(EVENTS.GLOBAL_MOVE, this.#moveEventId);
     }
 
     onBeforeOpen(): boolean {
@@ -96,14 +100,13 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
     }
     onAfterOpen(): void {
         if (this.args.swipe) {
-            this.#moveListener.attach();
+            this.#moveEventId = this.onEvent(EVENTS.GLOBAL_MOVE, this.onMove.bind(this));
         }
     }
     onAfterClose(): void {
-        if (this.#moveListener.isAttached()) {
-            this.#moveListener.detach();
-        }
+        this.detachEvent(EVENTS.GLOBAL_MOVE, this.#moveEventId);
     }
+
     onBeforeClose(): boolean {
         return true;
     }

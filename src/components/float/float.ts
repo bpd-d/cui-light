@@ -82,6 +82,8 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
         this.#positionCalculator = new BasePositionCalculator();
         this.#resizeCalculator = new BaseResizeCalculator(element as HTMLElement)
         this.#prefix = prefix;
+        this.move = this.move.bind(this);
+        this.resize = this.resize.bind(this);
     }
 
     onInit(): void {
@@ -102,9 +104,12 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
         return true
     }
     onAfterOpen(): void {
+        console.log("Opened float");
         this.#moveListener.attach();
     }
+
     onAfterClose(): void {
+        console.log("Closed float");
         this.#moveListener.detach();
     }
     onBeforeClose(): boolean {
@@ -127,6 +132,7 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
 
 
     onMouseDown(ev: ICuiMoveEvent) {
+        console.log("DOwn");
         if (ev.target === this.#moveBtn) {
             this.#isMoving = true;
         } else if (ev.target === this.#resizeBtn) {
@@ -141,9 +147,9 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
 
     onMouseMove(ev: ICuiMoveEvent) {
         if (this.#isMoving) {
-            this.peform(ev, this.move.bind(this))
+            this.peform(ev, this.move)
         } else if (this.#isResizing) {
-            this.peform(ev, this.resize.bind(this))
+            this.peform(ev, this.resize)
         }
     }
 
@@ -153,7 +159,7 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
         this.#isResizing = false;
         this.helper.removeClassesAs(document.body, CLASSES.swipingOn);
         // Unlock global handler
-        this.utils.bus.emit(EVENTS.MOVE_LOCK, null, true);
+        this.utils.bus.emit(EVENTS.MOVE_LOCK, null, false);
 
     }
 
