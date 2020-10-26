@@ -3,8 +3,9 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsListFactory } from "../../core/utils/actions";
-import { are, getIntOrDefault, isStringTrue } from "../../core/utils/functions";
+import { are, getIntOrDefault, getStringOrDefault, isStringTrue } from "../../core/utils/functions";
 import { EVENTS } from "../../core/index";
+import { CuiOffsetModeFactory, ICuiOffsetMode } from "./modes";
 
 /**
  * Toggles an action after specified offset is reached in relation to the element or document
@@ -14,6 +15,7 @@ import { EVENTS } from "../../core/index";
  * offsetY?: number - vertical offset
  * offsetX?: number - horizontal offset
  * root?: boolean - set true if scroll listener shall be set on document element
+ * mode?: string - static/dynamic 
  */
 
 export interface CuiOffsetEvent {
@@ -39,12 +41,14 @@ export class CuiOffsetArgs {
     offsetY?: number;
     offsetX?: number
     root: boolean;
+    mode: "static" | "dynamic";
     constructor() {
         this.offsetX = 0;
         this.offsetY = 0;
         this.target = null;
         this.root = false;
         this.action = null;
+        this.mode = 'static';
     }
 
     parse(args: any) {
@@ -52,7 +56,8 @@ export class CuiOffsetArgs {
         this.action = args.action;
         this.offsetX = getIntOrDefault(args.offsetX, -1);
         this.offsetY = getIntOrDefault(args.offsetY, -1);
-        this.root = isStringTrue(args.root)
+        this.root = isStringTrue(args.root);
+        this.mode = getStringOrDefault(args.mode, 'static');
     }
 }
 export class CuiOffsetComponent implements ICuiComponent {
@@ -81,7 +86,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     #prevY: number;
     #threshold: number;
     #root: Element;
-
+    #modeHandler: ICuiOffsetMode;
     constructor(element: Element, utils: CuiUtils, attribute: string) {
         super("CuiOffsetHandler", element, attribute, new CuiOffsetArgs(), utils);
         this.element = element as HTMLElement;
@@ -94,6 +99,8 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
         this.#prevY = 0;
         this.#threshold = 20;
         this.#root = null;
+        this.#modeHandler = null;
+
     }
 
     onInit(): void {
@@ -117,17 +124,13 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
         this.#root = this.getRoot();
         this.#target = this.args.target ? this.getRoot().querySelector(this.args.target) : this.element;
         this.#action = CuiActionsListFactory.get(this.args.action);
+        this.#modeHandler = CuiOffsetModeFactory.get(this.args.mode);
         this.checkAndPerformActions(this.element.scrollTop, this.element.scrollLeft);
 
     }
 
-    private matchesOffset(top: number, left: number) {
-        return (this.args.offsetX > 0 && left >= this.args.offsetX) ||
-            (this.args.offsetY > 0 && top >= this.args.offsetY)
-    }
-
     private checkAndPerformActions(top: number, left: number) {
-        let matchesOffset = this.matchesOffset(top, left);
+        let matchesOffset = this.#modeHandler.matches(top, left, this.args.offsetX, this.args.offsetY);
         if (matchesOffset !== this.#matched) {
             this.act(matchesOffset);
             this.#matched = matchesOffset;

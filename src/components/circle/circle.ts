@@ -1,9 +1,9 @@
-import { ICuiComponent, ICuiComponentHandler, CuiObservables, CuiContext, ICuiParsable } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase, CuiHandler } from "../../app/handlers/base";
+import { CuiHandler } from "../../app/handlers/base";
 import { is, getRangeValue, isString, getIntOrDefault } from "../../core/utils/functions";
-import { IconBuilder } from "../icon/icon";
 import { ICONS, EVENTS } from "../../core/utils/statics";
+import { IconBuilder } from "../../app/builders/icon";
 
 export interface CuiCircleProgressChnaged {
     timestamp: number;

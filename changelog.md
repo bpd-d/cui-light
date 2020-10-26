@@ -1,5 +1,10 @@
 # bpd cUI Light changelog
-# [0.1.28] WIP
+# [0.1.29] WIP
+# [0.1.28] 2020-10-26
+* [Added] Offset new modes hanlder - static (default) keep existing behavior. New one - dynamic - was introduced.
+* [Added] Icon scale option - minimum is 1 (default), accepts integers
+* [Changed] Shorten offcanvas animation time
+* [Fixed] Spinner not working
 # [0.1.27] 2020-10-23
 * [Added] On component deletion - detach all events subscribed to component
 * [Added] Offset - Emit offset event every few pixels scrolled - add limitX and limitY properties which indicate whether scrolling reached end of the container

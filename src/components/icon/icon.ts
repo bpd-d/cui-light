@@ -1,21 +1,26 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase, CuiHandler, CuiChildMutation } from "../../app/handlers/base";
+import { CuiHandler } from "../../app/handlers/base";
 import { ICONS } from "../../core/utils/statics";
-import { is, createElementFromString, isString, getStringOrDefault, isTouchSupported } from "../../core/utils/functions";
+import { is, isString, getStringOrDefault, getIntOrDefault } from "../../core/utils/functions";
+import { IconBuilder } from "../../app/builders/icon";
 
 export class CuiIconArgs implements ICuiParsable {
     icon: string;
+    scale: number;
 
+    constructor() {
+        this.icon = null;
+        this.scale = 1;
+    }
     parse(val: any) {
-        if (!is(val)) {
-            this.icon = null;
-        }
         if (isString(val)) {
-            this.icon = val
-            return;
+            this.icon = getStringOrDefault(val, "");
+        } else {
+            this.icon = getStringOrDefault(val.icon, "");
+            this.scale = getIntOrDefault(val.scale, 1);
         }
-        this.icon = getStringOrDefault(val.icon, "");
+
     }
 }
 
@@ -75,7 +80,7 @@ export class CuiIconHandler extends CuiHandler<CuiIconArgs> {
         if (!iconStr) {
             return;
         }
-        const iconSvg = new IconBuilder(iconStr).build();
+        const iconSvg = new IconBuilder(iconStr).setScale(this.args.scale).build();
         const svg = this.element.querySelector('svg')
         if (is(svg)) {
             svg.remove();
@@ -94,44 +99,5 @@ export class CuiIconHandler extends CuiHandler<CuiIconArgs> {
 
     private appendChild(iconElement: Element) {
         this.element.appendChild(iconElement);
-    }
-}
-
-export class IconBuilder {
-    #element: string;
-    #scale: number;
-    #style: string;
-
-    constructor(svgString: string) {
-        this.#element = svgString;
-        this.#scale = 1;
-    }
-
-    setStyle(style: string): IconBuilder {
-        this.#style = style;
-        return this
-    }
-
-    setScale(scale: number): IconBuilder {
-        this.#scale = scale
-        return this
-    }
-
-    build(): Element {
-        let created = createElementFromString(this.#element)
-        if (is(created) && this.#scale) {
-            let appender = new IconScaleAppender();
-            appender.append(created, this.#scale)
-        }
-        return created
-    }
-}
-
-export class IconScaleAppender {
-    append(element: Element, value: number): void {
-        let width = element.hasAttribute("width") ? parseInt(element.getAttribute("width")) : 20;
-        let height = element.hasAttribute("height") ? parseInt(element.getAttribute("height")) : 20;
-        element.setAttribute("width", (width * value).toString())
-        element.setAttribute("height", (height * value).toString())
     }
 }

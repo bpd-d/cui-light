@@ -81,7 +81,7 @@ export class CuiOffCanvasHandler extends CuiInteractableHandler<CuiOffCanvasArgs
     #windowClickEventId: string;
 
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiOffCanvasHandler", element, attribute, new CuiOffCanvasArgs(prefix, utils.setup.animationTimeLong), utils);
+        super("CuiOffCanvasHandler", element, attribute, new CuiOffCanvasArgs(prefix, utils.setup.animationTime), utils);
         this.#prefix = prefix;
         this.#bodyClass = replacePrefix(OFFCANVAS_BODY, prefix);
         this.#windowClickEventId = null;
