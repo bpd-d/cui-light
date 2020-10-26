@@ -1,6 +1,6 @@
 import { CuiInit } from './app/initializer';
 
-export const CUI_LIGHT_VERSION = "0.1.29";
+export const CUI_LIGHT_VERSION = "0.1.30";
 
 declare global {
     interface Window {
