@@ -1,5 +1,6 @@
 # bpd cUI Light changelog
-# [0.1.29] WIP
+# [0.1.29] 2020-10-26
+* [Fixed] Initializer issues
 # [0.1.28] 2020-10-26
 * [Added] Offset new modes hanlder - static (default) keep existing behavior. New one - dynamic - was introduced.
 * [Added] Icon scale option - minimum is 1 (default), accepts integers
