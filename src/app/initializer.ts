@@ -29,6 +29,8 @@ import { CuiFloatComponent } from "../components/float/float";
 import { CuiSliderComponent } from "../components/switch/slider";
 import { SWIPE_ANIMATIONS_DEFINITIONS } from "./animation/definitions";
 import { CuiBanerComponent } from "../components/banner/banner";
+import { CuiCoverComponent } from "../components/cover/cover";
+import { CuiSortableComponent } from "../components/sortable/sortable";
 
 export class CuiInitializer {
     #window: any;
@@ -110,7 +112,9 @@ export class CuiInit {
             new CuiSwitcherComponent(),
             new CuiFloatComponent(),
             new CuiSliderComponent(),
-            new CuiBanerComponent()
+            new CuiBanerComponent(),
+            new CuiCoverComponent(),
+            new CuiSortableComponent()
         ];
 
         let result = await initializer.init({

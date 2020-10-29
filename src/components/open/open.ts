@@ -103,22 +103,49 @@ export class CuiOpenHandler extends CuiHandler<CuiOpenArgs> {
             this.isLocked = false;
         })
     }
-
+    /**
+     * Emits open event or performs an opening action
+     * @param target target element
+     * @returns whether event opened shall be emitted
+     */
     private async run(target: Element): Promise<boolean> {
         let cuiId = (target as any).$cuid;
         if (is(cuiId)) {
-            return this.utils.bus.emit(EVENTS.OPEN, cuiId, this.args.state);;
+            this._log.debug("Open cUI component")
+            await this.utils.bus.emit(EVENTS.OPEN, cuiId, this.args.state);
+            return false;
         } else {
+            this._log.debug("Open html component")
             if (are(this.args.timeout, this.args.action)) {
+                this._log.debug("Perfrom an action")
                 let actions = CuiActionsListFactory.get(this.args.action)
-                return this.actionsHelper.performActions(target, actions, this.args.timeout);
+                await this.actionsHelper.performActions(target, actions, this.args.timeout, () => {
+                    this.setActiveClass(target)
+                });
+                return true;
             }
+            this.setActiveClassAsync(target);
             return true;
         }
     }
 
+    private setActiveClass(target: Element) {
+        if (is(target) && !this.helper.hasClass(this.activeClassName, target)) {
+            this.helper.setClass(this.activeClassName, target);
+        }
+    }
+
+    private setActiveClassAsync(target: Element) {
+        this.fetch(() => {
+            if (is(target) && !this.helper.hasClass(this.activeClassName, target)) {
+                this.helper.setClassesAs(target, this.activeClassName);
+            }
+        })
+
+    }
+
     private activateTarget(ev: MouseEvent, target: Element, shouldEmit: boolean): void {
-        if (is(target) && this.helper.hasClass(this.activeClassName, target)) {
+        if (is(target) && !this.helper.hasClass(this.activeClassName, target)) {
             this.helper.setClassesAs(target, this.activeClassName);
         }
         if (shouldEmit)

@@ -1,5 +1,11 @@
 # bpd cUI Light changelog
-# [0.1.30] WIP
+# [0.1.31] WIP
+# [0.1.30] 2020-10-29
+* [Added] Component cover
+* [Added] Component sortable
+* [Added] Pause and Paused events in spinner/spinner icons come also with component
+* [Fixed] Drop events emit
+* [Fixed] Fixed open/close via cui-open and cui-close
 # [0.1.29] 2020-10-26
 * [Fixed] Initializer issues
 # [0.1.28] 2020-10-26

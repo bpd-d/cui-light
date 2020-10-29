@@ -132,7 +132,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         if (this.args.outClose) {
             this.#windowClickEventId = this.onEvent(EVENTS.WINDOW_CLICK, this.onWindowClick.bind(this));
         }
-        this.emitEvent(EVENTS.OPEN, {
+        this.emitEvent(EVENTS.OPENED, {
             timestamp: Date.now()
         })
         this.#hoverListener.attach();
@@ -152,7 +152,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.mutate(this.onClose, this);
         this.detachEvent(EVENTS.KEYDOWN, this.#keyEventId);
         this.detachEvent(EVENTS.WINDOW_CLICK, this.#windowClickEventId);
-        this.emitEvent(EVENTS.CLOSE, {
+        this.emitEvent(EVENTS.CLOSED, {
             timestamp: Date.now()
         })
         this.#hoverListener.detach();

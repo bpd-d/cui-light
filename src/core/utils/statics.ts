@@ -8,7 +8,8 @@ export const CLASSES = {
     animProgress: 'animation-progress',
     print: 'print',
     active: 'active',
-    swipingOn: "swiping-on"
+    swipingOn: "swiping-on",
+    selectionOff: "selection-off"
 }
 
 export const ICONS: any = {
@@ -163,6 +164,8 @@ export const EVENTS = {
     CHANGED: "changed",
     GLOBAL_MOVE: "globalmove",
     MOVE_LOCK: "movelock",
+    PAUSE: "pause",
+    PAUSED: "paused"
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";

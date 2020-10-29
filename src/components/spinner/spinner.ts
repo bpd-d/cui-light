@@ -1,23 +1,23 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler } from "../../app/handlers/base";
-import { ICONS } from "../../core/utils/statics";
-import { is, isString, getStringOrDefault, getIntOrDefault } from "../../core/utils/functions";
+import { CLASSES, EVENTS, ICONS } from "../../core/utils/statics";
+import { is, isString, getStringOrDefault, getIntOrDefault, replacePrefix } from "../../core/utils/functions";
 import { IconBuilder } from "../../app/builders/icon";
 
 export class CuiSpinnerArgs implements ICuiParsable {
     spinner: string;
     scale: number;
     constructor() {
-        this.spinner = null;
+        this.spinner = "circle";
         this.scale = 1;
     }
 
     parse(args: any) {
         if (isString(args)) {
-            this.spinner = args
+            this.spinner = getStringOrDefault(args, "circle");
         } else {
-            this.spinner = getStringOrDefault(args.spinner, null);
+            this.spinner = getStringOrDefault(args.spinner, "circle");
             this.scale = getIntOrDefault(args.scale, 1);
         }
     }
@@ -26,9 +26,12 @@ export class CuiSpinnerArgs implements ICuiParsable {
 
 export class CuiSpinnerComponent implements ICuiComponent {
     attribute: string;
+    #prefix: string;
     constructor(prefix?: string) {
-        this.attribute = `${prefix ?? 'cui'}-spinner`;
-        ICONS['special_circle_double'] = "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"circle-double\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><path class=\"circle-double-outer\" d=\"M 50.000002,6.1070619 A 44.867709,44.126654 0 0 1 94.867708,50.233712 44.867709,44.126654 0 0 1 50.000002,94.36037 44.867709,44.126654 0 0 1 5.132292,50.233717 44.867709,44.126654 0 0 1 50.000002,6.1070619\"></path><path class=\"circle-double-inner\" d=\"M 50.000001,15.59972 A 35.383463,34.633995 0 0 1 85.383464,50.233711 35.383463,34.633995 0 0 1 50.000001,84.86771 35.383463,34.633995 0 0 1 14.616536,50.233716 35.383463,34.633995 0 0 1 50.000001,15.59972\"></path></svg>"
+        this.#prefix = prefix ?? 'cui';
+        this.attribute = `${this.#prefix}-spinner`;
+        ICONS['spinner_circle'] = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" width=\"20\" height=\"20\"><path d=\"M 7.800378,1.7908996 A 8.4986862,8.4986862 0 0 1 18.2091,7.8003784 8.4986862,8.4986862 0 0 1 12.199621,18.209101 8.4986862,8.4986862 0 0 1 1.7908995,12.199622 8.4986862,8.4986862 0 0 1 7.800378,1.7908996 Z\"></path></svg>";
+        ICONS['spinner_circle_double'] = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" width=\"20\" height=\"20\"><path d=\"M 10,1.5000006 A 8.4999997,8.4999997 0 0 1 18.5,10 8.4999997,8.4999997 0 0 1 10,18.499999 8.4999997,8.4999997 0 0 1 1.5000005,10 8.4999997,8.4999997 0 0 1 10,1.5000006 Z\"></path><path d=\"M 10,3.4999997 A 6.5000002,6.5000002 0 0 1 16.5,10 6.5000002,6.5000002 0 0 1 10,16.5 6.5000002,6.5000002 0 0 1 3.5,9.9999993 6.5000002,6.5000002 0 0 1 10,3.4999997 Z\"></path></svg>";
     }
 
     getStyle(): string {
@@ -36,17 +39,21 @@ export class CuiSpinnerComponent implements ICuiComponent {
     }
 
     get(element: Element, utils: CuiUtils): ICuiComponentHandler {
-        return new CuiSpinnerHandler(element, utils, this.attribute);
+        return new CuiSpinnerHandler(element, utils, this.attribute, this.#prefix);
     }
 }
 
 export class CuiSpinnerHandler extends CuiHandler<CuiSpinnerArgs> {
-
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    #pauseEventId: string;
+    #animationPauseClass: string;
+    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiSpinnerHandler", element, attribute, new CuiSpinnerArgs(), utils);
+        this.#pauseEventId = null;
+        this.#animationPauseClass = replacePrefix("{prefix}-animation-pause", prefix);
     }
 
     onInit(): void {
+        this.#pauseEventId = this.onEvent(EVENTS.PAUSE, this.onPause.bind(this));
         this.add()
     }
 
@@ -58,6 +65,7 @@ export class CuiSpinnerHandler extends CuiHandler<CuiSpinnerArgs> {
 
     onDestroy(): void {
         this.removeIfAnyExisists();
+        this.detachEvent(EVENTS.PAUSE, this.#animationPauseClass);
     }
 
     private addSpinner(iconElement: Element, name: string) {
@@ -81,6 +89,18 @@ export class CuiSpinnerHandler extends CuiHandler<CuiSpinnerArgs> {
         if (existing) {
             existing.remove();
         }
+    }
+
+
+    private onPause(flag: boolean) {
+        this.fetch(() => {
+            if (flag && !this.helper.hasClass(this.#animationPauseClass, this.element)) {
+                this.helper.setClassesAs(this.element, this.#animationPauseClass);
+            } else {
+                this.helper.removeClassesAs(this.element, this.#animationPauseClass);
+            }
+        })
+        this.emitEvent(EVENTS.PAUSED, flag);
     }
 
 

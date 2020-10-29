@@ -60,7 +60,6 @@ export class CuiCloseComponent implements ICuiComponent {
 }
 
 export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
-    #actionHelper: CuiActionsHelper;
     #eventId: string;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiCloseHandler", element, attribute, new CuiCloseArgs(utils.setup.animationTime), utils);
@@ -98,7 +97,7 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
         }
         this.isLocked = true;
         this.run(target).then((result) => {
-            this.onActionFinish(ev, target, result);
+            this.onActionFinish(ev, result);
         }).catch((e) => {
             this._log.exception(e);
         }).finally(() => {
@@ -109,19 +108,34 @@ export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     private async run(target: Element): Promise<boolean> {
         let cuiId = (target as any).$cuid;
         if (is(cuiId)) {
-            return this.utils.bus.emit(EVENTS.CLOSE, cuiId, this.args.state);
+            await this.utils.bus.emit(EVENTS.CLOSE, cuiId, this.args.state);
+            return false;
         } else if (are(this.args.action, this.args.timeout)) {
             let actions = CuiActionsListFactory.get(this.args.action);
-            return this.#actionHelper.performActions(target, actions, this.args.timeout);
+            return this.actionsHelper.performActions(target, actions, this.args.timeout, () => {
+                this.removeActiveClass(target);
+            });
         } else {
+            this.removeActiveClassAsync(target);
             return true;
         }
     }
-
-    private onActionFinish(ev: MouseEvent, target: Element, shouldEmit: boolean) {
+    private removeActiveClass(target: Element) {
         if (is(target) && this.helper.hasClass(this.activeClassName, target)) {
-            this.helper.removeClassesAs(target, this.activeClassName);
+            this.helper.removeClass(this.activeClassName, target);
         }
+    }
+
+    private removeActiveClassAsync(target: Element) {
+        this.fetch(() => {
+            if (is(target) && this.helper.hasClass(this.activeClassName, target)) {
+                this.helper.removeClassesAs(target, this.activeClassName);
+            }
+        })
+
+    }
+    private onActionFinish(ev: MouseEvent, shouldEmit: boolean) {
+
         if (shouldEmit)
             this.emitClose(ev);
     }

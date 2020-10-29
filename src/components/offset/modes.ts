@@ -34,7 +34,7 @@ export class CuiOffsetDynamicMode implements ICuiOffsetMode {
         this.#pointTop = 0;
         this.#prevDiffX = 0;
         this.#prevDiffY = 0;
-        this.#threshold = 50;
+        this.#threshold = 100;
     }
     matches(top: number, left: number, offsetX: number, offsetY: number): boolean {
         return this.fitsOffsetY(top, offsetY) || this.fitsOffsetX(left, offsetX);

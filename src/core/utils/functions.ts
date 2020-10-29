@@ -387,7 +387,8 @@ export function registerCuiElement(node: any, components: ICuiComponent[], attri
                     element.$handlers[component.attribute] = handler;
                     element.$handlers[component.attribute].handle(parseAttribute(node, component.attribute));
                 } catch (e) {
-                    throw new RegisterElementError(e.message);
+                    let attr = matching ? matching.join(", ") : "";
+                    throw new RegisterElementError(`An error occured during [${attr}] initialization: ${e.message}`);
                 }
             }
         })
@@ -435,6 +436,9 @@ export function hasFunction(obj: any, fName: string) {
  * @param element 
  */
 export function getParentCuiElement(element: Element): Element {
+    if (!is(element)) {
+        return undefined;
+    }
     let parent = element.parentElement as any;
     return is(parent) && is(parent.$cuid) ? parent : getParentCuiElement(parent);
 }
@@ -514,4 +518,31 @@ export function mapObjectArray<T, V>(input: T[], callback: (t: T) => V): V[] {
     return input.map((item: T) => {
         return mapObject(item, callback);
     })
-} 
+}
+
+/**
+ * Delays callback execution by specific time. Callback cannot be called again until previous execution finishes or was cancelled
+ * @param callback - callback to execute
+ * @param delayTime - time in ms that execution shall be delayed by
+ * @returns Cancel callback
+ */
+export function delay(callback: (...args: any[]) => void, delayTime: number) {
+    if (!are(callback, delayTime)) {
+        throw new Error("[delay]: Input arguments are not correct")
+    }
+    let id: any = null;
+    return function (...args: any[]) {
+        if (id === null) {
+            id = setTimeout(() => {
+                callback(...args);
+                id = null;
+            }, delayTime)
+        }
+        return function () {
+            if (id !== null) {
+                clearTimeout(id);
+                id = null;
+            }
+        }
+    }
+}
