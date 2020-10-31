@@ -124,16 +124,18 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
                 this.#isTracking = true;
                 this.#startX = data.x;
                 this.helper.setClassesAs(document.body, CLASSES.swipingOn);
+                data.event.preventDefault();
                 break;
             case "up":
                 if (!this.#isTracking && this.#ratio == 0) {
                     break;
                 }
-                // Lock component until animation is finished
-                this.isLocked = true;
+
                 let absRatio = Math.abs(this.#ratio);
                 let timeout = absRatio * this.args.timeout;
                 let back = absRatio <= 0.4;
+                // Lock component until animation is finished
+                this.isLocked = true;
                 this.#swipeEngine.finish(absRatio, timeout, back);
                 this.helper.removeClassesAs(document.body, CLASSES.swipingOn);
                 this.#isTracking = false;
@@ -148,6 +150,7 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
                     this.mutate(() => {
                         this.#swipeEngine.update(Math.abs(this.#ratio));
                     })
+                    data.event.preventDefault();
                 }
                 break;
             default:

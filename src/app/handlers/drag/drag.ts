@@ -2,8 +2,6 @@ import { CuiMoveEventListener, ICuiMoveEvent } from "../../../core/listeners/mov
 
 export class CuiDragHandler {
     #root: Element;
-    #targets: Element[];
-    #triggers: Element[];
     #moveHandler: CuiMoveEventListener;
     #onDragStart: (data: ICuiMoveEvent) => boolean;
     #onDragOver: (data: ICuiMoveEvent) => void;
@@ -11,12 +9,14 @@ export class CuiDragHandler {
     #timeout: number;
     #isTracking: boolean;
     #timeoutId: any;
-    constructor(root: Element) {
+    constructor(root: HTMLElement) {
         this.#root = root;
         this.#moveHandler = new CuiMoveEventListener();
         this.#timeout = 150;
         this.#isTracking = false;
         this.#timeoutId = undefined;
+        this.#moveHandler.setTarget(this.#root);
+        this.#moveHandler.preventDefault(false);
         this.#moveHandler.setCallback(this.onMove.bind(this));
     }
 

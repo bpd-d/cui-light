@@ -48,3 +48,9 @@ export class AnimatorError extends ErrorBase {
         super("AnimatorError", message);
     }
 }
+
+export class CSSVariableError extends ErrorBase {
+    constructor(message?: string) {
+        super("CSSVariableError", message);
+    }
+}

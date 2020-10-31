@@ -29,6 +29,7 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     #isLocked: boolean;
     #isAttached: boolean;
     #preventDefault: boolean;
+    #target: Element;
     constructor(element?: HTMLElement) {
         this.#isLocked = false;
         this.#element = element ?? document.body;
@@ -41,8 +42,13 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
         this.onTouchEnd = this.onTouchEnd.bind(this)
         this.onTouchMove = this.onTouchMove.bind(this)
     }
+
     setCallback(callback: (t: ICuiMoveEvent) => void): void {
         this.#onEvent = callback;
+    }
+
+    setTarget(element: Element) {
+        this.#target = element;
     }
     isInProgress(): boolean {
         return this.#isLocked;
@@ -54,12 +60,12 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
         if (this.#isAttached) {
             return;
         }
-        this.#element.addEventListener('mousedown', this.onMouseDown)
-        this.#element.addEventListener('mouseup', this.onMouseUp)
-        this.#element.addEventListener('mousemove', this.onMouseMove)
-        this.#element.addEventListener('touchstart', this.onTouchStart)
-        this.#element.addEventListener('touchend', this.onTouchEnd)
-        this.#element.addEventListener('touchmove', this.onTouchMove)
+        this.#element.addEventListener('mousedown', this.onMouseDown, { passive: false } as any)
+        this.#element.addEventListener('mouseup', this.onMouseUp, { passive: false } as any)
+        this.#element.addEventListener('mousemove', this.onMouseMove, { passive: false } as any)
+        this.#element.addEventListener('touchstart', this.onTouchStart, { passive: false } as any)
+        this.#element.addEventListener('touchend', this.onTouchEnd, { passive: false } as any)
+        this.#element.addEventListener('touchmove', this.onTouchMove, { passive: false } as any)
         this.#isAttached = true;
     }
     detach(): void {
@@ -68,12 +74,12 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
             return;
         }
 
-        this.#element.removeEventListener('mousedown', this.onMouseDown)
-        this.#element.removeEventListener('mouseup', this.onMouseUp)
-        this.#element.removeEventListener('mousemove', this.onMouseMove)
-        this.#element.removeEventListener('touchstart', this.onTouchStart)
-        this.#element.removeEventListener('touchend', this.onTouchEnd)
-        this.#element.removeEventListener('touchmove', this.onTouchMove)
+        this.#element.removeEventListener('mousedown', this.onMouseDown, { passive: false } as any)
+        this.#element.removeEventListener('mouseup', this.onMouseUp, { passive: false } as any)
+        this.#element.removeEventListener('mousemove', this.onMouseMove, { passive: false } as any)
+        this.#element.removeEventListener('touchstart', this.onTouchStart, { passive: false } as any)
+        this.#element.removeEventListener('touchend', this.onTouchEnd, { passive: false } as any)
+        this.#element.removeEventListener('touchmove', this.onTouchMove, { passive: false } as any)
         this.#isAttached = false;
     }
 
@@ -85,6 +91,10 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
         if (this.#isLocked) {
             return;
         }
+        if (this.#target && !this.#target.contains(ev.target as Node)) {
+            return;
+        }
+
         this.#isLocked = true;
         this.publishMouseEvent("down", ev)
 
@@ -102,14 +112,14 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     onMouseMove(ev: MouseEvent) {
         if (this.#isLocked) {
             this.publishMouseEvent("move", ev)
-            // if (this.#preventDefault) {
-            //     ev.preventDefault();
-            // }
         }
     }
 
     onTouchStart(ev: TouchEvent) {
         if (this.#isLocked) {
+            return;
+        }
+        if (this.#target && !this.#target.contains(ev.target as Node)) {
             return;
         }
         this.#isLocked = true;
@@ -134,9 +144,9 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     }
 
     private publishMouseEvent(type: CuiMoveEventState, ev: MouseEvent) {
-        // if (this.#preventDefault && ev.cancelable) {
-        //     ev.preventDefault();
-        // }
+        if (this.#preventDefault && ev.cancelable) {
+            ev.preventDefault();
+        }
         if (is(this.#onEvent)) {
             this.#onEvent({
                 type: type,
@@ -151,8 +161,8 @@ export class CuiMoveEventListener implements ICuiEventListener<ICuiMoveEvent> {
     }
 
     private publishTouchEvent(type: CuiMoveEventState, ev: TouchEvent) {
-        // if (this.#preventDefault && ev.cancelable)
-        //     ev.preventDefault();
+        if (this.#preventDefault && ev.cancelable)
+            ev.preventDefault();
         if (is(this.#onEvent)) {
             let touch = null;
             if (ev.touches.length > 0) {

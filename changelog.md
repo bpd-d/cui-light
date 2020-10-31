@@ -1,5 +1,8 @@
 # bpd cUI Light changelog
-# [0.1.31] WIP
+# [0.1.32] WIP
+# [0.1.31] 2020-10-31
+* [Added] Initial implementation of plugin that is able to change some of framework styles
+* [Fixed] Perfromance improvements while moving in slide, float, banner and sortable 
 # [0.1.30] 2020-10-29
 * [Added] Component cover
 * [Added] Component sortable

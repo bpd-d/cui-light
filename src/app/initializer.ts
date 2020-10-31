@@ -31,6 +31,7 @@ import { SWIPE_ANIMATIONS_DEFINITIONS } from "./animation/definitions";
 import { CuiBanerComponent } from "../components/banner/banner";
 import { CuiCoverComponent } from "../components/cover/cover";
 import { CuiSortableComponent } from "../components/sortable/sortable";
+import { CuiCSSVariablesPlugin } from "../plugins/properties/properties";
 
 export class CuiInitializer {
     #window: any;
@@ -88,7 +89,8 @@ export class CuiInit {
             new CuiAutoLightModePlugin({ autoLight: true }),
             new CuiAutoPrintModePlugin({ autoPrint: true }),
             new CuiKeysObserverPlugin(null),
-            new CuiWindowClickPlugin()
+            new CuiWindowClickPlugin(),
+            new CuiCSSVariablesPlugin({})
         ];
 
         const componentList: ICuiComponent[] = [

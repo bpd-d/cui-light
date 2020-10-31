@@ -6,6 +6,7 @@ import { CuiInteractableArgs, CuiInteractableHandler } from "../../app/handlers/
 import { CuiMoveEventListener, ICuiMoveEvent } from "../../core/listeners/move";
 import { BasePositionCalculator, BaseResizeCalculator, ICuiFloatPositionCalculator, ICuiFloatResizeCalculator } from "./helpers";
 import { CLASSES, EVENTS } from "../../core/index";
+import { ElementBuilder } from "../../app/builders/element";
 
 const FLOAT_OPEN_ANIMATION_CLASS = '.{prefix}-float-default-in';
 const FLOAT_CLOSE_ANIMATION_CLASS = '.{prefix}-float-default-out';
@@ -71,17 +72,19 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
     #resizeCalculator: ICuiFloatResizeCalculator;
     #resizeBtn: HTMLElement;
     #moveBtn: HTMLElement;
+    #shadow: HTMLElement;
     constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
-        super("CuiFloatHandler", element, attribute, new CuiFloatArgs(prefix, utils.setup.animationTimeLong), utils);
+        super("CuiFloatHandler", element, attribute, new CuiFloatArgs(prefix, utils.setup.animationTime), utils);
         this.#isMoving = false;
         this.#isResizing = false;
         this.#prevX = 0;
         this.#prevY = 0;
         this.#moveListener = new CuiMoveEventListener();
-        this.#moveListener.preventDefault(true);
+        this.#moveListener.preventDefault(false);
         this.#positionCalculator = new BasePositionCalculator();
         this.#resizeCalculator = new BaseResizeCalculator(element as HTMLElement)
         this.#prefix = prefix;
+        this.#shadow = undefined;
         this.move = this.move.bind(this);
         this.resize = this.resize.bind(this);
     }
@@ -100,16 +103,16 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
 
     onDestroy(): void {
     }
+
     onBeforeOpen(): boolean {
         return true
     }
+
     onAfterOpen(): void {
-        console.log("Opened float");
         this.#moveListener.attach();
     }
 
     onAfterClose(): void {
-        console.log("Closed float");
         this.#moveListener.detach();
     }
     onBeforeClose(): boolean {
@@ -132,11 +135,13 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
 
 
     onMouseDown(ev: ICuiMoveEvent) {
-        console.log("DOwn");
         if (ev.target === this.#moveBtn) {
             this.#isMoving = true;
+            ev.event.preventDefault();
         } else if (ev.target === this.#resizeBtn) {
             this.#isResizing = true;
+            ev.event.preventDefault();
+            //this.helper.setClass("cui-float-resize-shadow")
         }
         this.#prevX = ev.x;
         this.#prevY = ev.y;
@@ -170,6 +175,7 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
             this.#prevX = ev.x;
             this.#prevY = ev.y;
         })
+        ev.event.preventDefault();
     }
 
     resize(element: HTMLElement, x: number, y: number, diffX: number, diffY: number): void {
@@ -191,8 +197,6 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
             })
         }
     }
-
-
 
     fitsWindow(top: number, left: number, width: number, height: number) {
         return (top + height < window.innerHeight - 10) &&

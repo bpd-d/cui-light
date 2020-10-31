@@ -74,10 +74,16 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         this.#currentBefore = undefined;
         this.#animation = new CuiSwipeAnimationEngine();
         this.#animation.setOnFinish(() => {
+            let item = this.#currentTarget;
+            let idx = this.#currentIdx;
             this.stopMovementPrep();
             this.getTargetsAndTrggers();
-            this.utils.bus.emit(EVENTS.MOVE_LOCK, null, true);
-
+            this.utils.bus.emit(EVENTS.MOVE_LOCK, null, false);
+            this.emitEvent(EVENTS.SORTED, {
+                item: item,
+                index: idx,
+                timestamp: new Date()
+            })
         })
     }
 
@@ -106,8 +112,6 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         try {
             this.#targets = [...this.element.querySelectorAll(this.args.target)];
             this.#triggers = [...this.element.querySelectorAll(this.args.trigger)];
-            console.log(this.#triggers);
-            console.log(this.#targets);
             if (this.#triggers.length !== this.#targets.length) {
                 throw new Error("Triggers and targets selector are not correct")
             }
@@ -133,6 +137,7 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
 
     private onDragOver(data: ICuiMoveEvent): void {
         this.move(data);
+        data.event.preventDefault();
     }
 
     private onDragEnd(data: ICuiMoveEvent): void {
@@ -149,11 +154,12 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
 
     private startMovementPrep() {
         this.mutate(() => {
+
+            this.createPreview();
+            this.createShadow();
             this.helper.setClass(this.#movingCls, this.#currentTarget);
             this.helper.setClass("cui-locked", this.element);
             this.helper.setClass(CLASSES.swipingOn, document.body);
-            this.createPreview();
-            this.createShadow();
         })
     }
 
@@ -223,12 +229,13 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
             return;
         }
         let [idx, detected] = this.#detector.detect(data.x, data.y);
-        if (idx > -1 && (idx < this.#currentIdx || idx > this.#currentIdx + 1) && this.#currentBefore !== detected) {
+        if (idx > -1 && (idx < this.#currentIdx || (idx > this.#currentIdx)) && this.#currentBefore !== detected) {
             if (!this.helper.hasClass(this.activeClassName, this.#shadow)) {
                 this.helper.setClass(this.activeClassName, this.#shadow);
             }
-            this.insertElement(this.#shadow, detected);
-            this.#currentBefore = detected as HTMLElement;
+            let el = detected;
+            this.insertElement(this.#shadow, el);
+            this.#currentBefore = el as HTMLElement;
         }
     }
 

@@ -13,7 +13,7 @@ export class CuiDragOverDetector implements ICuiElementDetector {
     detect(x: number, y: number): [number, Element] {
         let reduced = this.#elements ? this.#elements.reduce((closest, child, currentId) => {
             const box = child.getBoundingClientRect();
-            let offset = y - box.top - box.height / 2
+            let offset = y - box.top - box.height / 2;
             if (offset < 0 && offset > closest.offset) {
                 return { offset: offset, element: child, idx: currentId }
             } else {

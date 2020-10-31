@@ -130,7 +130,8 @@ export const CSS_VARIABLES: any = {
     padding: "--{prefix}-padding",
     margin: "--{prefix}-margin",
     scrollbarWidth: "--{prefix}-scrollbar-width",
-    componentSpace: "--{prefix}-component-space"
+    componentSpace: "--{prefix}-component-space",
+    accordionIcon: "--{prefix}-accordion-icon"
 }
 
 
@@ -165,7 +166,8 @@ export const EVENTS = {
     GLOBAL_MOVE: "globalmove",
     MOVE_LOCK: "movelock",
     PAUSE: "pause",
-    PAUSED: "paused"
+    PAUSED: "paused",
+    SORTED: "sorted",
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";
