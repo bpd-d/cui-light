@@ -59,6 +59,7 @@ export class CuiDragHandler {
 
                 break;
             case "move":
+                this.cancelTimeout();
                 if (!this.#isTracking) {
                     return;
                 }
@@ -67,10 +68,7 @@ export class CuiDragHandler {
                 }
                 break;
             case "up":
-                if (this.#timeoutId) {
-                    clearTimeout(this.#timeoutId);
-                    this.#timeoutId = undefined;
-                }
+                this.cancelTimeout();
                 if (!this.#isTracking) {
                     return;
                 }
@@ -79,6 +77,13 @@ export class CuiDragHandler {
                 }
                 this.#isTracking = false;
                 break;
+        }
+    }
+
+    private cancelTimeout() {
+        if (this.#timeoutId) {
+            clearTimeout(this.#timeoutId);
+            this.#timeoutId = undefined;
         }
     }
 }

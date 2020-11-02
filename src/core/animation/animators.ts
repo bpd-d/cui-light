@@ -31,7 +31,7 @@ export class OpacityAnimator implements ICuiPropertyAnimator<AnimatorPropertyVal
         }
         let current = this.length * progress
         if (element["style"]) {
-            element.style.opacity = this.rtl ? Math.max(this.from - current, 0) : Math.max(this.from + current, 1);
+            element.style.opacity = this.rtl ? Math.max(this.from - current, 0) : Math.min(this.from + current, 1);
         }
 
     }

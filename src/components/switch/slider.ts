@@ -119,6 +119,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
             this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
         })
         this.#animationDef = SWIPE_ANIMATIONS_DEFINITIONS[this.args.animation];
+
         this.startTask();
     }
 
@@ -265,8 +266,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
             this.#startX = -1;
             this.#swipeRatio = 0;
         }
-
-
+        this.startTask();
     }
 
     onPushSwitch(index: string) {

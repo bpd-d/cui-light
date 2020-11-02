@@ -13,7 +13,7 @@ export class PropertySetter {
             return;
         }
         this.#utils.interactions.mutate(() => {
-            this.#utils.setProperty(name, value)
+            this.#utils.setProperty(property, value)
         }, null)
     }
 

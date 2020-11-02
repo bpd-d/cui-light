@@ -59,4 +59,43 @@ describe("Tests checking class [CuiColors]", function () {
         expect(color.getColorValue("blue")).toEqual(115)
     })
 
+    it("create from [hex short]", function () {
+        let c = CuiColor.create("#fff");
+        expect(c.getColorValue("red")).toEqual(255)
+        expect(c.getColorValue("green")).toEqual(255)
+        expect(c.getColorValue("blue")).toEqual(255)
+    })
+
+    it("create from [hex]", function () {
+        let c = CuiColor.create("#626364");
+        expect(c.getColorValue("red")).toEqual(98)
+        expect(c.getColorValue("green")).toEqual(99)
+        expect(c.getColorValue("blue")).toEqual(100)
+    })
+
+    it("create from [hex alpha]", function () {
+        let c = CuiColor.create("#626364FA");
+        expect(c.getColorValue("red")).toEqual(98)
+        expect(c.getColorValue("green")).toEqual(99)
+        expect(c.getColorValue("blue")).toEqual(100)
+        expect(c.getColorValue("alpha")).toEqual(0.98)
+
+    })
+
+    it("create from [rgb]", function () {
+        let c = CuiColor.create("rgb(98, 99, 100)");
+        expect(c.getColorValue("red")).toEqual(98)
+        expect(c.getColorValue("green")).toEqual(99)
+        expect(c.getColorValue("blue")).toEqual(100)
+        expect(c.getColorValue("alpha")).toEqual(1)
+    })
+
+    it("create from [rgba]", function () {
+        let c = CuiColor.create("rgba(98, 99, 100, 0.9)");
+        expect(c.getColorValue("red")).toEqual(98)
+        expect(c.getColorValue("green")).toEqual(99)
+        expect(c.getColorValue("blue")).toEqual(100)
+        expect(c.getColorValue("alpha")).toEqual(0.9)
+    })
+
 }) 

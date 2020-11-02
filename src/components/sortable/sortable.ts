@@ -1,33 +1,35 @@
 import { ElementBuilder } from "../../app/builders/element";
 import { CuiHandler } from "../../app/handlers/base";
-import { CuiDragOverDetector } from "../../app/handlers/drag/detectors";
+import { CuiSimpleDragOverDetector } from "../../app/handlers/drag/detectors";
 import { CuiDragHandler } from "../../app/handlers/drag/drag";
 import { ICuiElementDetector } from "../../app/handlers/drag/interfaces";
 import { CuiSwipeAnimationEngine, PropsTypes } from "../../core/animation/engine";
 import { AnimationProperty } from "../../core/animation/interfaces";
-import { CLASSES, CuiUtils, delay, EVENTS, getIntOrDefault, getStringOrDefault, ICuiComponent, ICuiComponentHandler, ICuiParsable, replacePrefix, SCOPE_SELECTOR } from "../../core/index";
+import { CLASSES, CuiUtils, delay, EVENTS, getIntOrDefault, ICuiComponent, ICuiComponentHandler, ICuiParsable, is, replacePrefix, SCOPE_SELECTOR } from "../../core/index";
 import { ICuiMoveEvent } from "../../core/listeners/move";
 
-const SORTABLE_ITEMS_SELECTOR = ".{prefix}-sortable-item";
 const SORTABLE_IS_MOVING = "{prefix}-moving";
-const DEFAULT_SELECTOR = " > li";
+const DEFAULT_SELECTOR = " > *";
 const SORTABLE_PREVIEW_CLS = "{prefix}-sortable-preview";
-const SORTABLE_SHADOW_CLS = "{prefix}-sortable-shadow";
 
 export class CuiSortableArgs implements ICuiParsable {
     target: string;
     trigger: string;
-    timeout: number
+    timeout: number;
+    threshold: number;
     constructor() {
         this.target = SCOPE_SELECTOR + DEFAULT_SELECTOR;;
         this.trigger = SCOPE_SELECTOR + DEFAULT_SELECTOR;
         this.timeout = 150;
+        this.threshold = 5;
     }
     parse(val: any): void {
         this.target = val.target ? SCOPE_SELECTOR + " " + val.target : SCOPE_SELECTOR + DEFAULT_SELECTOR;
         this.trigger = val.trigger ? SCOPE_SELECTOR + " " + val.trigger : SCOPE_SELECTOR + DEFAULT_SELECTOR;
         this.timeout = getIntOrDefault(val.timeout, 150);
+        this.threshold = getIntOrDefault(val.threshold, 5);
     }
+
 
 }
 
@@ -53,14 +55,12 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
     #currentTarget: HTMLElement;
     #currentIdx: number;
     #preview: HTMLElement;
-    #shadow: HTMLElement;
     #movingCls: string;
     #detector: ICuiElementDetector;
     #currentBefore: HTMLElement;
     #animation: CuiSwipeAnimationEngine;
 
     #previewCls: string;
-    #shadowCls: string;
     constructor(element: HTMLElement, attribute: string, utils: CuiUtils, prefix: string) {
         super("CuiSortableHandler", element, attribute, new CuiSortableArgs(), utils);
         this.#dragHandler = new CuiDragHandler(element);
@@ -69,15 +69,14 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         this.#dragHandler.onDragEnd(this.onDragEnd.bind(this));
         this.#movingCls = replacePrefix(SORTABLE_IS_MOVING, prefix);
         this.#previewCls = replacePrefix(SORTABLE_PREVIEW_CLS, prefix);
-        this.#shadowCls = replacePrefix(SORTABLE_SHADOW_CLS, prefix);
-        this.#detector = new CuiDragOverDetector();
+        this.#detector = new CuiSimpleDragOverDetector();
         this.#currentBefore = undefined;
         this.#animation = new CuiSwipeAnimationEngine();
         this.#animation.setOnFinish(() => {
             let item = this.#currentTarget;
             let idx = this.#currentIdx;
             this.stopMovementPrep();
-            this.getTargetsAndTrggers();
+
             this.utils.bus.emit(EVENTS.MOVE_LOCK, null, false);
             this.emitEvent(EVENTS.SORTED, {
                 item: item,
@@ -90,6 +89,7 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
     onInit(): void {
         this.#dragHandler.attach();
         this.getTargetsAndTrggers();
+        this.#detector.setThreshold(this.args.threshold)
     }
 
     onUpdate(): void {
@@ -113,7 +113,7 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
             this.#targets = [...this.element.querySelectorAll(this.args.target)];
             this.#triggers = [...this.element.querySelectorAll(this.args.trigger)];
             if (this.#triggers.length !== this.#targets.length) {
-                throw new Error("Triggers and targets selector are not correct")
+                throw new Error(`Triggers (count ${this.#triggers.length}) and targets (count ${this.#targets.length}) selector are not correct`)
             }
             this.#detector.setElements(this.#targets);
         } catch (e) {
@@ -131,7 +131,12 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
             return false;
         }
         this.utils.bus.emit(EVENTS.MOVE_LOCK, null, true);
-        this.startMovementPrep();
+        this.startMovementPrep(data);
+        this.emitEvent(EVENTS.SORT_START, {
+            item: this.#currentTarget,
+            index: this.#currentIdx,
+            timestamp: new Date()
+        })
         return true;
     }
 
@@ -152,36 +157,33 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         });
     }
 
-    private startMovementPrep() {
+    private startMovementPrep(data: ICuiMoveEvent) {
         this.mutate(() => {
-
             this.createPreview();
-            this.createShadow();
             this.helper.setClass(this.#movingCls, this.#currentTarget);
             this.helper.setClass("cui-locked", this.element);
             this.helper.setClass(CLASSES.swipingOn, document.body);
+            this.setPreviewPosition(data);
+            this.setCurrentPosition(data);
         })
     }
 
     private stopMovementPrep() {
         this.mutate(() => {
-            if (this.#currentTarget && this.#currentBefore) {
-                this.insertElement(this.#currentTarget, this.#currentBefore);
-            }
             this.helper.removeClass(this.#movingCls, this.#currentTarget);
             this.helper.removeClass(CLASSES.swipingOn, document.body);
             this.helper.removeClass("cui-locked", this.element);
             this.removePreview();
-            this.removeShadow();
             this.#currentTarget = undefined;
             this.#currentBefore = undefined;
+            this.getTargetsAndTrggers();
         })
     }
 
     private move(data: ICuiMoveEvent) {
         this.mutate(() => {
-            this.movePreview(data);
-            this.moveShadow(data);
+            this.setPreviewPosition(data);
+            this.setCurrentPosition(data);
         })
     }
 
@@ -189,23 +191,7 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         this.#preview = new ElementBuilder("div").setClasses(this.#previewCls).build();
         this.#preview.style.width = `${this.#currentTarget.offsetWidth}px`;
         this.#preview.style.height = `${this.#currentTarget.offsetHeight}px`;
-        this.#preview.style.top = `${this.#currentTarget.offsetTop}px`;
-        this.#preview.style.left = `${this.#currentTarget.offsetLeft}px`;
         document.body.appendChild(this.#preview);
-    }
-
-    private createShadow() {
-        this.#shadow = new ElementBuilder("div").setClasses(this.#shadowCls).build();
-        this.#shadow.style.width = `${this.#currentTarget.offsetWidth}px`;
-        this.#shadow.style.height = `${this.#currentTarget.offsetHeight}px`;
-        this.element.appendChild(this.#shadow);
-    }
-
-    private removeShadow() {
-        if (this.#shadow) {
-            this.#shadow.remove();
-            this.#shadow = null;
-        }
     }
 
     private removePreview() {
@@ -215,7 +201,7 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         }
     }
 
-    private movePreview(data: ICuiMoveEvent) {
+    private setPreviewPosition(data: ICuiMoveEvent) {
         if (!this.#preview) {
             return;
         }
@@ -224,23 +210,22 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
         this.#preview.style.left = `${data.x}px`;
     }
 
-    private moveShadow(data: ICuiMoveEvent) {
-        if (!this.#shadow) {
+    private setCurrentPosition(data: ICuiMoveEvent) {
+        if (!this.#currentTarget) {
             return;
         }
         let [idx, detected] = this.#detector.detect(data.x, data.y);
-        if (idx > -1 && (idx < this.#currentIdx || (idx > this.#currentIdx)) && this.#currentBefore !== detected) {
-            if (!this.helper.hasClass(this.activeClassName, this.#shadow)) {
-                this.helper.setClass(this.activeClassName, this.#shadow);
-            }
+        if ((idx !== this.#currentIdx) && this.#currentBefore !== detected) {
             let el = detected;
-            this.insertElement(this.#shadow, el);
+            this.insertElement(this.#currentTarget, el);
             this.#currentBefore = el as HTMLElement;
+            this.getTargetsAndTrggers();
+            this.#currentIdx = idx;
         }
     }
 
     private insertElement(source: Element, destination: Element) {
-        if (destination) {
+        if (is(destination)) {
             this.element.insertBefore(source, destination);
         } else {
             this.element.appendChild(source);
@@ -248,7 +233,7 @@ export class CuiSortableHandler extends CuiHandler<CuiSortableArgs> {
     }
 
     private getFinishAnimation(): AnimationProperty<PropsTypes> {
-        const box = this.#shadow.getBoundingClientRect();
+        const box = this.#currentTarget.getBoundingClientRect();
         return {
             opacity: {
                 from: 1,

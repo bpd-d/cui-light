@@ -14,7 +14,7 @@ export class CuiPropertiesHandler {
      * @param {string} unit optional - size unit, px if not provided
      */
     setBaseFontSize(value: number, unit?: string) {
-        this.setBaseUnitValue(CSS_VARIABLES.lineHeight, value, unit);
+        this.setBaseUnitValue(CSS_VARIABLES.fontSize, value, unit);
     }
 
     /**

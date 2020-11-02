@@ -168,6 +168,7 @@ export const EVENTS = {
     PAUSE: "pause",
     PAUSED: "paused",
     SORTED: "sorted",
+    SORT_START: "sortstart"
 }
 
 export const OBSERVABLE_SCROLL = "SCROLL";

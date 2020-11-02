@@ -179,10 +179,10 @@ export class CuiThemeColorsSetter {
     setAutoColors(base: CuiColor) {
         let set: PropertySet = {}
         set[this.#set.base] = base.toCssString();
-        set[this.#set.shade] = base.lighten(50).toCssString();
-        set[this.#set.shadeDark] = base.darken(50).toCssString();
-        set[this.#set.active] = base.darken(15).toCssString();
-        set[this.#set.muted] = base.lighten(15).toCssString();
+        set[this.#set.shade] = base.lighten(30).toCssString();
+        set[this.#set.shadeDark] = base.darken(30).toCssString();
+        set[this.#set.active] = base.darken(10).toCssString();
+        set[this.#set.muted] = base.lighten(10).toCssString();
         this.#setter.setProperties(set);
     }
 

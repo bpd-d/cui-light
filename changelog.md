@@ -1,5 +1,9 @@
 # bpd cUI Light changelog
-# [0.1.32] WIP
+# [0.1.33] WIP
+# [0.1.32] 2020-11-02
+* [Added] css-variables-plugin supports bus events
+* [Fixed] Sortable performance and new element detection
+* [Fixed] Opacity animator
 # [0.1.31] 2020-10-31
 * [Added] Initial implementation of plugin that is able to change some of framework styles
 * [Fixed] Perfromance improvements while moving in slide, float, banner and sortable 

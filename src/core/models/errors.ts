@@ -54,3 +54,9 @@ export class CSSVariableError extends ErrorBase {
         super("CSSVariableError", message);
     }
 }
+
+export class CuiColorError extends ErrorBase {
+    constructor(message?: string) {
+        super("CuiColorError", message);
+    }
+}

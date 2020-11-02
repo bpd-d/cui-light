@@ -23,7 +23,7 @@ export class CuiAnimation {
     setTimeout(timeout: number) {
         this.#timeout = timeout;
     }
-    
+
     onError(callback: (e: Error) => void) {
         this.#onError = callback;
         this.#engine.setOnError(callback)
@@ -224,6 +224,7 @@ export class CuiSwipeAnimationEngine {
                 animator.setProperty(props[prop]);
                 this.#animators.push(animator);
             }
+            console.log(this.#animators);
         } catch (e) {
             this.reportError(e);
         }

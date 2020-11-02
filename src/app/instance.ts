@@ -20,14 +20,14 @@ export class CuiInstance {
     #mutationObserver: ICuiMutionObserver;
     #toastManager: CuiToastHandler;
     #utils: CuiUtils;
-    plugins: ICuiPluginManager;
+    #plugins: ICuiPluginManager;
     #components: ICuiComponent[];
     #rootElement: HTMLElement;
     #moveObserver: CuiMoveObserver;
     constructor(setup: CuiSetupInit, plugins: ICuiPlugin[], components: ICuiComponent[]) {
         STATICS.prefix = setup.prefix;
         STATICS.logLevel = setup.logLevel;
-        this.plugins = new CuiPluginManager(plugins);
+        this.#plugins = new CuiPluginManager(plugins);
         this.#components = components ?? [];
         this.#utils = new CuiUtils(setup);
         this.#log = CuiLoggerFactory.get('CuiInstance')
@@ -56,13 +56,13 @@ export class CuiInstance {
         }
         this.#log.debug("Init plugins", "init")
         // Init plugins
-        this.plugins.init(this.#utils);
+        this.#plugins.init(this.#utils);
 
         if (are(this.#components, mutatedAttributes)) {
             this.#log.debug("Init mutation observer", "init")
             this.#mutationObserver = new CuiMutationObserver(this.#rootElement, this.#utils)
             this.#mutationObserver.setComponents(this.#components).setAttributes(mutatedAttributes)
-            this.#mutationObserver.setPlugins(this.plugins);
+            this.#mutationObserver.setPlugins(this.#plugins);
             this.#mutationObserver.start();
         }
 
@@ -164,5 +164,9 @@ export class CuiInstance {
     alert(id: string, type: CuiAlertType, data: CuiAlertData): void {
         let popup = CuiAlertFactory.get(id, type, data, this.#utils);
         popup.show(this.#rootElement);
+    }
+
+    getPlugin(name: string): ICuiPlugin {
+        return this.#plugins.get(name);
     }
 }
