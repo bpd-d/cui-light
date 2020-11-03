@@ -39,7 +39,7 @@ export class CuiHoverListener implements ICuiEventListener<CuiHoverEvent> {
         this.#isAttached = false;
     }
 
-    emit(mouseEvent: MouseEvent, force: boolean) {
+    private emit(mouseEvent: MouseEvent, force: boolean) {
         if (!are(this.#callback)) {
             return;
         }
@@ -57,22 +57,22 @@ export class CuiHoverListener implements ICuiEventListener<CuiHoverEvent> {
     isAttached() {
         return this.#isAttached;
     }
-    invoke(ev: CuiHoverEvent) {
+    private invoke(ev: CuiHoverEvent) {
         this.#callback(ev);
         this.#inProgress = false;
     }
 
-    onMouseOver(ev: MouseEvent) {
+    private onMouseOver(ev: MouseEvent) {
         this.#isHovering = true;
         this.emit(ev, true);
     }
 
-    onMouseOut(ev: MouseEvent) {
+    private onMouseOut(ev: MouseEvent) {
         this.#isHovering = false;
         this.emit(ev, true);
     }
 
-    onMouseMove(ev: MouseEvent) {
+    private onMouseMove(ev: MouseEvent) {
         this.emit(ev, false);
     }
 }

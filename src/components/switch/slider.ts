@@ -150,7 +150,8 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                 this.#startX = data.x;
                 this.#currSlider.setElement(current);
                 this.helper.setClassesAs(document.body, CLASSES.swipingOn);
-                data.event.preventDefault();
+                if (data.event.cancelable)
+                    data.event.preventDefault();
                 break;
             case "up":
                 if (!this.#isTracking) {
@@ -193,7 +194,8 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
                     this.#currSlider.update(Math.abs(this.#swipeRatio));
                     this.#nextSlider.update(Math.abs(this.#swipeRatio));
                 })
-                data.event.preventDefault();
+                if (data.event.cancelable)
+                    data.event.preventDefault();
                 break;
             default:
                 break;

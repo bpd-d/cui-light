@@ -32,6 +32,7 @@ import { CuiBanerComponent } from "../components/banner/banner";
 import { CuiCoverComponent } from "../components/cover/cover";
 import { CuiSortableComponent } from "../components/sortable/sortable";
 import { CuiCSSVariablesPlugin } from "../plugins/properties/properties";
+import { CuiTooltipComponent } from "../components/tooltip/tooltip";
 
 export class CuiInitializer {
     #window: any;
@@ -95,6 +96,7 @@ export class CuiInit {
 
         const componentList: ICuiComponent[] = [
             new CuiIconComponent(),
+            new CuiTooltipComponent(),
             new CuiCircleComponent(),
             new CuiSpinnerComponent(),
             new CuiDummyComponent(),

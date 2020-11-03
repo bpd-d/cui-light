@@ -89,12 +89,14 @@ export class CuiAnimationEngine {
     #element: Element;
     #cleanOnFinish: boolean;
     #errorOccured: boolean;
+    #factory: AnimatorFactory;
     #onError: (e: Error) => void;
     constructor(cleanOnFinish?: boolean) {
         this.#animators = [];
         this.#element = undefined;
         this.#animStartStamp = undefined;
         this.#cleanOnFinish = cleanOnFinish ?? false;
+        this.#factory = new AnimatorFactory();
         this.#lock = false;
     }
 
@@ -104,6 +106,23 @@ export class CuiAnimationEngine {
 
     setAnimators(animators: ICuiPropertyAnimator<PropsTypes>[]) {
         this.#animators = animators;
+    }
+
+    setProps(props: AnimationProperty<PropsTypes>) {
+        if (!is(props)) {
+            return;
+        }
+        this.#animators = [];
+        try {
+            for (let prop in props) {
+                let animator = this.#factory.get(prop);
+                if (!animator) return;
+                animator.setProperty(props[prop]);
+                this.#animators.push(animator);
+            }
+        } catch (e) {
+            this.reportError(e);
+        }
     }
 
     setElement(element: Element) {
@@ -224,7 +243,6 @@ export class CuiSwipeAnimationEngine {
                 animator.setProperty(props[prop]);
                 this.#animators.push(animator);
             }
-            console.log(this.#animators);
         } catch (e) {
             this.reportError(e);
         }
