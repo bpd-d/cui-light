@@ -38,7 +38,7 @@ export class CuiSpinnerComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiSpinnerHandler(element, utils, this.attribute, this.#prefix);
     }
 }
@@ -46,7 +46,7 @@ export class CuiSpinnerComponent implements ICuiComponent {
 export class CuiSpinnerHandler extends CuiHandler<CuiSpinnerArgs> {
     #pauseEventId: string;
     #animationPauseClass: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiSpinnerHandler", element, attribute, new CuiSpinnerArgs(), utils);
         this.#pauseEventId = null;
         this.#animationPauseClass = replacePrefix("{prefix}-animation-pause", prefix);

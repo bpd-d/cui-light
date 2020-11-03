@@ -55,7 +55,7 @@ export class CuiDialogComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiDialogHandler(element, utils, this.attribute, this.#prefix);
     }
 }
@@ -67,7 +67,7 @@ export class CuiDialogHandler extends CuiInteractableHandler<CuiDialogArgs> {
     #scrollY: number;
     #windowClickEventId: string;
 
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiDialogHandler", element, attribute, new CuiDialogArgs(prefix, utils.setup.animationTimeLong), utils);
         this.#bodyClass = replacePrefix(bodyClass, prefix);
         this.#scrollY = 0;

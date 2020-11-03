@@ -56,7 +56,7 @@ export class CuiFloatComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiFloatHandler(element, utils, this.attribute, this.#prefix);
     }
 }
@@ -73,7 +73,7 @@ export class CuiFloatHandler extends CuiInteractableHandler<CuiFloatArgs> {
     #resizeBtn: HTMLElement;
     #moveBtn: HTMLElement;
     #shadow: HTMLElement;
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiFloatHandler", element, attribute, new CuiFloatArgs(prefix, utils.setup.animationTime), utils);
         this.#isMoving = false;
         this.#isResizing = false;

@@ -41,7 +41,7 @@ export class CuiCircleComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiCircleHandler(element, utils, this.attribute);
     }
 }
@@ -52,7 +52,7 @@ export class CuiCircleHandler extends CuiHandler<CuiCircleArgs> {
     #path: any;
     #attr: string;
     #progressEventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiCircleHandler", element, attribute, new CuiCircleArgs(), utils);
         this.#factor = this.#full = 0;
         this.#path = null

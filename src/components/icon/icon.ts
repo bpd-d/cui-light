@@ -34,7 +34,7 @@ export class CuiIconComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiIconHandler(element, utils, this.attribute);
     }
 }
@@ -44,7 +44,7 @@ export class CuiIconComponent implements ICuiComponent {
 export class CuiIconHandler extends CuiHandler<CuiIconArgs> {
 
     #currentIcon: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiIconHandler", element, attribute, new CuiIconArgs(), utils);
         this.#currentIcon = null;
 

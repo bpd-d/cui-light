@@ -54,7 +54,7 @@ export class CuiBanerComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiBannerHandler(element, utils, this.attribute, this.#prefix);
     }
 }
@@ -68,7 +68,7 @@ export class CuiBannerHandler extends CuiInteractableHandler<CuiBannerArgs> {
     #ratio: number;
     #swipeAnimation: AnimationDefinition;
     #moveEventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiBannerHandler", element, attribute, new CuiBannerArgs(prefix, utils.setup.animationTime), utils);
         // this.#moveListener = new CuiMoveEventListener();
         // this.#moveListener.setCallback(this.onMove.bind(this));

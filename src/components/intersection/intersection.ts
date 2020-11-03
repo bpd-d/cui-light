@@ -43,7 +43,7 @@ export class CuiIntersectionComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiIntersectionHandler(element, utils, this.attribute);
     }
 }
@@ -52,7 +52,7 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
 
     #observer: CuiIntersectionObserver;
     #targets: Element[];
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiIntersectionHandler", element, attribute, new CuiIntersectionAttributes(), utils);
         this.#observer = new CuiIntersectionObserver(this.element);
         this.#targets = []

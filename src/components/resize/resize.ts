@@ -25,14 +25,14 @@ export class CuiResizeComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiResizeHandler(element, utils, this.attribute);
     }
 }
 
 export class CuiResizeHandler extends CuiHandler<CuiResizeArgs> {
     #eventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiResizeHandler", element, attribute, new CuiResizeArgs(), utils);
         this.#eventId = null;
     }

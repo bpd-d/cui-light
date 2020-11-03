@@ -118,7 +118,7 @@ export class CuiInit {
             new CuiSliderComponent(),
             new CuiBanerComponent(),
             new CuiCoverComponent(),
-            new CuiSortableComponent()
+            new CuiSortableComponent(),
         ];
 
         let result = await initializer.init({

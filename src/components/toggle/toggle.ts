@@ -32,7 +32,7 @@ export class CuiToggleComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiToggleHandler(element, utils, this.attribute);
     }
 }
@@ -42,7 +42,7 @@ export class CuiToggleHandler extends CuiHandler<CuiToggleArgs> {
     #utils: CuiUtils;
     #toggleEventId: string;
     #actions: ICuiComponentAction[];
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiToggleHandler", element, attribute, new CuiToggleArgs(), utils);
         this.#target = this.element;
         this.#utils = utils;

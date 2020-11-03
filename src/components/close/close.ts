@@ -54,14 +54,14 @@ export class CuiCloseComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiCloseHandler(element, utils, this.attribute, this.#prefix);
     }
 }
 
 export class CuiCloseHandler extends CuiHandler<CuiCloseArgs> {
     #eventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiCloseHandler", element, attribute, new CuiCloseArgs(utils.setup.animationTime), utils);
         this.#eventId = null;
         this.onClick = this.onClick.bind(this);

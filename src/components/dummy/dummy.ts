@@ -12,7 +12,7 @@ export class CuiDummyComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiDummyHandler(element, utils, this.attribute);
     }
 }
@@ -20,7 +20,7 @@ export class CuiDummyComponent implements ICuiComponent {
 export class CuiDummyHandler extends CuiComponentBase implements ICuiComponentHandler {
 
     #attribute: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiDummyHandler", element, utils);
 
         this.#attribute = attribute

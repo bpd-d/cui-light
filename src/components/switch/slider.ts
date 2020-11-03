@@ -57,7 +57,7 @@ export class CuiSliderComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiSliderHandler(element, utils, this.attribute);
     }
 }
@@ -80,7 +80,7 @@ export class CuiSliderHandler extends CuiMutableHandler<CuiSliderArgs> implement
     #animationDef: AnimationDefinition;
     #targetsCount: number;
     #moveEventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiSliderHandler", element, attribute, new CuiSliderArgs(utils.setup.prefix, utils.setup.animationTime), utils);
         this.#targets = [];
         this.#currentIdx = -1;

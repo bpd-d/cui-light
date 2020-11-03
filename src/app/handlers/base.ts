@@ -66,13 +66,13 @@ export class ComponentHelper {
 export class CuiComponentBase implements CuiContext {
     _log: ICuiLogger;
     utils: CuiUtils;
-    element: Element;
+    element: HTMLElement;
     cuid: string;
     isLocked: boolean;
     activeClassName: string;
     helper: ComponentHelper;
     #emittedEvents: string[];
-    constructor(componentName: string, element: Element, utils: CuiUtils) {
+    constructor(componentName: string, element: HTMLElement, utils: CuiUtils) {
         this._log = CuiLoggerFactory.get(componentName);
         this.utils = utils;
         this.element = element;
@@ -150,7 +150,7 @@ abstract class CuiHandlerBase<T extends ICuiParsable> extends CuiComponentBase i
     activeClassName: string;
     actionsHelper: CuiActionsHelper;
     #attribute: string;
-    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
+    constructor(componentName: string, element: HTMLElement, attribute: string, args: T, utils: CuiUtils) {
         super(componentName, element, utils);
         this.args = args;
 
@@ -207,7 +207,7 @@ export abstract class CuiHandler<T extends ICuiParsable> extends CuiHandlerBase<
     isInitialized: boolean;
 
     actionsHelper: CuiActionsHelper;
-    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
+    constructor(componentName: string, element: HTMLElement, attribute: string, args: T, utils: CuiUtils) {
         super(componentName, element, attribute, args, utils);
     }
 
@@ -265,7 +265,7 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
     #keyCloseEventId: string;
     #openAct: ICuiComponentAction[];
     #closeAct: ICuiComponentAction[];
-    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
+    constructor(componentName: string, element: HTMLElement, attribute: string, args: T, utils: CuiUtils) {
         super(componentName, element, attribute, args, utils);
     }
 
@@ -389,7 +389,7 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
 
 export abstract class CuiMutableHandler<T extends ICuiParsable> extends CuiHandlerBase<T> {
     #mutionHandler: ICuiComponentMutationObserver;
-    constructor(componentName: string, element: Element, attribute: string, args: T, utils: CuiUtils) {
+    constructor(componentName: string, element: HTMLElement, attribute: string, args: T, utils: CuiUtils) {
         super(componentName, element, attribute, args, utils);
         this.#mutionHandler = new CuiComponentMutationHandler(element);
         this.#mutionHandler.onMutation(this.mutation.bind(this))

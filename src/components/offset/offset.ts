@@ -70,7 +70,7 @@ export class CuiOffsetComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiOffsetHandler(element, utils, this.attribute);
     }
 }
@@ -87,7 +87,7 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     #threshold: number;
     #root: Element;
     #modeHandler: ICuiOffsetMode;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiOffsetHandler", element, attribute, new CuiOffsetArgs(), utils);
         this.element = element as HTMLElement;
 
@@ -131,12 +131,18 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
 
     private checkAndPerformActions(top: number, left: number) {
         let matchesOffset = this.#modeHandler.matches(top, left, this.args.offsetX, this.args.offsetY);
+        /**
+         * Act and emit event when offset has been reached
+         */
         if (matchesOffset !== this.#matched) {
             this.act(matchesOffset);
             this.#matched = matchesOffset;
             this.callEvent(this.#matched, left, top, ...this.isOnEdge(left, top));
             return;
         }
+        /**
+         * Emit event periodically
+         */
         if (this.exceededThreshold(left, top)) {
             this.callEvent(this.#matched, left, top, ...this.isOnEdge(left, top));
             this.#prevX = left;

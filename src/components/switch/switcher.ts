@@ -34,7 +34,7 @@ export class CuiSwitcherComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiSwitcherHandler(element, utils, this.attribute);
     }
 }
@@ -44,7 +44,7 @@ export class CuiSwitcherHandler extends CuiHandler<CuiSwitcherArgs>  {
     #isList: boolean;
     #swtichEventID: string;
     #listeners: ((ev: MouseEvent) => void)[];
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiSwitcherHandler", element, attribute, new CuiSwitcherArgs(), utils);
         this.#targetId = null;
         this.#isList = element.tagName === 'UL';

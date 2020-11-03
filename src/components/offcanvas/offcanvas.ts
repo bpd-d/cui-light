@@ -68,7 +68,7 @@ export class CuiOffCanvasComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiOffCanvasHandler(element, utils, this.attribute, this.#prefix);
     }
 }
@@ -80,7 +80,7 @@ export class CuiOffCanvasHandler extends CuiInteractableHandler<CuiOffCanvasArgs
     #scrollY: number;
     #windowClickEventId: string;
 
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuiOffCanvasHandler", element, attribute, new CuiOffCanvasArgs(prefix, utils.setup.animationTime), utils);
         this.#prefix = prefix;
         this.#bodyClass = replacePrefix(OFFCANVAS_BODY, prefix);

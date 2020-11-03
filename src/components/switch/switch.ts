@@ -49,7 +49,7 @@ export class CuiSwitchComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiSwitchHandler(element, utils, this.attribute);
     }
 }
@@ -61,7 +61,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     #switches: CuiElement[];
     #task: ICuiTask;
     #switchEventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiSwitchHandler", element, attribute, new CuiSwitchArgs(utils.setup.prefix, utils.setup.animationTime), utils);
         this.#targets = [];
         this.#currentIdx = -1;

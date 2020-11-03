@@ -9,7 +9,7 @@ export const CLASSES = {
     print: 'print',
     active: 'active',
     swipingOn: "swiping-on",
-    selectionOff: "selection-off"
+    selectionOff: "selection-off",
 }
 
 export const ICONS: any = {

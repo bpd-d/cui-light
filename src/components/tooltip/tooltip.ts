@@ -40,7 +40,7 @@ export class CuiTooltipHandler extends CuiHandler<CuiTooltipArgs> {
     #hoverListener: CuiHoverListener;
     #tooltip: HTMLElement;
     #margin: number;
-    constructor(element: Element, attribute: string, utils: CuiUtils) {
+    constructor(element: HTMLElement, attribute: string, utils: CuiUtils) {
         super("CuiTooltipHandler", element, attribute, new CuiTooltipArgs(), utils);
         this.#hoverListener = new CuiHoverListener(element);
         this.#hoverListener.setCallback(this.onHover.bind(this));

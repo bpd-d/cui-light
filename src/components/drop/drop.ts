@@ -55,7 +55,7 @@ export class CuiDropComponenet implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiDropHandler(element, utils, this.attribute, this.#prefix);
     }
 }
@@ -72,7 +72,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     #windowClickEventId: string;
     #openEventId: string;
     #closeEventId: string;
-    constructor(element: Element, utils: CuiUtils, attribute: string, prefix: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuidropHandler", element, attribute, new CuiDropArgs(), utils);
         this.#attribute = attribute;
         this.#prefix = prefix;

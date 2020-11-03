@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.34] WIP
+# [0.1.35] WIP
+# [0.1.34] 2020-11-03
+* [Changed] Element type which is passed to component handler
 # [0.1.33] 2020-11-03
 * [Added] New component tooltip to replace CSS based tooltip
 # [0.1.32] 2020-11-02

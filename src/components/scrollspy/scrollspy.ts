@@ -47,7 +47,7 @@ export class CuiScrollspyComponent implements ICuiComponent {
         return null;
     }
 
-    get(element: Element, utils: CuiUtils): ICuiComponentHandler {
+    get(element: HTMLElement, utils: CuiUtils): ICuiComponentHandler {
         return new CuiScrollspyHandler(element, utils, this.attribute);
     }
 }
@@ -62,7 +62,7 @@ export class CuiScrollspyHandler extends CuiHandler<CuiScrollSpyArgs> {
     #linksLength: number;
     #prevScrollTop: number;
     #prevScrollLeft: number;
-    constructor(element: Element, utils: CuiUtils, attribute: string) {
+    constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiScrollspyHandler", element, attribute, new CuiScrollSpyArgs(), utils);
         this.element = element as HTMLElement;
         this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
