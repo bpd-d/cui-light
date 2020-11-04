@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.35] WIP
+# [0.1.36] WIP
+# [0.1.35] 2020-11-04
+* [Added] Automatic drop and tooltip position calculator
 # [0.1.34] 2020-11-03
 * [Changed] Element type which is passed to component handler
 # [0.1.33] 2020-11-03

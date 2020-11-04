@@ -60,3 +60,9 @@ export class CuiColorError extends ErrorBase {
         super("CuiColorError", message);
     }
 }
+
+export class CuiPositionError extends ErrorBase {
+    constructor(message?: string) {
+        super("CuiPositionError", message);
+    }
+}

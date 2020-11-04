@@ -1,15 +1,21 @@
 import { ElementBuilder } from "../../app/builders/element";
 import { CuiHandler } from "../../app/handlers/base";
 import { CuiAnimationEngine } from "../../core/animation/engine";
-import { CuiUtils, getIntOrDefault, getStringOrDefault, ICuiComponent, ICuiComponentHandler, ICuiParsable, is, isString, sleep } from "../../core/index";
+import { CuiUtils, getIntOrDefault, getStringOrDefault, ICuiComponent, ICuiComponentHandler, ICuiParsable, is, isString, replacePrefix, sleep } from "../../core/index";
 import { CuiHoverEvent, CuiHoverListener } from "../../core/listeners/hover";
+import { CuiBasePositionCalculator } from "../../core/position/calculator";
+import { ICuiPositionCalculator } from "../../core/position/interfaces";
 
 export class CuiTooltipArgs implements ICuiParsable {
     content: string;
     width: number;
+    pos: string;
+    margin: number;
     constructor() {
         this.content = undefined;
         this.width = 150;
+        this.margin = 8;
+        this.pos = null;
     }
 
     parse(val: any): void {
@@ -19,20 +25,24 @@ export class CuiTooltipArgs implements ICuiParsable {
         }
         this.content = getStringOrDefault(val.content, "");
         this.width = getIntOrDefault(val.width, 150);
+        this.margin = getIntOrDefault(val.margin, 8);
+        this.pos = getStringOrDefault(val.pos, null);
     }
 }
 
 export class CuiTooltipComponent implements ICuiComponent {
     attribute: string;
+    #prefix: string;
     constructor(prefix?: string) {
-        this.attribute = `${prefix ?? "cui"}-tooltip`;
+        this.#prefix = prefix ?? 'cui';
+        this.attribute = `${this.#prefix}-tooltip`;
     }
     getStyle(): string {
         return null;
     }
 
     get(element: HTMLElement, sutils: CuiUtils): ICuiComponentHandler {
-        return new CuiTooltipHandler(element, this.attribute, sutils);
+        return new CuiTooltipHandler(element, this.attribute, sutils, this.#prefix);
     }
 }
 
@@ -40,16 +50,23 @@ export class CuiTooltipHandler extends CuiHandler<CuiTooltipArgs> {
     #hoverListener: CuiHoverListener;
     #tooltip: HTMLElement;
     #margin: number;
-    constructor(element: HTMLElement, attribute: string, utils: CuiUtils) {
+    #positionCalculator: ICuiPositionCalculator;
+    #tooltipDataCls: string
+    constructor(element: HTMLElement, attribute: string, utils: CuiUtils, prefix: string) {
         super("CuiTooltipHandler", element, attribute, new CuiTooltipArgs(), utils);
+        this.#tooltipDataCls = replacePrefix('{prefix}-tooltip-data', prefix);
         this.#hoverListener = new CuiHoverListener(element);
         this.#hoverListener.setCallback(this.onHover.bind(this));
         this.#margin = 8;
+        this.#positionCalculator = new CuiBasePositionCalculator();
+        this.#positionCalculator.setPreferred("top-center");
 
     }
 
     onInit(): void {
         this.#hoverListener.attach();
+        this.#positionCalculator.setMargin(this.args.margin);
+        this.#positionCalculator.setStatic(this.args.pos);
     }
 
     onUpdate(): void {
@@ -73,7 +90,7 @@ export class CuiTooltipHandler extends CuiHandler<CuiTooltipArgs> {
             return;
         }
         const box = this.element.getBoundingClientRect();
-        this.#tooltip = new ElementBuilder("div").setClasses("cui-tooltip-data").build();
+        this.#tooltip = new ElementBuilder("div").setClasses(this.#tooltipDataCls).build();
         this.#tooltip.textContent = this.args.content;
         this.#tooltip.style.maxWidth = `${this.args.width}px`;
         document.body.appendChild(this.#tooltip);
@@ -82,10 +99,16 @@ export class CuiTooltipHandler extends CuiHandler<CuiTooltipArgs> {
                 return;
             }
             const toolbox = this.#tooltip.getBoundingClientRect();
-            let top = box.top - this.#margin - this.#tooltip.offsetHeight;
-            this.#tooltip.style.top = `${top < 0 ? box.top + box.height + this.#margin : top}px`;
-            this.#tooltip.style.left = `${this.calculateTooltipLeft(box.x, box.width, toolbox.width)}px`;
-            this.#tooltip.classList.add("cui-animation-tooltip-in");
+            this.#positionCalculator.setMargin(this.#margin);
+            try {
+                let [x, y] = this.#positionCalculator.calculate(box, toolbox.width, toolbox.height);
+                this.#tooltip.style.top = `${y}px`;
+                this.#tooltip.style.left = `${x}px`;
+                this.#tooltip.classList.add("cui-animation-tooltip-in");
+            } catch (e) {
+                this._log.exception(e);
+            }
+
         })
     }
 
@@ -96,22 +119,5 @@ export class CuiTooltipHandler extends CuiHandler<CuiTooltipArgs> {
         this.#tooltip.remove();
         this.#tooltip = null;
 
-    }
-
-    private calculateTooltipLeft(elX: number, elWidth: number, tooltipWidth: number) {
-        const boxCenter = (elX + elWidth / 2);
-        const half = tooltipWidth / 2;
-        const fromCenter = boxCenter - half;
-        if (fromCenter > 0 && boxCenter + half < window.innerWidth) {
-            return fromCenter;
-        }
-        // To left side of element
-        const fromLeft = elX + tooltipWidth;
-        if (fromLeft < window.innerWidth) {
-            return elX;
-        }
-
-        // To right side of element
-        return elX + elWidth - tooltipWidth;
     }
 }
