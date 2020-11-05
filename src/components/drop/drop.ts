@@ -9,6 +9,8 @@ import { CuiHoverListener, CuiHoverEvent } from "../../core/listeners/hover";
 import { ICuiPositionCalculator } from "../../core/position/interfaces";
 import { CuiBasePositionCalculator } from "../../core/position/calculator";
 import { AnimationProperty } from "../../core/animation/interfaces";
+import { CuiTaskRunner, ICuiTask } from "../../core/utils/task";
+import { CuiActionsListFactory, ICuiComponentAction } from "../../core/index";
 
 const bodyClass = '{prefix}-drop-open';
 const DROP_POSITION = "{prefix}-drop-position-";
@@ -27,7 +29,9 @@ export class CuiDropArgs implements ICuiParsable {
     autoClose: boolean;
     outClose: boolean;
     pos: string;
-    openAct: string;
+    action: string;
+    timeout: number;
+    margin: number;
 
     #defOpenAct: string
     constructor(prefix: string) {
@@ -38,9 +42,9 @@ export class CuiDropArgs implements ICuiParsable {
         this.outClose = false;
         this.prevent = false;
         this.pos = null;
-        this.openAct
-
-
+        this.action = this.#defOpenAct;
+        this.timeout = 3000;
+        this.margin = 8;
     }
 
 
@@ -51,8 +55,9 @@ export class CuiDropArgs implements ICuiParsable {
         this.autoClose = isStringTrue(args.autoClose);
         this.outClose = args.outClose ? isStringTrue(args.outClose) : true;
         this.pos = getStringOrDefault(args.pos, null);
-        this.openAct = getStringOrDefault(args.openAct, this.#defOpenAct);
-
+        this.action = getStringOrDefault(args.action, this.#defOpenAct);
+        this.timeout = getIntOrDefault(args.timeout, 3000);
+        this.margin = getIntOrDefault(args.margin, 8);
     }
 }
 
@@ -80,18 +85,18 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     #triggerHoverListener: CuiHoverListener;
     #hoverListener: CuiHoverListener;
     #trigger: Element;
-    #clearId: any;
     #windowClickEventId: string;
     #openEventId: string;
     #closeEventId: string;
     #positionCalculator: ICuiPositionCalculator;
     #posClass: string;
     #dropParentCls: string;
+    #autoTask: ICuiTask;
+    #actions: ICuiComponentAction[];
     constructor(element: HTMLElement, utils: CuiUtils, attribute: string, prefix: string) {
         super("CuidropHandler", element, attribute, new CuiDropArgs(prefix), utils);
         this.#attribute = attribute;
         this.#prefix = prefix;
-        this.#clearId = null;
         this.#bodyClass = replacePrefix(bodyClass, prefix);
         this.#hoverListener = new CuiHoverListener(this.element);
         this.#hoverListener.setCallback(this.onElementHover.bind(this))
@@ -100,7 +105,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#closeEventId = null;
         this.onTriggerClick = this.onTriggerClick.bind(this)
         this.#positionCalculator = new CuiBasePositionCalculator();
-        this.#positionCalculator.setMargin(4);
+        this.#positionCalculator.setMargin(8);
         this.#positionCalculator.setPreferred("bottom-left");
         this.#posClass = ""
         this.#dropParentCls = replacePrefix(DROP_TRIGGER, prefix)
@@ -113,6 +118,9 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#openEventId = this.onEvent(EVENTS.OPEN, this.open.bind(this));
         this.#closeEventId = this.onEvent(EVENTS.CLOSE, this.close.bind(this));
         this.#positionCalculator.setStatic(this.args.pos);
+        this.#positionCalculator.setMargin(this.args.margin);
+        this.#autoTask = new CuiTaskRunner(this.args.timeout, false, this.close.bind(this));
+        this.#actions = CuiActionsListFactory.get(this.args.action);
         this.mutate(() => {
             AriaAttributes.setAria(this.element, 'aria-dropdown', "");
             if (!this.helper.hasClass(this.#dropParentCls, this.element.parentElement)) {
@@ -134,6 +142,9 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.#triggerHoverListener = new CuiHoverListener(this.#trigger);
         this.setTriggerEvent();
         this.#positionCalculator.setStatic(this.args.pos);
+        this.#positionCalculator.setMargin(this.args.margin);
+        this.#actions = CuiActionsListFactory.get(this.args.action);
+        this.#autoTask.setTimeout(this.args.timeout);
     }
 
     onDestroy(): void {
@@ -189,7 +200,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
         this.mutate(() => {
             this.helper.removeClass(this.activeClassName, this.element)
             this.helper.removeClass(this.#bodyClass, document.body)
-            this.helper.removeClass(this.args.openAct, this.element);
+            this.toggleActions();
             this.helper.removeClass(this.#posClass, this.element);
             AriaAttributes.setAria(this.element, 'aria-expanded', 'false')
         })
@@ -204,7 +215,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
                 this.element.style.top = `${y - box.top}px`;
                 this.element.style.left = `${x - box.left}px`;
                 this.#posClass = replacePrefix(DROP_POSITION + pos, this.#prefix);
-                this.helper.setClass(this.args.openAct, this.element);
+                this.toggleActions();
                 this.helper.setClass(this.#posClass, this.element);
                 this.helper.setClass(this.#bodyClass, document.body)
 
@@ -231,13 +242,13 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
      * Event invoked when window is clicked
      * @param ev 
      */
-    onWindowClick(ev: MouseEvent) {
+    private onWindowClick(ev: MouseEvent) {
         if (!this.element.contains((ev.target as Node))) {
             this.close();
         }
     }
 
-    isAnyActive(): boolean {
+    private isAnyActive(): boolean {
         return this.helper.hasClass(this.#bodyClass, document.body);
     }
 
@@ -262,7 +273,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
      * Invoked when trigger button is clicked
      * @param ev 
      */
-    onTriggerClick(ev: MouseEvent) {
+    private onTriggerClick(ev: MouseEvent) {
         if (this.isActive()) {
             this.close();
         } else {
@@ -277,7 +288,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     * Invoked when trigger button is hovered on
     * @param ev
     */
-    onHoverEvent(ev: CuiHoverEvent) {
+    private onHoverEvent(ev: CuiHoverEvent) {
         if (ev.isHovering && !this.isActive()) {
             this.open();
         }
@@ -291,11 +302,10 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
      * Method triggered when opened element is hovered on
      * @param ev 
      */
-    onElementHover(ev: CuiHoverEvent) {
-        if (ev.isHovering && is(this.#clearId)) {
-            clearTimeout(this.#clearId);
-            this.#clearId = null;
-        } else if (!ev.isHovering && !is(this.#clearId) && this.args.autoClose) {
+    private onElementHover(ev: CuiHoverEvent) {
+        if (ev.isHovering) {
+            this.#autoTask.stop();
+        } else if (!ev.isHovering && this.args.autoClose) {
             this.runAutoCloseTask();
         }
     }
@@ -303,7 +313,7 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     /**
      * Sets event on trigger button
      */
-    setTriggerEvent() {
+    private setTriggerEvent() {
         if (this.args.mode === 'hover') {
             this.#triggerHoverListener.setCallback(this.onHoverEvent.bind(this));
             this.#triggerHoverListener.attach();
@@ -315,12 +325,16 @@ export class CuiDropHandler extends CuiHandler<CuiDropArgs> implements ICuiOpena
     /**
      * Runs auto-close task on opened element
      */
-    runAutoCloseTask() {
+    private runAutoCloseTask() {
         if (!this.args.autoClose) {
             return
         }
-        this.#clearId = setTimeout(() => {
-            this.close();
-        }, 4000)
+        this.#autoTask.start();
+    }
+
+    private toggleActions() {
+        this.#actions.forEach(action => {
+            action.toggle(this.element);
+        })
     }
 }

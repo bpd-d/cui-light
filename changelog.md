@@ -1,5 +1,7 @@
 # bpd cUI Light changelog
-# [0.1.36] WIP
+# [0.1.37] WIP
+# [0.1.36] 2020-11-05
+* [Changed] Optimized code in drop and tooltip - added timeout, added support for multiple actions
 # [0.1.35] 2020-11-04
 * [Added] Automatic drop and tooltip position calculator
 # [0.1.34] 2020-11-03

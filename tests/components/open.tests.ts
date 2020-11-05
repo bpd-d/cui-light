@@ -6,11 +6,11 @@ describe("Tests checking component [open]", function () {
     //let component: CuiDummyComponent;
     let utils: CuiUtils;
     let handler: ICuiComponentHandler;
-    let element: Element;
+    let element: HTMLElement;
     let currId: string;
     let components: ICuiComponent[];
     let attributes: string[];
-    let helper: Element;
+    let helper: HTMLElement;
 
     function register(id: string, attribute: string, value: string): void {
         element = document.createElement("div")
@@ -123,7 +123,7 @@ describe("Tests checking component [open]", function () {
         let isActive = false;
         let data: any = null;
         let open = handler as CuiOpenHandler;
-        utils.bus.on("opened", (state) => {
+        utils.bus.on("opened", (state: any) => {
             data = state
         }, element as any)
         // Act

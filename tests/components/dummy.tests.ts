@@ -5,7 +5,7 @@ describe("Tests checking component [dummy]", function () {
     let component: CuiDummyComponent;
     let utils: CuiUtils;
     let handler: ICuiComponentHandler;
-    let element: Element;
+    let element: HTMLElement;
 
     beforeAll(() => {
         utils = new CuiUtils(new CuiSetupInit())

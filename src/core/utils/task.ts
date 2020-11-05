@@ -5,6 +5,7 @@ export interface ICuiTask {
     stop(): void;
     getId(): any;
     setCallback(callback: () => void): void;
+    setTimeout(timeout: number): void;
 }
 
 export class CuiTaskRunner implements ICuiTask {
@@ -49,6 +50,10 @@ export class CuiTaskRunner implements ICuiTask {
 
     setCallback(callback: () => void) {
         this.#callback = callback;
+    }
+
+    setTimeout(timeout: number) {
+        this.#timeout = timeout;
     }
 
 }
