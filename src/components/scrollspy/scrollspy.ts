@@ -1,40 +1,64 @@
-import { ICuiComponent, ICuiComponentHandler, CuiObservables } from "../../core/models/interfaces";
+import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase, CuiHandler } from "../../app/handlers/base";
-import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
-import { ICuiComponentAction, CuiActionsFatory } from "../../core/utils/actions";
-import { parseAttributeString, getRangeValue, is, getOffsetTop, getRangeValueOrDefault, isInRange, getOffsetLeft, clone } from "../../core/utils/functions";
-import { EVENTS } from "../../core/utils/statics";
-import { CuiScrollSpyOutOfRangeError } from "../../core/models/errors";
+import { CuiHandler } from "../../app/handlers/base";
+import { ICuiComponentAction, CuiActionsListFactory } from "../../core/utils/actions";
+import { getRangeValueOrDefault, getStringOrDefault, isStringTrue, getIntOrDefault } from "../../core/utils/functions";
+import { EVENTS, SCOPE_SELECTOR } from "../../core/utils/statics";
+import { CuiIntersectionListener } from "../../core/intersection/intersection";
+import { CuiIntersectionResult } from "../../core/intersection/interfaces";
+import { CuiElementBoxFactory, CuiElementBoxType, ICuiElementBox } from "../../core/models/elements";
+import { CuiScrollSpyModeHandlerFactory, CuiScrollspyUpdateResult, ICuiScrollspyModeHandler } from "./mode";
+
+const DEFAULT_SELECTOR = "> *";
+
+export interface CuiScrollspyScrollEvent {
+    top: number;
+    left: number;
+    scrolling: boolean;
+    initial: boolean;
+    source: string;
+    timestamp: number;
+}
+
+export interface CuiScrollspyTargetChangeEvent {
+    intersecting: HTMLElement[];
+    timestamp: number;
+}
 
 export interface CuiScrollSpyAttribute {
     selector?: string;
     action?: string;
     link?: string;
-    linkAction: string;
-    offset: number;
+    linkAction?: string;
+    ratio: number;
+    threshold: number;
 }
 
 
 export class CuiScrollSpyArgs {
-    selector: string;
-    action: ICuiComponentAction;
-    link?: string;
-    linkAction?: ICuiComponentAction;
-    offset?: number;
+    selector: string; // Child selector
+    action: string; // Action to be performed on intersecting elements
+    link?: string; // Link selector
+    linkAction?: string; //Actions to be triggered on link
+    ratio: number; // Value 0..1 telling how much of a child view must be in view to be added to intersecting items
+    isRoot: boolean; // Attach to window or element
+    mode: "single" | "multi"; // Action is triggered on single (last) intersecting item or all intersecting items
+    threshold: number; // Threshold value (in px) for scroll listener
 
     constructor() {
-        this.offset = 0;
+        this.ratio = 0;
+        this.mode = "single";
+        this.threshold = -1
     }
     parse(args: any) {
-        if (!args.selector) {
-            throw new Error("Incorrect arguments");
-        }
-        this.selector = args.selector;
-        this.action = CuiActionsFatory.get(args.action);
-        this.link = args.link;
-        this.linkAction = CuiActionsFatory.get(args.linkAction);
-        this.offset = getRangeValueOrDefault(parseInt(args.offset), -1, 1, 0);
+        this.selector = `${SCOPE_SELECTOR}${args.selector ?? DEFAULT_SELECTOR}`;
+        this.action = getStringOrDefault(args.action, null);
+        this.link = getStringOrDefault(args.link, null);
+        this.linkAction = getStringOrDefault(args.linkAction, null);
+        this.ratio = getRangeValueOrDefault(parseFloat(args.ratio), 0, 1, 0);
+        this.isRoot = isStringTrue(args.isRoot);
+        this.mode = args?.mode === 'multi' ? "multi" : "single";
+        this.threshold = getIntOrDefault(args.threshold, -1);
     }
 }
 export class CuiScrollspyComponent implements ICuiComponent {
@@ -53,118 +77,86 @@ export class CuiScrollspyComponent implements ICuiComponent {
 }
 
 export class CuiScrollspyHandler extends CuiHandler<CuiScrollSpyArgs> {
-
-    #listener: CuiScrollListener;
-    #links: Element[];
-    #targets: Element[];
-    #currentIdx: number;
-    #targetsLength: number;
-    #linksLength: number;
-    #prevScrollTop: number;
-    #prevScrollLeft: number;
+    #listener: CuiIntersectionListener;
+    #links: HTMLElement[];
+    #actions: ICuiComponentAction[];
+    #linkActions: ICuiComponentAction[];
+    #root: CuiElementBoxType;
+    #rootBox: ICuiElementBox;
+    #modeHandler: ICuiScrollspyModeHandler;
     constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiScrollspyHandler", element, attribute, new CuiScrollSpyArgs(), utils);
         this.element = element as HTMLElement;
-        this.#listener = new CuiScrollListener(this.element, this.utils.setup.scrollThreshold);
+        this.#listener = new CuiIntersectionListener(this.element, { threshold: this.utils.setup.scrollThreshold });
         this.#links = [];
-        this.#targets = [];
-        this.#currentIdx = this.#targetsLength = this.#linksLength = -1;
+        this.#actions = [];
+        this.#linkActions = [];
+        this.#root = null;
     }
 
     onInit(): void {
-        this.#prevScrollTop = this.element.scrollTop;
-        this.#prevScrollLeft = this.element.scrollLeft;
         this.parseAttribute();
-        let current = this.calculateCurrent(this.#prevScrollTop);
-        this.setCurrent(current);
-        this.setCurrentLink(current, -1);
-        this.#currentIdx = current;
-        this.#listener.setCallback(this.onScroll.bind(this));
+        this.#listener.setCallback(this.onIntersection.bind(this));
         this.#listener.attach();
     }
 
     onUpdate(): void {
-        this.#prevScrollTop = this.element.scrollTop;
-        this.#prevScrollLeft = this.element.scrollLeft;
-        this.parseAttribute();
-        this.calculateCurrent(this.#prevScrollTop);
+        this.updateAttributes();
     }
 
     onDestroy(): void {
         this.#listener.detach();
     }
 
-    private onScroll(ev: CuiScrollEvent): void {
-        let idx = -1;
-        if (Math.abs(ev.left - this.#prevScrollLeft) > Math.abs(ev.top - this.#prevScrollTop)) {
-            idx = this.calculateCurrentLeft(ev.left);
-        } else {
-            idx = this.calculateCurrent(ev.top);
-        }
-        if (idx !== this.#currentIdx) {
-            let newTarget = this.setCurrent(idx)
-            this.setCurrentLink(idx, this.#currentIdx);
-            this.#currentIdx = idx;
-            this.emitEvent(EVENTS.TARGET_CHANGE, {
-                top: ev.top,
-                left: ev.left,
-                target: newTarget,
-                timestamp: Date.now()
-            })
-        }
-
-        this.#prevScrollTop = this.element.scrollTop;
-        this.#prevScrollLeft = this.element.scrollLeft;
+    private onIntersection(ev: CuiIntersectionResult): void {
+        let timestamp = Date.now();
+        this.mutate(() => {
+            let updateResult: CuiScrollspyUpdateResult = this.#modeHandler.update(ev.items, this.args.ratio, this.#actions, this.#links, this.#linkActions)
+            if (updateResult.changed) {
+                this.emitEvent(EVENTS.TARGET_CHANGE, {
+                    intersecting: updateResult.intersecting,
+                    timestamp: timestamp
+                })
+            }
+        })
+        this.emitEvent(EVENTS.ON_SCROLL, {
+            top: ev.top,
+            left: ev.left,
+            scrolling: ev.scrolling,
+            initial: ev.initial,
+            source: ev.source,
+            timestamp: timestamp,
+        })
     }
 
     private parseAttribute() {
-        this.#targets = [...this.element.querySelectorAll(this.args.selector)];
-        this.#links = this.args.link ? [...document.querySelectorAll(this.args.link)] : [];
-        this.#targetsLength = this.#targets.length;
-        this.#linksLength = this.#links.length;
+        this.#root = this.args.isRoot ? window : this.element;
+        this.#rootBox = CuiElementBoxFactory.get(this.#root);
+        let targets = this.args.selector ? this.#rootBox.queryAll(this.args.selector) : [];
+        this.#listener.setChildren(targets);
+        this.#listener.setThreshold(this.args.threshold);
+        this.#links = this.args.link ? [...document.querySelectorAll<HTMLElement>(this.args.link)] : [];
+        this.#actions = CuiActionsListFactory.get(this.args.action);
+        this.#linkActions = CuiActionsListFactory.get(this.args.linkAction);
+        this.#modeHandler = CuiScrollSpyModeHandlerFactory.get(this.args.mode);
+
     }
 
-    private calculateCurrent(scroll: number): number {
-        return this.#targets.findIndex((target: HTMLElement) => {
-            let offset = getOffsetTop(target) - (<any>this.element).offsetTop;
-            let ratio = offset * this.args.offset
-            return offset + ratio <= scroll && scroll < offset + target.clientHeight + ratio;
-        })
-    }
-
-    private calculateCurrentLeft(scroll: number): number {
-        return this.#targets.findIndex((target: HTMLElement) => {
-            let offset = getOffsetLeft(target) - (<any>this.element).offsetLeft;
-            let ratio = offset * this.args.offset
-            return offset + ratio <= scroll && scroll < offset + target.clientWidth + ratio;
-        })
-    }
-
-    /**
-     * Performs action on current, new target and on links if there are any.
-     * Returns new target element or null if index is out of range
-     * 
-     * @param idx - new target index
-     * @returns New target item
-     */
-    private setCurrent(idx: number): Element {
-        if (!isInRange(idx, 0, this.#targetsLength)) {
-            throw new CuiScrollSpyOutOfRangeError("New index is out of targets length")
+    private updateAttributes() {
+        if (this.args.isRoot !== this.prevArgs.isRoot) {
+            this.#root = this.args.isRoot ? window : this.element;
+            this.#rootBox = CuiElementBoxFactory.get(this.#root);
+            this.#listener.setParent(this.#root);
         }
-        let ret = this.#targets[idx]
-        this.args.action.add(ret)
-        this.args.action.remove(this.#targets[this.#currentIdx]);
-        return ret;
-    }
-
-    private setCurrentLink(idx: number, prev: number) {
-        if (this.#linksLength > 0) {
-            if (isInRange(idx, 0, this.#linksLength)) {
-                this.args.linkAction.add(this.#links[idx]);
-            }
-            if (isInRange(prev, 0, this.#linksLength)) {
-                this.args.linkAction.remove(this.#links[prev]);
-            }
+        if (this.args.selector !== this.prevArgs.selector) {
+            let targets = this.args.selector ? this.#rootBox.queryAll(this.args.selector) : [];
+            this.#listener.setChildren(targets);
         }
+        this.#listener.setThreshold(this.args.threshold);
+        this.#links = this.args.link ? [...document.querySelectorAll<HTMLElement>(this.args.link)] : [];
+        this.#actions = CuiActionsListFactory.get(this.args.action);
+        this.#linkActions = CuiActionsListFactory.get(this.args.linkAction);
+        this.#modeHandler = CuiScrollSpyModeHandlerFactory.get(this.args.mode);
+
     }
 }

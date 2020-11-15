@@ -18,12 +18,6 @@ export interface ICuiPositionEvaluator {
     setMargin(value: number): void;
     getVerticalPosition(name: string): number;
     getHorizontalPosition(name: string): number;
-    // getTopPosition(): number;
-    // getBottomPosition(): number;
-    // getMiddlePosition(): number;
-    // getLeftPosition(): number;
-    // getRightPosition(): number;
-    // getCenterPosition(): number;
 
     getAutoVerticalPosition(initial: string): [number, string];
     getAutoHorizontalPosition(initial: string): [number, string];

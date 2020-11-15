@@ -2,9 +2,11 @@ import { ICuiComponent, ICuiComponentHandler } from "../../core/models/interface
 import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler } from "../../app/handlers/base";
 import { CuiIntersectionObserver } from "../../app/observers/intersection";
-import { CuiActionsFatory, ICuiComponentAction } from "../../core/utils/actions";
-import { is, getRangeValueOrDefault, clone } from "../../core/utils/functions";
-import { EVENTS } from "../../core/utils/statics";
+import { CuiActionsFatory, CuiActionsListFactory, ICuiComponentAction } from "../../core/utils/actions";
+import { is, getRangeValueOrDefault, clone, getStringOrDefault, isStringTrue } from "../../core/utils/functions";
+import { EVENTS, SCOPE_SELECTOR } from "../../core/utils/statics";
+
+const DEFAULT_SELCTOR = "> *";
 
 /**
  * Intersection
@@ -18,18 +20,20 @@ import { EVENTS } from "../../core/utils/statics";
 
 export class CuiIntersectionAttributes {
     target: string;
-    action: ICuiComponentAction;
-    offset: number
+    action: string;
+    offset: number;
+    isRoot: boolean;
     constructor() {
         this.target = "div";
-        this.action = CuiActionsFatory.get('dummy');
+        this.action = null;
         this.offset = 0;
     }
 
     parse(args: any) {
-        this.target = is(args.target) ? args.target : 'div';
-        this.action = is(args.action) ? CuiActionsFatory.get(args.action) : CuiActionsFatory.get('dummy');
-        this.offset = getRangeValueOrDefault(parseInt(args.offset), 0, 1, 0);
+        this.target = is(args.target) ? SCOPE_SELECTOR + args.target : SCOPE_SELECTOR + DEFAULT_SELCTOR;
+        this.action = getStringOrDefault(args.action, null);
+        this.offset = getRangeValueOrDefault(parseFloat(args.offset), 0, 1, 0);
+        this.isRoot = isStringTrue(args.isRoot);
     }
 }
 
@@ -52,6 +56,7 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
 
     #observer: CuiIntersectionObserver;
     #targets: Element[];
+    #actions: ICuiComponentAction[];
     constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiIntersectionHandler", element, attribute, new CuiIntersectionAttributes(), utils);
         this.#observer = new CuiIntersectionObserver(this.element);
@@ -77,28 +82,24 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
 
     parseArguments() {
         if (this.prevArgs === null || this.prevArgs.target !== this.args.target) {
-            this.#targets = [...document.querySelectorAll(this.args.target)];
+            let el = this.args.isRoot ? document.body : this.element;
+            this.#targets = [...el.querySelectorAll(this.args.target)];
         }
+        this.#actions = CuiActionsListFactory.get(this.args.action);
     }
 
     onIntersection(entries: IntersectionObserverEntry[], observer: IntersectionObserver): void {
         if (!is(this.#targets)) {
             return;
         }
-        let action = null;
         entries.forEach(entry => {
-            action = this.getAction(entry.target);
             if (entry.isIntersecting && entry.intersectionRatio >= this.args.offset) {
-                action.add(entry.target)
+                this.addActions(entry.target);
             } else {
-                action.remove(entry.target)
+                this.removeActions(entry.target);
             }
             this.emitIntersection(entry)
         })
-    }
-
-    getAction(element: Element) {
-        return element.hasAttribute('action') ? CuiActionsFatory.get(element.getAttribute('action')) : this.args.action;
     }
 
     emitIntersection(entry: IntersectionObserverEntry) {
@@ -107,5 +108,13 @@ export class CuiIntersectionHandler extends CuiHandler<CuiIntersectionAttributes
             offset: this.args.offset,
             timestamp: Date.now()
         })
+    }
+
+    private addActions(element: Element) {
+        this.#actions.forEach(action => action.add(element));
+    }
+
+    private removeActions(element: Element) {
+        this.#actions.forEach(action => action.remove(element));
     }
 }

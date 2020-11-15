@@ -1,5 +1,10 @@
 # bpd cUI Light changelog
-# [0.1.37] WIP
+# [0.1.38] WIP
+# [0.1.37] 2020-11-15
+* [Added] Cui instance is able to create new cui element instance on existing html element
+* [Added] Offset update event returns more details: event source and whether is scrolling or not
+* [Changed] Scrollspy has been rewritten - will replace intersection, new modes (single, multi), new options and events
+* [Changed] Offset to emit ratioX and ratioY on scroll rather than limit
 # [0.1.36] 2020-11-05
 * [Changed] Optimized code in drop and tooltip - added timeout, added support for multiple actions
 # [0.1.35] 2020-11-04

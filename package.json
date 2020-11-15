@@ -1,6 +1,6 @@
 {
   "name": "cui-light",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "description": "cUI light framework for the web",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",

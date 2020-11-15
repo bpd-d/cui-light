@@ -3,7 +3,7 @@ import { CuiUtils } from "../../core/models/utils";
 import { CuiHandler } from "../../app/handlers/base";
 import { CuiScrollListener, CuiScrollEvent } from "../../core/listeners/scroll";
 import { ICuiComponentAction, CuiActionsListFactory } from "../../core/utils/actions";
-import { are, getIntOrDefault, getStringOrDefault, isStringTrue } from "../../core/utils/functions";
+import { are, getIntOrDefault, getRangeValue, getStringOrDefault, isStringTrue } from "../../core/utils/functions";
 import { EVENTS } from "../../core/index";
 import { CuiOffsetModeFactory, ICuiOffsetMode } from "./modes";
 
@@ -22,8 +22,10 @@ export interface CuiOffsetEvent {
     matches: boolean;
     offsetX: number;
     offsetY: number;
-    limitX: boolean;
-    limitY: boolean;
+    ratioY: number;
+    ratioX: number;
+    scrolling: boolean;
+
     timestamp: number;
 }
 
@@ -117,36 +119,36 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
     }
 
     private onScroll(ev: CuiScrollEvent): void {
-        this.checkAndPerformActions(ev.top, ev.left);
+        this.checkAndPerformActions(ev);
     }
 
     private parseAttribute() {
         this.#root = this.getRoot();
-        this.#target = this.args.target ? this.getRoot().querySelector(this.args.target) : this.element;
+        this.#target = this.args.target ? this.#root.querySelector(this.args.target) : this.element;
         this.#action = CuiActionsListFactory.get(this.args.action);
         this.#modeHandler = CuiOffsetModeFactory.get(this.args.mode);
-        this.checkAndPerformActions(this.element.scrollTop, this.element.scrollLeft);
+        // this.checkAndPerformActions(this.element.scrollTop, this.element.scrollLeft);
 
     }
 
-    private checkAndPerformActions(top: number, left: number) {
-        let matchesOffset = this.#modeHandler.matches(top, left, this.args.offsetX, this.args.offsetY);
+    private checkAndPerformActions(ev: CuiScrollEvent) {
+        let matchesOffset = this.#modeHandler.matches(ev.top, ev.left, this.args.offsetX, this.args.offsetY);
         /**
          * Act and emit event when offset has been reached
          */
         if (matchesOffset !== this.#matched) {
             this.act(matchesOffset);
             this.#matched = matchesOffset;
-            this.callEvent(this.#matched, left, top, ...this.isOnEdge(left, top));
+            this.callEvent(this.#matched, ev.left, ev.top, ev.scrolling, ev.source, ...this.calcaRatio(ev.left, ev.top));
             return;
         }
         /**
          * Emit event periodically
          */
-        if (this.exceededThreshold(left, top)) {
-            this.callEvent(this.#matched, left, top, ...this.isOnEdge(left, top));
-            this.#prevX = left;
-            this.#prevY = top;
+        if (this.exceededThreshold(ev.left, ev.top)) {
+            this.callEvent(this.#matched, ev.left, ev.top, ev.scrolling, ev.source, ...this.calcaRatio(ev.left, ev.top));
+            this.#prevX = ev.left;
+            this.#prevY = ev.top;
         }
     }
 
@@ -166,13 +168,15 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
         this.isLocked = false;
     }
 
-    private callEvent(matches: boolean, x: number, y: number, limitX: boolean, limitY: boolean) {
+    private callEvent(matches: boolean, x: number, y: number, scrolling: boolean, source: string, ratioX: number, ratioY: number) {
         this.emitEvent(EVENTS.OFFSET, {
             matches: this.#matched,
             offsetX: x,
             offsetY: y,
-            limitX: limitX,
-            limitY: limitY,
+            ratioX: ratioX,
+            ratioY: ratioY,
+            scrolling: scrolling,
+            source: source,
             timestamp: Date.now()
         })
     }
@@ -185,16 +189,10 @@ export class CuiOffsetHandler extends CuiHandler<CuiOffsetArgs> {
         return Math.abs(x - this.#prevX) > this.#threshold || Math.abs(y - this.#prevY) > this.#threshold;
     }
 
-    private isOnEdge(x: number, y: number): [boolean, boolean] {
-        let limitY = false;
-        let limitX = false;
-        if (this.#root.scrollHeight - this.#root.clientHeight <= y + this.#threshold) {
-            limitY = true
-        }
-        if (this.#root.scrollWidth - this.#root.clientWidth <= x + this.#threshold) {
-            limitX = true
-        }
-        return [limitX, limitY];
+    private calcaRatio(x: number, y: number): [number, number] {
+        let ratY = parseFloat(((this.#root.clientHeight + y) / this.#root.scrollHeight).toFixed(2))
+        let ratX = parseFloat(((this.#root.clientWidth + x) / this.#root.scrollWidth).toFixed(2))
+        return [getRangeValue(ratX, 0, 1), getRangeValue(ratY, 0, 1)];
     }
 
 

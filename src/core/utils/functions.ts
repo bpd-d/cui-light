@@ -193,7 +193,11 @@ export function calcWindowSize(width: number): CuiWindowSize {
  * @param attribute - attribute value
  */
 export function parseAttributeString(attribute: string): any {
-    let ret: any = parseJsonString(attribute.trim())
+    let ret: any = {};
+    if (!is(attribute)) {
+        return ret;
+    }
+    ret = parseJsonString(attribute.trim())
 
     if (!is(ret)) {
         if (!attribute.includes(';') && !attribute.includes(':')) {
@@ -394,6 +398,22 @@ export function registerCuiElement(node: any, components: ICuiComponent[], attri
         })
 
     }
+}
+
+export function addCuiArgument<T>(element: HTMLElement, cuiArg: string, args: T): boolean {
+    if (!are(cuiArg, args, element)) {
+        return false;
+    }
+    if (element.hasAttribute(cuiArg)) {
+        return false;
+    }
+    let argArr: string[] = [];
+    enumerateObject(args, (arg: string, value: string) => {
+        argArr.push(`${arg}: ${value}`);
+    })
+    element.setAttribute(cuiArg, argArr.join("; "));
+    return true;
+
 }
 
 export function* counter() {

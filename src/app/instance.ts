@@ -1,5 +1,5 @@
 import { CuiSetupInit } from "../core/models/setup";
-import { is, joinAttributesForQuery, are, registerCuiElement } from "../core/utils/functions";
+import { is, joinAttributesForQuery, are, registerCuiElement, addCuiArgument } from "../core/utils/functions";
 import { ElementManager } from "./managers/element";
 import { STATICS, EVENTS, CSS_VARIABLES } from "../core/utils/statics";
 import { ICuiLogger, ICuiPlugin, ICuiComponent, ICuiPluginManager, CuiContext, CuiElement, CuiAlertData } from "../core/models/interfaces";
@@ -24,6 +24,7 @@ export class CuiInstance {
     #components: ICuiComponent[];
     #rootElement: HTMLElement;
     #moveObserver: CuiMoveObserver;
+    #mutatedAttributes: string[];
     constructor(setup: CuiSetupInit, plugins: ICuiPlugin[], components: ICuiComponent[]) {
         STATICS.prefix = setup.prefix;
         STATICS.logLevel = setup.logLevel;
@@ -42,13 +43,13 @@ export class CuiInstance {
             throw new CuiInstanceInitError("Mutation observer does not exists");
         }
         this.#toastManager = new CuiToastHandler(this.#utils.interactions, this.#utils.setup.prefix, this.#utils.setup.animationTimeLong);
-        const mutatedAttributes: string[] = this.#components.map(x => { return x.attribute }); // MUTATED_ATTRIBUTES; 
-        const initElements = is(mutatedAttributes) ? this.#rootElement.querySelectorAll(joinAttributesForQuery(mutatedAttributes)) : null
+        this.#mutatedAttributes = this.#components.map(x => { return x.attribute }); // MUTATED_ATTRIBUTES; 
+        const initElements = is(this.#mutatedAttributes) ? this.#rootElement.querySelectorAll(joinAttributesForQuery(this.#mutatedAttributes)) : null
         if (is(initElements)) {
             this.#log.debug(`Initiating ${initElements.length} elements`)
             try {
                 initElements.forEach((item: any) => {
-                    registerCuiElement(item, this.#components, mutatedAttributes, this.#utils);
+                    registerCuiElement(item, this.#components, this.#mutatedAttributes, this.#utils);
                 })
             } catch (e) {
                 this.#log.exception(e);
@@ -58,10 +59,10 @@ export class CuiInstance {
         // Init plugins
         this.#plugins.init(this.#utils);
 
-        if (are(this.#components, mutatedAttributes)) {
+        if (are(this.#components, this.#mutatedAttributes)) {
             this.#log.debug("Init mutation observer", "init")
             this.#mutationObserver = new CuiMutationObserver(this.#rootElement, this.#utils)
-            this.#mutationObserver.setComponents(this.#components).setAttributes(mutatedAttributes)
+            this.#mutationObserver.setComponents(this.#components).setAttributes(this.#mutatedAttributes)
             this.#mutationObserver.setPlugins(this.#plugins);
             this.#mutationObserver.start();
         }
@@ -168,5 +169,17 @@ export class CuiInstance {
 
     getPlugin(name: string): ICuiPlugin {
         return this.#plugins.get(name);
+    }
+
+    createCuiElement<T>(element: HTMLElement, arg: string, data: T): boolean {
+        if (!is(arg) || !this.#mutatedAttributes.includes(arg)) {
+            this.#log.error("Element cannot be created: Unknown attribute")
+            return false;
+        }
+        if (!addCuiArgument(element, arg, data)) {
+            this.#log.error("Element cannot be created: Missing data")
+            return false;
+        }
+        return true;
     }
 }
