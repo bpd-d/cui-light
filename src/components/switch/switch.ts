@@ -1,18 +1,17 @@
 import { ICuiComponent, ICuiComponentHandler, ICuiParsable, ICuiSwitchable, CuiElement } from "../../core/models/interfaces";
 import { CuiUtils } from "../../core/models/utils";
-import { CuiComponentBase, CuiHandler, CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
-import { ICuiComponentAction, is, getStringOrDefault, CuiActionsFatory, replacePrefix, getIntOrDefault, isInRange, isStringTrue, EVENTS, getChildrenHeight, SCOPE_SELECTOR, calculateNextIndex } from "../../core/index";
+import { CuiChildMutation, CuiMutableHandler } from "../../app/handlers/base";
+import { ICuiComponentAction, is, getStringOrDefault, replacePrefix, getIntOrDefault, isInRange, EVENTS, getChildrenHeight, SCOPE_SELECTOR, calculateNextIndex, CuiActionsListFactory } from "../../core/index";
 import { ICuiTask, CuiTaskRunner } from "../../core/utils/task";
 
 const SWITCH_DEFAULT_ACTION_IN = ".{prefix}-switch-animation-default-in";
 const SWITCH_DEFAULT_ACTION_OUT = ".{prefix}-switch-animation-default-out";
-const SWITCH_DEFAULT_TARGETS = "> li";
+const SWITCH_DEFAULT_TARGETS = " > *";
 
 export class CuiSwitchArgs implements ICuiParsable {
-
     targets: string;
-    in: ICuiComponentAction;
-    out: ICuiComponentAction;
+    in: string;
+    out: string;
     timeout: number;
     links: string;
     switch: string;
@@ -27,12 +26,12 @@ export class CuiSwitchArgs implements ICuiParsable {
     }
 
     parse(args: any): void {
-        this.targets = getStringOrDefault(args.targets, SCOPE_SELECTOR + SWITCH_DEFAULT_TARGETS)
-        this.in = CuiActionsFatory.get(args.in ?? replacePrefix(SWITCH_DEFAULT_ACTION_IN, this.#prefix))
-        this.out = CuiActionsFatory.get(args.out ?? replacePrefix(SWITCH_DEFAULT_ACTION_OUT, this.#prefix))
+        this.targets = is(args.targets) ? SCOPE_SELECTOR + args.targets : SCOPE_SELECTOR + SWITCH_DEFAULT_TARGETS
+        this.in = getStringOrDefault(args.in, replacePrefix(SWITCH_DEFAULT_ACTION_IN, this.#prefix));
+        this.out = getStringOrDefault(args.out, replacePrefix(SWITCH_DEFAULT_ACTION_OUT, this.#prefix));
         this.timeout = getIntOrDefault(args.timeout, this.#defTimeout);
-        this.links = args.links;
-        this.switch = args.switch;
+        this.links = getStringOrDefault(args.links, null);
+        this.switch = getStringOrDefault(args.switch, null);
         this.autoTimeout = getIntOrDefault(args.autoTimeout, -1);
         this.height = getStringOrDefault(args.height, 'auto')
     }
@@ -61,6 +60,8 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     #switches: CuiElement[];
     #task: ICuiTask;
     #switchEventId: string;
+    #actionsIn: ICuiComponentAction[];
+    #actionsOut: ICuiComponentAction[];
     constructor(element: HTMLElement, utils: CuiUtils, attribute: string) {
         super("CuiSwitchHandler", element, attribute, new CuiSwitchArgs(utils.setup.prefix, utils.setup.animationTime), utils);
         this.#targets = [];
@@ -68,13 +69,14 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
         this.#links = [];
         this.#switches = [];
         this.#switchEventId = null;
+        this.#actionsIn = this.#actionsOut = null;
 
     }
 
     onInit(): void {
         this.#switchEventId = this.onEvent(EVENTS.SWITCH, this.onPushSwitch.bind(this))
+        this.parseArguments();
         this.getTargets();
-        this.getLinks();
         this.getActiveIndex();
         this.getSwitches();
         this.setSwitchesActive(this.#currentIdx);
@@ -87,6 +89,10 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     }
 
     onUpdate(): void {
+        this.parseArguments();
+        this.getTargets();
+        this.getSwitches();
+        this.setSwitchesActive(this.#currentIdx);
         this.mutate(() => {
             this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
         })
@@ -99,22 +105,22 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     }
 
     onMutation(record: CuiChildMutation): void {
+        this.getTargets();
         this.mutate(() => {
             this.helper.setStyle(this.element, 'height', this.getElementHeight(this.#targets[this.#currentIdx]))
         })
+
     }
 
     async switch(index: any): Promise<boolean> {
         if (this.isLocked) {
             return false;
         }
-        this.getTargets();
-        this.getLinks();
         this.getSwitches();
         this.getActiveIndex();
         let nextIdx = calculateNextIndex(index, this.#currentIdx, this.#targets.length);
         if (nextIdx == this.#currentIdx || nextIdx < 0 || nextIdx >= this.#targets.length) {
-            this._log.warning(`Index ${index} is not within the suitable range`);
+            this.logWarning(`Index ${index} is not within the suitable range`, "switch");
             return false;
         }
         this.isLocked = true;
@@ -123,13 +129,17 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
 
         await this.actionsHelper.performSwitchAction(nextItem,
             this.#currentIdx > -1 ? this.#targets[this.#currentIdx] : null,
-            this.args.in,
-            this.args.out,
+            this.#actionsIn,
+            this.#actionsOut,
             () => {
+                // Set next element active
                 nextItem.classList.add(this.activeClassName);
+                // Remove active from current element (if current exists)
                 if (this.#currentIdx > -1)
-                    this.#targets[this.#currentIdx].classList.remove(this.activeClassName)
+                    this.#targets[this.#currentIdx].classList.remove(this.activeClassName);
+                // Update linked items
                 this.setLinkActive(this.#currentIdx, nextIdx);
+                // Update element height - it must be done a parent get height based on current child
                 this.helper.setStyle(this.element, 'height', this.getElementHeight(nextItem))
                 this.startTask();
                 this.isLocked = false;
@@ -141,18 +151,18 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
             index: nextIdx
         })
         return true;
-
     }
 
-    onPushSwitch(index: string) {
+
+    private onPushSwitch(index: string) {
         this.switch(index);
     }
 
-    getActiveIndex(): void {
+    private getActiveIndex(): void {
         this.#currentIdx = is(this.#targets) ? this.#targets.findIndex(target => this.helper.hasClass(this.activeClassName, target)) : -1;
     }
 
-    getElementHeight(current: Element): string {
+    private getElementHeight(current: Element): string {
         if (!is(this.args.height) || this.args.height === 'auto') {
             return getChildrenHeight(current) + "px";
         } else {
@@ -160,26 +170,35 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
         }
     }
 
-    getTargets() {
+    /**
+     * Gets attributes value and prepares properties
+     */
+    private parseArguments() {
+        this.#actionsIn = CuiActionsListFactory.get(this.args.in);
+        this.#actionsOut = CuiActionsListFactory.get(this.args.out);
+        this.#links = is(this.args.links) ? [...document.querySelectorAll(this.args.links)] : []
+    }
+
+    /**
+     * Query target elements
+     */
+    private getTargets() {
+        console.log(this.args.targets);
         let t = this.element.querySelectorAll(this.args.targets);
         this.#targets = t.length > 0 ? [...t] : [];
     }
 
-    getLinks() {
-        this.#links = is(this.args.links) ? [...document.querySelectorAll(this.args.links)] : []
-    }
-
-    getSwitches() {
-        let s = is(this.args.switch) ? document.querySelectorAll(this.args.switch) : null;
+    private getSwitches() {
+        let switches = is(this.args.switch) ? document.querySelectorAll(this.args.switch) : null;
         this.#switches = [];
-        if (s) {
-            s.forEach(sw => {
+        if (switches) {
+            switches.forEach(sw => {
                 this.#switches.push(<CuiElement>(sw as any))
             })
         }
     }
 
-    setLinkActive(current: number, next: number) {
+    private setLinkActive(current: number, next: number) {
         if (!is(this.#links)) {
             return
         }
@@ -190,14 +209,15 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
             this.helper.setClass(this.activeClassName, this.#links[next])
         }
     }
+
     /**
      * Sets propers active state on attached switches
      * @param index 
      */
 
-    setSwitchesActive(index: number) {
+    private setSwitchesActive(index: number) {
         this.#switches.forEach(sw => {
-            this.setLinkSwitch(sw.$cuid, index)
+            this.emitLinkSwitch(sw.$cuid, index)
         })
     }
 
@@ -206,7 +226,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
      * @param id - cuid of element
      * @param index - index to be set on element
      */
-    setLinkSwitch(id: string, index: number) {
+    private emitLinkSwitch(id: string, index: number) {
         if (is(id))
             this.utils.bus.emit(EVENTS.SWITCH, id, index);
     }
@@ -214,7 +234,7 @@ export class CuiSwitchHandler extends CuiMutableHandler<CuiSwitchArgs> implement
     /**
      * Runs task if arguments setup allows for it - auto flag must be set to true 
      */
-    startTask() {
+    private startTask() {
         this.#task.stop();
         if (this.args.autoTimeout) {
             this.#task.start();

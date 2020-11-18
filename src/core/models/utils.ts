@@ -10,6 +10,7 @@ import { ICuiDocumentStyleAppender, CuiDocumentStyleAppender } from "../styles/a
 import { CuiInstanceColorHandler } from "../../app/handlers/colors";
 import { ICuiResizableObserver, CuiResizeObserver } from "../../app/observers/resize";
 import { CSSVariableError } from "./errors";
+import { CuiDevelopmentToolManager } from "../../app/managers/development";
 
 export class CuiUtils {
     interactions: IUIInteractionProvider;
@@ -19,12 +20,14 @@ export class CuiUtils {
     colors: CuiInstanceColorHandler;
     styleAppender: ICuiDocumentStyleAppender;
     #resizeObserver: ICuiResizableObserver;
+    development: CuiDevelopmentToolManager;
     constructor(initialSetup: CuiSetupInit) {
         this.setup = new CuiSetup().fromInit(initialSetup);
         this.interactions = CuiInteractionsFactory.get(initialSetup.interaction)
         this.cache = new CuiCacheManager(this.setup.cacheSize);
         this.bus = CuiEventBusFactory.get(initialSetup.busSetup);
         this.colors = new CuiInstanceColorHandler(this.interactions);
+        this.development = new CuiDevelopmentToolManager(initialSetup.development);
         this.styleAppender = new CuiDocumentStyleAppender(this.interactions);
         this.#resizeObserver = new CuiResizeObserver(this.bus, this.setup.resizeThreshold);
         this.#resizeObserver.connect();

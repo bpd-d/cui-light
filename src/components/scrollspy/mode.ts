@@ -81,11 +81,11 @@ export class CuiSingleModeHandler extends CuiModeHandlerBase<number> implements 
                 result.intersecting = [lastElement]
                 this.addActions(actions, lastElement)
             }
-            if (is(links)) {
+            if (are(links, linksActions)) {
                 if (this.previous > -1)
                     this.removeActions(linksActions, links[this.previous]);
                 if (last > -1)
-                    this.addActions(linksActions, last > -1 && links[last])
+                    this.addActions(linksActions, links[last])
             }
             this.previous = last;
             result.changed = true;
@@ -115,7 +115,7 @@ export class CuiMultiModeHandler extends CuiModeHandlerBase<number[]> implements
             this.removeActions(actions, ...this.previous.map(idx => { return items[idx].element }));
             this.addActions(actions, ...intersecting)
             result.intersecting = intersecting;
-            if (is(links)) {
+            if (are(links, linksActions)) {
                 this.removeActions(linksActions, ...this.previous.map(idx => { return links[idx] }));
                 this.addActions(linksActions, ...matching.map(idx => { return links[idx] }))
             }

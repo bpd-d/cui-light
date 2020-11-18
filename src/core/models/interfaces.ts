@@ -188,3 +188,46 @@ export interface CuiAlertData {
     onYes?: () => void;
     onNo?: () => void;
 }
+
+export interface ICuiDevelopmentTool {
+    registerElement(element: HTMLElement, cuid: string, component: string): void;
+    unregisterElement(cuid: string, component: string): void;
+    setProperty<T>(cuid: string, component: string, name: string, t: T): void;
+    pushState(cuid: string, component: string, type: CuiDevelopmentStateType, message: string, functionName?: string): void;
+}
+
+export interface ICuiDevelopmentToolApi {
+    getProperty<T>(cuid: string, component: string, name: string): T;
+    getElement<T>(cuid: string): CuiDevelopmentElement<T>;
+}
+
+export interface CuiDevelopmentElement<T> {
+    element: HTMLElement;
+    cuid: string;
+    components: CuiDevelopmentComponents<T>
+    properties: CuiDevelopmentProperties<T>;
+}
+
+export interface CuiDevelopmentProperties<T> {
+    [name: string]: T;
+}
+
+export interface CuiDevelopmentComponents<T> {
+    [name: string]: CuiDevelopmentComponent<T>
+}
+
+export interface CuiDevelopmentComponent<T> {
+    name: string;
+    registerDt: number;
+    properties: CuiDevelopmentProperties<T>;
+    state: CuiDevelopmentState[];
+}
+
+export interface CuiDevelopmentState {
+    message: string;
+    function: string;
+    timestamp: number;
+    type: CuiDevelopmentStateType;
+}
+
+export type CuiDevelopmentStateType = "info" | "error" | "warning";

@@ -1,5 +1,9 @@
 # bpd cUI Light changelog
-# [0.1.38] WIP
+# [0.1.39] WIP
+# [0.1.38] 2020-11-18
+* [Added] Introduction to developing interface
+* [Fixed] Small adjustments and fixed to links in scrollspy
+* [Fixed] Small corrections in switch
 # [0.1.37] 2020-11-15
 * [Added] Cui instance is able to create new cui element instance on existing html element
 * [Added] Offset update event returns more details: event source and whether is scrolling or not

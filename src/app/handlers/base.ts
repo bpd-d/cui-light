@@ -1,7 +1,7 @@
 import { ICuiLogger, IUIInteractionProvider, CuiContext, ICuiComponentHandler, ICuiParsable, ICuiOpenable, ICuiClosable } from "../../core/models/interfaces";
 import { CuiLoggerFactory } from "../../core/factories/logger";
 import { CuiUtils } from "../../core/models/utils";
-import { getActiveClass, CuiActionsHelper, ICuiComponentAction, is, EVENTS, CuiActionsFatory, CuiActionsListFactory } from "../../core/index";
+import { getActiveClass, CuiActionsHelper, ICuiComponentAction, is, EVENTS, CuiActionsFatory, CuiActionsListFactory, CuiDevelopmentStateType } from "../../core/index";
 import { ICuiComponentMutationObserver, CuiComponentMutationHandler } from "../observers/mutations";
 import { AriaAttributes } from "../../core/utils/aria";
 import { KeyDownEvent } from "../../plugins/keys/observer";
@@ -72,6 +72,7 @@ export class CuiComponentBase implements CuiContext {
     activeClassName: string;
     helper: ComponentHelper;
     #emittedEvents: string[];
+    componentName: string;
     constructor(componentName: string, element: HTMLElement, utils: CuiUtils) {
         this._log = CuiLoggerFactory.get(componentName);
         this.utils = utils;
@@ -82,6 +83,7 @@ export class CuiComponentBase implements CuiContext {
         this.activeClassName = getActiveClass(utils.setup.prefix);
         this.helper = new ComponentHelper(utils.interactions);
         this.#emittedEvents = [];
+        this.componentName = componentName;
     }
 
 
@@ -138,7 +140,41 @@ export class CuiComponentBase implements CuiContext {
             this.utils.bus.detachByCuid(event, this.cuid);
             this._log.debug("Detaching event: " + event + " on component delete");
         })
+    }
 
+    registerInDebug(): void {
+        this.utils.development.registerElement(this.element, this.cuid, this.componentName);
+    }
+
+    removeFromDebug(): void {
+        this.utils.development.unregisterElement(this.cuid, this.componentName);
+    }
+
+    setDebugProperty<T>(name: string, value: T): void {
+        this.utils.development.setProperty(this.cuid, this.componentName, name, value);
+    }
+
+    logInfo(message: string, functionName?: string) {
+        this._log.debug(message, functionName);
+        this.utils.development.pushState(this.cuid, this.componentName, "info", message, functionName);
+    }
+
+    logWarning(message: string, functionName?: string) {
+        this._log.warning(message, functionName);
+        this.utils.development.pushState(this.cuid, this.componentName, "warning", message, functionName);
+    }
+
+    pushDebugState(type: CuiDevelopmentStateType, message: string, functionName?: string) {
+        this.utils.development.pushState(this.cuid, this.componentName, type, message, functionName);
+    }
+
+
+    logError(message: string, functionName?: string, error?: Error) {
+        this._log.error(message, functionName);
+        if (error) {
+            this._log.exception(error, functionName)
+        }
+        this.utils.development.pushState(this.cuid, this.componentName, "error", message, functionName);
     }
 
 }
@@ -161,38 +197,39 @@ abstract class CuiHandlerBase<T extends ICuiParsable> extends CuiComponentBase i
     }
 
     handle(args: any): void {
-        this._log.debug("Init", 'handle');
+        this.logInfo("Init", 'handle');
         if (this.isInitialized) {
-            this._log.warning("Trying to initialize component again", 'handle');
+            this.logWarning("Trying to initialize component again", 'handle');
             return;
         }
         this.args.parse(args);
         if (!this.element.classList.contains(this.#attribute)) {
             this.element.classList.add(this.#attribute);
         }
+        this.registerInDebug();
         this.onHandle();
         this.isInitialized = true;
     }
 
     refresh(args: any): void {
-        this._log.debug("Update", 'refresh')
+        this.logInfo("Update", 'refresh')
         if (!this.isInitialized) {
-            this._log.error("Cannot update not initialized component", 'refresh');
+            this.logError("Cannot update not initialized component", 'refresh');
             return;
         }
         this.prevArgs = { ...this.args };
         this.args.parse(args);
+        this.pushDebugState("info", "Component update", 'refresh');
         this.onRefresh();
     }
 
     destroy(): void {
-        this._log.debug("Destroy", "destroy");
+        this.logInfo("Destroy", "destroy");
         this.onRemove();
         this.detachEmiitedEvents();
+        this.removeFromDebug();
         this.isInitialized = false;
     }
-
-
 
     // Abstract
     abstract onHandle(): void;
@@ -300,7 +337,7 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
             return false;
         }
         if (this.isActive()) {
-            this._log.warning("Component is already opened");
+            this.logWarning("Component is already opened");
             return false;
         }
         if (this.args.escClose || is(this.args.keyClose)) {
@@ -322,7 +359,7 @@ export abstract class CuiInteractableHandler<T extends ICuiParsable & CuiInterac
             return false;
         }
         if (!this.isActive()) {
-            this._log.warning("Component is already closed");
+            this.logWarning("Component is already closed");
             return false;
         }
 

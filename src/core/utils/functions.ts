@@ -475,7 +475,7 @@ export function getChildrenHeight(element: Element): number {
     Array.from(element.children).forEach((child: HTMLElement) => {
         height += child.offsetHeight;
     })
-    return height > 0 ? height + 2 : height;
+    return height > 0 ? height + 4 : height;
 }
 
 export function enumerateObject<T>(object: T, callback: (property: string, value: any) => void) {
@@ -491,7 +491,6 @@ export function enumerateObject<T>(object: T, callback: (property: string, value
 
 export function round(value: number, decimalPlaces: number): number {
     const multiplier = 10 ** decimalPlaces;
-    const semiValue = value * multiplier;
     return Math.floor(value) / multiplier;
 }
 
