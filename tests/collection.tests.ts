@@ -1,5 +1,5 @@
-import { CollectionManager } from "../src/app/managers/collection";
-import { FastDom } from "../src/core/utils/interactions";
+import { CollectionManager } from "../src/managers/collection";
+import { FastDom } from "cui-light-core/dist/esm/utils/interactions";
 
 describe("Tests checking class [CollectionManager]", function () {
     let manager: CollectionManager;

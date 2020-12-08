@@ -1,6 +1,7 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 function DtsBundlePlugin() { }
 DtsBundlePlugin.prototype.apply = function (compiler) {
     compiler.plugin('done', function () {
@@ -13,7 +14,7 @@ DtsBundlePlugin.prototype.apply = function (compiler) {
             outputAsModuleFolder: true // to use npm in-package typings
         });
 
-        // Delete unneeded files
+        // Delete not needed files
 
     });
 };
@@ -22,13 +23,10 @@ module.exports = merge(common, {
     devtool: 'source-map',
     optimization: {
         runtimeChunk: false,
-        minimize: true,
-        minimizer: [new TerserPlugin({
-            sourceMap: true,
-            extractComments: false
-        })]
+        minimize: false
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new DtsBundlePlugin()
     ]
 });

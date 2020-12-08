@@ -1,8 +1,8 @@
-import { ICuiPluginManager, ICuiPlugin } from "../src/core/models/interfaces"
-import { CuiUtils } from "../src/core/models/utils";
-import { CuiSetupInit } from "../src/core/models/setup";
+import { ICuiPluginManager, ICuiPlugin } from "cui-light-core/dist/esm/models/interfaces"
+import { CuiUtils } from "cui-light-core/dist/esm/models/utils";
+import { CuiSetupInit } from "cui-light-core/dist/esm/models/setup";
 import { SamplePlugin, SampleMutationPlugin } from "./helpers/models";
-import { CuiPluginManager } from "../src/app/managers/plugins";
+import { CuiPluginManager } from "../src/managers/plugins";
 
 describe("Tests checking method [CuiPluginManager]", function () {
     let utils: CuiUtils;

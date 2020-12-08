@@ -1,2 +1,1726 @@
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define("cui-light",[],e):"object"==typeof exports?exports["cui-light"]=e():t["cui-light"]=e()}(window,(function(){return function(t){var e={};function i(s){if(e[s])return e[s].exports;var n=e[s]={i:s,l:!1,exports:{}};return t[s].call(n.exports,n,n.exports,i),n.l=!0,n.exports}return i.m=t,i.c=e,i.d=function(t,e,s){i.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:s})},i.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},i.t=function(t,e){if(1&e&&(t=i(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var s=Object.create(null);if(i.r(s),Object.defineProperty(s,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var n in t)i.d(s,n,function(e){return t[e]}.bind(null,n));return s},i.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return i.d(e,"a",e),e},i.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},i.p="",i(i.s=31)}([function(t,e,i){"use strict";i.d(e,"v",(function(){return r})),i.d(e,"n",(function(){return o})),i.d(e,"D",(function(){return h})),i.d(e,"g",(function(){return a})),i.d(e,"q",(function(){return c})),i.d(e,"r",(function(){return l})),i.d(e,"z",(function(){return u})),i.d(e,"t",(function(){return d})),i.d(e,"u",(function(){return p})),i.d(e,"b",(function(){return g})),i.d(e,"d",(function(){return f})),i.d(e,"o",(function(){return m})),i.d(e,"m",(function(){return w})),i.d(e,"w",(function(){return C})),i.d(e,"j",(function(){return k})),i.d(e,"A",(function(){return E})),i.d(e,"y",(function(){return S})),i.d(e,"c",(function(){return y})),i.d(e,"s",(function(){return O})),i.d(e,"x",(function(){return A})),i.d(e,"C",(function(){return M})),i.d(e,"i",(function(){return T})),i.d(e,"B",(function(){return L})),i.d(e,"a",(function(){return j})),i.d(e,"f",(function(){return x})),i.d(e,"p",(function(){return I})),i.d(e,"k",(function(){return P})),i.d(e,"h",(function(){return D})),i.d(e,"e",(function(){return N})),i.d(e,"l",(function(){return B}));var s=i(3),n=i(2);function r(t,e=!0){return null!=t&&(!e||!function(t){if("string"==typeof t)return 0===t.length;if("boolean"==typeof t)return t;if(Array.isArray(t))return 0===t.length;return!1}(t))}function o(t,e){if(!r(t)||!r(e))throw new s.b("Missing argument value");return`${t}-${e}`}function h(t){return new Promise(e=>setTimeout(()=>{e(!0)},t))}function a(t){if(!r(t))return null;let e=document.createElement("template");return e.innerHTML=t,e.content.children.length>0?e.content.children[0]:null}function c(t,e,i){return t<e?e:t>i?i:t}function l(t,e,i,s){return null==t||isNaN(t)?s:c(t,e,i)}function u(t){return r(t)?`[${t.join("],[")}]`:""}function d(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}function p(){return window.matchMedia&&window.matchMedia("print").matches}function g(...t){if(!r(t))return!1;let e=t.length;for(let i=0;i<e;i++)if(!r(t[i]))return!1;return!0}function f(t){return t<=640?"small":t>640&&t<=960?"medium":t>960&&t<=1200?"large":"xlarge"}function v(t){let e={};return r(t)?(e=function(t){let e=null;if(r(t)&&t.startsWith("{")&&t.endsWith("}")){try{e=function(t){return t&&t.length>0?JSON.parse(t):{}}(t)}catch(t){console.error((i="An exception occured",s="Functions",n="parseJsonString",`[${(new Date).toLocaleString()}][${null!=s?s:"-"}][${null!=n?n:"-"}][${i}]`),t)}return e}var i,s,n;return null}(t.trim()),r(e)||(t.includes(";")||t.includes(":")?(e={},t.split(";").forEach(t=>{let i=t.split(":");2===i.length&&(e[i[0].trim()]=i[1].trim())})):e=t),e):e}function m(t){if(!r(t))return-1;let e=t.offsetTop-parseInt(b(t,"margin-top"))-parseInt(b(t,"padding-top"))-parseInt(b(t,"border-top-width"));return e<0?t.offsetTop:e}function w(t,e){let i=parseInt(t);return isNaN(i)?e:i}function b(t,e){return r(t)&&r(e)?t.currentStyle?t.currentStyle[e]:window.getComputedStyle?window.getComputedStyle(t,null).getPropertyValue(e):null:null}function C(t,e,i){return r(t)&&t>=e&&t<=i}function k(t){return(null!=t?t:"")+"-active"}function E(t,e){return g(t,e)?v(t.getAttribute(e)):null}function S(t){return!!r(t)&&["y","t","true","yes"].includes(t.toLowerCase())}function y(t,e){return r(t)?S(t):e}function O(t,e){return r(t)?t.toLowerCase():e}function A(t){return"string"==typeof t}function M(t,e){return r(t)?t.replace("{prefix}",null!=e?e:""):t}function T(){let t=W(1,1e3),e=W(1,100);return`${Math.floor(Math.random()*e)}-${Math.floor(t)}`}function W(t,e){return t=Math.ceil(t),e=Math.floor(e),Math.floor(Math.random()*(e-t+1))+t}function L(t,e,i,o){let h=t;h.$handlers={};let a=function(t,e){return t&&r(t.hasAttribute)?e.filter(e=>t.hasAttribute(e)):null}(t,i);r(a)&&(h.$cuid=t.hasAttribute(n.h)?t.getAttribute(n.h):function(t){return`${r(t)?t:"cui-element"}-${n.b.next().value}`}(t.tagName),t.setAttribute(n.h,h.$cuid),a.forEach(i=>{let n=e.find(t=>t.attribute===i);if(r(n))try{o.styleAppender.append(n.getStyle());let e=n.get(t,o);h.$handlers[n.attribute]=e,h.$handlers[n.attribute].handle(E(t,n.attribute))}catch(t){let e=a?a.join(", "):"";throw new s.h(`An error occured during [${e}] initialization: ${t.message}`)}}))}function j(t,e,i){if(!g(e,i,t))return!1;if(t.hasAttribute(e))return!1;let s=[];return D(i,(t,e)=>{s.push(`${t}: ${e}`)}),t.setAttribute(e,s.join("; ")),!0}function*x(){let t=0;for(;;){((yield t++)||t>2e5)&&(t=0)}}function I(t){if(!r(t))return;let e=t.parentElement;return r(e)&&r(e.$cuid)?e:I(e)}function P(t){let e=0;return t?(Array.from(t.children).forEach(t=>{e+=t.offsetHeight}),e>0?e+4:e):-1}function D(t,e){if(g(t,e))for(let i in t)t.hasOwnProperty(i)&&e(i,t[i])}function N(t,e,i){let s=-1;switch(t){case"prev":s=e<=0?i-1:e-1;break;case"next":s=e<i-1?e+1:0;break;case"first":s=0;break;case"last":s=i-1;default:s=w(t,-1)}return s}function B(t,e){let i=t.length;if(t&&0!==i)for(let s=0;s<i;s++)if(e(t[s],s))return t[s]}},function(t,e,i){"use strict";var s=i(17);i.d(e,"CuiColor",(function(){return s.a}));i(3);var n=i(18);i.o(n,"CLASSES")&&i.d(e,"CLASSES",(function(){return n.CLASSES})),i.o(n,"CSS_VARIABLES")&&i.d(e,"CSS_VARIABLES",(function(){return n.CSS_VARIABLES})),i.o(n,"CuiActionsHelper")&&i.d(e,"CuiActionsHelper",(function(){return n.CuiActionsHelper})),i.o(n,"CuiActionsListFactory")&&i.d(e,"CuiActionsListFactory",(function(){return n.CuiActionsListFactory})),i.o(n,"CuiLoggerFactory")&&i.d(e,"CuiLoggerFactory",(function(){return n.CuiLoggerFactory})),i.o(n,"EVENTS")&&i.d(e,"EVENTS",(function(){return n.EVENTS})),i.o(n,"SCOPE_SELECTOR")&&i.d(e,"SCOPE_SELECTOR",(function(){return n.SCOPE_SELECTOR})),i.o(n,"are")&&i.d(e,"are",(function(){return n.are})),i.o(n,"boolStringOrDefault")&&i.d(e,"boolStringOrDefault",(function(){return n.boolStringOrDefault})),i.o(n,"calculateNextIndex")&&i.d(e,"calculateNextIndex",(function(){return n.calculateNextIndex})),i.o(n,"createElementFromString")&&i.d(e,"createElementFromString",(function(){return n.createElementFromString})),i.o(n,"enumerateObject")&&i.d(e,"enumerateObject",(function(){return n.enumerateObject})),i.o(n,"getActiveClass")&&i.d(e,"getActiveClass",(function(){return n.getActiveClass})),i.o(n,"getChildrenHeight")&&i.d(e,"getChildrenHeight",(function(){return n.getChildrenHeight})),i.o(n,"getIntOrDefault")&&i.d(e,"getIntOrDefault",(function(){return n.getIntOrDefault})),i.o(n,"getName")&&i.d(e,"getName",(function(){return n.getName})),i.o(n,"getStringOrDefault")&&i.d(e,"getStringOrDefault",(function(){return n.getStringOrDefault})),i.o(n,"is")&&i.d(e,"is",(function(){return n.is})),i.o(n,"isInRange")&&i.d(e,"isInRange",(function(){return n.isInRange})),i.o(n,"isString")&&i.d(e,"isString",(function(){return n.isString})),i.o(n,"isStringTrue")&&i.d(e,"isStringTrue",(function(){return n.isStringTrue})),i.o(n,"replacePrefix")&&i.d(e,"replacePrefix",(function(){return n.replacePrefix}));var r=i(19);i.o(r,"CLASSES")&&i.d(e,"CLASSES",(function(){return r.CLASSES})),i.o(r,"CSS_VARIABLES")&&i.d(e,"CSS_VARIABLES",(function(){return r.CSS_VARIABLES})),i.o(r,"CuiActionsHelper")&&i.d(e,"CuiActionsHelper",(function(){return r.CuiActionsHelper})),i.o(r,"CuiActionsListFactory")&&i.d(e,"CuiActionsListFactory",(function(){return r.CuiActionsListFactory})),i.o(r,"CuiLoggerFactory")&&i.d(e,"CuiLoggerFactory",(function(){return r.CuiLoggerFactory})),i.o(r,"EVENTS")&&i.d(e,"EVENTS",(function(){return r.EVENTS})),i.o(r,"SCOPE_SELECTOR")&&i.d(e,"SCOPE_SELECTOR",(function(){return r.SCOPE_SELECTOR})),i.o(r,"are")&&i.d(e,"are",(function(){return r.are})),i.o(r,"boolStringOrDefault")&&i.d(e,"boolStringOrDefault",(function(){return r.boolStringOrDefault})),i.o(r,"calculateNextIndex")&&i.d(e,"calculateNextIndex",(function(){return r.calculateNextIndex})),i.o(r,"createElementFromString")&&i.d(e,"createElementFromString",(function(){return r.createElementFromString})),i.o(r,"enumerateObject")&&i.d(e,"enumerateObject",(function(){return r.enumerateObject})),i.o(r,"getActiveClass")&&i.d(e,"getActiveClass",(function(){return r.getActiveClass})),i.o(r,"getChildrenHeight")&&i.d(e,"getChildrenHeight",(function(){return r.getChildrenHeight})),i.o(r,"getIntOrDefault")&&i.d(e,"getIntOrDefault",(function(){return r.getIntOrDefault})),i.o(r,"getName")&&i.d(e,"getName",(function(){return r.getName})),i.o(r,"getStringOrDefault")&&i.d(e,"getStringOrDefault",(function(){return r.getStringOrDefault})),i.o(r,"is")&&i.d(e,"is",(function(){return r.is})),i.o(r,"isInRange")&&i.d(e,"isInRange",(function(){return r.isInRange})),i.o(r,"isString")&&i.d(e,"isString",(function(){return r.isString})),i.o(r,"isStringTrue")&&i.d(e,"isStringTrue",(function(){return r.isStringTrue})),i.o(r,"replacePrefix")&&i.d(e,"replacePrefix",(function(){return r.replacePrefix}));i(8),i(10);var o=i(6);i.d(e,"CuiActionsListFactory",(function(){return o.a}));i(23);var h=i(0);i.d(e,"are",(function(){return h.b})),i.d(e,"boolStringOrDefault",(function(){return h.c})),i.d(e,"calculateNextIndex",(function(){return h.e})),i.d(e,"createElementFromString",(function(){return h.g})),i.d(e,"enumerateObject",(function(){return h.h})),i.d(e,"getActiveClass",(function(){return h.j})),i.d(e,"getChildrenHeight",(function(){return h.k})),i.d(e,"getIntOrDefault",(function(){return h.m})),i.d(e,"getName",(function(){return h.n})),i.d(e,"getStringOrDefault",(function(){return h.s})),i.d(e,"is",(function(){return h.v})),i.d(e,"isInRange",(function(){return h.w})),i.d(e,"isString",(function(){return h.x})),i.d(e,"isStringTrue",(function(){return h.y})),i.d(e,"replacePrefix",(function(){return h.C}));i(14),i(20);var a=i(30);i.o(a,"CLASSES")&&i.d(e,"CLASSES",(function(){return a.CLASSES})),i.o(a,"CSS_VARIABLES")&&i.d(e,"CSS_VARIABLES",(function(){return a.CSS_VARIABLES})),i.o(a,"CuiActionsHelper")&&i.d(e,"CuiActionsHelper",(function(){return a.CuiActionsHelper})),i.o(a,"CuiLoggerFactory")&&i.d(e,"CuiLoggerFactory",(function(){return a.CuiLoggerFactory})),i.o(a,"EVENTS")&&i.d(e,"EVENTS",(function(){return a.EVENTS})),i.o(a,"SCOPE_SELECTOR")&&i.d(e,"SCOPE_SELECTOR",(function(){return a.SCOPE_SELECTOR}));var c=i(2);i.d(e,"CLASSES",(function(){return c.a})),i.d(e,"CSS_VARIABLES",(function(){return c.g})),i.d(e,"EVENTS",(function(){return c.i})),i.d(e,"SCOPE_SELECTOR",(function(){return c.k}));i(25);var l=i(4);i.d(e,"CuiLoggerFactory",(function(){return l.a}));i(22);var u=i(21);i.d(e,"CuiActionsHelper",(function(){return u.a}));i(16),i(15),i(24),i(26),i(11),i(12)},function(t,e,i){"use strict";i.d(e,"h",(function(){return n})),i.d(e,"a",(function(){return r})),i.d(e,"j",(function(){return o})),i.d(e,"c",(function(){return h})),i.d(e,"d",(function(){return a})),i.d(e,"e",(function(){return c})),i.d(e,"f",(function(){return l})),i.d(e,"k",(function(){return u})),i.d(e,"g",(function(){return d})),i.d(e,"l",(function(){return p})),i.d(e,"i",(function(){return g})),i.d(e,"b",(function(){return f}));var s=i(0);const n="cuid",r={dark:"dark",animProgress:"animation-progress",print:"print",active:"active",swipingOn:"swiping-on",selectionOff:"selection-off"},o={close:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"><path d="M 1.9999999,1.9999999 18,18"></path><path d="M 18,1.9999999 1.9999999,18"></path></svg>',accordion:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"><path d="M 5.0000475,7.4490018 10.000024,12.551028 15,7.4490018"></path></svg>',special_menu:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"><path class="menu_handle_2" d="M 1,10 H 19"></path><path class="menu_handle_1" d="M 1,4.8571429 H 19"></path><path  class="menu_handle_3" d="M 1,15.142857 H 19"></path></svg>',special_fail:'<svg xmlns="http://www.w3.org/2000/svg" class="special-fail" viewBox="0 0 100 100" width="100" height="100"><path class="circle" d="M 50,7.000001 A 43,43 0 0 1 92.999999,50 43,43 0 0 1 50,92.999999 43,43 0 0 1 7.0000011,50 43,43 0 0 1 50,7.000001 Z"></path><path class="arm_1" d="M 28.536809,28.536809 71.342023,71.342023"></path><path class="arm_2" d="M 71.342023,28.536809 28.536809,71.342023"></path></svg>',special_success:'<svg xmlns="http://www.w3.org/2000/svg" class="special-success" viewBox="0 0 100 100" width="100" height="100"><path class="circle" d="M 50,7 A 43,43 0 0 1 93,50 43,43 0 0 1 50,93 43,43 0 0 1 7,50 43,43 0 0 1 50,7 Z"></path><path class="arm" d="M 22.988405,48.234784 36.946233,72.410453 75.516456,33.84023"></path></svg>'},h={light:"--cui-color-light-app-background",dark:"--cui-color-dark-app-background"},a={light:"--cui-color-light-background",dark:"--cui-color-dark-background "},c={light:"--cui-color-light-border",dark:"--cui-color-dark-border"},l={light:{base:"--cui-color-light-base",muted:"--cui-color-light-muted",active:"--cui-color-light-active"},dark:{base:"--cui-color-dark-base",muted:"--cui-color-dark-muted",active:"--cui-color-dark-active"},accent:{base:"--cui-color-primary",muted:"--cui-color-primary-muted",active:"--cui-color-primary-active"},secondary:{base:"--cui-color-secondary",muted:"--cui-color-secondary-muted",active:"--cui-color-secondary-active"},success:{base:"--cui-color-success",muted:"--cui-color-success-muted",active:"--cui-color-success-active"},warning:{base:"--cui-color-warning",muted:"--cui-color-warning-muted",active:"--cui-color-warning-active"},error:{base:"--cui-color-error",muted:"--cui-color-error-muted",active:"--cui-color-error-active"}},u=":scope ",d={fontSize:"--{prefix}-font-size",lineHeight:"--{prefix}-line-height",animationTime:"--{prefix}-animation-time",animationTimeLong:"--{prefix}-animation-time-long",animationTimeShort:"--{prefix}-animation-time-short",colorLightAppBackground:"--{prefix}-color-light-app-background",colorLightBackground:"--{prefix}-color-light-background",colorLightBorder:"--{prefix}-color-light-border",colorLightBase:"--{prefix}-color-light-base",colorLightActive:"--{prefix}-color-light-active",colorLightMuted:"--{prefix}-color-light-muted",colorDarkAppBackground:"--{prefix}-color-dark-app-background",colorDarkBackground:"--{prefix}-color-dark-background",colorDarkBorder:"--{prefix}-color-dark-border",colorDarkBase:"--{prefix}-color-dark-base",colorDarkActive:"--{prefix}-color-dark-active",colorDarkMuted:"--{prefix}-color-dark-muted",colorAccent:"--{prefix}-color-primary",colorAccentActive:"--{prefix}-color-primary-active",colorAccentMuted:"--{prefix}-color-primary-muted",colorAccentShade:"--{prefix}-color-primary-shade",colorAccentShadeDark:"--{prefix}-color-primary-shade-dark",colorSecondary:"--{prefix}-color-secondary",colorSecondaryActive:"--{prefix}-color-secondary-active",colorSecondaryMuted:"--{prefix}-color-secondary-muted",colorSecondaryShade:"--{prefix}-color-secondary-shade",colorSecondaryShadeDark:"--{prefix}-color-secondary-shade-dark",colorWarning:"--{prefix}-color-warning",colorWarningActive:"--{prefix}-color-warning-active",colorWarningMuted:"--{prefix}-color-warning-muted",colorWarningShade:"--{prefix}-color-warning-shade",colorWarningShadeDark:"--{prefix}-color-warning-shade-dark",colorSuccess:"--{prefix}-color-success",colorSuccessActive:"--{prefix}-color-success-active",colorSuccessMuted:"--{prefix}-color-success-muted",colorSuccessShade:"--{prefix}-color-success-shade",colorSuccessShadeDark:"--{prefix}-color-success-shade-dark",colorError:"--{prefix}-color-error",colorErrorActive:"--{prefix}-color-error-active",colorErrorMuted:"--{prefix}-color-error-muted",colorErrorShade:"--{prefix}-color-error-shade",colorErrorShadeDark:"--{prefix}-color-error-shade-dark",inputBackground:"--{prefix}-input-background-color",colorShade:"--{prefix}-color-shade",colorShadeDarker:"--{prefix}-color-shade-darker",colorShadeLight:"--{prefix}-color-shade-light",colorShadeLighter:"--{prefix}-color-shade-light-lighter",outline:"--{prefix}-outline",borderRadius:"--{prefix}-border-radius",padding:"--{prefix}-padding",margin:"--{prefix}-margin",scrollbarWidth:"--{prefix}-scrollbar-width",componentSpace:"--{prefix}-component-space",accordionIcon:"--{prefix}-accordion-icon"};class p{}p.logLevel="none",p.prefix="cui";const g={INSTANCE_INITIALIZED:"instance-initialized",INSTANCE_FINISHED:"instance-finished",RESIZE:"resize",OPEN:"open",OPENED:"opened",CLOSE:"close",CLOSED:"closed",TOGGLE:"toggle",TOGGLED:"toggled",SWITCH:"switch",SWITCHED:"switched",ON_SCROLL:"scroll",TARGET_CHANGE:"targetchange",INTERSECTION:"intersection",KEYDOWN:"keydown",SCROLLBY:"scrollby",WINDOW_CLICK:"windowclick",OFFSET:"offset",PROGRESS_CHANGE:"progresschange",PROGRESS_CHANGED:"progresschanged",CHANGE:"change",CHANGED:"changed",GLOBAL_MOVE:"globalmove",MOVE_LOCK:"movelock",PAUSE:"pause",PAUSED:"paused",SORTED:"sorted",SORT_START:"sortstart"},f=Object(s.f)()},function(t,e,i){"use strict";i.d(e,"g",(function(){return n})),i.d(e,"b",(function(){return r})),i.d(e,"e",(function(){return o})),i.d(e,"h",(function(){return h})),i.d(e,"a",(function(){return a})),i.d(e,"c",(function(){return c})),i.d(e,"d",(function(){return l})),i.d(e,"f",(function(){return u}));class s extends Error{constructor(t,e){super(e),Object.setPrototypeOf(this,new.target.prototype),this.name=t}}class n extends s{constructor(t){super("ItemNotFoundError",t)}}class r extends s{constructor(t){super("ArgumentError",t)}}class o extends s{constructor(t){super("CuiInstanceInitError",t)}}class h extends s{constructor(t){super("RegisterElementError",t)}}class a extends s{constructor(t){super("AnimatorError",t)}}class c extends s{constructor(t){super("CSSVariableError",t)}}class l extends s{constructor(t){super("CuiColorError",t)}}class u extends s{constructor(t){super("CuiPositionError",t)}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return r}));var s=i(20),n=i(2);class r{static get(t,e){return new s.a(t,null!=e?e:n.l.logLevel)}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return l}));var s,n,r,o,h=i(1),a=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},c=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class l{constructor(t){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),a(this,o,t),a(this,n,[]),a(this,r,null)}setId(t){return a(this,s,t),this}setClasses(...t){return a(this,n,t),this}setAttributes(t){return a(this,r,t),this}build(t){let e=document.createElement(c(this,o));return Object(h.is)(c(this,s))&&(e.id=c(this,s)),Object(h.is)(c(this,n))&&e.classList.add(...c(this,n)),Object(h.is)(c(this,r))&&Object(h.enumerateObject)(c(this,r),(t,i)=>{e.setAttribute(t,i)}),Object(h.is)(t)&&(e.innerHTML=t),e}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap},function(t,e,i){"use strict";i.d(e,"b",(function(){return l})),i.d(e,"a",(function(){return g}));var s,n,r,o,h=i(0),a=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},c=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class l{constructor(t){s.set(this,void 0),a(this,s,t)}add(t,e){Object(h.b)(t,c(this,s))&&!t.classList.contains(c(this,s))&&t.classList.add(c(this,s))}remove(t,e){Object(h.b)(t,c(this,s))&&t.classList.contains(c(this,s))&&t.classList.remove(c(this,s))}toggle(t,e){Object(h.b)(t,c(this,s))&&(t.classList.contains(c(this,s))?t.classList.remove(c(this,s)):t.classList.add(c(this,s)))}}s=new WeakMap;class u{constructor(t){n.set(this,void 0),a(this,n,t)}add(t,e){switch(c(this,n)){case"dark-mode":e.setLightMode("dark");break;case"light-mode":e.setLightMode("light")}}remove(t,e){switch(c(this,n)){case"dark-mode":e.setLightMode("light");break;case"light-mode":e.setLightMode("dark")}}toggle(t,e){switch(c(this,n)){case"dark-mode":case"light-mode":this.setDarkMode(e)}}setDarkMode(t){"dark"===t.getLightMode()?t.setLightMode("light"):t.setLightMode("dark")}}n=new WeakMap;class d{constructor(t){var e,i;r.set(this,void 0),o.set(this,void 0),e=this,i=this,[{set value(t){a(e,r,t)}}.value,{set value(t){a(i,o,t)}}.value]=t.split(",")}add(t,e){Object(h.b)(t,c(this,r),c(this,o))&&t.setAttribute(c(this,r),c(this,o))}remove(t,e){Object(h.b)(t,c(this,r),c(this,o))&&t.hasAttribute(c(this,r))&&t.removeAttribute(c(this,r))}toggle(t,e){Object(h.b)(t,c(this,r),c(this,o))&&(t.hasAttribute(c(this,r))?t.removeAttribute(c(this,r)):t.setAttribute(c(this,r),c(this,o)))}}r=new WeakMap,o=new WeakMap;class p{constructor(){}add(t,e){}remove(t,e){}toggle(t,e){}}class g{static get(t){if(!Object(h.v)(t))return[];return t.split(",").map(t=>class{static get(t){if(!Object(h.v)(t))return new p;switch(t[0]){case".":return new l(t.substring(1));case"~":return new u(t.substring(1));case"&":return new d(t.substring(1));default:return new l(t)}}}.get(t.trim()))}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return l}));var s,n,r,o,h=i(0),a=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},c=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class l{constructor(t,e,i){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),a(this,n,e),a(this,r,t),a(this,o,i)}start(){this.canRun()&&(this.stop(),a(this,s,setTimeout(()=>{c(this,o).call(this),a(this,s,null),c(this,n)&&this.start()},c(this,r))))}stop(){c(this,s)&&(clearTimeout(c(this,s)),a(this,s,null))}getId(){return c(this,s)}canRun(){return Object(h.v)(c(this,o))&&c(this,r)>0}setCallback(t){a(this,o,t)}setTimeout(t){a(this,r,t)}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return s})),i.d(e,"b",(function(){return n}));class s{constructor(){this.autoLightMode=!1,this.scrollThreshold=20,this.resizeThreshold=20,this.plugins={}}fromInit(t){return this.prefix=t.prefix,this.logLevel=t.logLevel,this.cacheSize=t.cacheSize,this.autoLightMode=t.autoLightMode,this.animationTime=t.animationTime,this.animationTimeShort=t.animationTimeShort,this.animationTimeLong=t.animationTimeLong,this.scrollThreshold=t.scrollThreshold,this.resizeThreshold=t.resizeThreshold,this}}class n{constructor(){this.prefix="cui",this.app="$cui",this.logLevel="warning",this.interaction="async",this.animationTime=300,this.animationTimeShort=150,this.animationTimeLong=500,this.cacheSize=500,this.autoLightMode=!1,this.scrollThreshold=20,this.resizeThreshold=20,this.root=document.body,this.busSetup=void 0}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return a}));var s,n,r,o=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},h=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class a{static get(t){return t instanceof Window?new u:t instanceof HTMLElement?new l(t):new c(t)}}class c{constructor(t){s.set(this,void 0),n.set(this,void 0),o(this,n,t),o(this,s,t.getBoundingClientRect())}getHeight(){return h(this,s).height}getWidth(){return h(this,s).width}getTop(){return h(this,s).top}getLeft(){return h(this,s).left}getScrollHeight(){return h(this,n).scrollHeight}getScrollWidth(){return h(this,n).scrollWidth}getScrollTop(){return h(this,n).scrollTop}getScrollLeft(){return h(this,n).scrollLeft}queryAll(t){return[...h(this,n).querySelectorAll(t)]}}s=new WeakMap,n=new WeakMap;class l{constructor(t){r.set(this,void 0),o(this,r,t)}getHeight(){return h(this,r).offsetHeight}getWidth(){return h(this,r).offsetWidth}getTop(){return h(this,r).offsetTop}getLeft(){return h(this,r).offsetLeft}getScrollHeight(){return h(this,r).scrollHeight}getScrollWidth(){return h(this,r).scrollWidth}getScrollTop(){return h(this,r).scrollTop}getScrollLeft(){return h(this,r).scrollLeft}queryAll(t){return[...h(this,r).querySelectorAll(t)]}}r=new WeakMap;class u{getHeight(){return window.innerHeight}getWidth(){return window.innerWidth}getTop(){return 0}getLeft(){return 0}getScrollHeight(){return window.innerHeight}getScrollWidth(){return window.innerWidth}getScrollTop(){return window.pageYOffset}getScrollLeft(){return window.pageXOffset}queryAll(t){return[...document.querySelectorAll(t)]}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return H}));var s,n,r=i(8),o=i(22),h=i(23),a=i(0),c=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},l=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class u{constructor(t){s.set(this,void 0),n.set(this,void 0),c(this,s,new h.a),c(this,n,null!=t?t:500)}put(t,e){Object(a.v)(t)&&(this.has(t)?l(this,s).update(t,e):(this.clean(),l(this,s).add(t,e)))}get(t){if(!Object(a.v)(t))return null;if(this.has(t)){let e=l(this,s).get(t);if(e.refresh())return e;l(this,s).remove(t)}return null}has(t){return!!Object(a.v)(t)&&l(this,s).containsKey(t)}remove(t){return!!Object(a.v)(t)&&(!!this.has(t)&&(l(this,s).remove(t),!0))}clear(){l(this,s).clear()}clean(){l(this,s).keys().length>=l(this,n)&&l(this,s).remove(l(this,s).keys()[0])}}s=new WeakMap,n=new WeakMap;var d,p,g,f,v=i(24),m=i(2),w=i(25),b=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},C=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class k{constructor(t){d.set(this,void 0),p.set(this,void 0),g.set(this,15),f.set(this,15),b(this,d,document.documentElement),b(this,p,t)}setAppBackground(t,e){this.setPropertyIn(m.c.light,t.toCssString()),this.setPropertyIn(m.c.dark,e.toCssString())}setComponentBackground(t,e){this.setPropertyIn(m.d.light,t.toCssString()),this.setPropertyIn(m.d.dark,e.toCssString())}setBordersColors(t,e){this.setPropertyIn(m.e.light,t.toCssString()),this.setPropertyIn(m.e.dark,e.toCssString())}setColor(t,e){var i,s;const n=m.f[t],r=e.base;if(!Object(a.v)(n)||!Object(a.v)(r))return;const o=null!==(i=e.muted)&&void 0!==i?i:r.clone().lighten(C(this,g)),h=null!==(s=e.active)&&void 0!==s?s:r.clone().darken(C(this,f));C(this,p).mutate(()=>{this.setProperty(n.base,r.toCssString()),this.setProperty(n.active,h.toCssString()),this.setProperty(n.muted,o.toCssString())},this)}setLightenFactor(t){b(this,g,Object(a.q)(t,0,100))}setDarkenFactor(t){b(this,f,Object(a.q)(t,0,100))}setProperty(t,e){C(this,d).style.setProperty(t,e)}setPropertyIn(t,e){Object(a.b)(e,t)&&C(this,p).mutate(this.setProperty,this,t,e)}}d=new WeakMap,p=new WeakMap,g=new WeakMap,f=new WeakMap;var E,S,y,O,A,M,T,W=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},L=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class j{constructor(t,e){E.set(this,void 0),S.set(this,void 0),y.set(this,void 0),O.set(this,void 0),A.set(this,void 0),M.set(this,void 0),T.set(this,void 0),W(this,E,[]),W(this,S,[]),W(this,y,window.innerWidth),W(this,O,!1),W(this,A,Object(a.d)(window.innerWidth)),W(this,M,null!=e?e:0),W(this,T,t)}observe(t){L(this,E).findIndex(e=>e===t)<0&&L(this,E).push(t)}unobserve(t){let e=L(this,E).findIndex(e=>e===t);e>=0&&L(this,E).splice(e,1)}connect(){window.addEventListener("resize",this.listener.bind(this))}disconnect(){window.removeEventListener("resize",this.listener.bind(this))}listener(t){if(L(this,O))return;W(this,O,!0);const e=window.innerWidth-L(this,y);if(Math.abs(e)>=L(this,M)){const t=Object(a.d)(window.innerWidth);if(t!==L(this,A)){const e={current:t,previous:L(this,A),width:window.innerWidth,height:window.innerHeight,timestamp:Date.now()};L(this,T).emit(m.i.RESIZE,null,e),L(this,E).length>0&&(W(this,S,[]),L(this,E).forEach(t=>{L(this,S).push(t.resize(e))}),Promise.all(L(this,S)),W(this,S,[])),W(this,A,t)}}W(this,O,!1)}}E=new WeakMap,S=new WeakMap,y=new WeakMap,O=new WeakMap,A=new WeakMap,M=new WeakMap,T=new WeakMap;var x,I=i(3),P=i(1),D=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},N=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class B{constructor(t){x.set(this,void 0),D(this,x,t)}pushState(t,e,i,s,n){Object(P.is)(N(this,x))&&N(this,x).pushState(t,e,i,s,n)}registerElement(t,e,i){Object(P.is)(N(this,x))&&N(this,x).registerElement(t,e,i)}unregisterElement(t,e){Object(P.is)(N(this,x))&&N(this,x).unregisterElement(t,e)}setProperty(t,e,i,s){Object(P.is)(N(this,x))&&N(this,x).setProperty(t,e,i,s)}}x=new WeakMap;var _,R=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},V=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class H{constructor(t){_.set(this,void 0),this.setup=(new r.a).fromInit(t),this.interactions=o.a.get(t.interaction),this.cache=new u(this.setup.cacheSize),this.bus=v.a.get(t.busSetup),this.colors=new k(this.interactions),this.development=new B(t.development),this.styleAppender=new w.a(this.interactions),R(this,_,new j(this.bus,this.setup.resizeThreshold)),V(this,_).connect()}setLightMode(t){const e=Object(a.n)(this.setup.prefix,m.a.dark),i=document.body.classList;"dark"!==t||i.contains(e)?"light"===t&&i.contains(e)&&this.interactions.mutate(()=>{i.remove(e)},this):this.interactions.mutate(()=>{i.add(e)},this)}getLightMode(){const t=Object(a.n)(this.setup.prefix,m.a.dark);return document.body.classList.contains(t)?"dark":"light"}setPrintMode(t){const e=Object(a.n)(this.setup.prefix,m.a.print),i=document.body.classList;t&&!i.contains(e)?i.add(e):!t&&i.contains(e)&&i.remove(e)}isPrintMode(){const t=Object(a.n)(this.setup.prefix,m.a.print);return document.body.classList.contains(t)}setProperty(t,e){if(!Object(a.b)(t,e))throw new I.c("Property or value was not provided");let i=Object(a.C)(t,this.setup.prefix);document.documentElement.style.setProperty(i,e)}}_=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return c}));var s,n,r,o,h=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},a=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class c{constructor(t){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),h(this,s,t),h(this,r,!1)}setCallback(t){h(this,n,t)}isInProgress(){return a(this,o)}attach(){window.matchMedia&&!a(this,r)&&a(this,s)&&(window.matchMedia(a(this,s)).addEventListener("change",this.event.bind(this)),h(this,r,!0))}detach(){a(this,r)&&(window.matchMedia(a(this,s)).removeEventListener("change",this.event.bind(this)),h(this,r,!1))}isAttached(){return a(this,r)}event(t){if(!a(this,o)){h(this,o,!0);try{a(this,n).call(this,t)}catch(t){console.error(t)}finally{h(this,o,!1)}}}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return w}));var s,n,r,o,h,a,c,l,u,d,p=i(9),g=i(0),f=i(7),v=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},m=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class w{constructor(t,e){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),h.set(this,void 0),a.set(this,void 0),c.set(this,void 0),l.set(this,void 0),u.set(this,void 0),d.set(this,void 0),v(this,s,t),v(this,l,p.a.get(t)),v(this,n,!1),v(this,r,Object(g.r)(e,0,100,0)),v(this,o,v(this,h,0)),v(this,c,!1),v(this,u,new f.a(50,!1,this.onScrollFinish.bind(this))),v(this,d,this.listener.bind(this))}setCallback(t){v(this,a,t)}attach(){m(this,s).addEventListener("scroll",m(this,d)),v(this,c,!0),this.listener(void 0,!0,"init")}detach(){m(this,s).removeEventListener("scroll",m(this,d)),m(this,u).stop(),v(this,c,!1)}setTarget(t){t!==m(this,s)&&(this.detach(),v(this,s,t),this.attach())}setThreshold(t){v(this,r,Object(g.r)(t,0,100,0))}isInProgress(){return m(this,n)}isAttached(){return m(this,c)}listener(t,e,i){if(!Object(g.v)(m(this,a)))return;let s=m(this,l).getScrollLeft(),r=m(this,l).getScrollTop();v(this,o,m(this,o)+s),v(this,h,m(this,h)+r),m(this,n)||!this.passedThreshold()&&Object(g.v)(t)||(v(this,n,!0),m(this,a).call(this,{base:t,top:r,left:s,initial:null!=e&&e,scrolling:Object(g.v)(t),source:null!=i?i:"event"}),Object(g.v)(t)&&m(this,u).start(),v(this,n,!1),v(this,o,0),v(this,h,0))}passedThreshold(){return m(this,r)<=0||m(this,o)>=m(this,r)||m(this,h)>=m(this,r)}onScrollFinish(){this.listener(void 0,!1,"task")}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap,h=new WeakMap,a=new WeakMap,c=new WeakMap,l=new WeakMap,u=new WeakMap,d=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return d}));var s,n,r,o,h,a,c=i(0),l=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},u=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class d{constructor(t){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),h.set(this,void 0),a.set(this,void 0),l(this,r,!1),l(this,s,null!=t?t:document.body),l(this,o,!1),l(this,h,!1),this.onMouseDown=this.onMouseDown.bind(this),this.onMouseUp=this.onMouseUp.bind(this),this.onMouseMove=this.onMouseMove.bind(this),this.onTouchStart=this.onTouchStart.bind(this),this.onTouchEnd=this.onTouchEnd.bind(this),this.onTouchMove=this.onTouchMove.bind(this)}setCallback(t){l(this,n,t)}setTarget(t){l(this,a,t)}isInProgress(){return u(this,r)}preventDefault(t){l(this,h,t)}attach(){u(this,o)||(u(this,s).addEventListener("mousedown",this.onMouseDown,{passive:!1}),u(this,s).addEventListener("mouseup",this.onMouseUp,{passive:!1}),u(this,s).addEventListener("mousemove",this.onMouseMove,{passive:!1}),u(this,s).addEventListener("touchstart",this.onTouchStart,{passive:!1}),u(this,s).addEventListener("touchend",this.onTouchEnd,{passive:!1}),u(this,s).addEventListener("touchmove",this.onTouchMove,{passive:!1}),l(this,o,!0))}detach(){console.log("On detach"),u(this,o)&&(u(this,s).removeEventListener("mousedown",this.onMouseDown,{passive:!1}),u(this,s).removeEventListener("mouseup",this.onMouseUp,{passive:!1}),u(this,s).removeEventListener("mousemove",this.onMouseMove,{passive:!1}),u(this,s).removeEventListener("touchstart",this.onTouchStart,{passive:!1}),u(this,s).removeEventListener("touchend",this.onTouchEnd,{passive:!1}),u(this,s).removeEventListener("touchmove",this.onTouchMove,{passive:!1}),l(this,o,!1))}isAttached(){return u(this,o)}onMouseDown(t){u(this,r)||u(this,a)&&!u(this,a).contains(t.target)||(l(this,r,!0),this.publishMouseEvent("down",t))}onMouseUp(t){u(this,r)&&(l(this,r,!1),this.publishMouseEvent("up",t))}onMouseMove(t){u(this,r)&&this.publishMouseEvent("move",t)}onTouchStart(t){u(this,r)||u(this,a)&&!u(this,a).contains(t.target)||(l(this,r,!0),this.publishTouchEvent("down",t))}onTouchEnd(t){u(this,r)&&(l(this,r,!1),this.publishTouchEvent("up",t))}onTouchMove(t){u(this,r)&&this.publishTouchEvent("move",t)}publishMouseEvent(t,e){u(this,h)&&e.cancelable&&e.preventDefault(),Object(c.v)(u(this,n))&&u(this,n).call(this,{type:t,x:e.clientX,y:e.clientY,moveX:e.movementX,moveY:e.movementY,target:e.target,event:e})}publishTouchEvent(t,e){if(u(this,h)&&e.cancelable&&e.preventDefault(),Object(c.v)(u(this,n))){let i=null;e.touches.length>0?i=e.touches[0]:e.changedTouches.length>0&&(i=e.changedTouches[0]),u(this,n).call(this,{event:e,type:t,target:e.target,x:Object(c.v)(i)?i.clientX:-1,y:Object(c.v)(i)?i.clientY:-1,moveX:-1,moveY:-1})}}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap,h=new WeakMap,a=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return o})),i.d(e,"b",(function(){return h}));var s,n=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},r=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class o{constructor(){this.isScheduled=!1,s.set(this,void 0),this.raf=window.requestAnimationFrame.bind(window),this.writes=[],this.reads=[],n(this,s,5)}mutate(t,e,...i){this.reads.push(this.createTask(t,e,...i)),this.schedule()}fetch(t,e,...i){this.writes.push(this.createTask(t,e,...i)),this.schedule()}createTask(t,e,...i){return e||i?t.bind(e,...i):t}run(t){let e=null;for(;e=t.shift();)e()}schedule(t){if(!this.isScheduled){if(this.isScheduled=!0,t>=r(this,s))throw new Error("Fast Dom limit reached");this.raf(this.flush.bind(this,t))}}flush(t){let e=null!=t?t:0,i=null,s=this.writes,n=this.reads;try{this.run(n),this.run(s)}catch(t){i=t,console.error(t)}this.isScheduled=!1,i&&this.schedule(e+1),(this.writes.length||this.reads.length)&&this.schedule(t+1)}}s=new WeakMap;class h{constructor(){this.isRunning=!1,this.tasks=[],this.raf=window.requestAnimationFrame.bind(window)}mutate(t,e,...i){this.tasks.push(this.createTask(t,e,...i)),this.schedule()}fetch(t,e,...i){this.tasks.push(this.createTask(t,e,...i)),this.schedule()}schedule(){this.isRunning||(this.isRunning=!0,this.raf(this.flush.bind(this)))}flush(){let t=null;for(;t=this.tasks.shift();)try{t()}catch(t){}this.isRunning=!1}createTask(t,e,...i){return e||i?t.bind(e,...i):t}}},function(t,e,i){"use strict";i.d(e,"b",(function(){return p})),i.d(e,"a",(function(){return g}));var s,n,r,o=i(0),h=i(4),a=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},c=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},l=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class u{constructor(){this.queue=[],this.isBusy=!1}idMatches(t,e){return!Object(o.v)(t)||Object(o.v)(t)&&t==e}}class d extends u{constructor(t){super(),s.set(this,void 0),n.set(this,void 0),c(this,n,t),c(this,s,h.a.get("SimpleEventEmitHandler"))}handle(t,e,i){return a(this,void 0,void 0,(function*(){Object(o.v)(t)?(this.queue.push({events:t,cuid:e,args:i}),this.isBusy||this.isBusy||(this.isBusy=!0,this.perform(),this.queue.length>0&&(yield this.perform()),this.isBusy=!1)):l(this,s).warning("No events provided")}))}perform(){return a(this,void 0,void 0,(function*(){let t=this.queue.shift();for(let e in t.events){let i=t.events[e];try{this.idMatches(t.cuid,i.$cuid)&&(yield l(this,n).execute(i.callback,t.args))}catch(t){l(this,s).error(t)}}}))}}s=new WeakMap,n=new WeakMap;class p extends u{constructor(t){super(),r.set(this,void 0),c(this,r,t)}handle(t,e,i){return a(this,void 0,void 0,(function*(){Object(o.v)(t)&&(this.queue.push({events:t,cuid:e,args:i}),this.isBusy||(this.isBusy=!0,this.perform(),this.queue.length>0&&this.perform(),this.isBusy=!1))}))}perform(){return a(this,void 0,void 0,(function*(){let t=this.queue.shift(),e=[];for(let i in t.events){let s=t.events[i];this.idMatches(t.cuid,s.$cuid)&&e.push(l(this,r).execute(s.callback,t.args))}return Promise.all(e)}))}}r=new WeakMap;class g{static get(t,e){switch(t){case"tasked":return new p(e);default:return new d(e)}}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return n}));var s=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))};class n{execute(t,e){return s(this,void 0,void 0,(function*(){e=null!=e?e:[],t(...e)}))}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return p})),i.d(e,"b",(function(){return g})),i.d(e,"c",(function(){return f}));var s,n,r,o,h,a,c=i(0),l=i(3),u=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},d=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class p{constructor(t,e,i,h){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),this.set(t,e,i,h)}static create(t){if(!Object(c.v)(t))throw new l.d("Given color value is not in a valid format");t.trim();let e=null;if(t.startsWith("#"))e=new g(t);else{if(!t.startsWith("rgb"))throw new l.d("Unknown color string format");e=new f(t)}return e.parse()}set(t,e,i,h){u(this,o,Object(c.q)(null!=h?h:1,0,1)),u(this,r,Object(c.q)(i,0,255)),u(this,s,Object(c.q)(t,0,255)),u(this,n,Object(c.q)(e,0,255))}setRed(t){u(this,s,Object(c.q)(t,0,255))}setGreen(t){u(this,n,Object(c.q)(t,0,255))}setBlue(t){u(this,r,Object(c.q)(t,0,255))}opacity(t){return u(this,o,Object(c.q)(t,0,1)),this}lighten(t){return this.shade(t),this}darken(t){return this.shade(-t),this}invert(){return u(this,r,255-d(this,r)),u(this,s,255-d(this,s)),u(this,n,255-d(this,n)),this}getColorValue(t){t&&t.toLowerCase();switch(t){case"red":return d(this,s);case"green":return d(this,n);case"blue":return d(this,r);case"alpha":return d(this,o)}return-1}toCssString(){return`rgba(${d(this,s)}, ${d(this,n)}, ${d(this,r)}, ${d(this,o)})`}shade(t,e=!0){u(this,s,this.shadeSingle(d(this,s),t,e)),u(this,n,this.shadeSingle(d(this,n),t,e)),u(this,r,this.shadeSingle(d(this,r),t,e))}shadeSingle(t,e,i=!0){let s=(i?t:255)*e/100,n=t+Math.round(s);return Object(c.q)(n,0,255)}clone(){return new p(d(this,s),d(this,n),d(this,r),d(this,o))}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap;class g{constructor(t){h.set(this,void 0),u(this,h,t)}trim(){u(this,h,d(this,h)?d(this,h).trim():void 0)}isValid(){return Object(c.v)(d(this,h))&&d(this,h).startsWith("#")}parse(){let t=0,e=0,i=0,s=1,n=d(this,h).length;if(4===d(this,h).length)t=parseInt(d(this,h)[1]+d(this,h)[1],16),i=parseInt(d(this,h)[2]+d(this,h)[2],16),e=parseInt(d(this,h)[3]+d(this,h)[3],16);else if(t=parseInt(d(this,h)[1]+d(this,h)[2],16),i=parseInt(d(this,h)[3]+d(this,h)[4],16),e=parseInt(d(this,h)[5]+d(this,h)[6],16),n>7){let t=parseInt(d(this,h)[7]+d(this,h)[8],16);s=parseFloat((t/255).toFixed(2))}return new p(t,i,e,s)}}h=new WeakMap;class f{constructor(t){a.set(this,void 0),u(this,a,t)}trim(){u(this,a,Object(c.v)(d(this,a))?d(this,a).trim():void 0)}isValid(){return Object(c.v)(d(this,a))&&d(this,a).startsWith("rgb")}parse(){let t=d(this,a).length,e=(d(this,a).startsWith("rgba")?d(this,a).substring(5,t-1):d(this,a).substring(4,t-1)).split(",");if(!Object(c.w)(e.length,3,4))return;let i=parseInt(e[0]),s=parseInt(e[1]),n=parseInt(e[2]),r=4===e.length?parseFloat(e[3]):1;return new p(i,s,n,r)}}a=new WeakMap},function(t,e){},function(t,e){},function(t,e,i){"use strict";i.d(e,"a",(function(){return s}));class s{constructor(t,e){this.level=e,this.component=t,this.id="-"}setLevel(t){this.level=t}setId(t){this.id=t}debug(t,e){"debug"===this.level&&console.log(this.prepString(t,"debug",e))}error(t,e){"error"!==this.level&&"debug"!==this.level&&"warning"!==this.level||console.error(this.prepString(t,"error",e))}warning(t,e){"warning"!==this.level&&"debug"!==this.level||console.warn(this.prepString(t,"warning",e))}exception(t,e){console.error(this.prepString(`An exception occured: ${t.name}: ${t.message}`,"exception",e)),"debug"===this.level&&console.error(t.stack)}performance(t,e){if("debug"!==this.level)return;let i=Date.now();t(),console.log(this.prepString(`Performance measure: ${Date.now()-i}ms`,"performance",e))}prepString(t,e,i){return`[${(new Date).toLocaleString()}][${e}][${this.component}][${null!=i?i:"-"}][${this.id}][${t}]`}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return c}));var s,n=i(2),r=i(0),o=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},h=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},a=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class c{constructor(t){s.set(this,void 0),h(this,s,t)}performAction(t,e,i,r){return o(this,void 0,void 0,(function*(){return new Promise(o=>{a(this,s).mutate(()=>{e.add(t),t.classList.add(n.a.animProgress),setTimeout(()=>{a(this,s).mutate(()=>{e.remove(t),t.classList.remove(n.a.animProgress),r&&r(),o(!0)},null)},i)},null)})}))}performActions(t,e,i,r){return o(this,void 0,void 0,(function*(){return new Promise(o=>{a(this,s).mutate(()=>{e.forEach(e=>e.add(t)),t.classList.add(n.a.animProgress),setTimeout(()=>{a(this,s).mutate(()=>{e.forEach(e=>e.remove(t)),t.classList.remove(n.a.animProgress),r&&r(),o(!0)},null)},i)},null)})}))}performSwitchAction(t,e,i,h,c,l){return o(this,void 0,void 0,(function*(){return new Promise(o=>{a(this,s).mutate(()=>{i.forEach(e=>e.add(t)),t.classList.add(n.a.animProgress),Object(r.v)(e)&&(h.forEach(t=>t.add(e)),e.classList.add(n.a.animProgress)),setTimeout(()=>{a(this,s).mutate(()=>{i.forEach(e=>e.remove(t)),h.forEach(t=>t.remove(e)),t.classList.remove(n.a.animProgress),e.classList.remove(n.a.animProgress),c(),o(!0)},null)},l)},null)})}))}}s=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return n}));var s=i(14);class n{static get(t){switch(t){case"async":return new s.a;default:return new s.b}}}},function(t,e,i){"use strict";i.d(e,"a",(function(){return c}));var s,n,r=i(3),o=i(0),h=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},a=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class c{constructor(t){s.set(this,void 0),n.set(this,void 0),h(this,s,[]),h(this,n,[]),t&&t.forEach(t=>{if(!Object(o.v)(t.key))throw h(this,s,[]),h(this,n,[]),new r.b("Key is empty");this.add(t.key,t.value)})}add(t,e){if(this.throwOnEmptyKey(t),this.containsKey(t))throw new Error("Key already exists");a(this,s).push(t),a(this,n).push(e)}remove(t){if(!Object(o.v)(t))return;let e=a(this,s).indexOf(t);e>=0&&(a(this,s).splice(e,1),a(this,n).splice(e,1))}get(t){this.throwOnEmptyKey(t);let e=this.indexOf(t);if(!(e<0))return a(this,n)[e]}containsKey(t){return Object(o.v)(t)&&this.indexOf(t)>=0}keys(){return a(this,s)}values(){return a(this,n)}indexOf(t){return Object(o.v)(t)?a(this,s).indexOf(t):-1}update(t,e){this.throwOnEmptyKey(t);let i=this.indexOf(t);if(i<0)throw new r.g(`Item with key [${t}] not found`);a(this,n)[i]=e}clear(){h(this,n,[]),h(this,s,[])}throwOnEmptyKey(t){if(!Object(o.v)(t))throw new r.b("Key is empty")}}s=new WeakMap,n=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return k}));var s,n,r,o,h,a,c,l,u=i(0),d=i(3),p=i(4),g=i(15),f=i(16),v=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},m=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},w=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class b{constructor(t,e){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),m(this,s,{}),m(this,r,t),m(this,o,null!=e?e:"CuiEventBus"),m(this,n,p.a.get(w(this,o)))}on(t,e,i){if(!Object(u.b)(t,e))throw new d.b("Missing argument");let r=w(this,o)+"-"+Object(u.i)();return w(this,s)[t]||(w(this,s)[t]={}),this.isAttached(w(this,s)[t],r,i)?null:(w(this,n).debug(`Attaching new event: [${t}] for: [${r}]`),w(this,s)[t][r]={callback:e,$cuid:this.getCuid(i)},r)}detach(t,e){if(!Object(u.b)(t,e))throw new d.b("Missing argument");let i=w(this,s)[t];w(this,n).debug(`Detaching item: [${e}] from [${t}]`),this.isAttached(i,e)&&delete i[e]}detachAll(t){Object(u.v)(t)&&w(this,s)[t]?delete w(this,s)[t]:w(this,n).error("Event name is missing or incorrect","detachAll")}emit(t,e,...i){return v(this,void 0,void 0,(function*(){if(!Object(u.v)(t))throw new d.b("Event name is incorrect");let o=w(this,s)[t];return Object(u.v)(o)&&(w(this,n).debug(`Emit: [${t}]`),yield w(this,r).handle(w(this,s)[t],e,i)),!0}))}isSubscribing(t,e,i){let n=w(this,s)[t];return this.isAttached(n,e,i)}detachByCuid(t,e){if(!Object(u.b)(t,e))return;let i=w(this,s)[t];Object(u.v)(i)&&Object(u.h)(Object.assign({},i),(t,s)=>{s.$cuid===e&&delete i[t]})}isAttached(t,e,i){return Object(u.v)(i)?Object(u.v)(t)&&Object(u.v)(e)&&Object(u.v)(t[e])&&t[e].$cuid==i.$cuid:Object(u.v)(t)&&Object(u.v)(e)&&Object(u.v)(t[e])}getCuid(t){return Object(u.v)(t)?t.$cuid:null}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap;class C{constructor(t){if(h.set(this,void 0),a.set(this,void 0),c.set(this,void 0),l.set(this,void 0),m(this,a,p.a.get("CuiEventBus")),m(this,c,[]),Object(u.v)(t)){w(this,a).debug("Initiating buses"),(1===t.length?t:t.sort((t,e)=>t.priority-e.priority)).forEach((t,e)=>{w(this,c).push(this.initBusInstance(t.name,t.handler)),m(this,h,Object.assign(Object.assign({},w(this,h)),this.mapEvents(t.eventsDef,e))),w(this,a).debug(`Bus ${t.name} has been initialized with number: ${e}`)}),w(this,c).push(this.initBusInstance("DefaultEventBus","tasked")),m(this,l,w(this,c).length-1),w(this,a).debug("Bus initialization finished")}}on(t,e,i){if(!Object(u.b)(t,e))throw new d.b("Missing argument");return this.get(t).on(t,e,i)}detach(t,e,i){if(!Object(u.b)(t,e))throw new d.b("Missing argument");this.get(t).detach(t,e,i)}detachAll(t){this.get(t).detachAll(t)}emit(t,e,...i){return v(this,void 0,void 0,(function*(){if(!Object(u.v)(t))throw new d.b("Event name is incorrect");return this.get(t).emit(t,e,...i)}))}isSubscribing(t,e,i){return this.get(t).isSubscribing(t,e,i)}detachByCuid(t,e){Object(u.b)(t,e)&&this.get(t).detachByCuid(t,e)}initBusInstance(t,e){if(!Object(u.b)(t,e))throw new d.b("Bus name or handler name is incorrect");let i=new f.a,s=g.a.get(e,i);return new b(s,t)}mapEvents(t,e){return t.reduce((t,i)=>t[i]?t:Object.assign(Object.assign({},t),{[i]:e}),{})}get(t){let e=w(this,h)[t];return w(this,c)[null!=e?e:w(this,l)]}}h=new WeakMap,a=new WeakMap,c=new WeakMap,l=new WeakMap;class k{static get(t){return Object(u.v)(t)?new C(t):new b(new g.b(new f.a))}}new WeakMap,new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return o}));var s,n=i(0),r=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i};class o{constructor(t){s.set(this,void 0),r(this,s,t)}append(t){if(Object(n.v)(t)){const e=document.head||document.getElementsByTagName("head")[0],i=document.createElement("style"),s=document.createTextNode(t);i.type="text/css",i.appendChild(s),e.appendChild(i)}return!0}}s=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return u}));var s,n,r,o,h,a=i(0),c=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},l=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class u{constructor(t,e){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),h.set(this,void 0),c(this,n,e),c(this,r,!1),c(this,o,!0)}setCallback(t){c(this,s,t)}isInProgress(){return l(this,r)}attach(){document.addEventListener("keydown",this.onKeyDown.bind(this)),l(this,o)&&document.addEventListener("keyup",this.onKeyUp.bind(this)),c(this,h,!0)}detach(){document.removeEventListener("keydown",this.onKeyDown.bind(this)),l(this,o)&&document.addEventListener("keyup",this.onKeyUp.bind(this)),c(this,h,!1)}isAttached(){return l(this,h)}onKeyDown(t){if(!l(this,r)){c(this,r,!0);try{Object(a.v)(l(this,n))&&!l(this,n).includes(t.code)||l(this,s).call(this,t)}catch(t){console.error(t)}finally{l(this,o)||c(this,r,!1)}}}onKeyUp(t){c(this,r,!1)}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap,h=new WeakMap},function(t,e,i){"use strict";i.d(e,"b",(function(){return Yh})),i.d(e,"a",(function(){return Xh}));var s,n,r=i(8),o=i(0),h=i(28),a=i(2),c=i(11),l=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},u=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class d{constructor(t){this.description="Dark vs Light mode auto switcher",this.name="auto-light",s.set(this,void 0),n.set(this,void 0),this.description="CuiAutoLightModePlugin",this.setup=t}init(t){l(this,n,t),this.setup.autoLight&&"dark"===Object(o.t)()&&u(this,n).setLightMode("dark"),l(this,s,new c.a("(prefers-color-scheme: dark)")),u(this,s).setCallback(this.onChange.bind(this)),u(this,s).attach()}destroy(){u(this,s).detach()}onChange(t){var e;let i=u(this,n).setup.plugins[this.description];null!==(e=null==i?void 0:i.autoLight)&&void 0!==e&&e&&(t.matches?u(this,n).setLightMode("dark"):u(this,n).setLightMode("light"))}}s=new WeakMap,n=new WeakMap;var p=i(4),g=i(1),f=i(29);class v{static setLabel(t,e){t.hasAttribute("aria-label")||t.setAttribute("aria-label",e)}static setAria(t,e,i){t.hasAttribute(e)||t.setAttribute(e,i)}static removeAria(t,e){t.hasAttribute(e)&&t.removeAttribute(e)}}var m,w,b,C,k,E,S,y,O,A=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},M=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},T=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class W{constructor(t){m.set(this,void 0),M(this,m,t)}hasClass(t,e){return t&&e.classList.contains(t)}setClass(t,e){this.setClasses([t],e)}setClasses(t,e){e&&e.classList.add(...t)}setClassesAs(t,...e){T(this,m).mutate(this.setClasses,this,e,t)}removeClass(t,e){this.removeClasses([t],e)}removeClasses(t,e){e&&e.classList.remove(...t)}removeClassesAs(t,...e){T(this,m).mutate(this.removeClasses,this,e,t)}removeAttribute(t,e){e&&e.hasAttribute(t)&&e.removeAttribute(t)}setStyle(t,e,i){t&&t.style&&Object(g.is)(i)&&(t.style[e]=i)}}m=new WeakMap;class L{constructor(t,e,i){w.set(this,void 0),this._log=p.a.get(t),this.utils=i,this.element=e,this.cuid=e.$cuid,this.isLocked=!1,this._log.setId(this.cuid),this.activeClassName=Object(g.getActiveClass)(i.setup.prefix),this.helper=new W(i.interactions),M(this,w,[]),this.componentName=t}mutate(t,...e){this.utils.interactions.mutate(t,this,...e)}fetch(t,...e){this.utils.interactions.fetch(t,this,...e)}getEventName(t){return[t,this.cuid].join("-")}emitEvent(t,...e){T(this,w).includes(t)||T(this,w).push(t),this.utils.bus.emit(t,this.cuid,...e)}onEvent(t,e){return this.utils.bus.on(t,e,this.element)}detachEvent(t,e){null!=e&&(this.utils.bus.detach(t,e),e=null)}getId(){return this.cuid}checkLockAndWarn(t){return!!this.isLocked&&(this._log.warning("Component is locked",t),!0)}isActive(){return this.element.classList.contains(this.activeClassName)}detachEmiitedEvents(){T(this,w).forEach(t=>{this.utils.bus.detachByCuid(t,this.cuid),this._log.debug("Detaching event: "+t+" on component delete")})}registerInDebug(){this.utils.development.registerElement(this.element,this.cuid,this.componentName)}removeFromDebug(){this.utils.development.unregisterElement(this.cuid,this.componentName)}setDebugProperty(t,e){this.utils.development.setProperty(this.cuid,this.componentName,t,e)}logInfo(t,e){this._log.debug(t,e),this.utils.development.pushState(this.cuid,this.componentName,"info",t,e)}logWarning(t,e){this._log.warning(t,e),this.utils.development.pushState(this.cuid,this.componentName,"warning",t,e)}pushDebugState(t,e,i){this.utils.development.pushState(this.cuid,this.componentName,t,e,i)}logError(t,e,i){this._log.error(t,e),i&&this._log.exception(i,e),this.utils.development.pushState(this.cuid,this.componentName,"error",t,e)}}w=new WeakMap;class j extends L{constructor(t,e,i,s,n){super(t,e,n),b.set(this,void 0),this.args=s,this.actionsHelper=new g.CuiActionsHelper(n.interactions),this.prevArgs=null,this.isInitialized=!1,M(this,b,i)}handle(t){this.logInfo("Init","handle"),this.isInitialized?this.logWarning("Trying to initialize component again","handle"):(this.args.parse(t),this.element.classList.contains(T(this,b))||this.element.classList.add(T(this,b)),this.registerInDebug(),this.onHandle(),this.isInitialized=!0)}refresh(t){this.logInfo("Update","refresh"),this.isInitialized?(this.prevArgs=Object.assign({},this.args),this.args.parse(t),this.pushDebugState("info","Component update","refresh"),this.onRefresh()):this.logError("Cannot update not initialized component","refresh")}destroy(){this.logInfo("Destroy","destroy"),this.onRemove(),this.detachEmiitedEvents(),this.removeFromDebug(),this.isInitialized=!1}}b=new WeakMap;class x extends j{constructor(t,e,i,s,n){super(t,e,i,s,n)}onHandle(){this.onInit()}onRefresh(){this.onUpdate()}onRemove(){this.onDestroy()}performAction(t,e,i,s){return A(this,void 0,void 0,(function*(){return!!(yield this.actionsHelper.performActions(this.element,t,e,s))&&(i(),!0)}))}}class I extends j{constructor(t,e,i,s,n){super(t,e,i,s,n),C.set(this,void 0),k.set(this,void 0),E.set(this,void 0),S.set(this,void 0),y.set(this,void 0)}onHandle(){M(this,C,this.onEvent(g.EVENTS.OPEN,this.openFromEvent.bind(this))),M(this,k,this.onEvent(g.EVENTS.CLOSE,this.closeFromEvent.bind(this))),M(this,S,g.CuiActionsListFactory.get(this.args.openAct)),M(this,y,g.CuiActionsListFactory.get(this.args.closeAct)),this.onInit()}onRefresh(){this.args.openAct!==this.prevArgs.openAct&&M(this,S,g.CuiActionsListFactory.get(this.args.openAct)),this.args.closeAct!==this.prevArgs.closeAct&&M(this,y,g.CuiActionsListFactory.get(this.args.closeAct)),this.onUpdate()}onRemove(){this.detachEvent(g.EVENTS.CLOSE,T(this,k)),this.detachEvent(g.EVENTS.OPEN,T(this,C)),this.onDestroy()}open(t){return A(this,void 0,void 0,(function*(){return!this.checkLockAndWarn("open")&&(this.isActive()?(this.logWarning("Component is already opened"),!1):((this.args.escClose||Object(g.is)(this.args.keyClose))&&M(this,E,this.onEvent(g.EVENTS.KEYDOWN,this.onKeyClose.bind(this))),this.onBeforeOpen()?(this.isLocked=!0,this.performAction(T(this,S),this.args.timeout,this.onActionFinish.bind(this,this.onAfterOpen.bind(this),g.EVENTS.OPENED,t),()=>{this.helper.setClass(this.activeClassName,this.element),v.setAria(this.element,"aria-expanded","true")})):void 0))}))}close(t){return A(this,void 0,void 0,(function*(){return!this.checkLockAndWarn("close")&&(this.isActive()?(this.detachEvent(g.EVENTS.KEYDOWN,T(this,E)),this.onBeforeClose()?(this.isLocked=!0,this.performAction(T(this,y),this.args.timeout,this.onActionFinish.bind(this,this.onAfterClose.bind(this),g.EVENTS.CLOSED,t),()=>{this.helper.removeClass(this.activeClassName,this.element),v.setAria(this.element,"aria-expanded","false")})):void 0):(this.logWarning("Component is already closed"),!1))}))}performAction(t,e,i,s){return A(this,void 0,void 0,(function*(){return!!(yield this.actionsHelper.performActions(this.element,t,e,s))&&(i(),!0)}))}openFromEvent(t){this.open(t)}closeFromEvent(t){this.close(t)}onActionFinish(t,e,i){t(),this.emitEvent(e,{timestamp:Date.now(),state:i}),this.isLocked=!1}onKeyClose(t){return A(this,void 0,void 0,(function*(){(this.args.escClose&&"Escape"===t.event.key||Object(g.is)(this.args.keyClose)&&t.event.key===this.args.keyClose)&&(yield this.close("Closed by key"))}))}}C=new WeakMap,k=new WeakMap,E=new WeakMap,S=new WeakMap,y=new WeakMap;class P extends j{constructor(t,e,i,s,n){super(t,e,i,s,n),O.set(this,void 0),M(this,O,new f.a(e)),T(this,O).onMutation(this.mutation.bind(this))}onHandle(){this.onInit(),T(this,O).observe()}onRefresh(){T(this,O).unobserve(),this.onUpdate(),T(this,O).observe()}onRemove(){T(this,O).unobserve(),this.onDestroy()}mutation(t){this._log.debug("Element mutation","mutation"),this.onMutation(t.reduce((t,e)=>("childList"!==e.type||(e.addedNodes.length>0&&t.added.push(...e.addedNodes),e.removedNodes.length>0&&t.removed.push(...e.removedNodes)),t),{added:[],removed:[]}))}}O=new WeakMap;var D,N,B,_=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},R=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class V{constructor(t){D.set(this,void 0),N.set(this,void 0),B.set(this,void 0),_(this,D,t),_(this,N,1),_(this,B,new H)}setScale(t){return _(this,N,t),this}build(){let t=Object(g.createElementFromString)(R(this,D));return Object(g.is)(t)&&R(this,N)&&R(this,B).append(t,R(this,N)),t}}D=new WeakMap,N=new WeakMap,B=new WeakMap;class H{append(t,e){let i=t.hasAttribute("width")?parseInt(t.getAttribute("width")):20,s=t.hasAttribute("height")?parseInt(t.getAttribute("height")):20;t.setAttribute("width",(i*e).toString()),t.setAttribute("height",(s*e).toString())}}var F,$=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},q=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class U{constructor(){this.icon=null,this.scale=1}parse(t){Object(o.x)(t)?this.icon=Object(o.s)(t,""):(this.icon=Object(o.s)(t.icon,""),this.scale=Object(o.m)(t.scale,1))}}class z{constructor(t){this.attribute=(null!=t?t:"cui")+"-icon"}getStyle(){return null}get(t,e){return new G(t,e,this.attribute)}}class G extends x{constructor(t,e,i){super("CuiIconHandler",t,i,new U,e),F.set(this,void 0),$(this,F,null)}onInit(){null===q(this,F)?(this.addIcon(this.args.icon),$(this,F,this.args.icon)):this._log.debug("Icon already initialized")}onUpdate(){this.args.icon!==q(this,F)&&(this.addIcon(this.args.icon),$(this,F,this.args.icon))}onDestroy(){const t=this.element.querySelector("svg");Object(o.v)(t)&&t.remove(),$(this,F,null)}addIcon(t){const e=t?a.j[t]:null;if(!e)return;const i=new V(e).setScale(this.args.scale).build(),s=this.element.querySelector("svg");Object(o.v)(s)&&s.remove(),this.element.childNodes.length>0?this.mutate(this.insertBefore,i):this.mutate(this.appendChild,i)}insertBefore(t){this.element.insertBefore(t,this.element.firstChild)}appendChild(t){this.element.appendChild(t)}}F=new WeakMap;var K,Y,X,Z,J,Q=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},tt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class et{constructor(){this.progress=0}parse(t){Object(o.v)(t)?Object(o.x)(t)?this.progress=Object(o.m)(t,0):this.progress=Object(o.m)(t.progress,0):this.progress=0}}class it{constructor(t){this.attribute=(null!=t?t:"cui")+"-circle-progress",a.j.special_circle_progress='<svg xmlns="http://www.w3.org/2000/svg"  class="circle-progress" viewBox="0 0 100 100" width="100" height="100"><path class="circle-progress-path" d="M 50,5.3660047 A 44.867708,44.633994 0 0 1 94.867709,49.999997 44.867708,44.633994 0 0 1 50,94.633995 44.867708,44.633994 0 0 1 5.1322908,50.000001 44.867708,44.633994 0 0 1 50,5.3660047"></path></svg>'}getStyle(){return null}get(t,e){return new st(t,e,this.attribute)}}class st extends x{constructor(t,e,i){super("CuiCircleHandler",t,i,new et,e),K.set(this,void 0),Y.set(this,void 0),X.set(this,void 0),Z.set(this,void 0),J.set(this,void 0),Q(this,K,Q(this,Y,0)),Q(this,X,null),Q(this,Z,i),Q(this,J,null)}onInit(){const t=new V(a.j.special_circle_progress).build(),e=this.element.querySelector("svg");Object(o.v)(e)&&e.remove(),this.element.appendChild(t),Q(this,X,this.element.querySelector(".circle-progress-path")),Q(this,Y,tt(this,X).getTotalLength()),Q(this,K,tt(this,Y)/100),this.fetch(this.readStyle),Q(this,J,this.onEvent(a.i.PROGRESS_CHANGE,this.onSetProgress.bind(this)))}onUpdate(){this.fetch(this.readStyle),this.emitEvent(a.i.PROGRESS_CHANGED,{timestamp:Date.now(),progress:this.args.progress})}onDestroy(){this.detachEvent(a.i.PROGRESS_CHANGE,tt(this,J))}onSetProgress(t){Object(o.v)(t)&&this.element.setAttribute(tt(this,Z),t)}updateStyle(t){tt(this,X).style.strokeDashoffset=t}readStyle(){if(this.prevArgs&&this.args.progress===this.prevArgs.progress)return;const t=Object(o.q)(this.args.progress,0,100);this.mutate(this.updateStyle,tt(this,Y)-tt(this,K)*t)}}K=new WeakMap,Y=new WeakMap,X=new WeakMap,Z=new WeakMap,J=new WeakMap;var nt,rt,ot,ht=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},at=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class ct{constructor(){this.spinner="circle",this.scale=1}parse(t){Object(o.x)(t)?this.spinner=Object(o.s)(t,"circle"):(this.spinner=Object(o.s)(t.spinner,"circle"),this.scale=Object(o.m)(t.scale,1))}}class lt{constructor(t){nt.set(this,void 0),ht(this,nt,null!=t?t:"cui"),this.attribute=at(this,nt)+"-spinner",a.j.spinner_circle='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"><path d="M 7.800378,1.7908996 A 8.4986862,8.4986862 0 0 1 18.2091,7.8003784 8.4986862,8.4986862 0 0 1 12.199621,18.209101 8.4986862,8.4986862 0 0 1 1.7908995,12.199622 8.4986862,8.4986862 0 0 1 7.800378,1.7908996 Z"></path></svg>',a.j.spinner_circle_double='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"><path d="M 10,1.5000006 A 8.4999997,8.4999997 0 0 1 18.5,10 8.4999997,8.4999997 0 0 1 10,18.499999 8.4999997,8.4999997 0 0 1 1.5000005,10 8.4999997,8.4999997 0 0 1 10,1.5000006 Z"></path><path d="M 10,3.4999997 A 6.5000002,6.5000002 0 0 1 16.5,10 6.5000002,6.5000002 0 0 1 10,16.5 6.5000002,6.5000002 0 0 1 3.5,9.9999993 6.5000002,6.5000002 0 0 1 10,3.4999997 Z"></path></svg>'}getStyle(){return null}get(t,e){return new ut(t,e,this.attribute,at(this,nt))}}nt=new WeakMap;class ut extends x{constructor(t,e,i,s){super("CuiSpinnerHandler",t,i,new ct,e),rt.set(this,void 0),ot.set(this,void 0),ht(this,rt,null),ht(this,ot,Object(o.C)("{prefix}-animation-pause",s))}onInit(){ht(this,rt,this.onEvent(a.i.PAUSE,this.onPause.bind(this))),this.add()}onUpdate(){this.args.spinner!==this.prevArgs.spinner&&this.add()}onDestroy(){this.removeIfAnyExisists(),this.detachEvent(a.i.PAUSE,at(this,ot))}addSpinner(t,e){this.element.appendChild(t),this.element.classList.add("animation-spinner-"+e)}add(){const t=Object(o.v)(this.args.spinner)?a.j["spinner_"+this.args.spinner]:null;if(!Object(o.v)(t))return void this._log.warning("Incorrect spinner name: "+this.args.spinner);this.removeIfAnyExisists();const e=new V(t).setScale(this.args.scale).build();this.mutate(this.addSpinner,e,this.args.spinner)}removeIfAnyExisists(){let t=this.element.querySelector("svg");t&&t.remove()}onPause(t){this.fetch(()=>{t&&!this.helper.hasClass(at(this,ot),this.element)?this.helper.setClassesAs(this.element,at(this,ot)):this.helper.removeClassesAs(this.element,at(this,ot))}),this.emitEvent(a.i.PAUSED,t)}}rt=new WeakMap,ot=new WeakMap;var dt,pt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i};class gt{constructor(){this.attribute="cui-dummy"}getStyle(){return null}get(t,e){return new ft(t,e,this.attribute)}}class ft extends L{constructor(t,e,i){super("CuiDummyHandler",t,e),dt.set(this,void 0),pt(this,dt,i)}handle(t){}refresh(t){}destroy(){}}dt=new WeakMap;var vt,mt,wt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},bt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Ct{constructor(t){this.attribute=Object(o.v)(t)?t+"scroll":"cui-scroll"}getStyle(){return null}get(t,e){return new Et(t,e,this.attribute)}}class kt{constructor(){this.target=null,this.parent=null,this.behavior="auto"}parse(t){this.target=Object(o.s)(t.target,""),this.parent=Object(o.s)(t.parent,""),this.behavior=Object(o.v)(t.behavior)&&"smooth"===t.behavior.toLowerCase()?"smooth":"auto"}}class Et extends x{constructor(t,e,i){super("CuiScrollHandler",t,i,new kt,e),vt.set(this,void 0),mt.set(this,void 0),this.element=t,wt(this,vt,null),wt(this,mt,null)}onInit(){this.element.addEventListener("click",this.onClick.bind(this)),this.setTargets()}onUpdate(){this.setTargets()}onDestroy(){this.element.removeEventListener("click",this.onClick.bind(this))}onClick(t){if(!Object(o.v)(bt(this,mt)))return;let e=Object(o.o)(bt(this,mt))-bt(this,vt).offsetTop,i=e-bt(this,vt).scrollTop;bt(this,vt).scrollBy({top:i,behavior:this.args.behavior}),this.emitEvent(a.i.ON_SCROLL,{to:e,by:i,target:bt(this,mt),parent:bt(this,vt),timestamp:Date.now()}),t.preventDefault()}setTargets(){wt(this,mt,document.querySelector(this.args.target)),Object(o.v)(bt(this,mt))&&wt(this,vt,Object(o.v)(this.args.parent)?document.querySelector(this.args.parent):bt(this,mt).parentElement)}}vt=new WeakMap,mt=new WeakMap;var St,yt,Ot,At,Mt=i(6),Tt=i(12),Wt=i(9),Lt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},jt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class xt{constructor(t,e){var i;St.set(this,void 0),yt.set(this,void 0),Ot.set(this,void 0),At.set(this,void 0),Lt(this,At,Wt.a.get(t)),Lt(this,St,new Tt.a(t,null!==(i=null==e?void 0:e.threshold)&&void 0!==i?i:0)),jt(this,St).setCallback(this.onScroll.bind(this))}setChildren(t){Lt(this,Ot,t)}setThreshold(t){jt(this,St).setThreshold(t)}setCallback(t){Lt(this,yt,t)}setParent(t){Lt(this,At,Wt.a.get(t)),jt(this,St).setTarget(t)}isInProgress(){return jt(this,St).isInProgress()}attach(){this.isAttached()||jt(this,St).attach()}detach(){this.isAttached()&&jt(this,St).detach()}isAttached(){return jt(this,St)&&jt(this,St).isAttached()}onScroll(t){Object(o.b)(jt(this,Ot),jt(this,yt))&&jt(this,yt).call(this,this.prepareCallbackResult(t))}calcChildVerticalRatio(t,e,i){let s=t.offsetTop+t.offsetHeight,n=((i<s?i:s)-(e>t.offsetTop?e:t.offsetTop))/t.offsetHeight;return Object(o.q)(n,0,1)}calcChildHorizontalRatio(t,e,i){let s=t.offsetLeft+t.offsetWidth,n=((i<s?i:s)-(e>t.offsetLeft?e:t.offsetLeft))/t.offsetWidth;return Object(o.q)(n,0,1)}prepareCallbackResult(t){var e,i;let s=t.top+jt(this,At).getHeight(),n=t.left+jt(this,At).getWidth();return{ev:t.base,top:t.top,left:t.left,scrolling:null!==(e=t.scrolling)&&void 0!==e&&e,initial:null!==(i=t.initial)&&void 0!==i&&i,source:t.source,items:jt(this,Ot).map((e,i)=>({verticalRatio:this.calcChildVerticalRatio(e,t.top,s),horizontalRatio:this.calcChildHorizontalRatio(e,t.left,n),element:e}))}}}St=new WeakMap,yt=new WeakMap,Ot=new WeakMap,At=new WeakMap;class It{static get(t){return"multi"===t?new Nt:new Dt}}class Pt{getMatching(t,e){return e.reduce((e,i,s)=>(i.verticalRatio>t&&e.push(s),e),[])}addActions(t,...e){this.forEachAction(t,e,(t,e)=>{t.add(e)})}removeActions(t,...e){this.forEachAction(t,e,(t,e)=>{t.remove(e)})}forEachAction(t,e,i){Object(g.are)(t,e,i)&&t.forEach(t=>{e.forEach(e=>{Object(g.is)(e)&&i(t,e)})})}}class Dt extends Pt{constructor(){super(),this.previous=-1}update(t,e,i,s,n){let r=this.getMatching(e,t),o=r.length,h=o>0?r[o-1]:-1,a={changed:!1};if(!this.matches(h)){if(this.previous>-1&&this.removeActions(i,t[this.previous].element),h>-1){let e=t[h].element;a.intersecting=[e],this.addActions(i,e)}return Object(g.are)(s,n)&&(this.previous>-1&&this.removeActions(n,s[this.previous]),h>-1&&this.addActions(n,s[h])),this.previous=h,a.changed=!0,a.intersecting=[],a}return a}matches(t){return t===this.previous}}class Nt extends Pt{constructor(){super(),this.previous=[]}update(t,e,i,s,n){let r=this.getMatching(e,t),o={changed:!1};if(!this.matches(r)){let e=r.map(e=>t[e].element);return this.removeActions(i,...this.previous.map(e=>t[e].element)),this.addActions(i,...e),o.intersecting=e,Object(g.are)(s,n)&&(this.removeActions(n,...this.previous.map(t=>s[t])),this.addActions(n,...r.map(t=>s[t]))),this.previous=r,o.changed=!0,o}return o}matches(t){let e=t.length;if(e!==this.previous.length)return!1;let i=0;for(i=0;i<e;i++)if(!this.previous.includes(t[i]))return!1;return!0}}var Bt,_t,Rt,Vt,Ht,Ft,$t,qt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Ut=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class zt{constructor(){this.ratio=0,this.mode="single",this.threshold=-1}parse(t){var e;this.selector=`${a.k}${null!==(e=t.selector)&&void 0!==e?e:"> *"}`,this.action=Object(o.s)(t.action,null),this.link=Object(o.s)(t.link,null),this.linkAction=Object(o.s)(t.linkAction,null),this.ratio=Object(o.r)(parseFloat(t.ratio),0,1,0),this.isRoot=Object(o.y)(t.isRoot),this.mode="multi"===(null==t?void 0:t.mode)?"multi":"single",this.threshold=Object(o.m)(t.threshold,-1)}}class Gt{constructor(t){this.attribute=(null!=t?t:"cui")+"-scrollspy"}getStyle(){return null}get(t,e){return new Kt(t,e,this.attribute)}}class Kt extends x{constructor(t,e,i){super("CuiScrollspyHandler",t,i,new zt,e),Bt.set(this,void 0),_t.set(this,void 0),Rt.set(this,void 0),Vt.set(this,void 0),Ht.set(this,void 0),Ft.set(this,void 0),$t.set(this,void 0),this.element=t,qt(this,Bt,new xt(this.element,{threshold:this.utils.setup.scrollThreshold})),qt(this,_t,[]),qt(this,Rt,[]),qt(this,Vt,[]),qt(this,Ht,null)}onInit(){this.parseAttribute(),Ut(this,Bt).setCallback(this.onIntersection.bind(this)),Ut(this,Bt).attach()}onUpdate(){this.updateAttributes()}onDestroy(){Ut(this,Bt).detach()}onIntersection(t){let e=Date.now();this.mutate(()=>{let i=Ut(this,$t).update(t.items,this.args.ratio,Ut(this,Rt),Ut(this,_t),Ut(this,Vt));i.changed&&this.emitEvent(a.i.TARGET_CHANGE,{intersecting:i.intersecting,timestamp:e})}),this.emitEvent(a.i.ON_SCROLL,{top:t.top,left:t.left,scrolling:t.scrolling,initial:t.initial,source:t.source,timestamp:e})}parseAttribute(){qt(this,Ht,this.args.isRoot?window:this.element),qt(this,Ft,Wt.a.get(Ut(this,Ht)));let t=this.args.selector?Ut(this,Ft).queryAll(this.args.selector):[];Ut(this,Bt).setChildren(t),Ut(this,Bt).setThreshold(this.args.threshold),qt(this,_t,this.args.link?[...document.querySelectorAll(this.args.link)]:[]),qt(this,Rt,Mt.a.get(this.args.action)),qt(this,Vt,Mt.a.get(this.args.linkAction)),qt(this,$t,It.get(this.args.mode))}updateAttributes(){if(this.args.isRoot!==this.prevArgs.isRoot&&(qt(this,Ht,this.args.isRoot?window:this.element),qt(this,Ft,Wt.a.get(Ut(this,Ht))),Ut(this,Bt).setParent(Ut(this,Ht))),this.args.selector!==this.prevArgs.selector){let t=this.args.selector?Ut(this,Ft).queryAll(this.args.selector):[];Ut(this,Bt).setChildren(t)}Ut(this,Bt).setThreshold(this.args.threshold),qt(this,_t,this.args.link?[...document.querySelectorAll(this.args.link)]:[]),qt(this,Rt,Mt.a.get(this.args.action)),qt(this,Vt,Mt.a.get(this.args.linkAction)),qt(this,$t,It.get(this.args.mode))}}Bt=new WeakMap,_t=new WeakMap,Rt=new WeakMap,Vt=new WeakMap,Ht=new WeakMap,Ft=new WeakMap,$t=new WeakMap;var Yt,Xt,Zt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Jt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Qt{constructor(t){this.description="Auto print mode",this.name="auto-print",Yt.set(this,void 0),Xt.set(this,void 0),this.description="CuiAutoPrintModePlugin",this.setup=t}init(t){Zt(this,Xt,t),this.setup.autoPrint&&Object(o.u)()&&Jt(this,Xt).setPrintMode(!0),Zt(this,Yt,new c.a("print")),Jt(this,Yt).setCallback(this.onChange.bind(this)),Jt(this,Yt).attach()}destroy(){Jt(this,Yt).detach()}onChange(t){var e,i;this.setup=Jt(this,Xt).setup.plugins[this.description],null!==(i=null===(e=this.setup)||void 0===e?void 0:e.autoPrint)&&void 0!==i&&i&&(console.log(t.matches),t.matches?Jt(this,Xt).setPrintMode(!0):Jt(this,Xt).setPrintMode(!1))}}Yt=new WeakMap,Xt=new WeakMap;var te,ee,ie,se=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ne=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class re{constructor(t,e){te.set(this,void 0),ee.set(this,void 0),ie.set(this,void 0),se(this,te,t),se(this,ee,null!=e?e:[0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1])}setCallback(t){se(this,ie,t)}connect(){this.observer=new IntersectionObserver(ne(this,ie),{root:ne(this,te),rootMargin:"0px",threshold:ne(this,ee)})}observe(t){this.observer.observe(t)}unobserve(t){this.observer.unobserve(t)}disconnect(){this.observer.disconnect()}}te=new WeakMap,ee=new WeakMap,ie=new WeakMap;var oe,he,ae,ce=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},le=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class ue{constructor(){this.target="div",this.action=null,this.offset=0}parse(t){this.target=Object(o.v)(t.target)?a.k+t.target:a.k+"> *",this.action=Object(o.s)(t.action,null),this.offset=Object(o.r)(parseFloat(t.offset),0,1,0),this.isRoot=Object(o.y)(t.isRoot)}}class de{constructor(t){this.attribute=(null!=t?t:"cui")+"-intersection"}getStyle(){return null}get(t,e){return new pe(t,e,this.attribute)}}class pe extends x{constructor(t,e,i){super("CuiIntersectionHandler",t,i,new ue,e),oe.set(this,void 0),he.set(this,void 0),ae.set(this,void 0),ce(this,oe,new re(this.element)),ce(this,he,[])}onInit(){this.parseArguments(),le(this,oe).setCallback(this.onIntersection.bind(this)),le(this,oe).connect(),le(this,he).forEach(t=>{le(this,oe).observe(t)})}onUpdate(){this.parseArguments()}onDestroy(){le(this,oe).disconnect()}parseArguments(){if(null===this.prevArgs||this.prevArgs.target!==this.args.target){let t=this.args.isRoot?document.body:this.element;ce(this,he,[...t.querySelectorAll(this.args.target)])}ce(this,ae,Mt.a.get(this.args.action))}onIntersection(t,e){Object(o.v)(le(this,he))&&t.forEach(t=>{t.isIntersecting&&t.intersectionRatio>=this.args.offset?this.addActions(t.target):this.removeActions(t.target),this.emitIntersection(t)})}emitIntersection(t){this.emitEvent(a.i.INTERSECTION,{entry:t,offset:this.args.offset,timestamp:Date.now()})}addActions(t){le(this,ae).forEach(e=>e.add(t))}removeActions(t){le(this,ae).forEach(e=>e.remove(t))}}oe=new WeakMap,he=new WeakMap,ae=new WeakMap;var ge,fe,ve,me=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},we=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},be=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Ce{constructor(t){ge.set(this,void 0),this.target="",this.action=void 0,this.timeout=0,this.prevent=!1,this.state="",we(this,ge,t)}parse(t){if(Object(o.v)(t)&&Object(o.x)(t))return this.target=t,this.action=t.actions,this.timeout=be(this,ge),this.prevent=!1,void(this.state="");this.target=Object(o.s)(t.target,null),this.action=t.action,this.timeout=Object(o.m)(t.timeout,be(this,ge)),this.prevent=Object(o.y)(t.prevent),this.state=t.state}}ge=new WeakMap;class ke{constructor(t){fe.set(this,void 0),we(this,fe,null!=t?t:"cui"),this.attribute=be(this,fe)+"-open"}getStyle(){return null}get(t,e){return new Ee(t,e,this.attribute,be(this,fe))}}fe=new WeakMap;class Ee extends x{constructor(t,e,i,s){super("CuiOpenHandler",t,i,new Ce(e.setup.animationTime),e),ve.set(this,void 0),we(this,ve,null),this.onClick=this.onClick.bind(this)}onInit(){this.element.addEventListener("click",this.onClick),we(this,ve,this.onEvent(a.i.OPEN,this.onOpen.bind(this)))}onUpdate(){}onDestroy(){this.element.removeEventListener("click",this.onClick),this.detachEvent(a.i.OPEN,be(this,ve))}onClick(t){this.onOpen(t),this.args.prevent&&t.preventDefault()}onOpen(t){if(this.isLocked)return;const e=this.getTarget(this.args.target);Object(o.v)(e)?(this.isLocked=!0,this.run(e).then(i=>{this.activateTarget(t,e,i)}).catch(t=>{this._log.exception(t)}).finally(()=>{this.isLocked=!1})):this._log.warning(`Target ${this.args.target} not found`,"onClick")}run(t){return me(this,void 0,void 0,(function*(){let e=t.$cuid;if(Object(o.v)(e))return this._log.debug("Open cUI component"),yield this.utils.bus.emit(a.i.OPEN,e,this.args.state),!1;if(this._log.debug("Open html component"),Object(o.b)(this.args.timeout,this.args.action)){this._log.debug("Perfrom an action");let e=Mt.a.get(this.args.action);return yield this.actionsHelper.performActions(t,e,this.args.timeout,()=>{this.setActiveClass(t)}),!0}return this.setActiveClassAsync(t),!0}))}setActiveClass(t){Object(o.v)(t)&&!this.helper.hasClass(this.activeClassName,t)&&this.helper.setClass(this.activeClassName,t)}setActiveClassAsync(t){this.fetch(()=>{Object(o.v)(t)&&!this.helper.hasClass(this.activeClassName,t)&&this.helper.setClassesAs(t,this.activeClassName)})}activateTarget(t,e,i){Object(o.v)(e)&&!this.helper.hasClass(this.activeClassName,e)&&this.helper.setClassesAs(e,this.activeClassName),i&&this.emitOpen(t)}emitOpen(t){this.emitEvent(a.i.OPENED,{event:t,state:this.args.state,timestamp:Date.now()})}getTarget(t){if(Object(o.v)(t))return document.querySelector(t);let e=this.element.parentElement,i=Object(o.v)(e)?e.querySelectorAll(`[${a.h}]`):void 0;return!i||i.length<2?void 0:Object(o.l)([...i],t=>t!==this.element)}}ve=new WeakMap;var Se,ye,Oe,Ae=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},Me=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Te=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class We{constructor(t){Se.set(this,void 0),this.target="",this.action=null,this.timeout=t,this.prevent=!1,this.state=null,Me(this,Se,t)}parse(t){if(Object(o.v)(t)&&Object(o.x)(t))return this.target=t,this.action=null,this.timeout=Te(this,Se),this.prevent=!1,void(this.state=null);this.target=Object(o.s)(t.target,null),this.action=t.action,this.timeout=Object(o.m)(t.timeout,Te(this,Se)),this.prevent=t.prevent&&Object(o.y)(t.prevent),this.state=t.state}}Se=new WeakMap;class Le{constructor(t){ye.set(this,void 0),Me(this,ye,null!=t?t:"cui"),this.attribute=Te(this,ye)+"-close"}getStyle(){return null}get(t,e){return new je(t,e,this.attribute,Te(this,ye))}}ye=new WeakMap;class je extends x{constructor(t,e,i,s){super("CuiCloseHandler",t,i,new We(e.setup.animationTime),e),Oe.set(this,void 0),Me(this,Oe,null),this.onClick=this.onClick.bind(this)}onInit(){this.element.addEventListener("click",this.onClick),Me(this,Oe,this.onEvent(a.i.CLOSE,this.onClose.bind(this)))}onUpdate(){}onDestroy(){this.element.removeEventListener("click",this.onClick),this.detachEvent(a.i.CLOSE,Te(this,Oe))}onClick(t){this.onClose(t),this.args.prevent&&t.preventDefault()}onClose(t){if(this.isLocked)return;const e=this.getTarget();Object(o.v)(e)?(this.isLocked=!0,this.run(e).then(e=>{this.onActionFinish(t,e)}).catch(t=>{this._log.exception(t)}).finally(()=>{this.isLocked=!1})):this._log.warning(`Target ${this.args.target} not found`,"onClick")}run(t){return Ae(this,void 0,void 0,(function*(){let e=t.$cuid;if(Object(o.v)(e))return yield this.utils.bus.emit(a.i.CLOSE,e,this.args.state),!1;if(Object(o.b)(this.args.action,this.args.timeout)){let e=Mt.a.get(this.args.action);return this.actionsHelper.performActions(t,e,this.args.timeout,()=>{this.removeActiveClass(t)})}return this.removeActiveClassAsync(t),!0}))}removeActiveClass(t){Object(o.v)(t)&&this.helper.hasClass(this.activeClassName,t)&&this.helper.removeClass(this.activeClassName,t)}removeActiveClassAsync(t){this.fetch(()=>{Object(o.v)(t)&&this.helper.hasClass(this.activeClassName,t)&&this.helper.removeClassesAs(t,this.activeClassName)})}onActionFinish(t,e){e&&this.emitClose(t)}getTarget(){return Object(o.v)(this.args.target)?document.querySelector(this.args.target):Object(o.p)(this.element)}emitClose(t){this.emitEvent(a.i.CLOSED,{timestamp:Date.now(),state:this.args.state,event:t})}}Oe=new WeakMap;var xe,Ie,Pe,De,Ne=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Be=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class _e{constructor(){this.action=null,this.target=null}parse(t){Object(o.v)(t)&&Object(o.x)(t)?this.action=t:(this.target=Object(o.s)(t.target,null),this.action=t.action)}}class Re{constructor(t){this.attribute=(null!=t?t:"cui")+"-toggle"}getStyle(){return null}get(t,e){return new Ve(t,e,this.attribute)}}class Ve extends x{constructor(t,e,i){super("CuiToggleHandler",t,i,new _e,e),xe.set(this,void 0),Ie.set(this,void 0),Pe.set(this,void 0),De.set(this,void 0),Ne(this,xe,this.element),Ne(this,Ie,e),Ne(this,Pe,null),Ne(this,De,[]),this.onClick=this.onClick.bind(this)}onInit(){Ne(this,xe,this.getTarget()),Ne(this,De,Mt.a.get(this.args.action)),this.element.addEventListener("click",this.onClick),Ne(this,Pe,this.onEvent(a.i.TOGGLE,this.toggle.bind(this)))}onUpdate(){Ne(this,xe,this.getTarget()),Ne(this,De,Mt.a.get(this.args.action))}onDestroy(){this.element.removeEventListener("click",this.onClick),this.detachEvent(a.i.TOGGLE,Be(this,Pe))}toggle(){Be(this,De).forEach(t=>t.toggle(Be(this,xe),Be(this,Ie))),this.emitEvent(a.i.TOGGLED,{action:this.args.action,target:Be(this,xe),timestamp:Date.now()})}onClick(t){this.toggle(),t.preventDefault()}getTarget(){return Object(o.v)(this.args.target)?document.querySelector(this.args.target):this.element}}xe=new WeakMap,Ie=new WeakMap,Pe=new WeakMap,De=new WeakMap;var He,Fe=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},$e=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class qe{constructor(){}parse(t){}}class Ue{constructor(){this.attribute="cui-resize"}getStyle(){return null}get(t,e){return new ze(t,e,this.attribute)}}class ze extends x{constructor(t,e,i){super("CuiResizeHandler",t,i,new qe,e),He.set(this,void 0),Fe(this,He,null)}onInit(){Fe(this,He,this.utils.bus.on(a.i.RESIZE,this.resize.bind(this)))}onUpdate(){}onDestroy(){null!==$e(this,He)&&(this.utils.bus.detach(a.i.RESIZE,$e(this,He)),Fe(this,He,null))}resize(t){console.log(t)}}He=new WeakMap;var Ge,Ke,Ye=i(26),Xe=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Ze=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Je{constructor(t){Ge.set(this,void 0),Ke.set(this,void 0),Xe(this,Ke,t),Xe(this,Ge,new Ye.a(!0)),Ze(this,Ge).setCallback(this.onKeyDown.bind(this))}connect(){Ze(this,Ge).attach()}disconnect(){Ze(this,Ge).detach()}onKeyDown(t){Ze(this,Ke).emit(a.i.KEYDOWN,null,{timestamp:Date.now(),event:t})}}Ge=new WeakMap,Ke=new WeakMap;var Qe,ti=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ei=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class ii{constructor(t){this.name="keys-observer",Qe.set(this,void 0),this.description="CuiKeysObserverPlugin",this.setup=t}init(t){ti(this,Qe,new Je(t.bus)),ei(this,Qe).connect()}destroy(){ei(this,Qe).disconnect()}}Qe=new WeakMap;var si,ni,ri,oi,hi,ai,ci,li=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ui=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class di{constructor(t,e){si.set(this,void 0),ni.set(this,void 0),this.escClose=!1,this.outClose=!1,li(this,si,e),li(this,ni,t)}parse(t){this.escClose=Object(o.y)(t.escClose),this.outClose=Object(o.y)(t.outClose),this.keyClose=t.keyClose,this.timeout=Object(o.m)(t.timeout,ui(this,si)),this.openAct=Object(o.s)(t.openAct,Object(o.C)(".{prefix}-dialog-default-in",ui(this,ni))),this.closeAct=Object(o.s)(t.closeAct,Object(o.C)(".{prefix}-dialog-default-out",ui(this,ni)))}}si=new WeakMap,ni=new WeakMap;class pi{constructor(t){ri.set(this,void 0),li(this,ri,null!=t?t:"cui"),this.attribute=ui(this,ri)+"-dialog"}getStyle(){return null}get(t,e){return new gi(t,e,this.attribute,ui(this,ri))}}ri=new WeakMap;class gi extends I{constructor(t,e,i,s){super("CuiDialogHandler",t,i,new di(s,e.setup.animationTimeLong),e),oi.set(this,void 0),hi.set(this,void 0),ai.set(this,void 0),ci.set(this,void 0),li(this,hi,Object(o.C)("{prefix}-dialog-open",s)),li(this,ai,0),li(this,ci,null)}onInit(){v.setAria(this.element,"aria-modal","")}onUpdate(){}onDestroy(){}onBeforeOpen(){return!this.isAnyActive()&&(li(this,ai,window.pageYOffset),!0)}onAfterOpen(){this.args.outClose&&li(this,ci,this.onEvent(a.i.WINDOW_CLICK,this.onWindowClick.bind(this))),this.helper.setClass(ui(this,hi),document.body),document.body.style.top=`-${ui(this,ai)}px`}onAfterClose(){document.body.style.top="",window.scrollTo(0,-1*(ui(this,ai)||0)),li(this,ai,0),this.helper.removeClass(ui(this,hi),document.body),this.detachEvent(a.i.WINDOW_CLICK,ui(this,ci))}onBeforeClose(){return!0}isAnyActive(){return this.helper.hasClass(ui(this,hi),document.body)}onWindowClick(t){let e=this.element.querySelector(Object(o.C)(".{prefix}-dialog-container",ui(this,oi)));e&&!e.contains(t.target)&&this.close("out").then(()=>{this._log.debug("Closed by click outside")})}}oi=new WeakMap,hi=new WeakMap,ai=new WeakMap,ci=new WeakMap;var fi,vi,mi,wi,bi,Ci,ki,Ei=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Si=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class yi{constructor(t,e){fi.set(this,void 0),vi.set(this,void 0),Ei(this,fi,t),this.escClose=!1,this.position="right",this.openAct=this.getDefaultOpenClass(),this.closeAct=this.getDefaultCloseClass(),Ei(this,vi,e),this.timeout=e,this.outClose=!1,this.keyClose=void 0}parse(t){Object(g.is)(t)&&(this.escClose=Object(g.isStringTrue)(t.escClose),this.outClose=Object(g.isStringTrue)(t.outClose),this.position=Object(g.getStringOrDefault)(t.position,"right"),this.openAct=Object(g.getStringOrDefault)(t.openAct,this.getDefaultOpenClass()),this.closeAct=Object(g.getStringOrDefault)(t.closeAct,this.getDefaultCloseClass()),this.timeout=Object(g.getIntOrDefault)(t.timeout,Si(this,vi)),this.keyClose=t.keyClose)}getDefaultOpenClass(){return Object(g.replacePrefix)("right"===this.position?".{prefix}-offcanvas-default-right-in":".{prefix}-offcanvas-default-left-in",Si(this,fi))}getDefaultCloseClass(){return Object(g.replacePrefix)("right"===this.position?".{prefix}-offcanvas-default-right-out":".{prefix}-offcanvas-default-left-out",Si(this,fi))}}fi=new WeakMap,vi=new WeakMap;class Oi{constructor(t){mi.set(this,void 0),Ei(this,mi,null!=t?t:"cui"),this.attribute=Si(this,mi)+"-off-canvas"}getStyle(){return null}get(t,e){return new Ai(t,e,this.attribute,Si(this,mi))}}mi=new WeakMap;class Ai extends I{constructor(t,e,i,s){super("CuiOffCanvasHandler",t,i,new yi(s,e.setup.animationTime),e),wi.set(this,void 0),bi.set(this,void 0),Ci.set(this,void 0),ki.set(this,void 0),Ei(this,wi,s),Ei(this,bi,Object(g.replacePrefix)("{prefix}-off-canvas-open",s)),Ei(this,ki,null),Ei(this,Ci,0)}onInit(){this.mutate(()=>{this.setPositionLeft(),v.setAria(this.element,"aria-modal","")})}onUpdate(){this.setPositionLeft()}onDestroy(){}onBeforeOpen(){return!this.isAnyActive()&&(Ei(this,Ci,window.pageYOffset),!0)}onAfterOpen(){this.args.outClose&&Ei(this,ki,this.onEvent(g.EVENTS.WINDOW_CLICK,this.onWindowClick.bind(this))),this.helper.setClass(Si(this,bi),document.body),document.body.style.top=`-${scrollY}px`}onAfterClose(){this.detachEvent(g.EVENTS.WINDOW_CLICK,Si(this,ki)),this.helper.removeClass(Si(this,bi),document.body),document.body.style.top="",window.scrollTo(0,-1*Si(this,Ci))}onBeforeClose(){return!0}onWindowClick(t){const e=this.element.querySelector(Object(g.replacePrefix)(".{prefix}-off-canvas-container",Si(this,wi)));e&&!e.contains(t.target)&&this.close()}isAnyActive(){return this.helper.hasClass(Si(this,bi),document.body)}setPositionLeft(){let t=Object(g.getName)(Si(this,wi),"left");"left"!==this.args.position||this.helper.hasClass(t,this.element)?"right"==this.args.position&&this.helper.hasClass(t,this.element)&&this.helper.removeClass(t,this.element):this.helper.setClass(t,this.element)}}wi=new WeakMap,bi=new WeakMap,Ci=new WeakMap,ki=new WeakMap;var Mi,Ti,Wi,Li,ji,xi,Ii,Pi=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},Di=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Ni=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Bi{constructor(t,e){Mi.set(this,void 0),Ti.set(this,void 0),Wi.set(this,void 0),Di(this,Mi,Object(o.C)("> * > .{prefix}-accordion-title",t)),Di(this,Ti,Object(o.C)("> *",t)),Di(this,Wi,e),this.single=!1,this.selector=g.SCOPE_SELECTOR+Ni(this,Mi),this.items=g.SCOPE_SELECTOR+Ni(this,Ti),this.timeout=Ni(this,Wi)}parse(t){if(Object(o.v)(t))return this.single=Object(o.y)(t.single),this.selector=g.SCOPE_SELECTOR+Object(o.s)(t.selector,Ni(this,Mi)),this.items=g.SCOPE_SELECTOR+Object(o.s)(t.content,Ni(this,Ti)),this.timeout=Object(o.m)(t.timeout,Ni(this,Wi)),void(this.animation=Object(o.y)(t.animation))}isValid(){return!0}}Mi=new WeakMap,Ti=new WeakMap,Wi=new WeakMap;class _i{constructor(t){Li.set(this,void 0),Di(this,Li,null!=t?t:"cui"),this.attribute=Ni(this,Li)+"-accordion"}getStyle(){return null}get(t,e){return new Ri(t,e,this.attribute,Ni(this,Li))}}Li=new WeakMap;class Ri extends P{constructor(t,e,i,s){super("CuiAccordionHandler",t,i,new Bi(s,e.setup.animationTime),e),ji.set(this,void 0),xi.set(this,void 0),Ii.set(this,void 0),Di(this,Ii,null)}onInit(){if(this.args.isValid()){try{this.initTargets(),Di(this,Ii,this.onEvent(g.EVENTS.SWITCH,this.onSwitch.bind(this)))}catch(t){this._log.exception(t,"handle")}this._log.debug("Initialized","handle")}}onUpdate(){try{this.initTargets()}catch(t){this._log.exception(t,"handle")}}onDestroy(){this.detachEvent(g.EVENTS.SWITCH,Ni(this,Ii))}onMutation(t){(t.added.length>0||t.removed.length>0)&&this.initTargets()}switch(t){return Pi(this,void 0,void 0,(function*(){if(this._log.debug("Switch to: "+t),t<0||this.isLocked||!this.isInitialized)return!1;if(Di(this,ji,this.queryItems()),Ni(this,ji).length<=t)return!1;this.isLocked=!0;const e=Ni(this,ji)[t];return this.helper.hasClass(this.activeClassName,e)?this.helper.removeClassesAs(e,this.activeClassName):(this.args.single&&this.closeAllExcept(t),this.helper.setClassesAs(e,this.activeClassName)),this.emitEvent(g.EVENTS.SWITCHED,{index:t,currentTarget:e,timestamp:Date.now()}),this.isLocked=!1,!0}))}onSwitch(t){this.switch(Object(o.m)(t,-1)).then(()=>{this._log.debug("Switch from event to "+t)})}initTargets(){Di(this,ji,this.queryItems());const t=this.element.querySelectorAll(this.args.selector);Di(this,xi,[]),t.forEach((t,e)=>{let i={element:t};this.setListener(i,e),Ni(this,xi).push(i)})}closeAllExcept(t){this.mutate(()=>{Ni(this,ji).forEach((e,i)=>{t!==i&&this.helper.hasClass(this.activeClassName,e)&&e.classList.remove(this.activeClassName)})})}setListener(t,e){t.listener=()=>{this.switch(e)},t.element.addEventListener("click",t.listener)}removeListener(t){t.listener&&t.element.removeEventListener("click",t.listener)}queryItems(){return[...this.element.querySelectorAll(this.args.items)]}}ji=new WeakMap,xi=new WeakMap,Ii=new WeakMap;var Vi,Hi,Fi,$i,qi,Ui=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},zi=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Gi{constructor(t){Vi.set(this,void 0),Hi.set(this,null),Fi.set(this,void 0),$i.set(this,void 0),qi.set(this,void 0),Ui(this,Vi,t),Ui(this,Fi,!1),Ui(this,$i,!1)}setCallback(t){Ui(this,Hi,t)}isInProgress(){return zi(this,Fi)}attach(){zi(this,Vi).addEventListener("mouseover",this.onMouseOver.bind(this)),zi(this,Vi).addEventListener("mousemove",this.onMouseMove.bind(this)),zi(this,Vi).addEventListener("mouseout",this.onMouseOut.bind(this)),Ui(this,qi,!0)}detach(){zi(this,Vi).removeEventListener("mouseover",this.onMouseOver.bind(this)),zi(this,Vi).removeEventListener("mousemove",this.onMouseMove.bind(this)),zi(this,Vi).removeEventListener("mouseout",this.onMouseOut.bind(this)),Ui(this,qi,!1)}emit(t,e){Object(o.b)(zi(this,Hi))&&(!e&&zi(this,Fi)||(Ui(this,Fi,!0),window.requestAnimationFrame(this.invoke.bind(this,{isHovering:zi(this,$i),event:t,timestamp:Date.now()}))))}isAttached(){return zi(this,qi)}invoke(t){zi(this,Hi).call(this,t),Ui(this,Fi,!1)}onMouseOver(t){Ui(this,$i,!0),this.emit(t,!0)}onMouseOut(t){Ui(this,$i,!1),this.emit(t,!0)}onMouseMove(t){this.emit(t,!1)}}Vi=new WeakMap,Hi=new WeakMap,Fi=new WeakMap,$i=new WeakMap,qi=new WeakMap;var Ki,Yi,Xi,Zi,Ji=i(3),Qi=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ts=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class es{constructor(){Ki.set(this,void 0),Yi.set(this,void 0),Xi.set(this,void 0),Zi.set(this,void 0),Qi(this,Xi,-1),Qi(this,Yi,-1),Qi(this,Ki,null),Qi(this,Zi,0)}setElementBox(t){Qi(this,Ki,t)}setTarget(t,e){Qi(this,Yi,t),Qi(this,Xi,e)}setMargin(t){Qi(this,Zi,t)}getVerticalPosition(t){switch(t){case"top":return this.getTopPosition();case"bottom":return this.getBottomPosition();case"middle":return this.getMiddlePosition();default:return-1}}getHorizontalPosition(t){switch(t){case"left":return this.getLeftPosition();case"right":return this.getRightPosition();case"center":return this.getCenterPosition();default:return-1}}getAutoVerticalPosition(t){let e=window.innerHeight,i=this.getVerticalPosition(t);return("top"===t||"middle"===t)&&i<0?[this.getVerticalPosition("bottom"),"bottom"]:("bottom"===t||"middle"===t)&&i+ts(this,Xi)>e?[this.getVerticalPosition("top"),"top"]:[i,t]}getAutoHorizontalPosition(t){let e=window.innerWidth,i=this.getHorizontalPosition(t);return("right"===t||"center"===t)&&i<0?[this.getHorizontalPosition("left"),"left"]:("left"===t||"center"===t)&&i+ts(this,Yi)>e?[this.getHorizontalPosition("right"),"right"]:[i,t]}getTopPosition(){return this.throwIfNotValid("getTopPosition"),ts(this,Ki).top-ts(this,Zi)-ts(this,Xi)}getBottomPosition(){return this.throwIfNotValid("getBottomPosition"),ts(this,Ki).top+ts(this,Ki).height+ts(this,Zi)}getMiddlePosition(){return this.throwIfNotValid("getMiddlePosition"),ts(this,Ki).top+ts(this,Ki).height/2-ts(this,Xi)/2}getLeftPosition(){return this.throwIfNotValid("getLeftPosition"),ts(this,Ki).left}getRightPosition(){return this.throwIfNotValid("getRightPosition"),ts(this,Ki).left+ts(this,Ki).width-ts(this,Yi)}getCenterPosition(){return this.throwIfNotValid("getCenterPosition"),ts(this,Ki).left+ts(this,Ki).width/2-ts(this,Yi)/2}validate(){return Object(o.v)(ts(this,Ki))&&ts(this,Xi)>0&&ts(this,Yi)>0}throwIfNotValid(t){if(!this.validate())throw new Ji.f(`[${t}] Position cannot be calculated: missing data [width: ${ts(this,Yi)}][height: ${ts(this,Xi)}]`)}}Ki=new WeakMap,Yi=new WeakMap,Xi=new WeakMap,Zi=new WeakMap;var is,ss,ns,rs,os,hs=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},as=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class cs{constructor(t){is.set(this,void 0),ss.set(this,void 0),ns.set(this,void 0),rs.set(this,void 0),os.set(this,void 0),hs(this,ns,"top-center"),hs(this,ss,null),hs(this,rs,null!=t?t:new es),hs(this,os,p.a.get("CuiBasePositionCalculator"))}setMargin(t){as(this,rs).setMargin(t)}setPreferred(t){hs(this,ns,t)}setStatic(t){hs(this,ss,t)}calculate(t,e,i){if(as(this,rs).setElementBox(t),as(this,rs).setTarget(e,i),Object(o.v)(as(this,ss))){as(this,os).debug("Evaluating static position");const[t,e]=this.parse(as(this,ss));return[as(this,rs).getHorizontalPosition(e),as(this,rs).getVerticalPosition(t),as(this,ss)]}let[s,n]=[null,null];Object(o.v)(as(this,ns))&&(as(this,os).debug("Evaluating auto position"),[s,n]=this.parse(as(this,ns))),s=null!=s?s:"top",n=null!=n?n:"center";[s,n].join("-");as(this,os).debug("Calculating position: "+s+"-"+n);const[r,h]=as(this,rs).getAutoVerticalPosition(s),[a,c]=as(this,rs).getAutoHorizontalPosition(n);return as(this,os).debug("Calculated position: "+h+"-"+c),[a,r,h+"-"+c]}parse(t){return t.split("-")}}is=new WeakMap,ss=new WeakMap,ns=new WeakMap,rs=new WeakMap,os=new WeakMap;var ls,us,ds,ps,gs,fs,vs,ms,ws,bs,Cs,ks,Es,Ss,ys,Os,As=i(7),Ms=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},Ts=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Ws=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Ls{constructor(t){ls.set(this,void 0),Ts(this,ls,Object(o.C)("{prefix}-drop-animation-in",t)),this.mode="click",this.trigger="> a, button",this.autoClose=!1,this.outClose=!1,this.prevent=!1,this.pos=null,this.action=Ws(this,ls),this.timeout=3e3,this.margin=8}parse(t){this.mode=Object(o.s)(t.mode,"click").toLowerCase(),this.trigger=a.k+Object(o.s)(t.trigger,"> a, button"),this.prevent=Object(o.y)(t.prevent),this.autoClose=Object(o.y)(t.autoClose),this.outClose=!t.outClose||Object(o.y)(t.outClose),this.pos=Object(o.s)(t.pos,null),this.action=Object(o.s)(t.action,Ws(this,ls)),this.timeout=Object(o.m)(t.timeout,3e3),this.margin=Object(o.m)(t.margin,8)}}ls=new WeakMap;class js{constructor(t){us.set(this,void 0),Ts(this,us,null!=t?t:"cui"),this.attribute=Ws(this,us)+"-drop"}getStyle(){return null}get(t,e){return new xs(t,e,this.attribute,Ws(this,us))}}us=new WeakMap;class xs extends x{constructor(t,e,i,s){super("CuidropHandler",t,i,new Ls(s),e),ds.set(this,void 0),ps.set(this,void 0),gs.set(this,void 0),fs.set(this,void 0),vs.set(this,void 0),ms.set(this,void 0),ws.set(this,void 0),bs.set(this,void 0),Cs.set(this,void 0),ks.set(this,void 0),Es.set(this,void 0),Ss.set(this,void 0),ys.set(this,void 0),Os.set(this,void 0),Ts(this,gs,i),Ts(this,ds,s),Ts(this,ps,Object(o.C)("{prefix}-drop-open",s)),Ts(this,vs,new Gi(this.element)),Ws(this,vs).setCallback(this.onElementHover.bind(this)),Ts(this,ws,null),Ts(this,bs,null),Ts(this,Cs,null),this.onTriggerClick=this.onTriggerClick.bind(this),Ts(this,ks,new cs),Ws(this,ks).setMargin(8),Ws(this,ks).setPreferred("bottom-left"),Ts(this,Es,""),Ts(this,Ss,Object(o.C)("{prefix}-drop-trigger",s))}onInit(){Ts(this,ms,this.element.parentElement.querySelector(this.args.trigger)),Ts(this,fs,new Gi(Ws(this,ms))),this.setTriggerEvent(),Ts(this,bs,this.onEvent(a.i.OPEN,this.open.bind(this))),Ts(this,Cs,this.onEvent(a.i.CLOSE,this.close.bind(this))),Ws(this,ks).setStatic(this.args.pos),Ws(this,ks).setMargin(this.args.margin),Ts(this,ys,new As.a(this.args.timeout,!1,this.close.bind(this))),Ts(this,Os,g.CuiActionsListFactory.get(this.args.action)),this.mutate(()=>{v.setAria(this.element,"aria-dropdown",""),this.helper.hasClass(Ws(this,Ss),this.element.parentElement)||this.helper.setClass(Ws(this,Ss),this.element.parentElement)}),this._log.debug("Initialized","handle")}onUpdate(){Ws(this,fs).isAttached()?Ws(this,fs).detach():"click"===this.prevArgs.mode&&Ws(this,ms).removeEventListener("click",this.onTriggerClick),Ts(this,ms,this.element.parentElement.querySelector(this.args.trigger)),Ts(this,fs,new Gi(Ws(this,ms))),this.setTriggerEvent(),Ws(this,ks).setStatic(this.args.pos),Ws(this,ks).setMargin(this.args.margin),Ts(this,Os,g.CuiActionsListFactory.get(this.args.action)),Ws(this,ys).setTimeout(this.args.timeout)}onDestroy(){this.detachEvent(a.i.OPEN,Ws(this,bs)),this.detachEvent(a.i.CLOSE,Ws(this,Cs)),this.mutate(()=>{this.helper.removeClass(Ws(this,Ss),this.element.parentElement)})}open(){return Ms(this,void 0,void 0,(function*(){return!this.checkLockAndWarn("open")&&(this.isActive()?this.close():(this.isAnyActive()&&(yield this.findAndCloseOpenedDrop()),this.isLocked=!0,this._log.debug("Drop "+this.cuid,"open"),this.onOpen(),this.isLocked=!1,!0))}))}close(){return Ms(this,void 0,void 0,(function*(){return!(this.checkLockAndWarn("close")||!this.isActive())&&(this.isLocked=!0,this._log.debug("Drop "+this.cuid,"close"),this.onClose(),this.detachEvent(a.i.WINDOW_CLICK,Ws(this,ws)),this.emitEvent(a.i.CLOSED,{timestamp:Date.now()}),Ws(this,vs).detach(),this.isLocked=!1,!0)}))}onClose(){this.mutate(()=>{this.helper.removeClass(this.activeClassName,this.element),this.helper.removeClass(Ws(this,ps),document.body),this.toggleActions(),this.helper.removeClass(Ws(this,Es),this.element),v.setAria(this.element,"aria-expanded","false")})}onOpen(){this.helper.setClass(this.activeClassName,this.element),this.mutate(()=>{const t=Ws(this,ms).getBoundingClientRect();try{const[e,i,s]=Ws(this,ks).calculate(t,this.element.offsetWidth,this.element.offsetHeight);this.element.style.top=i-t.top+"px",this.element.style.left=e-t.left+"px",Ts(this,Es,Object(o.C)("{prefix}-drop-position-"+s,Ws(this,ds))),this.toggleActions(),this.helper.setClass(Ws(this,Es),this.element),this.helper.setClass(Ws(this,ps),document.body),this.emitEvent(a.i.OPENED,{timestamp:Date.now()}),Ws(this,vs).attach(),this.runAutoCloseTask(),this.args.outClose&&Ts(this,ws,this.onEvent(a.i.WINDOW_CLICK,this.onWindowClick.bind(this))),v.setAria(this.element,"aria-expanded","true")}catch(t){this._log.exception(t)}})}onWindowClick(t){this.element.contains(t.target)||this.close()}isAnyActive(){return this.helper.hasClass(Ws(this,ps),document.body)}findAndCloseOpenedDrop(){return Ms(this,void 0,void 0,(function*(){const t=document.querySelector(`[${Ws(this,gs)}].${this.activeClassName}`);if(!Object(o.v)(t))return this._log.warning("Opened drop was not found"),!1;const e=t.$handlers[Ws(this,gs)];return Object(o.v)(e)?e.close():(this._log.warning("Drop handler was not found in the element"),!1)}))}onTriggerClick(t){this.isActive()?this.close():this.open(),this.args.prevent&&t.preventDefault()}onHoverEvent(t){t.isHovering&&!this.isActive()&&this.open(),this.args.prevent&&t.event.preventDefault()}onElementHover(t){t.isHovering?Ws(this,ys).stop():!t.isHovering&&this.args.autoClose&&this.runAutoCloseTask()}setTriggerEvent(){"hover"===this.args.mode?(Ws(this,fs).setCallback(this.onHoverEvent.bind(this)),Ws(this,fs).attach()):Ws(this,ms).addEventListener("click",this.onTriggerClick)}runAutoCloseTask(){this.args.autoClose&&Ws(this,ys).start()}toggleActions(){Ws(this,Os).forEach(t=>{t.toggle(this.element)})}}ds=new WeakMap,ps=new WeakMap,gs=new WeakMap,fs=new WeakMap,vs=new WeakMap,ms=new WeakMap,ws=new WeakMap,bs=new WeakMap,Cs=new WeakMap,ks=new WeakMap,Es=new WeakMap,Ss=new WeakMap,ys=new WeakMap,Os=new WeakMap;var Is,Ps=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Ds=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Ns{constructor(){this.name="click-plugin",Is.set(this,void 0),this.description="CuiWindowClickPlugin"}init(t){Ps(this,Is,t.bus),window.addEventListener("click",this.onWindowClick.bind(this))}destroy(){window.removeEventListener("click",this.onWindowClick.bind(this))}onWindowClick(t){Ds(this,Is).emit(g.EVENTS.WINDOW_CLICK,null,t)}}Is=new WeakMap;var Bs,_s,Rs,Vs,Hs,Fs,$s,qs=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Us=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class zs{matches(t,e,i,s){return i>0&&e>=i||s>0&&t>=s}}class Gs{constructor(){Bs.set(this,void 0),_s.set(this,void 0),Rs.set(this,void 0),Vs.set(this,void 0),Hs.set(this,void 0),Fs.set(this,void 0),$s.set(this,void 0),qs(this,Bs,0),qs(this,_s,0),qs(this,Vs,0),qs(this,Rs,0),qs(this,$s,100)}matches(t,e,i,s){return this.fitsOffsetY(t,s)||this.fitsOffsetX(e,i)}fitsOffsetX(t,e){if(e<=0)return!1;let i=t-Us(this,Bs);return t>=e&&i>Us(this,$s)?qs(this,Hs,!0):Us(this,Hs)&&i<-Us(this,$s)&&qs(this,Hs,!1),(i<0&&Us(this,Vs)<i||i>=0&&Us(this,Vs)>i)&&qs(this,Bs,t),qs(this,Vs,i),Us(this,Hs)}fitsOffsetY(t,e){if(e<=0)return!1;let i=t-Us(this,_s);return t>=e&&i>Us(this,$s)?qs(this,Fs,!0):Us(this,Fs)&&i<-Us(this,$s)&&qs(this,Fs,!1),(i<0&&Us(this,Rs)<i||i>=0&&Us(this,Rs)>i)&&qs(this,_s,t),qs(this,Rs,i),Us(this,Fs)}}Bs=new WeakMap,_s=new WeakMap,Rs=new WeakMap,Vs=new WeakMap,Hs=new WeakMap,Fs=new WeakMap,$s=new WeakMap;var Ks,Ys,Xs,Zs,Js,Qs,tn,en,sn,nn,rn=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},on=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class hn{constructor(){this.offsetX=0,this.offsetY=0,this.target=null,this.root=!1,this.action=null,this.mode="static"}parse(t){this.target=t.target,this.action=t.action,this.offsetX=Object(o.m)(t.offsetX,-1),this.offsetY=Object(o.m)(t.offsetY,-1),this.root=Object(o.y)(t.root),this.mode=Object(o.s)(t.mode,"static")}}class an{constructor(t){this.attribute=(null!=t?t:"cui")+"-offset"}getStyle(){return null}get(t,e){return new cn(t,e,this.attribute)}}class cn extends x{constructor(t,e,i){super("CuiOffsetHandler",t,i,new hn,e),Ks.set(this,void 0),Ys.set(this,void 0),Xs.set(this,void 0),Zs.set(this,void 0),Js.set(this,void 0),Qs.set(this,void 0),tn.set(this,void 0),en.set(this,void 0),sn.set(this,void 0),nn.set(this,void 0),this.element=t,rn(this,Ys,this.element),rn(this,Xs,e),rn(this,Zs,!1),rn(this,Js,null),rn(this,Qs,0),rn(this,tn,0),rn(this,en,20),rn(this,sn,null),rn(this,nn,null)}onInit(){this.parseAttribute(),rn(this,Ks,new Tt.a(this.args.root?window:this.element,this.utils.setup.scrollThreshold)),on(this,Ks).setCallback(this.onScroll.bind(this)),on(this,Ks).attach()}onUpdate(){this.parseAttribute()}onDestroy(){on(this,Ks).detach()}onScroll(t){this.checkAndPerformActions(t)}parseAttribute(){rn(this,sn,this.getRoot()),rn(this,Ys,this.args.target?on(this,sn).querySelector(this.args.target):this.element),rn(this,Js,Mt.a.get(this.args.action)),rn(this,nn,class{static get(t){return"dynamic"===t?new Gs:new zs}}.get(this.args.mode))}checkAndPerformActions(t){let e=on(this,nn).matches(t.top,t.left,this.args.offsetX,this.args.offsetY);if(e!==on(this,Zs))return this.act(e),rn(this,Zs,e),void this.callEvent(on(this,Zs),t.left,t.top,t.scrolling,t.source,...this.calcaRatio(t.left,t.top));this.exceededThreshold(t.left,t.top)&&(this.callEvent(on(this,Zs),t.left,t.top,t.scrolling,t.source,...this.calcaRatio(t.left,t.top)),rn(this,Qs,t.left),rn(this,tn,t.top))}act(t){Object(o.b)(on(this,Js),on(this,Ys))&&(this.isLocked=!0,on(this,Js).forEach(e=>{t?e.add(on(this,Ys),on(this,Xs)):e.remove(on(this,Ys),on(this,Xs))}),this.isLocked=!1)}callEvent(t,e,i,s,n,r,o){this.emitEvent(g.EVENTS.OFFSET,{matches:on(this,Zs),offsetX:e,offsetY:i,ratioX:r,ratioY:o,scrolling:s,source:n,timestamp:Date.now()})}getRoot(){return this.args.root?document.body:this.element}exceededThreshold(t,e){return Math.abs(t-on(this,Qs))>on(this,en)||Math.abs(e-on(this,tn))>on(this,en)}calcaRatio(t,e){let i=parseFloat(((on(this,sn).clientHeight+e)/on(this,sn).scrollHeight).toFixed(2)),s=parseFloat(((on(this,sn).clientWidth+t)/on(this,sn).scrollWidth).toFixed(2));return[Object(o.q)(s,0,1),Object(o.q)(i,0,1)]}}Ks=new WeakMap,Ys=new WeakMap,Xs=new WeakMap,Zs=new WeakMap,Js=new WeakMap,Qs=new WeakMap,tn=new WeakMap,en=new WeakMap,sn=new WeakMap,nn=new WeakMap;var ln,un,dn,pn,gn,fn,vn,mn,wn,bn,Cn=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},kn=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},En=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Sn{constructor(t,e){ln.set(this,void 0),un.set(this,void 0),kn(this,ln,t),kn(this,un,e)}parse(t){this.targets=Object(g.is)(t.targets)?g.SCOPE_SELECTOR+t.targets:g.SCOPE_SELECTOR+" > *",this.in=Object(g.getStringOrDefault)(t.in,Object(g.replacePrefix)(".{prefix}-switch-animation-default-in",En(this,ln))),this.out=Object(g.getStringOrDefault)(t.out,Object(g.replacePrefix)(".{prefix}-switch-animation-default-out",En(this,ln))),this.timeout=Object(g.getIntOrDefault)(t.timeout,En(this,un)),this.links=Object(g.getStringOrDefault)(t.links,null),this.switch=Object(g.getStringOrDefault)(t.switch,null),this.autoTimeout=Object(g.getIntOrDefault)(t.autoTimeout,-1),this.height=Object(g.getStringOrDefault)(t.height,"auto")}}ln=new WeakMap,un=new WeakMap;class yn{constructor(t){this.attribute=(null!=t?t:"cui")+"-switch"}getStyle(){return null}get(t,e){return new On(t,e,this.attribute)}}class On extends P{constructor(t,e,i){super("CuiSwitchHandler",t,i,new Sn(e.setup.prefix,e.setup.animationTime),e),dn.set(this,void 0),pn.set(this,void 0),gn.set(this,void 0),fn.set(this,void 0),vn.set(this,void 0),mn.set(this,void 0),wn.set(this,void 0),bn.set(this,void 0),kn(this,dn,[]),kn(this,pn,-1),kn(this,gn,[]),kn(this,fn,[]),kn(this,mn,null),kn(this,wn,kn(this,bn,null))}onInit(){kn(this,mn,this.onEvent(g.EVENTS.SWITCH,this.onPushSwitch.bind(this))),this.parseArguments(),this.getTargets(),this.getActiveIndex(),this.getSwitches(),this.setSwitchesActive(En(this,pn)),this.setLinkActive(-1,En(this,pn)),this.mutate(()=>{this.helper.setStyle(this.element,"height",this.getElementHeight(En(this,dn)[En(this,pn)]))}),kn(this,vn,new As.a(this.args.autoTimeout,!0,this.switch.bind(this,"next"))),this.startTask()}onUpdate(){this.parseArguments(),this.getTargets(),this.getSwitches(),this.setSwitchesActive(En(this,pn)),this.mutate(()=>{this.helper.setStyle(this.element,"height",this.getElementHeight(En(this,dn)[En(this,pn)]))}),this.startTask()}onDestroy(){En(this,vn).stop(),this.detachEvent(g.EVENTS.SWITCH,En(this,mn))}onMutation(t){this.getTargets(),this.mutate(()=>{this.helper.setStyle(this.element,"height",this.getElementHeight(En(this,dn)[En(this,pn)]))})}switch(t){return Cn(this,void 0,void 0,(function*(){if(this.isLocked)return!1;this.getSwitches(),this.getActiveIndex();let e=Object(g.calculateNextIndex)(t,En(this,pn),En(this,dn).length);if(e==En(this,pn)||e<0||e>=En(this,dn).length)return this.logWarning(`Index ${t} is not within the suitable range`,"switch"),!1;this.isLocked=!0,this.setSwitchesActive(e);let i=En(this,dn)[e];return yield this.actionsHelper.performSwitchAction(i,En(this,pn)>-1?En(this,dn)[En(this,pn)]:null,En(this,wn),En(this,bn),()=>{i.classList.add(this.activeClassName),En(this,pn)>-1&&En(this,dn)[En(this,pn)].classList.remove(this.activeClassName),this.setLinkActive(En(this,pn),e),this.helper.setStyle(this.element,"height",this.getElementHeight(i)),this.startTask(),this.isLocked=!1},this.args.timeout),this.emitEvent(g.EVENTS.SWITCHED,{timestamp:Date.now(),index:e}),!0}))}onPushSwitch(t){this.switch(t)}getActiveIndex(){kn(this,pn,Object(g.is)(En(this,dn))?En(this,dn).findIndex(t=>this.helper.hasClass(this.activeClassName,t)):-1)}getElementHeight(t){return Object(g.is)(this.args.height)&&"auto"!==this.args.height?this.args.height:Object(g.getChildrenHeight)(t)+"px"}parseArguments(){kn(this,wn,g.CuiActionsListFactory.get(this.args.in)),kn(this,bn,g.CuiActionsListFactory.get(this.args.out)),kn(this,gn,Object(g.is)(this.args.links)?[...document.querySelectorAll(this.args.links)]:[])}getTargets(){console.log(this.args.targets);let t=this.element.querySelectorAll(this.args.targets);kn(this,dn,t.length>0?[...t]:[])}getSwitches(){let t=Object(g.is)(this.args.switch)?document.querySelectorAll(this.args.switch):null;kn(this,fn,[]),t&&t.forEach(t=>{En(this,fn).push(t)})}setLinkActive(t,e){Object(g.is)(En(this,gn))&&(Object(g.isInRange)(t,0,En(this,gn).length-1)&&this.helper.removeClass(this.activeClassName,En(this,gn)[t]),Object(g.isInRange)(e,0,En(this,gn).length-1)&&this.helper.setClass(this.activeClassName,En(this,gn)[e]))}setSwitchesActive(t){En(this,fn).forEach(e=>{this.emitLinkSwitch(e.$cuid,t)})}emitLinkSwitch(t,e){Object(g.is)(t)&&this.utils.bus.emit(g.EVENTS.SWITCH,t,e)}startTask(){En(this,vn).stop(),this.args.autoTimeout&&En(this,vn).start()}}dn=new WeakMap,pn=new WeakMap,gn=new WeakMap,fn=new WeakMap,vn=new WeakMap,mn=new WeakMap,wn=new WeakMap,bn=new WeakMap;var An,Mn,Tn,Wn,Ln=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},jn=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class xn{constructor(){}parse(t){Object(g.is)(t)&&(this.target=t.target,this.index=t.index)}}class In{constructor(t){this.attribute=(null!=t?t:"cui")+"-switcher"}getStyle(){return null}get(t,e){return new Pn(t,e,this.attribute)}}class Pn extends x{constructor(t,e,i){super("CuiSwitcherHandler",t,i,new xn,e),An.set(this,void 0),Mn.set(this,void 0),Tn.set(this,void 0),Wn.set(this,void 0),Ln(this,An,null),Ln(this,Mn,"UL"===t.tagName),Ln(this,Tn,void 0),this.onClickEvent=this.onClickEvent.bind(this),Ln(this,Wn,[])}onInit(){this.setEvents(),this.getTarget()}onUpdate(){this.getTarget()}onDestroy(){this.removeEvents()}getTarget(){Object(g.is)(this.args.target)||Ln(this,An,null);let t=document.querySelector(this.args.target);Object(g.is)(t)&&Ln(this,An,t.$cuid)}setEvents(){if(jn(this,Mn)){this.element.querySelectorAll("li > a").forEach((t,e)=>{let i=this.onListItemClick.bind(this,e);jn(this,Wn).push(i),t.addEventListener("click",i)})}else this.element.addEventListener("click",this.onClickEvent)}removeEvents(){if(jn(this,Mn)){this.element.querySelectorAll("li > a").forEach((t,e)=>{jn(this,Wn).length>e&&t.removeEventListener("click",jn(this,Wn)[e])}),Ln(this,Wn,[])}else this.element.removeEventListener("click",this.onClickEvent)}onClickEvent(t){this.getTarget(),Object(g.is)(this.args.index)&&this.onClick(this.args.index.trim())}onListItemClick(t,e){this.getTarget(),this.onClick(t)}onClick(t){Object(g.is)(jn(this,An))&&this.utils.bus.emit(g.EVENTS.SWITCH,jn(this,An),t)}}An=new WeakMap,Mn=new WeakMap,Tn=new WeakMap,Wn=new WeakMap;var Dn,Nn=i(13),Bn=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},_n=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Rn{calculate(t,e,i,s){return[t,e]}}new WeakMap;class Vn{constructor(t){Dn.set(this,void 0),Bn(this,Dn,t)}calculate(t,e,i,s){return[t-_n(this,Dn).offsetLeft,e-_n(this,Dn).offsetTop]}}Dn=new WeakMap;new WeakMap;var Hn,Fn,$n,qn,Un,zn,Gn,Kn,Yn,Xn,Zn,Jn,Qn,tr,er=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ir=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class sr{constructor(t,e){Hn.set(this,void 0),Fn.set(this,void 0),this.escClose=!1,this.keyClose=void 0,this.openAct="",this.closeAct="",this.timeout=e,er(this,Hn,e),er(this,Fn,t)}parse(t){this.escClose=Object(o.y)(t.escClose),this.keyClose=t.keyClose,this.timeout=Object(o.m)(t.timeout,ir(this,Hn)),this.openAct=Object(o.s)(t.openAct,Object(o.C)(".{prefix}-float-default-in",ir(this,Fn))),this.closeAct=Object(o.s)(t.closeAct,Object(o.C)(".{prefix}-float-default-out",ir(this,Fn)))}}Hn=new WeakMap,Fn=new WeakMap;class nr{constructor(t){$n.set(this,void 0),er(this,$n,null!=t?t:"cui"),this.attribute=ir(this,$n)+"-float"}getStyle(){return null}get(t,e){return new rr(t,e,this.attribute,ir(this,$n))}}$n=new WeakMap;class rr extends I{constructor(t,e,i,s){super("CuiFloatHandler",t,i,new sr(s,e.setup.animationTime),e),qn.set(this,void 0),Un.set(this,void 0),zn.set(this,void 0),Gn.set(this,void 0),Kn.set(this,void 0),Yn.set(this,void 0),Xn.set(this,void 0),Zn.set(this,void 0),Jn.set(this,void 0),Qn.set(this,void 0),tr.set(this,void 0),er(this,qn,!1),er(this,Un,!1),er(this,zn,0),er(this,Gn,0),er(this,Yn,new Nn.a),ir(this,Yn).preventDefault(!1),er(this,Xn,new Rn),er(this,Zn,new Vn(t)),er(this,Kn,s),er(this,tr,void 0),this.move=this.move.bind(this),this.resize=this.resize.bind(this)}onInit(){v.setAria(this.element,"aria-modal",""),er(this,Qn,this.element.querySelector(Object(o.C)(".{prefix}-float-move",ir(this,Kn)))),er(this,Jn,this.element.querySelector(Object(o.C)(".{prefix}-float-resize",ir(this,Kn)))),ir(this,Yn).setCallback(this.onMove.bind(this))}onUpdate(){}onDestroy(){}onBeforeOpen(){return!0}onAfterOpen(){ir(this,Yn).attach()}onAfterClose(){ir(this,Yn).detach()}onBeforeClose(){return!0}onMove(t){switch(t.type){case"down":this.onMouseDown(t);break;case"up":this.onMouseUp(t);break;case"move":this.onMouseMove(t)}}onMouseDown(t){t.target===ir(this,Qn)?(er(this,qn,!0),t.event.preventDefault()):t.target===ir(this,Jn)&&(er(this,Un,!0),t.event.preventDefault()),er(this,zn,t.x),er(this,Gn,t.y),this.helper.setClassesAs(document.body,g.CLASSES.swipingOn),this.utils.bus.emit(g.EVENTS.MOVE_LOCK,null,!0)}onMouseMove(t){ir(this,qn)?this.peform(t,this.move):ir(this,Un)&&this.peform(t,this.resize)}onMouseUp(t){er(this,qn,!1),er(this,Un,!1),this.helper.removeClassesAs(document.body,g.CLASSES.swipingOn),this.utils.bus.emit(g.EVENTS.MOVE_LOCK,null,!1)}peform(t,e){this.mutate(()=>{Object(o.v)(e)&&e(this.element,t.x,t.y,t.x-ir(this,zn),t.y-ir(this,Gn)),er(this,zn,t.x),er(this,Gn,t.y)}),t.event.preventDefault()}resize(t,e,i,s,n){let[r,o]=ir(this,Zn).calculate(e,i,s,n);this.fitsWindow(t.offsetTop,t.offsetLeft,r,o)&&this.mutate(()=>{t.style.width=r+"px",t.style.height=o+"px"})}move(t,e,i,s,n){let[r,o]=ir(this,Xn).calculate(e,i,s,n);this.fitsWindow(o,r,t.offsetWidth,t.offsetHeight)&&this.mutate(()=>{t.style.left=r+"px",t.style.top=o+"px"})}fitsWindow(t,e,i,s){return t+s<window.innerHeight-10&&t>10&&e>10&&e+i<window.innerWidth-10}}qn=new WeakMap,Un=new WeakMap,zn=new WeakMap,Gn=new WeakMap,Kn=new WeakMap,Yn=new WeakMap,Xn=new WeakMap,Zn=new WeakMap,Jn=new WeakMap,Qn=new WeakMap,tr=new WeakMap;var or,hr=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ar=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class cr{constructor(){this.length=this.to=this.from=-1,this.rtl=!1}setProperty(t){if(!t||!Object(o.v)(t.from)||!Object(o.v)(t.to))throw new Ji.a("[OpacityAnimator] Property has incorrect format");this.from=t.from,this.to=t.to,this.length=Math.abs(this.to-this.from),this.rtl=this.from>this.to}perform(t,e,i){if(this.to<0)return;let s=this.length*e;t.style&&(t.style.opacity=this.rtl?Math.max(this.from-s,0):Math.min(this.from+s,1))}}class lr{constructor(t){if(or.set(this,void 0),!Object(o.v)(t))throw new Ji.a("[PropertyAnimator] Valid property is required");this.property=t,this.length=this.to=this.from=-1,this.rtl=!1,hr(this,or,"")}setProperty(t){if(!t||!Object(o.v)(t.from)||!Object(o.v)(t.to))throw new Ji.a("[PropertyAnimator] Property has incorrect format");this.from=t.from,this.to=t.to,this.length=Math.abs(this.to-this.from),this.rtl=this.from>this.to,hr(this,or,t.unit)}perform(t,e,i){if(!this.property)return;let s=this.length*e;t.style&&(t.style[this.property]=this.createValue(this.rtl?this.from-s:this.from+s,ar(this,or)))}createValue(t,e){return`${t}${null!=e?e:""}`}}or=new WeakMap;class ur{constructor(){this.prop=void 0}setProperty(t){if(!t)throw new Ji.a("[TransformAnimator] Property has incorrect format");this.prop=t}build(t){let e=[];for(let i in this.prop){let s=this.prop[i],n=Math.abs(s.to-s.from),r=s.from>s.to?s.from-n*t:s.from+n*t;e.push(this.buildSingle(i,r,s.unit))}return e.join(" ")}buildSingle(t,e,i){return`${t}(${e}${i})`}perform(t,e,i){this.prop&&t.style&&(t.style.transform=this.build(e))}}var dr,pr,gr,fr,vr,mr,wr,br,Cr,kr,Er,Sr,yr,Or,Ar=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Mr=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};new WeakMap,new WeakMap,new WeakMap,new WeakMap;class Tr{get(t){if(t)switch(t){case"opacity":return new cr;case"transform":return new ur;default:return new lr(t)}}}class Wr{constructor(t){dr.set(this,void 0),pr.set(this,void 0),gr.set(this,void 0),fr.set(this,void 0),vr.set(this,void 0),mr.set(this,void 0),wr.set(this,void 0),br.set(this,void 0),Cr.set(this,void 0),Ar(this,pr,[]),Ar(this,vr,void 0),Ar(this,fr,void 0),Ar(this,mr,null!=t&&t),Ar(this,br,new Tr),Ar(this,gr,!1)}onFinish(t){Ar(this,dr,t)}setAnimators(t){Ar(this,pr,t)}setProps(t){if(Object(o.v)(t)){Ar(this,pr,[]);try{for(let e in t){let i=Mr(this,br).get(e);if(!i)return;i.setProperty(t[e]),Mr(this,pr).push(i)}}catch(t){this.reportError(t)}}}setElement(t){Ar(this,vr,t)}setOnError(t){Ar(this,Cr,t)}animate(t,e,i){if(Mr(this,gr))return;if(!Mr(this,vr)||0===Mr(this,pr).length)return void this.reportError(new Error("Animation cannot be performed: element or animators are not set"));let s=null!=e?e:0,n=i||!1;Ar(this,gr,!0),requestAnimationFrame(this.animateAsync.bind(this,t,s,n))}isLocked(){return Mr(this,gr)}animateAsync(t,e,i,s){Mr(this,fr)||Ar(this,fr,s);let n=s-Mr(this,fr),r=n/t,o=0;o=0===e?r:i?e-r*e:e+r*e,this.callUpdate(i?Math.max(o,0):Math.min(o,1),1),n<t&&!Mr(this,wr)?requestAnimationFrame(this.animateAsync.bind(this,t,e,i)):this.endAnimation(i)}endAnimation(t){Mr(this,mr)&&Mr(this,vr)&&Mr(this,vr).removeAttribute("style"),Mr(this,dr)&&Mr(this,dr).call(this,Mr(this,vr),t,Mr(this,wr)),Ar(this,wr,!1),Ar(this,fr,void 0),Ar(this,gr,!1)}callUpdate(t,e){try{Mr(this,pr).forEach(i=>i.perform(Mr(this,vr),t,e))}catch(t){this.reportError(t),Ar(this,wr,!0)}}reportError(t){Mr(this,Cr)?Mr(this,Cr).call(this,t):(console.error("An error occured in CuiAnimtionEngine"),console.error(t))}}dr=new WeakMap,pr=new WeakMap,gr=new WeakMap,fr=new WeakMap,vr=new WeakMap,mr=new WeakMap,wr=new WeakMap,br=new WeakMap,Cr=new WeakMap;class Lr{constructor(t){kr.set(this,void 0),Er.set(this,void 0),Sr.set(this,void 0),yr.set(this,void 0),Or.set(this,void 0),Ar(this,kr,void 0),Ar(this,Er,[]),Ar(this,Sr,new Wr(t)),Ar(this,yr,new Tr)}setElement(t){Ar(this,kr,t)}setOnFinish(t){Mr(this,Sr).onFinish(t)}setOnError(t){Ar(this,Or,t),Mr(this,Sr).setOnError(t)}setProps(t){if(Object(o.v)(t)){Ar(this,Er,[]);try{for(let e in t){let i=Mr(this,yr).get(e);if(!i)return;i.setProperty(t[e]),Mr(this,Er).push(i)}}catch(t){this.reportError(t)}}}update(t){Mr(this,kr)&&0!==Mr(this,Er).length&&Mr(this,Er).forEach(e=>e.perform(Mr(this,kr),Math.min(t,1),1))}updateAsync(t){requestAnimationFrame(this.update.bind(this,t))}finish(t,e,i){Mr(this,Sr).setElement(Mr(this,kr)),Mr(this,Sr).setAnimators(Mr(this,Er)),Mr(this,Sr).animate(e,t,i)}reportError(t){Mr(this,Or)?Mr(this,Or).call(this,t):console.log(t)}}kr=new WeakMap,Er=new WeakMap,Sr=new WeakMap,yr=new WeakMap,Or=new WeakMap;const jr={slide:{current:{left:{transform:{translateX:{from:0,to:-100,unit:"%"}}},right:{transform:{translateX:{from:0,to:100,unit:"%"}}}},previous:{left:{transform:{translateX:{from:100,to:0,unit:"%"}}},right:{transform:{translateX:{from:-100,to:0,unit:"%"}}}}},fade:{current:{left:{opacity:{from:1,to:0}},right:{opacity:{from:1,to:0}}},previous:{left:{opacity:{from:0,to:1}},right:{opacity:{from:0,to:1}}}},push:{current:{left:{transform:{translateX:{from:0,to:-10,unit:"%"}}},right:{transform:{translateX:{from:0,to:10,unit:"%"}}}},previous:{left:{transform:{translateX:{from:100,to:0,unit:"%"}}},right:{transform:{translateX:{from:-100,to:0,unit:"%"}}}}}};var xr,Ir,Pr,Dr,Nr,Br,_r,Rr,Vr,Hr,Fr,$r,qr,Ur,zr,Gr,Kr,Yr,Xr=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},Zr=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Jr=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Qr{constructor(t,e){xr.set(this,void 0),Ir.set(this,void 0),Zr(this,xr,t),Zr(this,Ir,e)}parse(t){this.targets=g.SCOPE_SELECTOR+Object(g.getStringOrDefault)(t.targets,"> li"),this.timeout=Object(g.getIntOrDefault)(t.timeout,Jr(this,Ir)),this.links=t.links,this.autoTimeout=Object(g.getIntOrDefault)(t.autoTimeout,-1),this.height=Object(g.getStringOrDefault)(t.height,"auto"),this.animation=Object(g.getStringOrDefault)(t.animation,"slide"),this.loop=Object(g.boolStringOrDefault)(t.loop,!1)}}xr=new WeakMap,Ir=new WeakMap;class to{constructor(t){this.attribute=(null!=t?t:"cui")+"-slider"}getStyle(){return null}get(t,e){return new eo(t,e,this.attribute)}}class eo extends P{constructor(t,e,i){super("CuiSliderHandler",t,i,new Qr(e.setup.prefix,e.setup.animationTime),e),Pr.set(this,void 0),Dr.set(this,void 0),Nr.set(this,void 0),Br.set(this,void 0),_r.set(this,void 0),Rr.set(this,void 0),Vr.set(this,void 0),Hr.set(this,void 0),Fr.set(this,void 0),$r.set(this,void 0),qr.set(this,void 0),Ur.set(this,void 0),zr.set(this,void 0),Gr.set(this,void 0),Kr.set(this,void 0),Yr.set(this,void 0),Zr(this,Pr,[]),Zr(this,Dr,-1),Zr(this,Fr,-1),Zr(this,Nr,[]),Zr(this,_r,null),Zr(this,Rr,!1),Zr(this,Vr,-1),Zr(this,Hr,0),Zr(this,$r,null),Zr(this,qr,.5),Zr(this,Ur,new Lr),Zr(this,zr,new Lr),Jr(this,Ur).setOnFinish(this.onAnimationFinish.bind(this)),Zr(this,Kr,0)}onInit(){Zr(this,_r,this.onEvent(g.EVENTS.SWITCH,this.onPushSwitch.bind(this))),Zr(this,Yr,this.onEvent(g.EVENTS.GLOBAL_MOVE,this.onMove.bind(this))),this.getTargets(),this.getLinks(),this.getActiveIndex(),this.setLinkActive(-1,Jr(this,Dr)),this.mutate(()=>{this.helper.setStyle(this.element,"height",this.getElementHeight(Jr(this,Pr)[Jr(this,Dr)]))}),Zr(this,Br,new As.a(this.args.autoTimeout,!0,this.switch.bind(this,"next"))),Zr(this,Gr,jr[this.args.animation]),this.startTask()}onUpdate(){this.mutate(()=>{this.helper.setStyle(this.element,"height",this.getElementHeight(Jr(this,Pr)[Jr(this,Dr)]))}),Zr(this,Gr,jr[this.args.animation]),this.startTask()}onDestroy(){Jr(this,Br).stop(),this.detachEvent(g.EVENTS.SWITCH,Jr(this,_r)),this.detachEvent(g.EVENTS.GLOBAL_MOVE,Jr(this,Yr))}onMutation(t){}onMove(t){if(this.isLocked||!Jr(this,Gr))return;let e=Jr(this,Pr)[Jr(this,Dr)];switch(t.type){case"down":if(Jr(this,Rr)||!e.contains(t.target))return;Zr(this,Rr,!0),Zr(this,Vr,t.x),Jr(this,Ur).setElement(e),this.helper.setClassesAs(document.body,g.CLASSES.swipingOn),t.event.cancelable&&t.event.preventDefault();break;case"up":if(!Jr(this,Rr))break;this.isLocked=!0;let i=Math.abs(Jr(this,Hr)),s=i*this.args.timeout,n=i<=Jr(this,qr);Jr(this,Ur).finish(i,s,n),Jr(this,zr).finish(i,s,n),this.helper.removeClassesAs(document.body,g.CLASSES.swipingOn),Zr(this,Rr,!1);break;case"move":if(!Jr(this,Rr))break;let r=(t.x-Jr(this,Vr))/e.offsetWidth;if(Math.abs(r-Jr(this,Hr))<.02)break;let o=Object(g.calculateNextIndex)(Jr(this,Hr)>0?"next":"prev",Jr(this,Dr),Jr(this,Kr));Zr(this,Hr,this.adjustMoveRatio(r)),o!==Jr(this,Fr)&&(Jr(this,$r)&&this.helper.removeClass(g.CLASSES.animProgress,Jr(this,$r)),Zr(this,$r,Jr(this,Pr)[o]),Zr(this,Fr,o),Jr(this,zr).setElement(Jr(this,$r)),Jr(this,zr).setProps(Jr(this,Hr)>0?Jr(this,Gr).previous.right:Jr(this,Gr).previous.left),Jr(this,Ur).setProps(Jr(this,Hr)>0?Jr(this,Gr).current.right:Jr(this,Gr).current.left),this.mutate(()=>{this.helper.setClass(g.CLASSES.animProgress,Jr(this,$r))})),this.mutate(()=>{Jr(this,Ur).update(Math.abs(Jr(this,Hr))),Jr(this,zr).update(Math.abs(Jr(this,Hr)))}),t.event.cancelable&&t.event.preventDefault()}}adjustMoveRatio(t){return this.args.loop?t:Jr(this,Dr)===Jr(this,Kr)-1&&t>0||0===Jr(this,Dr)&&t<0?0:t}switch(t){return Xr(this,void 0,void 0,(function*(){return!this.isLocked&&(this.onPushSwitch(t),!0)}))}onAnimationFinish(t,e,i){this.isLocked=!1;let s=Jr(this,Pr)[Jr(this,Fr)],n=Jr(this,Pr)[Jr(this,Dr)];e?(this.helper.removeClass(g.CLASSES.animProgress,Jr(this,$r)),this.helper.removeAttribute("style",n),this.helper.removeAttribute("style",Jr(this,$r)),Zr(this,Fr,-1),Zr(this,$r,null),Zr(this,Vr,-1),Zr(this,Hr,0)):Jr(this,Fr)>-1&&this.mutate(()=>{this.helper.removeClass(g.CLASSES.animProgress,s),this.helper.setClass(this.activeClassName,s),this.helper.removeClass(this.activeClassName,n),this.helper.removeAttribute("style",n),this.helper.removeAttribute("style",s),this.setLinkActive(Jr(this,Dr),Jr(this,Fr)),this.emitEvent(g.EVENTS.SWITCHED,{timestamp:Date.now(),index:Jr(this,Fr)}),Zr(this,Dr,Jr(this,Fr)),Zr(this,Fr,-1),Zr(this,$r,null),Zr(this,Vr,-1),Zr(this,Hr,0)}),this.startTask()}onPushSwitch(t){if(!Object(g.is)(t)||this.isLocked||!Jr(this,Gr)||!this.args.loop&&0===Jr(this,Dr)&&"prev"===t||!this.args.loop&&Jr(this,Dr)===Jr(this,Kr)-1&&"next"===t)return;this.isLocked=!0;let e=Object(g.calculateNextIndex)(t,Jr(this,Dr),Jr(this,Kr));if(e==Jr(this,Dr)||e<0||e>=Jr(this,Pr).length)return this._log.warning(`Index ${t} is not within the suitable range`),!1;Zr(this,Fr,e);let i=Jr(this,Pr)[Jr(this,Dr)],s=Jr(this,Pr)[Jr(this,Fr)];Jr(this,Ur).setElement(i),Jr(this,zr).setElement(s),Jr(this,Ur).setProps("prev"===t?Jr(this,Gr).current.left:Jr(this,Gr).current.right),Jr(this,zr).setProps("prev"===t?Jr(this,Gr).previous.left:Jr(this,Gr).previous.right),this.mutate(()=>{Jr(this,Ur).finish(0,this.args.timeout,!1),Jr(this,zr).finish(0,this.args.timeout,!1),this.helper.setClass(g.CLASSES.animProgress,s)})}getActiveIndex(){Zr(this,Dr,Object(g.is)(Jr(this,Pr))?Jr(this,Pr).findIndex(t=>this.helper.hasClass(this.activeClassName,t)):-1)}getElementHeight(t){return Object(g.is)(this.args.height)&&"auto"!==this.args.height?this.args.height:Object(g.getChildrenHeight)(t)+"px"}getTargets(){let t=this.element.querySelectorAll(this.args.targets);Zr(this,Pr,t.length>0?[...t]:[]),Zr(this,Kr,Jr(this,Pr).length)}getLinks(){Zr(this,Nr,Object(g.is)(this.args.links)?[...document.querySelectorAll(this.args.links)]:[])}setLinkActive(t,e){Object(g.is)(Jr(this,Nr))&&this.mutate(()=>{Object(g.isInRange)(t,0,Jr(this,Nr).length-1)&&this.helper.removeClass(this.activeClassName,Jr(this,Nr)[t]),Object(g.isInRange)(e,0,Jr(this,Nr).length-1)&&this.helper.setClass(this.activeClassName,Jr(this,Nr)[e])})}startTask(){Jr(this,Br).stop(),this.args.autoTimeout&&Jr(this,Br).start()}}Pr=new WeakMap,Dr=new WeakMap,Nr=new WeakMap,Br=new WeakMap,_r=new WeakMap,Rr=new WeakMap,Vr=new WeakMap,Hr=new WeakMap,Fr=new WeakMap,$r=new WeakMap,qr=new WeakMap,Ur=new WeakMap,zr=new WeakMap,Gr=new WeakMap,Kr=new WeakMap,Yr=new WeakMap;var io,so,no,ro,oo,ho,ao,co,lo,uo=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},po=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class go{constructor(t,e){io.set(this,void 0),so.set(this,void 0),uo(this,io,e),uo(this,so,t),this.escClose=!1,this.keyClose=void 0}parse(t){this.swipe=Object(g.boolStringOrDefault)(t.swipe,!1),this.escClose=!1,this.keyClose=void 0,this.timeout=Object(g.getIntOrDefault)(t.timeout,po(this,io)),this.openAct=Object(g.getStringOrDefault)(t.openAct,Object(g.replacePrefix)(".{prefix}-animation-fade-in",po(this,so))),this.closeAct=Object(g.getStringOrDefault)(t.closeAct,Object(g.replacePrefix)(".{prefix}-animation-fade-out",po(this,so)))}}io=new WeakMap,so=new WeakMap;class fo{constructor(t){no.set(this,void 0),uo(this,no,null!=t?t:"cui"),this.attribute=po(this,no)+"-banner"}getStyle(){return null}get(t,e){return new vo(t,e,this.attribute,po(this,no))}}no=new WeakMap;class vo extends I{constructor(t,e,i,s){super("CuiBannerHandler",t,i,new go(s,e.setup.animationTime),e),ro.set(this,void 0),oo.set(this,void 0),ho.set(this,void 0),ao.set(this,void 0),co.set(this,void 0),lo.set(this,void 0),uo(this,ro,new Lr(!0)),po(this,ro).setOnFinish(this.onSwipeFinish.bind(this)),po(this,ro).setElement(this.element),uo(this,ho,-1),uo(this,ao,0),uo(this,co,jr.fade),uo(this,lo,null)}onInit(){uo(this,lo,this.onEvent(g.EVENTS.GLOBAL_MOVE,this.onMove.bind(this))),this.isActive&&this.open()}onUpdate(){}onDestroy(){this.detachEvent(g.EVENTS.GLOBAL_MOVE,po(this,lo))}onBeforeOpen(){return!0}onAfterOpen(){this.args.swipe&&uo(this,lo,this.onEvent(g.EVENTS.GLOBAL_MOVE,this.onMove.bind(this)))}onAfterClose(){this.detachEvent(g.EVENTS.GLOBAL_MOVE,po(this,lo))}onBeforeClose(){return!0}onMove(t){if(this.isLocked)return;let e=this.element;switch(t.type){case"down":if(po(this,oo)||!e.contains(t.target))return;uo(this,oo,!0),uo(this,ho,t.x),this.helper.setClassesAs(document.body,g.CLASSES.swipingOn),t.event.preventDefault();break;case"up":if(!po(this,oo)&&0==po(this,ao))break;let i=Math.abs(po(this,ao)),s=i*this.args.timeout,n=i<=.4;this.isLocked=!0,po(this,ro).finish(i,s,n),this.helper.removeClassesAs(document.body,g.CLASSES.swipingOn),uo(this,oo,!1);break;case"move":if(po(this,oo)){let i=(t.x-po(this,ho))/e.offsetWidth;(po(this,ao)>=0&&i<=0||po(this,ao)<=0&&i>0)&&po(this,ro).setProps(i>0?po(this,co).current.right:po(this,co).current.left),uo(this,ao,i),this.mutate(()=>{po(this,ro).update(Math.abs(po(this,ao)))}),t.event.preventDefault()}}}onSwipeFinish(t,e,i){this.isLocked=!1,e||(this.helper.removeClass(this.activeClassName,this.element),v.setAria(this.element,"aria-expanded","false")),uo(this,ao,0),uo(this,ho,0)}}ro=new WeakMap,oo=new WeakMap,ho=new WeakMap,ao=new WeakMap,co=new WeakMap,lo=new WeakMap;var mo,wo,bo,Co,ko,Eo=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},So=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class yo{constructor(t,e){mo.set(this,void 0),wo.set(this,void 0),this.escClose=!1,Eo(this,mo,e),Eo(this,wo,t)}parse(t){this.escClose=Object(o.y)(t.escClose),this.keyClose=t.keyClose,this.timeout=Object(o.m)(t.timeout,So(this,mo)),this.openAct=Object(o.s)(t.openAct,Object(o.C)(".{prefix}-dialog-default-in",So(this,wo))),this.closeAct=Object(o.s)(t.closeAct,Object(o.C)(".{prefix}-dialog-default-out",So(this,wo)))}}mo=new WeakMap,wo=new WeakMap;class Oo{constructor(t){bo.set(this,void 0),Eo(this,bo,null!=t?t:"cui"),this.attribute=So(this,bo)+"-cover"}getStyle(){return null}get(t,e){return new Ao(t,e,this.attribute,So(this,bo))}}bo=new WeakMap;class Ao extends I{constructor(t,e,i,s){super("CuiDialogHandler",t,i,new yo(s,e.setup.animationTimeLong),e),Co.set(this,void 0),ko.set(this,void 0),Eo(this,Co,Object(o.C)("{prefix}-cover-open",s)),Eo(this,ko,0)}onInit(){v.setAria(this.element,"aria-modal","")}onUpdate(){}onDestroy(){}onBeforeOpen(){return!this.isAnyActive()&&(Eo(this,ko,window.pageYOffset),!0)}onAfterOpen(){this.helper.setClass(So(this,Co),document.body),document.body.style.top=`-${So(this,ko)}px`,v.setAria(this.element,"aria-hidden","false")}onAfterClose(){document.body.style.top="",window.scrollTo(0,-1*(So(this,ko)||0)),Eo(this,ko,0),this.helper.removeClass(So(this,Co),document.body),v.setAria(this.element,"aria-hidden","true")}onBeforeClose(){return!0}isAnyActive(){return this.helper.hasClass(So(this,Co),document.body)}}Co=new WeakMap,ko=new WeakMap;var Mo,To,Wo,Lo=i(5),jo=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},xo=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Io{constructor(){Mo.set(this,void 0),To.set(this,void 0),Wo.set(this,void 0),jo(this,Mo,[]),jo(this,To,0),jo(this,Wo,5)}setElements(t){jo(this,Mo,t),jo(this,To,xo(this,Mo).length)}setThreshold(t){jo(this,Wo,t)}detect(t,e){if(!Object(g.is)(xo(this,Mo)))return[-1,void 0];let i=-1,s=void 0;for(let n=0;n<xo(this,To);n++)if(this.isInBounds(xo(this,Mo)[n],t,e)){0===n?(i=n,s=xo(this,Mo)[n]):n<xo(this,To)-1&&(i=n+1,s=xo(this,Mo)[n+1]);break}return[i,s]}isInBounds(t,e,i){const s=t.getBoundingClientRect();return 0===s.width&&console.log(t),e>s.left-xo(this,Wo)&&e<s.left+s.width+xo(this,Wo)&&i>s.top-xo(this,Wo)&&i<s.top+s.height+xo(this,Wo)}}Mo=new WeakMap,To=new WeakMap,Wo=new WeakMap;var Po,Do,No,Bo,_o,Ro,Vo,Ho,Fo=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},$o=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class qo{constructor(t){Po.set(this,void 0),Do.set(this,void 0),No.set(this,void 0),Bo.set(this,void 0),_o.set(this,void 0),Ro.set(this,void 0),Vo.set(this,void 0),Ho.set(this,void 0),Fo(this,Po,t),Fo(this,Do,new Nn.a),Fo(this,Ro,150),Fo(this,Vo,!1),Fo(this,Ho,void 0),$o(this,Do).setTarget($o(this,Po)),$o(this,Do).preventDefault(!1),$o(this,Do).setCallback(this.onMove.bind(this))}setLongPressTimeout(t){Fo(this,Ro,t)}onDragStart(t){Fo(this,No,t)}onDragOver(t){Fo(this,Bo,t)}onDragEnd(t){Fo(this,_o,t)}attach(){$o(this,Do).attach()}detach(){$o(this,Do).detach()}onMove(t){switch(t.type){case"down":if($o(this,Vo))return;Fo(this,Ho,setTimeout(()=>{$o(this,No)&&$o(this,No).call(this,t)&&Fo(this,Vo,!0)},$o(this,Ro)));break;case"move":if(this.cancelTimeout(),!$o(this,Vo))return;$o(this,Bo)&&$o(this,Bo).call(this,t);break;case"up":if(this.cancelTimeout(),!$o(this,Vo))return;$o(this,_o)&&$o(this,_o).call(this,t),Fo(this,Vo,!1)}}cancelTimeout(){$o(this,Ho)&&(clearTimeout($o(this,Ho)),Fo(this,Ho,void 0))}}Po=new WeakMap,Do=new WeakMap,No=new WeakMap,Bo=new WeakMap,_o=new WeakMap,Ro=new WeakMap,Vo=new WeakMap,Ho=new WeakMap;var Uo,zo,Go,Ko,Yo,Xo,Zo,Jo,Qo,th,eh,ih,sh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},nh=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class rh{constructor(){this.target=g.SCOPE_SELECTOR+" > *",this.trigger=g.SCOPE_SELECTOR+" > *",this.timeout=150,this.threshold=5}parse(t){this.target=t.target?g.SCOPE_SELECTOR+" "+t.target:g.SCOPE_SELECTOR+" > *",this.trigger=t.trigger?g.SCOPE_SELECTOR+" "+t.trigger:g.SCOPE_SELECTOR+" > *",this.timeout=Object(g.getIntOrDefault)(t.timeout,150),this.threshold=Object(g.getIntOrDefault)(t.threshold,5)}}class oh{constructor(t){Uo.set(this,void 0),sh(this,Uo,null!=t?t:"cui"),this.attribute=nh(this,Uo)+"-sortable"}getStyle(){return null}get(t,e){return new hh(t,this.attribute,e,nh(this,Uo))}}Uo=new WeakMap;class hh extends x{constructor(t,e,i,s){super("CuiSortableHandler",t,e,new rh,i),zo.set(this,void 0),Go.set(this,void 0),Ko.set(this,void 0),Yo.set(this,void 0),Xo.set(this,void 0),Zo.set(this,void 0),Jo.set(this,void 0),Qo.set(this,void 0),th.set(this,void 0),eh.set(this,void 0),ih.set(this,void 0),sh(this,zo,new qo(t)),nh(this,zo).onDragStart(this.onDragStart.bind(this)),nh(this,zo).onDragOver(this.onDragOver.bind(this)),nh(this,zo).onDragEnd(this.onDragEnd.bind(this)),sh(this,Jo,Object(g.replacePrefix)("{prefix}-moving",s)),sh(this,ih,Object(g.replacePrefix)("{prefix}-sortable-preview",s)),sh(this,Qo,new Io),sh(this,th,void 0),sh(this,eh,new Lr),nh(this,eh).setOnFinish(()=>{let t=nh(this,Yo),e=nh(this,Xo);this.stopMovementPrep(),this.utils.bus.emit(g.EVENTS.MOVE_LOCK,null,!1),this.emitEvent(g.EVENTS.SORTED,{item:t,index:e,timestamp:new Date})})}onInit(){nh(this,zo).attach(),this.getTargetsAndTrggers(),nh(this,Qo).setThreshold(this.args.threshold)}onUpdate(){this.args.target===this.prevArgs.target&&this.args.trigger===this.prevArgs.trigger||this.getTargetsAndTrggers(),nh(this,zo).setLongPressTimeout(this.args.timeout)}onDestroy(){nh(this,zo).detach()}getTargetsAndTrggers(){try{if(sh(this,Ko,[...this.element.querySelectorAll(this.args.target)]),sh(this,Go,[...this.element.querySelectorAll(this.args.trigger)]),nh(this,Go).length!==nh(this,Ko).length)throw new Error(`Triggers (count ${nh(this,Go).length}) and targets (count ${nh(this,Ko).length}) selector are not correct`);nh(this,Qo).setElements(nh(this,Ko))}catch(t){this._log.error("Incorrect trigger or target selector"),this._log.exception(t,"getTargetsAndTrggers"),sh(this,Ko,[]),sh(this,Go,[])}}onDragStart(t){return sh(this,Xo,this.getPressedElementIdx(t.target)),sh(this,Yo,nh(this,Xo)>-1?nh(this,Ko)[nh(this,Xo)]:void 0),!!nh(this,Yo)&&(this.utils.bus.emit(g.EVENTS.MOVE_LOCK,null,!0),this.startMovementPrep(t),this.emitEvent(g.EVENTS.SORT_START,{item:nh(this,Yo),index:nh(this,Xo),timestamp:new Date}),!0)}onDragOver(t){this.move(t),t.event.preventDefault()}onDragEnd(t){nh(this,eh).setElement(nh(this,Zo)),nh(this,eh).setProps(this.getFinishAnimation()),nh(this,eh).finish(0,100,!1)}getPressedElementIdx(t){return nh(this,Go).findIndex(e=>e.contains(t))}startMovementPrep(t){this.mutate(()=>{this.createPreview(),this.helper.setClass(nh(this,Jo),nh(this,Yo)),this.helper.setClass("cui-locked",this.element),this.helper.setClass(g.CLASSES.swipingOn,document.body),this.setPreviewPosition(t),this.setCurrentPosition(t)})}stopMovementPrep(){this.mutate(()=>{this.helper.removeClass(nh(this,Jo),nh(this,Yo)),this.helper.removeClass(g.CLASSES.swipingOn,document.body),this.helper.removeClass("cui-locked",this.element),this.removePreview(),sh(this,Yo,void 0),sh(this,th,void 0),this.getTargetsAndTrggers()})}move(t){this.mutate(()=>{this.setPreviewPosition(t),this.setCurrentPosition(t)})}createPreview(){sh(this,Zo,new Lo.a("div").setClasses(nh(this,ih)).build()),nh(this,Zo).style.width=nh(this,Yo).offsetWidth+"px",nh(this,Zo).style.height=nh(this,Yo).offsetHeight+"px",document.body.appendChild(nh(this,Zo))}removePreview(){nh(this,Zo)&&(nh(this,Zo).remove(),sh(this,Zo,null))}setPreviewPosition(t){nh(this,Zo)&&(nh(this,Zo).style.top=t.y+"px",nh(this,Zo).style.left=t.x+"px")}setCurrentPosition(t){if(!nh(this,Yo))return;let[e,i]=nh(this,Qo).detect(t.x,t.y);if(e!==nh(this,Xo)&&nh(this,th)!==i){let t=i;this.insertElement(nh(this,Yo),t),sh(this,th,t),this.getTargetsAndTrggers(),sh(this,Xo,e)}}insertElement(t,e){Object(g.is)(e)?this.element.insertBefore(t,e):this.element.appendChild(t)}getFinishAnimation(){const t=nh(this,Yo).getBoundingClientRect();return{opacity:{from:1,to:0},top:{from:nh(this,Zo).offsetTop,to:t.top>0?t.top:nh(this,Zo).offsetTop,unit:"px"},left:{from:nh(this,Zo).offsetLeft,to:t.left>0?t.left:nh(this,Zo).offsetLeft,unit:"px"}}}}zo=new WeakMap,Go=new WeakMap,Ko=new WeakMap,Yo=new WeakMap,Xo=new WeakMap,Zo=new WeakMap,Jo=new WeakMap,Qo=new WeakMap,th=new WeakMap,eh=new WeakMap,ih=new WeakMap;var ah,ch,lh,uh,dh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ph=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};const gh={light:{background:g.CSS_VARIABLES.colorLightBackground,base:g.CSS_VARIABLES.colorLightBase,active:g.CSS_VARIABLES.colorLightActive,muted:g.CSS_VARIABLES.colorLightMuted},dark:{background:g.CSS_VARIABLES.colorDarkBackground,base:g.CSS_VARIABLES.colorDarkBase,active:g.CSS_VARIABLES.colorDarkActive,muted:g.CSS_VARIABLES.colorDarkMuted}},fh={accent:{base:g.CSS_VARIABLES.colorAccent,muted:g.CSS_VARIABLES.colorAccentMuted,active:g.CSS_VARIABLES.colorAccentActive,shade:g.CSS_VARIABLES.colorAccentShade,shadeDark:g.CSS_VARIABLES.colorAccentShadeDark},secondary:{base:g.CSS_VARIABLES.colorSecondary,muted:g.CSS_VARIABLES.colorSecondaryMuted,active:g.CSS_VARIABLES.colorSecondaryActive,shade:g.CSS_VARIABLES.colorSecondaryShade,shadeDark:g.CSS_VARIABLES.colorSecondaryShadeDark},error:{base:g.CSS_VARIABLES.colorError,muted:g.CSS_VARIABLES.colorErrorMuted,active:g.CSS_VARIABLES.colorErrorActive,shade:g.CSS_VARIABLES.colorErrorShade,shadeDark:g.CSS_VARIABLES.colorErrorShadeDark},warning:{base:g.CSS_VARIABLES.colorWarning,muted:g.CSS_VARIABLES.colorWarningMuted,active:g.CSS_VARIABLES.colorWarningActive,shade:g.CSS_VARIABLES.colorWarningShade,shadeDark:g.CSS_VARIABLES.colorWarningShadeDark},success:{base:g.CSS_VARIABLES.colorSuccess,muted:g.CSS_VARIABLES.colorSuccessMuted,active:g.CSS_VARIABLES.colorSuccessActive,shade:g.CSS_VARIABLES.colorSuccessShade,shadeDark:g.CSS_VARIABLES.colorSuccessShadeDark}};class vh{constructor(t,e){ah.set(this,void 0),ch.set(this,void 0),dh(this,ah,gh[t]),dh(this,ch,e)}setBackgroundColor(t){this.setColor(ph(this,ah).background,t)}setBaseColor(t){this.setColor(ph(this,ah).base,t)}setActiveColor(t){this.setColor(ph(this,ah).active,t)}setMutedColor(t){this.setColor(ph(this,ah).muted,t)}setBaseColors(t){let e={};e[ph(this,ah).background]=t.background?t.background.toCssString():null,e[ph(this,ah).active]=t.active?t.active.toCssString():null,e[ph(this,ah).muted]=t.muted?t.muted.toCssString():null,e[ph(this,ah).base]=t.base?t.base.toCssString():null,ph(this,ch).setProperties(e)}setColor(t,e){ph(this,ch).setProperty(t,e.toCssString())}}ah=new WeakMap,ch=new WeakMap;class mh{constructor(t,e){lh.set(this,void 0),uh.set(this,void 0),dh(this,lh,e),dh(this,uh,fh[t])}setBaseColor(t){this.setColor(ph(this,uh).base,t)}setMutedColor(t){this.setColor(ph(this,uh).muted,t)}setActiveColor(t){this.setColor(ph(this,uh).active,t)}setShadeColor(t){this.setColor(ph(this,uh).shade,t)}setShadeDarkColor(t){this.setColor(ph(this,uh).shadeDark,t)}setColors(t){let e={};e[ph(this,uh).shade]=t.shade?t.shade.toCssString():null,e[ph(this,uh).shadeDark]=t.shadeDark?t.shadeDark.toCssString():null,e[ph(this,uh).active]=t.active?t.active.toCssString():null,e[ph(this,uh).muted]=t.muted?t.muted.toCssString():null,e[ph(this,uh).base]=t.base?t.base.toCssString():null,ph(this,lh).setProperties(e)}setAutoColors(t){let e={};e[ph(this,uh).base]=t.toCssString(),e[ph(this,uh).shade]=t.lighten(30).toCssString(),e[ph(this,uh).shadeDark]=t.darken(30).toCssString(),e[ph(this,uh).active]=t.darken(10).toCssString(),e[ph(this,uh).muted]=t.lighten(10).toCssString(),ph(this,lh).setProperties(e)}setColor(t,e){ph(this,lh).setProperty(t,e.toCssString())}}lh=new WeakMap,uh=new WeakMap;var wh,bh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Ch=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class kh{constructor(t){wh.set(this,void 0),bh(this,wh,t)}setProperty(t,e){Object(g.are)(t,e)&&Ch(this,wh).interactions.mutate(()=>{Ch(this,wh).setProperty(t,e)},null)}setProperties(t){Object(g.is)(t)&&Ch(this,wh).interactions.mutate(()=>{for(let e in t)Object(g.is)(t[e])&&Ch(this,wh).setProperty(e,t[e])},null)}}wh=new WeakMap;var Eh,Sh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},yh=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Oh{constructor(t){Eh.set(this,void 0),Sh(this,Eh,new kh(t))}setBaseFontSize(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.fontSize,t,e)}setAnimationTime(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.animationTime,t,null!=e?e:"ms")}setAnimationTimeLong(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.setAnimationTimeLong,t,null!=e?e:"ms")}setAnimationTimeShort(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.setAnimationTimeShort,t,null!=e?e:"ms")}setBaseLineHeight(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.lineHeight,t,e)}setBaseMargin(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.margin,t,e)}setBasePadding(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.padding,t,e)}setBaseBorderRadius(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.borderRadius,t,e)}setComponentSpace(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.componentSpace,t,e)}setAccordionIcon(t){Object(g.is)(t)&&this.setCSSVariable(g.CSS_VARIABLES.accordionIcon,t)}setScrollbarWidth(t,e){this.setBaseUnitValue(g.CSS_VARIABLES.scrollbarWidth,t,e)}setAppBackgroundColor(t){Object(g.is)(t)&&this.setCSSVariable(g.CSS_VARIABLES.colorLightAppBackground,t.toCssString())}setDarkAppBackgroundColor(t){Object(g.is)(t)&&this.setCSSVariable(g.CSS_VARIABLES.colorDarkAppBackground,t.toCssString())}getBaseColorsSetter(){return new vh("light",yh(this,Eh))}getDarkBaseColorsSetter(){return new vh("dark",yh(this,Eh))}getAccentThemeColorsSetter(){return new mh("accent",yh(this,Eh))}getSecondaryThemeColorsSetter(){return new mh("secondary",yh(this,Eh))}getErrorThemeColorsSetter(){return new mh("error",yh(this,Eh))}getWarningThemeColorsSetter(){return new mh("warning",yh(this,Eh))}getSuccessThemeColorsSetter(){return new mh("success",yh(this,Eh))}setCSSVariable(t,e){yh(this,Eh).setProperty(t,e)}setBaseUnitValue(t,e,i){if(!Object(g.is)(e))return;let s=`${e}${null!=i?i:"px"}`;this.setCSSVariable(t,s)}}Eh=new WeakMap;var Ah,Mh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Th=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Wh{constructor(t){this.name="css-variables-plugin",Ah.set(this,void 0),this.description="CuiCSSVariablesPlugin",this.setup=t,Mh(this,Ah,g.CuiLoggerFactory.get("CuiCSSVariablesPlugin"))}init(t){this.handler=new Oh(t),t.bus.on("csschange",this.onCssChange.bind(this))}destroy(){}onCssChange(t){let e=null,i=null;switch(t.method){case"baseFontSize":if(!this.isArgNumber(t.arg))return;this.handler.setBaseFontSize(t.arg.value,t.arg.unit);break;case"baseLineHeight":if(!this.isArgNumber(t.arg))return;this.handler.setBaseLineHeight(t.arg.value,t.arg.unit);break;case"animationTime":if(!this.isArgNumber(t.arg))return;this.handler.setAnimationTime(t.arg.value,t.arg.unit);break;case"animationTimeLong":if(!this.isArgNumber(t.arg))return;this.handler.setAnimationTimeLong(t.arg.value,t.arg.unit);break;case"animationTimeShort":if(!this.isArgNumber(t.arg))return;this.handler.setAnimationTimeShort(t.arg.value,t.arg.unit);break;case"margin":if(!this.isArgNumber(t.arg))return;this.handler.setBaseMargin(t.arg.value,t.arg.unit);break;case"padding":if(!this.isArgNumber(t.arg))return;this.handler.setBasePadding(t.arg.value,t.arg.unit);break;case"borderRadius":if(!this.isArgNumber(t.arg))return;this.handler.setBaseBorderRadius(t.arg.value,t.arg.unit);break;case"componentSpace":if(!this.isArgNumber(t.arg))return;this.handler.setComponentSpace(t.arg.value,t.arg.unit);break;case"scrollbarWidth":if(!this.isArgNumber(t.arg))return;this.handler.setScrollbarWidth(t.arg.value,t.arg.unit);break;case"accordionIcon":if(!Object(g.is)(t.arg))return;this.handler.setAccordionIcon(t.arg);break;case"appLightBackground":if(!Object(g.is)(t.arg))return;this.handler.setAppBackgroundColor(g.CuiColor.create(t.arg));break;case"appDarkBackground":case"appDarkBackground":if(!Object(g.is)(t.arg))return;this.handler.setDarkAppBackgroundColor(g.CuiColor.create(t.arg));break;case"mainColorBackground":if(!this.isArgColor(t.arg))return;e=this.getBaseColorSetter(t.arg.palette),e.setBackgroundColor(g.CuiColor.create(t.arg.color));break;case"mainColor":if(!this.isArgColor(t.arg))return;e=this.getBaseColorSetter(t.arg.palette),e.setBaseColor(g.CuiColor.create(t.arg.color));break;case"mainColorMuted":if(!this.isArgColor(t.arg))return;e=this.getBaseColorSetter(t.arg.palette),e.setMutedColor(g.CuiColor.create(t.arg.color));break;case"mainColorActive":if(!this.isArgColor(t.arg))return;e=this.getBaseColorSetter(t.arg.palette),e.setActiveColor(g.CuiColor.create(t.arg.color));break;case"themeAutoColor":if(!this.isArgColor(t.arg))return;i=this.getAccentColorSetter(t.arg.palette),i.setAutoColors(g.CuiColor.create(t.arg.color));case"themeBaseColor":if(!this.isArgColor(t.arg))return;i=this.getAccentColorSetter(t.arg.palette),i.setAutoColors(g.CuiColor.create(t.arg.color));case"themeMutedColor":if(!this.isArgColor(t.arg))return;i=this.getAccentColorSetter(t.arg.palette),i.setMutedColor(g.CuiColor.create(t.arg.color));case"themeActiveColor":if(!this.isArgColor(t.arg))return;i=this.getAccentColorSetter(t.arg.palette),i.setActiveColor(g.CuiColor.create(t.arg.color));case"themeShadeColor":if(!this.isArgColor(t.arg))return;i=this.getAccentColorSetter(t.arg.palette),i.setShadeColor(g.CuiColor.create(t.arg.color));case"themeShadeDarkColor":if(!this.isArgColor(t.arg))return;i=this.getAccentColorSetter(t.arg.palette),i.setShadeDarkColor(g.CuiColor.create(t.arg.color));default:Th(this,Ah).warning("Unknown event method","onCssChange")}}isArgNumber(t){return Object(g.is)(t)&&Object(g.is)(t.value)}isArgColor(t){return Object(g.is)(t)&&Object(g.is)(t.palette)&&Object(g.is)(t.color)}getBaseColorSetter(t){switch(t.trim().toLowerCase()){case"light":return this.handler.getBaseColorsSetter();case"dark":return this.handler.getDarkBaseColorsSetter()}}getAccentColorSetter(t){switch(t.trim().toLowerCase()){case"accent":return this.handler.getAccentThemeColorsSetter();case"secondary":return this.handler.getSecondaryThemeColorsSetter();case"error":return this.handler.getErrorThemeColorsSetter();case"warning":return this.handler.getWarningThemeColorsSetter();case"success":return this.handler.getSuccessThemeColorsSetter()}}}Ah=new WeakMap;var Lh,jh,xh,Ih,Ph,Dh,Nh,Bh,_h,Rh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Vh=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Hh{constructor(t){Lh.set(this,void 0),Rh(this,Lh,Object(g.replacePrefix)(".{prefix}-animation-tooltip-in",t)),this.content=void 0,this.width=150,this.margin=8,this.timeout=3e3,this.pos=null,this.action=Vh(this,Lh)}parse(t){Object(g.isString)(t)?this.content=Object(g.getStringOrDefault)(t,""):(this.content=Object(g.getStringOrDefault)(t.content,""),this.width=Object(g.getIntOrDefault)(t.width,150),this.margin=Object(g.getIntOrDefault)(t.margin,8),this.pos=Object(g.getStringOrDefault)(t.pos,null),this.action=Object(g.getStringOrDefault)(t.action,Vh(this,Lh)),this.timeout=Object(g.getIntOrDefault)(t.timeout,3e3))}}Lh=new WeakMap;class Fh{constructor(t){jh.set(this,void 0),Rh(this,jh,null!=t?t:"cui"),this.attribute=Vh(this,jh)+"-tooltip"}getStyle(){return null}get(t,e){return new $h(t,this.attribute,e,Vh(this,jh))}}jh=new WeakMap;class $h extends x{constructor(t,e,i,s){super("CuiTooltipHandler",t,e,new Hh(s),i),xh.set(this,void 0),Ih.set(this,void 0),Ph.set(this,void 0),Dh.set(this,void 0),Nh.set(this,void 0),Bh.set(this,void 0),_h.set(this,void 0),Rh(this,Nh,Object(g.replacePrefix)("{prefix}-tooltip-data",s)),Rh(this,xh,new Gi(t)),Vh(this,xh).setCallback(this.onHover.bind(this)),Rh(this,Ph,8),Rh(this,Dh,new cs),Vh(this,Dh).setPreferred("top-center")}onInit(){Vh(this,xh).attach(),this.getDataFromArgs(),Rh(this,_h,new As.a(this.args.timeout,!1,this.removeTooltip.bind(this)))}onUpdate(){this.getDataFromArgs(),Vh(this,_h).setTimeout(this.args.timeout)}onDestroy(){Vh(this,xh).detach()}onHover(t){t.isHovering?this.createTooltip():this.removeTooltip()}createTooltip(){if(Object(g.is)(Vh(this,Ih))||!Object(g.is)(this.args.content))return;const t=this.element.getBoundingClientRect();Rh(this,Ih,new Lo.a("div").setClasses(Vh(this,Nh)).build()),Vh(this,Ih).textContent=this.args.content,Vh(this,Ih).style.maxWidth=this.args.width+"px",document.body.appendChild(Vh(this,Ih)),this.mutate(()=>{if(!Vh(this,Ih))return;const e=Vh(this,Ih).getBoundingClientRect();Vh(this,Dh).setMargin(Vh(this,Ph));try{let[i,s]=Vh(this,Dh).calculate(t,e.width,e.height);Vh(this,Ih).style.top=s+"px",Vh(this,Ih).style.left=i+"px",this.toggleActions(),Vh(this,_h).start()}catch(t){this._log.exception(t)}})}removeTooltip(){Object(g.is)(Vh(this,Ih))&&(Vh(this,_h).stop(),this.mutate(()=>{Vh(this,Ih).remove(),Rh(this,Ih,null)}))}getDataFromArgs(){Vh(this,Dh).setMargin(this.args.margin),Vh(this,Dh).setStatic(this.args.pos),Rh(this,Bh,g.CuiActionsListFactory.get(this.args.action))}toggleActions(){Vh(this,Bh).forEach(t=>{t.toggle(Vh(this,Ih))})}}xh=new WeakMap,Ih=new WeakMap,Ph=new WeakMap,Dh=new WeakMap,Nh=new WeakMap,Bh=new WeakMap,_h=new WeakMap;var qh,Uh,zh=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},Gh=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Kh=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Yh{constructor(){qh.set(this,void 0),Gh(this,qh,window)}init(t){return zh(this,void 0,void 0,(function*(){let e=Object.assign(Object.assign({},new r.b),t.setup);const i=e.app,s={result:!1};if(Object(o.v)(Kh(this,qh)[i]))return s.message="Instance is already initialized",s;if(Object(o.v)(t.icons))for(let e in t.icons)a.j[e]=t.icons[e];if(Object(o.v)(t.swipeAnimations))for(let e in t.swipeAnimations)jr[e]=t.swipeAnimations[e];try{Kh(this,qh)[i]=new h.a(e,t.plugins,t.components),Kh(this,qh)[i].init()}catch(t){return console.error(t),s.message="An error occured during initialization",s}return s.result=!0,s}))}}qh=new WeakMap;class Xh{constructor(){Uh.set(this,void 0),Gh(this,Uh,!1)}init(t){var e;return zh(this,void 0,void 0,(function*(){if(Kh(this,Uh))return console.log("Module is already initialized"),!1;const i=new Yh,s=[new d({autoLight:!0}),new Qt({autoPrint:!0}),new ii(null),new Ns,new Wh({})],n=[new z,new Fh,new it,new lt,new gt,new Ct,new Gt,new de,new ke,new Le,new Re,new Ue,new pi,new Oi,new _i,new js,new an,new yn,new In,new nr,new to,new fo,new Oo,new oh];let r=yield i.init({setup:t.setup,icons:t.icons,plugins:Object(o.v)(t.plugins)?[...s,...t.plugins]:s,components:Object(o.v)(t.components)?[...n,...t.components]:n,swipeAnimations:t.swipeAnimations});return r.result?(Gh(this,Uh,!0),!0):(console.error(`A cUI instance failed to initialize: [${null!==(e=r.message)&&void 0!==e?e:"#"}]`),console.log("Cui Light failed to init"),!1)}))}}Uh=new WeakMap},function(t,e,i){"use strict";i.d(e,"a",(function(){return Kt}));var s,n,r,o,h,a,c=i(0),l=i(4),u=i(2),d=i(21),p=i(6),g=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},f=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},v=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class m{constructor(t,e){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),h.set(this,void 0),a.set(this,void 0),f(this,s,t),f(this,n,!1),f(this,r,l.a.get("ElementManager")),f(this,h,e),f(this,o,Date.now()),f(this,a,new d.a(e.interactions))}toggleClass(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{e.classList.contains(t)?e.classList.remove(t):e.classList.add(t)},"toggleClass")}))}toggleClassAs(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{let i=e.classList;v(this,h).interactions.fetch(()=>{i.contains(t)?v(this,h).interactions.mutate(i.remove,i,t):v(this,h).interactions.mutate(i.add,i,t)},this)},"toggleClassAs")}))}setClass(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{e.classList.contains(t)||e.classList.add(t)},"setClass")}))}setClassAs(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{let i=e.classList;v(this,h).interactions.fetch(()=>{i.contains(t)||v(this,h).interactions.mutate(i.add,i,t)},this)},"setClassAs")}))}removeClass(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{e.classList.contains(t)&&e.classList.remove(t)},"removeClass")}))}removeClassAs(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{let i=e.classList;v(this,h).interactions.fetch(()=>{i.contains(t)&&v(this,h).interactions.mutate(i.remove,i,t)},this)},"removeClass")}))}getAttribute(t){return Object(c.v)(t)?v(this,s).reduce((e,i)=>(i.hasAttribute(t)?e.push(i.getAttribute(t)):e.push(null),e),[]):null}setAttribute(t,e){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(i=>{i.setAttribute(t,null!=e?e:"")},"setAttribute")}))}setAttributeAs(t,e){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(i=>{v(this,h).interactions.mutate(i.setAttribute,i,t,null!=e?e:"")},"setAttributeAs")}))}removeAttribute(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{e.removeAttribute(t)},"removeAttribute")}))}removeAttributeAs(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{v(this,h).interactions.mutate(e.removeAttribute,e,t)},"removeAttributeAs")}))}toggleAttribute(t,e){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(i=>{i.hasAttribute(t)?i.removeAttribute(t):i.setAttribute(t,null!=e?e:"")},"toggleAttribute")}))}toggleAttributeAs(t,e){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(i=>{v(this,h).interactions.fetch(()=>{i.hasAttribute(t)?v(this,h).interactions.mutate(i.removeAttribute,i,t):v(this,h).interactions.mutate(i.setAttribute,i,t,null!=e?e:"")},this)},"toggleAttributeAs")}))}click(t){return g(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&this.call(e=>{e.addEventListener("click",t)},"click")}))}event(t,e){return g(this,void 0,void 0,(function*(){return!(!Object(c.v)(t)||!Object(c.v)(e))&&this.call(i=>{i.addEventListener(t,e)},"event")}))}call(t,e){return g(this,void 0,void 0,(function*(){return v(this,n)&&v(this,r).error("Element is locked",e),this.lock(),v(this,s).forEach((e,i)=>{t(e,i)}),this.unlock(),!0}))}animate(t,e){return g(this,void 0,void 0,(function*(){if(!Object(c.v)(t))return!1;const i=null!=e?e:v(this,h).setup.animationTime;return this.call(e=>{this.change(()=>{e.classList.add(t),e.classList.add(u.a.animProgress),setTimeout(()=>{this.change(()=>{e.classList.remove(t),e.classList.remove(u.a.animProgress)})},i)})})}))}open(t,e,i){return g(this,void 0,void 0,(function*(){if(!Object(c.b)(t,e))return!1;const s=null!=i?i:v(this,h).setup.animationTime,n=new p.b(e);return this.call(e=>{v(this,a).performAction(e,n,s).then(()=>{e.classList.add(t)})})}))}close(t,e,i){return g(this,void 0,void 0,(function*(){if(!Object(c.b)(t,e))return!1;const s=null!=i?i:v(this,h).setup.animationTime,n=new p.b(e);return this.call(e=>{v(this,a).performAction(e,n,s).then(()=>{e.classList.remove(t)})})}))}emit(t,...e){Object(c.v)(t)?this.call(i=>{let s=i.$cuid;Object(c.v)(s)&&(v(this,r).debug(`Emitting event ${t} to ${s}`),v(this,h).bus.emit(t,s,...e))},"emit"):v(this,r).warning("Not enough data to emit event","emit")}on(t,e){let i=[];return Object(c.b)(t,e)?(this.call(s=>{let n=s;Object(c.v)(n)&&i.push(v(this,h).bus.on(t,e,n))},"on"),i):(v(this,r).error("Incorrect arguments","on"),i)}detach(t,e){Object(c.b)(t,e)||v(this,r).error("Incorrect arguments","detach"),this.call(i=>{let s=i;Object(c.v)(s)&&v(this,h).bus.detach(t,e,s)},"detach")}read(t,...e){v(this,h).interactions.fetch(t,this,...e)}change(t,...e){v(this,h).interactions.mutate(t,this,...e)}elements(){return v(this,s)}count(){return v(this,s).length}lock(){f(this,n,!0)}unlock(){f(this,n,!1)}isLocked(){return v(this,n)}refresh(){return Date.now()-v(this,o)<36e4}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap,h=new WeakMap,a=new WeakMap;var w,b,C,k,E,S,y,O,A=i(29),M=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},T=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},W=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class L{constructor(t,e,i){w.set(this,void 0),b.set(this,void 0),C.set(this,void 0),k.set(this,void 0),E.set(this,void 0),S.set(this,void 0),y.set(this,void 0),O.set(this,void 0),T(this,w,t),T(this,b,`.${e}-toast`),T(this,C,e+"-toast"),T(this,k,e+"-active"),T(this,E,i),T(this,S,!1),T(this,y,e+"-toast-animation-in"),T(this,O,e+"-toast-animation-out")}show(t){return M(this,void 0,void 0,(function*(){if(W(this,S))return!1;T(this,S,!0);let e=document.querySelector(W(this,b));return Object(c.v)(e)||(e=document.createElement("div"),e.classList.add(W(this,C)),document.body.appendChild(e),yield Object(c.D)(10)),W(this,w).mutate(()=>{e.textContent=t,e.classList.add(u.a.animProgress),e.classList.add(W(this,y))},this),yield Object(c.D)(W(this,E)),W(this,w).mutate(()=>{e.classList.remove(u.a.animProgress),e.classList.remove(W(this,y)),e.classList.add(W(this,k))},this),yield Object(c.D)(3e3),W(this,w).mutate(()=>{e.classList.add(u.a.animProgress),e.classList.add(W(this,O))},this),setTimeout(()=>{W(this,w).mutate(()=>{e.classList.remove(u.a.animProgress),e.classList.remove(W(this,O)),e.classList.remove(W(this,k))},this),T(this,S,!1)},W(this,E)),!0}))}}w=new WeakMap,b=new WeakMap,C=new WeakMap,k=new WeakMap,E=new WeakMap,S=new WeakMap,y=new WeakMap,O=new WeakMap;var j,x,I,P,D,N=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},B=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},_=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class R{constructor(t){j.set(this,void 0),x.set(this,void 0),I.set(this,void 0),P.set(this,void 0),D.set(this,void 0),B(this,D,t),B(this,x,l.a.get("CollectionManager"))}setElements(t){B(this,j,t)}setToggle(t){B(this,P,t)}addAnimationClass(t,e,i,s){e.classList.add(u.a.animProgress),t.classList.add(s),e.classList.add(i)}setFinalClasses(t,e,i,s){e.classList.remove(u.a.animProgress),t.classList.remove(s),e.classList.remove(i),t.classList.remove(_(this,P)),e.classList.add(_(this,P))}verifyIndex(t,e,i){return t>=0&&t!==e&&t<i}setCurrent(t,e){return N(this,void 0,void 0,(function*(){return this.lock(),_(this,x).debug(`Switching index from: ${e} to ${t}`),e>-1&&_(this,j)[e].classList.remove(_(this,P)),_(this,j)[t].classList.add(_(this,P)),this.unlock(),!0}))}setCurrentWithAnimation(t,e,i,s,n){return N(this,void 0,void 0,(function*(){this.lock(),_(this,x).debug(`Switching index from: ${n} to ${t}`);const r=_(this,j)[n],o=_(this,j)[t];return _(this,D).mutate(this.addAnimationClass,this,r,o,e,i),setTimeout(()=>{_(this,D).mutate(this.setFinalClasses,this,r,o,e,i),this.unlock()},s),!0}))}getCurrentIndex(){if(!Object(c.v)(_(this,P)))return-1;let t=this.count();for(let e=0;e<t;e++)if(_(this,j)[e].classList.contains(_(this,P)))return e;return-1}elements(){return _(this,j)}check(){return _(this,I)?(_(this,x).warning("Object locked. Operation in progress","Check"),!1):Object(c.v)(_(this,P))?!(this.count()<=0)||(_(this,x).warning("Elements list is empty","Check"),!1):(_(this,x).warning("Toggle is not set. Call setToggleClass","Check"),!1)}count(){return _(this,j)?_(this,j).length:-1}lock(){B(this,I,!0)}unlock(){B(this,I,!1)}}j=new WeakMap,x=new WeakMap,I=new WeakMap,P=new WeakMap,D=new WeakMap;var V,H,F,$=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},q=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},U=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class z{constructor(t,e){V.set(this,void 0),H.set(this,void 0),F.set(this,void 0),q(this,V,l.a.get("CollectionManager")),q(this,F,new R(e)),U(this,F).setElements(t),q(this,H,Date.now())}setToggle(t){U(this,F).setToggle(t)}setElements(t){U(this,F).setElements(t)}click(t){U(this,F).elements().forEach((e,i)=>{e.addEventListener("click",()=>{this.set(i).then(()=>{t&&t(e,i)})})})}next(){return $(this,void 0,void 0,(function*(){if(!U(this,F).check())return!1;let t=U(this,F).getCurrentIndex()+1;return this.set(t>=this.length()?0:t)}))}previous(){return $(this,void 0,void 0,(function*(){if(!U(this,F).check())return!1;let t=U(this,F).getCurrentIndex()-1;return this.set(t<0?this.length()-1:t)}))}set(t){return $(this,void 0,void 0,(function*(){let e=U(this,F).getCurrentIndex();return!(!U(this,F).check()||!U(this,F).verifyIndex(t,e,this.length()))&&U(this,F).setCurrent(t,e)}))}setWithAnimation(t,e,i,s){return $(this,void 0,void 0,(function*(){let n=U(this,F).getCurrentIndex();return!(!U(this,F).check()||!U(this,F).verifyIndex(t,n,this.length()))&&U(this,F).setCurrentWithAnimation(t,e,i,s,n)}))}getCurrentIndex(){return U(this,F).getCurrentIndex()}length(){return U(this,F).count()}refresh(){return this.length()>0&&Date.now()-U(this,H)>36e4}}V=new WeakMap,H=new WeakMap,F=new WeakMap;var G,K,Y,X=i(10),Z=i(3),J=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},Q=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},tt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class et{constructor(t){G.set(this,void 0),K.set(this,void 0),Y.set(this,void 0),Q(this,G,null!=t?t:[]),Q(this,Y,l.a.get("CuiPluginManager"))}init(t){tt(this,Y).debug("Plugins initialization started: "+tt(this,G).length),Q(this,K,tt(this,G).filter(t=>Object(c.v)(t.mutation))),tt(this,G).forEach(e=>{e.init(t),t.setup.plugins[e.description]=e.setup}),tt(this,Y).debug("Plugins have been initialized")}get(t){if(Object(c.v)(t))return tt(this,G).find(e=>e.name===t)}onMutation(t){return J(this,void 0,void 0,(function*(){let e=[];return tt(this,K).forEach(i=>{e.push(i.mutation(t))}),!(yield Promise.all(e)).find(t=>{})}))}}G=new WeakMap,K=new WeakMap,Y=new WeakMap;var it,st,nt,rt,ot,ht,at=i(1),ct=i(5),lt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},ut=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class dt{constructor(t,e,i){it.set(this,void 0),st.set(this,void 0),nt.set(this,void 0),rt.set(this,void 0),ot.set(this,void 0),ht.set(this,void 0),lt(this,rt,t),lt(this,it,lt(this,nt,lt(this,st,null))),lt(this,ot,null!=i?i:""),lt(this,ht,e)}createHeader(t,e,i){Object(at.is)(e)||(e=[]),Object(at.is)(i)||(i=[]);let s=new ct.a("div");s.setClasses(ut(this,rt)+"-dialog-header",...e),lt(this,it,s.build());let n=new ct.a("span").setClasses(this.getPrefixedString("-dialog-title")).build(t);ut(this,it).appendChild(n),this.appendChildrens(ut(this,it),...i)}createFooter(t,e){Object(at.is)(t)||(t=[]),Object(at.is)(e)||(e=[]),lt(this,nt,new ct.a("div").setClasses(this.getPrefixedString("-dialog-footer"),...t).build()),this.appendChildrens(ut(this,nt),...e)}createBody(t,e){Object(at.is)(t)||(t=[]),Object(at.is)(e)||(e=[]),lt(this,st,new ct.a("div").setClasses(this.getPrefixedString("-dialog-body"),...t).build()),this.appendChildrens(ut(this,st),...e)}build(t){let e=[this.getPrefixedString("-dialog")];ut(this,ht)&&e.push(this.getPrefixedString("-reverse-auto"));let i=new ct.a("div").setId(t).setClasses(...e).setAttributes({[this.getPrefixedString("-dialog")]:ut(this,ot)}).build(),s=new ct.a("div").setClasses(this.getPrefixedString("-dialog-container")).build();return s.appendChild(ut(this,it)),s.appendChild(ut(this,st)),s.appendChild(ut(this,nt)),i.appendChild(s),i}appendChildrens(t,...e){Object(at.is)(e)&&e.forEach(e=>t.appendChild(e))}getPrefixedString(t){return ut(this,rt)+t}}it=new WeakMap,st=new WeakMap,nt=new WeakMap,rt=new WeakMap,ot=new WeakMap,ht=new WeakMap;var pt,gt,ft,vt,mt,wt,bt,Ct,kt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Et=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class St{constructor(t,e,i){pt.set(this,void 0),gt.set(this,void 0),ft.set(this,void 0),vt.set(this,void 0),mt.set(this,void 0),kt(this,pt,{yes:i.onYes,no:i.onNo,cancel:i.onCancel,ok:i.onOk}),this.content=i.message,this.title=i.title,this.prefix=t.setup.prefix,kt(this,gt,t),kt(this,ft,e),this.reverse=!1,kt(this,mt,null),this.closeStr=Et(this,gt).setup.prefix+"-close",this.iconStr=Et(this,gt).setup.prefix+"-icon"}getId(){return Et(this,ft)}show(t){let e=document.getElementById(Et(this,ft));Object(at.is)(e)?this.updateElement(e):(e=this.createElement(),t.appendChild(e)),setTimeout(()=>{kt(this,vt,new m([e],Et(this,gt)));let t=Et(this,vt).on("closed",this.onClose.bind(this));kt(this,mt,t.length>0?t[0]:null),Et(this,vt).emit("open")},100)}updateElement(t){let e=t.querySelector(`.${this.prefix}-dialog-title`),i=t.querySelector(`.${this.prefix}-dialog-body>p`);Et(this,gt).interactions.mutate(()=>{e&&(e.innerHTML=this.title),i&&(i.innerHTML=this.content)},null)}onClose(t){try{Object(at.is)(t)&&t.state&&Object(at.is)(Et(this,pt)[t.state])&&Et(this,pt)[t.state]()}finally{null!=Et(this,mt)&&(Et(this,vt).detach("closed",Et(this,mt)),kt(this,mt,null)),kt(this,vt,null)}}}pt=new WeakMap,gt=new WeakMap,ft=new WeakMap,vt=new WeakMap,mt=new WeakMap;class yt extends St{constructor(t,e,i){var s;super(t,e,i),wt.set(this,void 0),kt(this,wt,e),this.reverse=null!==(s=i.reverse)&&void 0!==s&&s}createElement(){let t=new dt(this.prefix,this.reverse);return t.createHeader(this.title,null,[new ct.a("a").setClasses(this.prefix+"-icon").setAttributes({[this.closeStr]:"state: cancel",[this.iconStr]:"close"}).build()]),t.createBody(null,[new ct.a("p").build(this.content)]),t.createFooter([this.prefix+"-flex",this.prefix+"-right"],[new ct.a("button").setClasses(this.prefix+"-button",this.prefix+"-margin-small-right").setAttributes({[this.closeStr]:"state: cancel"}).build("Cancel"),new ct.a("button").setClasses(this.prefix+"-button",this.prefix+"-accent").setAttributes({[this.closeStr]:"state: ok"}).build("Ok")]),t.build(Et(this,wt))}}wt=new WeakMap;class Ot extends St{constructor(t,e,i){var s;super(t,e,i),bt.set(this,void 0),kt(this,bt,e),this.content=i.message,this.title=i.title,this.prefix=t.setup.prefix,this.reverse=null!==(s=i.reverse)&&void 0!==s&&s}createElement(){let t=new dt(this.prefix,this.reverse);return t.createHeader(this.title,null,null),t.createBody(null,[new ct.a("p").build(this.content)]),t.createFooter([this.prefix+"-flex",this.prefix+"-right"],[new ct.a("button").setClasses(this.prefix+"-button",this.prefix+"-accent").setAttributes({[this.closeStr]:"state: ok"}).build("Ok")]),t.build(Et(this,bt))}}bt=new WeakMap;class At extends St{constructor(t,e,i){var s;super(t,e,i),Ct.set(this,void 0),kt(this,Ct,e),this.content=i.message,this.title=i.title,this.prefix=t.setup.prefix,this.reverse=null!==(s=i.reverse)&&void 0!==s&&s}createElement(){let t=new dt(this.prefix,this.reverse);return t.createHeader(this.title,null,[new ct.a("a").setClasses(this.prefix+"-icon").setAttributes({[this.closeStr]:"state: cancel",[this.iconStr]:"close"}).build()]),t.createBody(null,[new ct.a("p").build(this.content)]),t.createFooter([this.prefix+"-flex",this.prefix+"-right"],[new ct.a("button").setClasses(this.prefix+"-button",this.prefix+"-margin-small-right").setAttributes({[this.closeStr]:"state: no"}).build("No"),new ct.a("button").setClasses(this.prefix+"-button",this.prefix+"-accent").setAttributes({[this.closeStr]:"state: yes"}).build("Yes")]),t.build(Et(this,Ct))}}Ct=new WeakMap;var Mt,Tt,Wt,Lt,jt,xt=i(13),It=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Pt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Dt{constructor(t){Mt.set(this,void 0),Tt.set(this,void 0),Wt.set(this,void 0),Lt.set(this,void 0),jt.set(this,void 0),It(this,Mt,t),It(this,Tt,new xt.a),Pt(this,Tt).setCallback(this.onMove.bind(this)),It(this,jt,null)}attach(){Pt(this,Tt).isAttached()||(Pt(this,Tt).attach(),It(this,Lt,Pt(this,Mt).on(at.EVENTS.MOVE_LOCK,this.onMoveLock.bind(this))))}detach(){Pt(this,Tt).isAttached()&&(Pt(this,Tt).detach(),Pt(this,Lt)&&Pt(this,Mt).detach(at.EVENTS.MOVE_LOCK,Pt(this,Lt)))}isAttached(){return Pt(this,Tt).isAttached()}onMove(t){if(!Pt(this,Wt))switch(t.type){case"down":It(this,jt,t);break;case"move":Pt(this,jt)&&(Pt(this,Mt).emit(at.EVENTS.GLOBAL_MOVE,null,Pt(this,jt)),It(this,jt,null)),Pt(this,Mt).emit(at.EVENTS.GLOBAL_MOVE,null,t);break;case"up":if(Pt(this,jt))return void It(this,jt,null);Pt(this,Mt).emit(at.EVENTS.GLOBAL_MOVE,null,t)}}onMoveLock(t){It(this,Wt,t)}}Mt=new WeakMap,Tt=new WeakMap,Wt=new WeakMap,Lt=new WeakMap,jt=new WeakMap;var Nt,Bt,_t,Rt,Vt,Ht,Ft,$t,qt,Ut=function(t,e,i,s){return new(i||(i=Promise))((function(n,r){function o(t){try{a(s.next(t))}catch(t){r(t)}}function h(t){try{a(s.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof i?e:new i((function(t){t(e)}))).then(o,h)}a((s=s.apply(t,e||[])).next())}))},zt=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},Gt=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class Kt{constructor(t,e,i){Nt.set(this,void 0),Bt.set(this,void 0),_t.set(this,void 0),Rt.set(this,void 0),Vt.set(this,void 0),Ht.set(this,void 0),Ft.set(this,void 0),$t.set(this,void 0),qt.set(this,void 0),u.l.prefix=t.prefix,u.l.logLevel=t.logLevel,zt(this,Vt,new et(e)),zt(this,Ht,null!=i?i:[]),zt(this,Rt,new X.a(t)),zt(this,Nt,l.a.get("CuiInstance")),zt(this,Ft,t.root),zt(this,$t,new Dt(Gt(this,Rt).bus))}init(){if(Gt(this,Nt).debug("Instance started","init"),!Object(c.v)(window.MutationObserver))throw new Z.e("Mutation observer does not exists");zt(this,_t,new L(Gt(this,Rt).interactions,Gt(this,Rt).setup.prefix,Gt(this,Rt).setup.animationTimeLong)),zt(this,qt,Gt(this,Ht).map(t=>t.attribute));const t=Object(c.v)(Gt(this,qt))?Gt(this,Ft).querySelectorAll(Object(c.z)(Gt(this,qt))):null;if(Object(c.v)(t)){Gt(this,Nt).debug(`Initiating ${t.length} elements`);try{t.forEach(t=>{Object(c.B)(t,Gt(this,Ht),Gt(this,qt),Gt(this,Rt))})}catch(t){Gt(this,Nt).exception(t)}}return Gt(this,Nt).debug("Init plugins","init"),Gt(this,Vt).init(Gt(this,Rt)),Object(c.b)(Gt(this,Ht),Gt(this,qt))&&(Gt(this,Nt).debug("Init mutation observer","init"),zt(this,Bt,new A.b(Gt(this,Ft),Gt(this,Rt))),Gt(this,Bt).setComponents(Gt(this,Ht)).setAttributes(Gt(this,qt)),Gt(this,Bt).setPlugins(Gt(this,Vt)),Gt(this,Bt).start()),Gt(this,Nt).debug("Setting CSS globals","init"),Gt(this,Rt).interactions.mutate(()=>{Gt(this,Rt).setProperty(u.g.animationTimeLong,Gt(this,Rt).setup.animationTimeLong+"ms"),Gt(this,Rt).setProperty(u.g.animationTime,Gt(this,Rt).setup.animationTime+"ms"),Gt(this,Rt).setProperty(u.g.animationTimeShort,Gt(this,Rt).setup.animationTimeShort+"ms")},null),Gt(this,$t).attach(),Gt(this,Rt).bus.emit(u.i.INSTANCE_INITIALIZED,null),this}finish(){Gt(this,Bt).stop(),Gt(this,$t).detach(),Gt(this,Rt).bus.emit(u.i.INSTANCE_FINISHED,null)}get(t){const e=this.all(t);if(!e)return;return new m(e,Gt(this,Rt))}collection(t){const e=this.all(t);if(!Object(c.v)(e))return;return new z(e,Gt(this,Rt).interactions)}toast(t){return Ut(this,void 0,void 0,(function*(){return!!Object(c.v)(t)&&Gt(this,_t).show(t)}))}select(t){return document.querySelector(t)}all(t){const e=document.querySelectorAll(t);if(Object(c.v)(e))return[...e]}getUtils(){return Gt(this,Rt)}on(t,e,i){Object(c.b)(t,e)||Gt(this,Nt).error("Incorrect arguments","on"),Gt(this,Rt).bus.on(t,e,i)}detach(t,e){Object(c.b)(t,e)||Gt(this,Nt).error("Incorrect arguments","detach"),Gt(this,Rt).bus.detach(t,e)}detachAll(t){Object(c.v)(t)||Gt(this,Nt).error("Incorrect arguments","detachAll"),Gt(this,Rt).bus.detachAll(t)}emit(t,e,...i){if(!Object(c.b)(t,e))return void Gt(this,Nt).warning("Not enough data to emit event","emit");let s=("string"==typeof e?document.querySelector(e):e).$cuid;Object(c.v)(s)?Gt(this,Rt).bus.emit(t,s,...i):Gt(this,Nt).warning("Element is not a cUI element","emit")}alert(t,e,i){(class{static get(t,e,i,s){return"Info"===e?new Ot(s,t,i):"YesNoCancel"===e?new At(s,t,i):"OkCancel"===e?new yt(s,t,i):void 0}}).get(t,e,i,Gt(this,Rt)).show(Gt(this,Ft))}getPlugin(t){return Gt(this,Vt).get(t)}createCuiElement(t,e,i){return Object(c.v)(e)&&Gt(this,qt).includes(e)?!!Object(c.a)(t,e,i)||(Gt(this,Nt).error("Element cannot be created: Missing data"),!1):(Gt(this,Nt).error("Element cannot be created: Unknown attribute"),!1)}}Nt=new WeakMap,Bt=new WeakMap,_t=new WeakMap,Rt=new WeakMap,Vt=new WeakMap,Ht=new WeakMap,Ft=new WeakMap,$t=new WeakMap,qt=new WeakMap},function(t,e,i){"use strict";i.d(e,"b",(function(){return b})),i.d(e,"a",(function(){return C}));var s,n,r,o,h,a,c,l,u,d,p,g,f=i(4),v=i(0),m=function(t,e,i){if(!e.has(t))throw new TypeError("attempted to set private field on non-instance");return e.set(t,i),i},w=function(t,e){if(!e.has(t))throw new TypeError("attempted to get private field on non-instance");return e.get(t)};class b{constructor(t,e){s.set(this,void 0),n.set(this,void 0),r.set(this,void 0),o.set(this,void 0),h.set(this,void 0),a.set(this,void 0),c.set(this,void 0),m(this,s,null),m(this,r,t),this._log=f.a.get("CuiMutationObserver"),this.plugins=null,m(this,o,[]),m(this,h,[]),m(this,a,e),m(this,c,"")}setPlugins(t){return this.plugins=t,this}setComponents(t){return m(this,o,t),this}setAttributes(t){return m(this,n,{attributes:!0,subtree:!0,childList:!0,attributeFilter:t}),m(this,h,t),m(this,c,Object(v.z)(t)),this}start(){return this._log.debug("Starting"),m(this,s,new MutationObserver(this.mutationCallback.bind(this))),w(this,s).observe(w(this,r),w(this,n)),this._log.debug("Started"),this}stop(){return this._log.debug("Stopping"),null!==w(this,s)&&this._log.debug("Observer available"),w(this,s).disconnect(),m(this,s,null),this._log.debug("Stopped"),this}mutationCallback(t,e){t.forEach(t=>{switch(t.type){case"attributes":const e=t.target;Object(v.b)(e.$handlers,e.$handlers[t.attributeName])&&e.$handlers[t.attributeName].refresh(Object(v.A)(e,t.attributeName));break;case"childList":this.handleChildListMutation(t)}Object(v.v)(this.plugins)&&this.plugins.onMutation(t).then(()=>{})})}handleChildListMutation(t){const e=t.addedNodes.length,i=t.removedNodes.length;e>0?(this._log.debug("Registering added nodes: "+e),this.handleAddedNodes(t.addedNodes)):i>0&&(this._log.debug("Removing nodes: "+i),this.handleRemovedNodes(t.removedNodes))}handleAddedNodes(t){t.forEach(t=>{try{Object(v.B)(t,w(this,o),w(this,h),w(this,a));let e=t.hasChildNodes()?t.querySelectorAll(w(this,c)):null;Object(v.v)(e)&&e.forEach(t=>{Object(v.B)(t,w(this,o),w(this,h),w(this,a))})}catch(t){this._log.exception(t)}})}handleRemovedNodes(t){t.forEach(t=>{this.destroySingleElement(t);let e=t.hasChildNodes()?t.querySelectorAll(w(this,c)):null;Object(v.v)(e)&&e.forEach(t=>{this.destroySingleElement(t)})})}destroySingleElement(t){let e=t;if(e.$handlers)for(let t in e.$handlers)if(e.$handlers.hasOwnProperty(t))try{e.$handlers[t].destroy()}catch(e){this._log.exception(e,"remove - "+t)}}}s=new WeakMap,n=new WeakMap,r=new WeakMap,o=new WeakMap,h=new WeakMap,a=new WeakMap,c=new WeakMap;class C{constructor(t){l.set(this,void 0),u.set(this,void 0),d.set(this,void 0),p.set(this,void 0),g.set(this,{childList:!0,subtree:!0}),m(this,u,null),m(this,l,!1),m(this,d,t)}observe(){w(this,l)||w(this,p)||(w(this,u).observe(w(this,d),w(this,g)),m(this,l,!0))}unobserve(){w(this,l)&&(w(this,u).disconnect(),m(this,l,!1))}isObserving(){return w(this,l)}disable(t){m(this,p,t),w(this,p)&&this.unobserve()}onMutation(t){w(this,l)&&this.unobserve(),m(this,u,new MutationObserver(t))}}l=new WeakMap,u=new WeakMap,d=new WeakMap,p=new WeakMap,g=new WeakMap},function(t,e){},function(t,e,i){"use strict";i.r(e),i.d(e,"CUI_LIGHT_VERSION",(function(){return u}));var s=i(27),n=i(19);for(var r in n)["default","CUI_LIGHT_VERSION","CuiInstance"].indexOf(r)<0&&function(t){i.d(e,t,(function(){return n[t]}))}(r);var o=i(18);for(var r in o)["default","CUI_LIGHT_VERSION","CuiInstance"].indexOf(r)<0&&function(t){i.d(e,t,(function(){return o[t]}))}(r);var h=i(8);i.d(e,"CuiSetup",(function(){return h.a})),i.d(e,"CuiSetupInit",(function(){return h.b}));var a=i(10);i.d(e,"CuiUtils",(function(){return a.a}));var c=i(17);i.d(e,"CuiColor",(function(){return c.a})),i.d(e,"HexColorParser",(function(){return c.b})),i.d(e,"RgbColorParser",(function(){return c.c})),i.d(e,"CuiInitializer",(function(){return s.b})),i.d(e,"CuiInit",(function(){return s.a}));var l=i(28);i.d(e,"CuiInstance",(function(){return l.a}));const u="0.1.38";window.cuiInit=new s.a}])}));
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("cui-light", [], factory);
+	else if(typeof exports === 'object')
+		exports["cui-light"] = factory();
+	else
+		root["cui-light"] = factory();
+})(window, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	function webpackJsonpCallback(data) {
+/******/ 		var chunkIds = data[0];
+/******/ 		var moreModules = data[1];
+/******/ 		var executeModules = data[2];
+/******/
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [];
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/
+/******/ 		while(resolves.length) {
+/******/ 			resolves.shift()();
+/******/ 		}
+/******/
+/******/ 		// add entry modules from loaded chunk to deferred list
+/******/ 		deferredModules.push.apply(deferredModules, executeModules || []);
+/******/
+/******/ 		// run deferred modules when all chunks ready
+/******/ 		return checkDeferredModules();
+/******/ 	};
+/******/ 	function checkDeferredModules() {
+/******/ 		var result;
+/******/ 		for(var i = 0; i < deferredModules.length; i++) {
+/******/ 			var deferredModule = deferredModules[i];
+/******/ 			var fulfilled = true;
+/******/ 			for(var j = 1; j < deferredModule.length; j++) {
+/******/ 				var depId = deferredModule[j];
+/******/ 				if(installedChunks[depId] !== 0) fulfilled = false;
+/******/ 			}
+/******/ 			if(fulfilled) {
+/******/ 				deferredModules.splice(i--, 1);
+/******/ 				result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		return result;
+/******/ 	}
+/******/
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// object to store loaded and loading chunks
+/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 	// Promise = chunk loading, 0 = chunk loaded
+/******/ 	var installedChunks = {
+/******/ 		0: 0
+/******/ 	};
+/******/
+/******/ 	var deferredModules = [];
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	var jsonpArray = window["webpackJsonpcui_light"] = window["webpackJsonpcui_light"] || [];
+/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+/******/ 	jsonpArray.push = webpackJsonpCallback;
+/******/ 	jsonpArray = jsonpArray.slice();
+/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+/******/ 	var parentJsonpFunction = oldJsonpFunction;
+/******/
+/******/
+/******/ 	// add entry module to deferred list
+/******/ 	deferredModules.push([17,1]);
+/******/ 	// run deferred modules when ready
+/******/ 	return checkDeferredModules();
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 17:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "CUI_LIGHT_VERSION", function() { return /* binding */ CUI_LIGHT_VERSION; });
+__webpack_require__.d(__webpack_exports__, "CUI_LIGHT_CORE_VER", function() { return /* binding */ CUI_LIGHT_CORE_VER; });
+__webpack_require__.d(__webpack_exports__, "CUI_LIGHT_COMPONENTS_VER", function() { return /* binding */ CUI_LIGHT_COMPONENTS_VER; });
+__webpack_require__.d(__webpack_exports__, "CUI_LIGHT_PLUGINS_VER", function() { return /* binding */ CUI_LIGHT_PLUGINS_VER; });
+__webpack_require__.d(__webpack_exports__, "CuiInstance", function() { return /* reexport */ instance_CuiInstance; });
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/utils/functions.js
+var functions = __webpack_require__(0);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/models/setup.js
+var models_setup = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/utils/statics.js
+var statics = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/observers/mutations.js
+var mutations = __webpack_require__(9);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/factories/logger.js + 1 modules
+var logger = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/models/utils.js + 11 modules
+var models_utils = __webpack_require__(16);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/models/errors.js
+var errors = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/helpers/helpers.js
+var helpers = __webpack_require__(10);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/utils/actions.js
+var actions = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./src/managers/element.ts
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _elements, _isLocked, _logger, _cDt, _utils, _actionsHelper;
+
+
+
+
+
+class element_ElementManager {
+    constructor(elements, utils) {
+        _elements.set(this, void 0);
+        _isLocked.set(this, void 0);
+        _logger.set(this, void 0);
+        _cDt.set(this, void 0);
+        _utils.set(this, void 0);
+        _actionsHelper.set(this, void 0);
+        __classPrivateFieldSet(this, _elements, elements);
+        __classPrivateFieldSet(this, _isLocked, false);
+        __classPrivateFieldSet(this, _logger, logger["a" /* CuiLoggerFactory */].get("ElementManager"));
+        __classPrivateFieldSet(this, _utils, utils);
+        __classPrivateFieldSet(this, _cDt, Date.now());
+        __classPrivateFieldSet(this, _actionsHelper, new helpers["a" /* CuiActionsHelper */](utils.interactions));
+    }
+    toggleClass(className) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            return this.call((element) => {
+                if (!element.classList.contains(className)) {
+                    element.classList.add(className);
+                }
+                else {
+                    element.classList.remove(className);
+                }
+            }, 'toggleClass');
+        });
+    }
+    toggleClassAs(className) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            return this.call((element) => {
+                let classes = element.classList;
+                __classPrivateFieldGet(this, _utils).interactions.fetch(() => {
+                    if (!classes.contains(className)) {
+                        __classPrivateFieldGet(this, _utils).interactions.mutate(classes.add, classes, className);
+                    }
+                    else {
+                        __classPrivateFieldGet(this, _utils).interactions.mutate(classes.remove, classes, className);
+                    }
+                }, this);
+            }, 'toggleClassAs');
+        });
+    }
+    setClass(className) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            return this.call((element) => {
+                if (!element.classList.contains(className)) {
+                    element.classList.add(className);
+                }
+            }, 'setClass');
+        });
+    }
+    setClassAs(className) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            return this.call((element) => {
+                let classes = element.classList;
+                __classPrivateFieldGet(this, _utils).interactions.fetch(() => {
+                    if (!classes.contains(className)) {
+                        __classPrivateFieldGet(this, _utils).interactions.mutate(classes.add, classes, className);
+                    }
+                }, this);
+            }, 'setClassAs');
+        });
+    }
+    removeClass(className) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            return this.call((element) => {
+                if (element.classList.contains(className)) {
+                    element.classList.remove(className);
+                }
+            }, 'removeClass');
+        });
+    }
+    removeClassAs(className) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            return this.call((element) => {
+                let classes = element.classList;
+                __classPrivateFieldGet(this, _utils).interactions.fetch(() => {
+                    if (classes.contains(className)) {
+                        __classPrivateFieldGet(this, _utils).interactions.mutate(classes.remove, classes, className);
+                    }
+                }, this);
+            }, 'removeClass');
+        });
+    }
+    getAttribute(attributeName) {
+        if (!Object(functions["w" /* is */])(attributeName)) {
+            return [];
+        }
+        return __classPrivateFieldGet(this, _elements).reduce((val, current) => {
+            let attr = current.getAttribute(attributeName);
+            if (attr != null) {
+                val.push(attr);
+            }
+            return val;
+        }, []);
+    }
+    setAttribute(attributeName, attributeValue) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(attributeName)) {
+                return false;
+            }
+            return this.call((element) => {
+                element.setAttribute(attributeName, attributeValue !== null && attributeValue !== void 0 ? attributeValue : "");
+            }, 'setAttribute');
+        });
+    }
+    setAttributeAs(attributeName, attributeValue) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(attributeName)) {
+                return false;
+            }
+            return this.call((element) => {
+                __classPrivateFieldGet(this, _utils).interactions.mutate(element.setAttribute, element, attributeName, attributeValue !== null && attributeValue !== void 0 ? attributeValue : "");
+            }, 'setAttributeAs');
+        });
+    }
+    removeAttribute(attributeName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(attributeName)) {
+                return false;
+            }
+            return this.call((element) => {
+                element.removeAttribute(attributeName);
+            }, 'removeAttribute');
+        });
+    }
+    removeAttributeAs(attributeName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(attributeName)) {
+                return false;
+            }
+            return this.call((element) => {
+                __classPrivateFieldGet(this, _utils).interactions.mutate(element.removeAttribute, element, attributeName);
+            }, 'removeAttributeAs');
+        });
+    }
+    toggleAttribute(attributeName, attributeValue) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(attributeName)) {
+                return false;
+            }
+            return this.call((element) => {
+                if (element.hasAttribute(attributeName)) {
+                    element.removeAttribute(attributeName);
+                }
+                else {
+                    element.setAttribute(attributeName, attributeValue !== null && attributeValue !== void 0 ? attributeValue : "");
+                }
+            }, 'toggleAttribute');
+        });
+    }
+    toggleAttributeAs(attributeName, attributeValue) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(attributeName)) {
+                return false;
+            }
+            return this.call((element) => {
+                __classPrivateFieldGet(this, _utils).interactions.fetch(() => {
+                    if (element.hasAttribute(attributeName)) {
+                        __classPrivateFieldGet(this, _utils).interactions.mutate(element.removeAttribute, element, attributeName);
+                    }
+                    else {
+                        __classPrivateFieldGet(this, _utils).interactions.mutate(element.setAttribute, element, attributeName, attributeValue !== null && attributeValue !== void 0 ? attributeValue : "");
+                    }
+                }, this);
+            }, 'toggleAttributeAs');
+        });
+    }
+    click(onClick) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(onClick)) {
+                return false;
+            }
+            return this.call((element) => {
+                //@ts-ignore
+                element.addEventListener('click', onClick);
+            }, 'click');
+        });
+    }
+    event(eventName, callback) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(eventName) || !Object(functions["w" /* is */])(callback)) {
+                return false;
+            }
+            return this.call((element) => {
+                element.addEventListener(eventName, callback);
+            }, 'event');
+        });
+    }
+    call(callback, functionName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (__classPrivateFieldGet(this, _isLocked)) {
+                __classPrivateFieldGet(this, _logger).error("Element is locked", functionName);
+            }
+            this.lock();
+            __classPrivateFieldGet(this, _elements).forEach((element, index) => {
+                callback(element, index);
+            });
+            this.unlock();
+            return true;
+        });
+    }
+    animate(className, timeout) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["w" /* is */])(className)) {
+                return false;
+            }
+            const delay = timeout !== null && timeout !== void 0 ? timeout : __classPrivateFieldGet(this, _utils).setup.animationTime;
+            return this.call((element) => {
+                this.change(() => {
+                    element.classList.add(className);
+                    element.classList.add(statics["a" /* CLASSES */].animProgress);
+                    setTimeout(() => {
+                        this.change(() => {
+                            element.classList.remove(className);
+                            element.classList.remove(statics["a" /* CLASSES */].animProgress);
+                        });
+                    }, delay);
+                });
+            });
+        });
+    }
+    open(openClass, animationClass, timeout) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["b" /* are */])(openClass, animationClass)) {
+                return false;
+            }
+            const delay = timeout !== null && timeout !== void 0 ? timeout : __classPrivateFieldGet(this, _utils).setup.animationTime;
+            const action = new actions["b" /* CuiClassAction */](animationClass);
+            return this.call((element) => {
+                __classPrivateFieldGet(this, _actionsHelper).performAction(element, action, delay !== null && delay !== void 0 ? delay : 0).then(() => {
+                    element.classList.add(openClass);
+                });
+            });
+        });
+    }
+    close(closeClass, animationClass, timeout) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["b" /* are */])(closeClass, animationClass)) {
+                return false;
+            }
+            const delay = timeout !== null && timeout !== void 0 ? timeout : __classPrivateFieldGet(this, _utils).setup.animationTime;
+            const action = new actions["b" /* CuiClassAction */](animationClass);
+            return this.call((element) => {
+                __classPrivateFieldGet(this, _actionsHelper).performAction(element, action, delay !== null && delay !== void 0 ? delay : 0).then(() => {
+                    element.classList.remove(closeClass);
+                });
+            });
+        });
+    }
+    emit(event, ...args) {
+        if (!Object(functions["w" /* is */])(event)) {
+            __classPrivateFieldGet(this, _logger).warning("Not enough data to emit event", "emit");
+            return;
+        }
+        this.call((element) => {
+            let cuid = element.$cuid;
+            if (Object(functions["w" /* is */])(cuid)) {
+                __classPrivateFieldGet(this, _logger).debug(`Emitting event ${event} to ${cuid}`);
+                __classPrivateFieldGet(this, _utils).bus.emit(event, cuid, ...args);
+            }
+        }, "emit");
+    }
+    on(event, callback) {
+        let ids = [];
+        if (!Object(functions["b" /* are */])(event, callback)) {
+            __classPrivateFieldGet(this, _logger).error("Incorrect arguments", "on");
+            return ids;
+        }
+        this.call((element) => {
+            let cuiElement = element;
+            if (Object(functions["w" /* is */])(cuiElement)) {
+                let disposeId = __classPrivateFieldGet(this, _utils).bus.on(event, callback, cuiElement);
+                if (disposeId != null)
+                    ids.push(disposeId);
+            }
+        }, "on");
+        return ids;
+    }
+    detach(event, id) {
+        if (!Object(functions["b" /* are */])(event, id)) {
+            __classPrivateFieldGet(this, _logger).error("Incorrect arguments", "detach");
+        }
+        this.call((element) => {
+            let cuiElement = element;
+            if (Object(functions["w" /* is */])(cuiElement)) {
+                __classPrivateFieldGet(this, _utils).bus.detach(event, id, cuiElement);
+            }
+        }, "detach");
+    }
+    read(callback, ...args) {
+        __classPrivateFieldGet(this, _utils).interactions.fetch(callback, this, ...args);
+    }
+    change(callback, ...args) {
+        __classPrivateFieldGet(this, _utils).interactions.mutate(callback, this, ...args);
+    }
+    elements() {
+        return __classPrivateFieldGet(this, _elements);
+    }
+    count() {
+        return __classPrivateFieldGet(this, _elements).length;
+    }
+    lock() {
+        __classPrivateFieldSet(this, _isLocked, true);
+    }
+    unlock() {
+        __classPrivateFieldSet(this, _isLocked, false);
+    }
+    isLocked() {
+        return __classPrivateFieldGet(this, _isLocked);
+    }
+    refresh() {
+        return (Date.now() - __classPrivateFieldGet(this, _cDt)) < 360000;
+    }
+}
+_elements = new WeakMap(), _isLocked = new WeakMap(), _logger = new WeakMap(), _cDt = new WeakMap(), _utils = new WeakMap(), _actionsHelper = new WeakMap();
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/builders/element.js
+var builders_element = __webpack_require__(5);
+
+// CONCATENATED MODULE: ./src/builders/dialog.ts
+var dialog_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var dialog_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _header, _body, _footer, _prefix, _switches, _reverse;
+
+
+class dialog_DialogBuilder {
+    constructor(prefix, reverse, switches) {
+        _header.set(this, void 0);
+        _body.set(this, void 0);
+        _footer.set(this, void 0);
+        _prefix.set(this, void 0);
+        _switches.set(this, void 0);
+        _reverse.set(this, void 0);
+        dialog_classPrivateFieldSet(this, _prefix, prefix);
+        dialog_classPrivateFieldSet(this, _header, dialog_classPrivateFieldSet(this, _footer, dialog_classPrivateFieldSet(this, _body, undefined)));
+        dialog_classPrivateFieldSet(this, _switches, switches !== null && switches !== void 0 ? switches : "");
+        dialog_classPrivateFieldSet(this, _reverse, reverse);
+    }
+    createHeader(title, classes, elements) {
+        if (!Object(functions["w" /* is */])(classes)) {
+            classes = [];
+        }
+        if (!Object(functions["w" /* is */])(elements)) {
+            elements = [];
+        }
+        let headerBuilder = new builders_element["a" /* ElementBuilder */]('div');
+        headerBuilder.setClasses(`${dialog_classPrivateFieldGet(this, _prefix)}-dialog-header`, ...classes);
+        dialog_classPrivateFieldSet(this, _header, headerBuilder.build());
+        let titleElement = new builders_element["a" /* ElementBuilder */]('span').setClasses(this.getPrefixedString("-dialog-title")).build(title);
+        dialog_classPrivateFieldGet(this, _header).appendChild(titleElement);
+        // @ts-ignore
+        this.appendChildrens(dialog_classPrivateFieldGet(this, _header), ...elements);
+    }
+    createFooter(classes, elements) {
+        if (!Object(functions["w" /* is */])(classes)) {
+            classes = [];
+        }
+        if (!Object(functions["w" /* is */])(elements)) {
+            elements = [];
+        }
+        dialog_classPrivateFieldSet(this, _footer, new builders_element["a" /* ElementBuilder */]('div').setClasses(this.getPrefixedString("-dialog-footer"), ...classes).build());
+        // @ts-ignore
+        this.appendChildrens(dialog_classPrivateFieldGet(this, _footer), ...elements);
+    }
+    createBody(classes, elements) {
+        if (!Object(functions["w" /* is */])(classes)) {
+            classes = [];
+        }
+        if (!Object(functions["w" /* is */])(elements)) {
+            elements = [];
+        }
+        dialog_classPrivateFieldSet(this, _body, new builders_element["a" /* ElementBuilder */]('div').setClasses(this.getPrefixedString("-dialog-body"), ...classes).build());
+        // @ts-ignore
+        this.appendChildrens(dialog_classPrivateFieldGet(this, _body), ...elements);
+    }
+    build(id) {
+        let classes = [this.getPrefixedString("-dialog")];
+        if (dialog_classPrivateFieldGet(this, _reverse)) {
+            classes.push(this.getPrefixedString('-reverse-auto'));
+        }
+        let dialog = new builders_element["a" /* ElementBuilder */]('div').setId(id).setClasses(...classes).setAttributes({
+            [this.getPrefixedString('-dialog')]: dialog_classPrivateFieldGet(this, _switches)
+        }).build();
+        let container = new builders_element["a" /* ElementBuilder */]('div').setClasses(this.getPrefixedString("-dialog-container")).build();
+        if (dialog_classPrivateFieldGet(this, _header))
+            container.appendChild(dialog_classPrivateFieldGet(this, _header));
+        if (dialog_classPrivateFieldGet(this, _body))
+            container.appendChild(dialog_classPrivateFieldGet(this, _body));
+        if (dialog_classPrivateFieldGet(this, _footer))
+            container.appendChild(dialog_classPrivateFieldGet(this, _footer));
+        dialog.appendChild(container);
+        return dialog;
+    }
+    appendChildrens(parent, ...elements) {
+        if (Object(functions["w" /* is */])(elements)) {
+            elements.forEach((element) => parent.appendChild(element));
+        }
+    }
+    getPrefixedString(str) {
+        return dialog_classPrivateFieldGet(this, _prefix) + str;
+    }
+}
+_header = new WeakMap(), _body = new WeakMap(), _footer = new WeakMap(), _prefix = new WeakMap(), _switches = new WeakMap(), _reverse = new WeakMap();
+
+// CONCATENATED MODULE: ./src/handlers/alert.ts
+var alert_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var alert_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _callbacks, alert_utils, _id, _manager, _attid, _id_1, _id_2, _id_3;
+
+
+
+
+class alert_CuiAlertHandlerBase {
+    constructor(setup, id, data) {
+        _callbacks.set(this, void 0);
+        alert_utils.set(this, void 0);
+        _id.set(this, void 0);
+        _manager.set(this, void 0);
+        _attid.set(this, void 0);
+        alert_classPrivateFieldSet(this, _callbacks, {
+            "yes": data.onYes,
+            "no": data.onNo,
+            "cancel": data.onCancel,
+            "ok": data.onOk
+        });
+        this.content = data.message;
+        this.title = data.title;
+        this.prefix = setup.setup.prefix;
+        alert_classPrivateFieldSet(this, alert_utils, setup);
+        alert_classPrivateFieldSet(this, _id, id);
+        this.reverse = false;
+        alert_classPrivateFieldSet(this, _attid, null);
+        this.closeStr = `${alert_classPrivateFieldGet(this, alert_utils).setup.prefix}-close`;
+        this.iconStr = `${alert_classPrivateFieldGet(this, alert_utils).setup.prefix}-icon`;
+        alert_classPrivateFieldSet(this, _manager, undefined);
+    }
+    getId() {
+        return alert_classPrivateFieldGet(this, _id);
+    }
+    show(root) {
+        let element = document.getElementById(alert_classPrivateFieldGet(this, _id));
+        if (!Object(functions["w" /* is */])(element)) {
+            element = this.createElement();
+            root.appendChild(element);
+        }
+        else {
+            // @ts-ignore - already checked
+            this.updateElement(element);
+        }
+        setTimeout(() => {
+            // @ts-ignore - already checked
+            alert_classPrivateFieldSet(this, _manager, new element_ElementManager([element], alert_classPrivateFieldGet(this, alert_utils)));
+            let ids = alert_classPrivateFieldGet(this, _manager).on('closed', this.onClose.bind(this));
+            alert_classPrivateFieldSet(this, _attid, ids.length > 0 ? ids[0] : null);
+            alert_classPrivateFieldGet(this, _manager).emit("open");
+        }, 100);
+    }
+    updateElement(element) {
+        let title = element.querySelector(`.${this.prefix}-dialog-title`);
+        let content = element.querySelector(`.${this.prefix}-dialog-body>p`);
+        alert_classPrivateFieldGet(this, alert_utils).interactions.mutate(() => {
+            if (title) {
+                title.innerHTML = this.title;
+            }
+            if (content) {
+                content.innerHTML = this.content;
+            }
+        }, null);
+    }
+    onClose(arg) {
+        try {
+            if (Object(functions["w" /* is */])(arg) && arg.state && alert_classPrivateFieldGet(this, _callbacks)) {
+                if (Object(functions["w" /* is */])(alert_classPrivateFieldGet(this, _callbacks)[arg.state])) {
+                    let callback = alert_classPrivateFieldGet(this, _callbacks)[arg.state];
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+        }
+        finally {
+            if (alert_classPrivateFieldGet(this, _attid) != null) {
+                if (alert_classPrivateFieldGet(this, _manager))
+                    alert_classPrivateFieldGet(this, _manager).detach('closed', alert_classPrivateFieldGet(this, _attid));
+                alert_classPrivateFieldSet(this, _attid, null);
+            }
+            alert_classPrivateFieldSet(this, _manager, undefined);
+        }
+    }
+}
+_callbacks = new WeakMap(), alert_utils = new WeakMap(), _id = new WeakMap(), _manager = new WeakMap(), _attid = new WeakMap();
+class alert_CuiAlertHandler extends alert_CuiAlertHandlerBase {
+    constructor(setup, id, data) {
+        var _a;
+        super(setup, id, data);
+        _id_1.set(this, void 0);
+        alert_classPrivateFieldSet(this, _id_1, id);
+        this.reverse = (_a = data.reverse) !== null && _a !== void 0 ? _a : false;
+    }
+    createElement() {
+        let dialogBuilder = new dialog_DialogBuilder(this.prefix, this.reverse);
+        dialogBuilder.createHeader(this.title, [], [
+            new builders_element["a" /* ElementBuilder */]('a').setClasses(`${this.prefix}-icon`).setAttributes({
+                [this.closeStr]: "state: cancel",
+                [this.iconStr]: "close"
+            }).build()
+        ]);
+        dialogBuilder.createBody([], [
+            new builders_element["a" /* ElementBuilder */]('p').build(this.content)
+        ]);
+        dialogBuilder.createFooter([`${this.prefix}-flex`, `${this.prefix}-right`], [
+            new builders_element["a" /* ElementBuilder */]('button').setClasses(`${this.prefix}-button`, `${this.prefix}-margin-small-right`).setAttributes({ [this.closeStr]: "state: cancel" }).build("Cancel"),
+            new builders_element["a" /* ElementBuilder */]('button').setClasses(`${this.prefix}-button`, `${this.prefix}-accent`).setAttributes({ [this.closeStr]: "state: ok" }).build("Ok")
+        ]);
+        return dialogBuilder.build(alert_classPrivateFieldGet(this, _id_1));
+    }
+}
+_id_1 = new WeakMap();
+class alert_CuiInfoAlertUpHandler extends alert_CuiAlertHandlerBase {
+    constructor(setup, id, data) {
+        var _a;
+        super(setup, id, data);
+        _id_2.set(this, void 0);
+        alert_classPrivateFieldSet(this, _id_2, id);
+        this.content = data.message;
+        ;
+        this.title = data.title;
+        this.prefix = setup.setup.prefix;
+        this.reverse = (_a = data.reverse) !== null && _a !== void 0 ? _a : false;
+    }
+    createElement() {
+        let dialogBuilder = new dialog_DialogBuilder(this.prefix, this.reverse);
+        dialogBuilder.createHeader(this.title, []);
+        dialogBuilder.createBody([], [
+            new builders_element["a" /* ElementBuilder */]('p').build(this.content)
+        ]);
+        dialogBuilder.createFooter([`${this.prefix}-flex`, `${this.prefix}-right`], [
+            new builders_element["a" /* ElementBuilder */]('button').setClasses(`${this.prefix}-button`, `${this.prefix}-accent`).setAttributes({ [this.closeStr]: "state: ok" }).build("Ok")
+        ]);
+        return dialogBuilder.build(alert_classPrivateFieldGet(this, _id_2));
+    }
+}
+_id_2 = new WeakMap();
+class alert_CuiYesNoPopUpHandler extends alert_CuiAlertHandlerBase {
+    constructor(setup, id, data) {
+        var _a;
+        super(setup, id, data);
+        _id_3.set(this, void 0);
+        alert_classPrivateFieldSet(this, _id_3, id);
+        this.content = data.message;
+        this.title = data.title;
+        this.prefix = setup.setup.prefix;
+        this.reverse = (_a = data.reverse) !== null && _a !== void 0 ? _a : false;
+    }
+    createElement() {
+        let dialogBuilder = new dialog_DialogBuilder(this.prefix, this.reverse);
+        dialogBuilder.createHeader(this.title, [], [
+            new builders_element["a" /* ElementBuilder */]('a').setClasses(`${this.prefix}-icon`).setAttributes({
+                [this.closeStr]: "state: cancel",
+                [this.iconStr]: "close"
+            }).build()
+        ]);
+        dialogBuilder.createBody([], [
+            new builders_element["a" /* ElementBuilder */]('p').build(this.content)
+        ]);
+        dialogBuilder.createFooter([`${this.prefix}-flex`, `${this.prefix}-right`], [
+            new builders_element["a" /* ElementBuilder */]('button').setClasses(`${this.prefix}-button`, `${this.prefix}-margin-small-right`).setAttributes({ [this.closeStr]: "state: no" }).build("No"),
+            new builders_element["a" /* ElementBuilder */]('button').setClasses(`${this.prefix}-button`, `${this.prefix}-accent`).setAttributes({ [this.closeStr]: "state: yes" }).build("Yes")
+        ]);
+        return dialogBuilder.build(alert_classPrivateFieldGet(this, _id_3));
+    }
+}
+_id_3 = new WeakMap();
+class CuiAlertFactory {
+    static get(id, type, data, utils) {
+        if (type === "Info") {
+            return new alert_CuiInfoAlertUpHandler(utils, id, data);
+        }
+        else if (type === 'YesNoCancel') {
+            return new alert_CuiYesNoPopUpHandler(utils, id, data);
+        }
+        else if (type === 'OkCancel') {
+            return new alert_CuiAlertHandler(utils, id, data);
+        }
+        return undefined;
+    }
+}
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/listeners/move.js
+var move = __webpack_require__(7);
+
+// CONCATENATED MODULE: ./src/observers/move.ts
+var move_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var move_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _bus, _moveListener, move_isLocked, _eventId, _firstEvent;
+
+
+class move_CuiMoveObserver {
+    constructor(bus) {
+        _bus.set(this, void 0);
+        _moveListener.set(this, void 0);
+        move_isLocked.set(this, void 0);
+        _eventId.set(this, void 0);
+        _firstEvent.set(this, void 0);
+        move_classPrivateFieldSet(this, _bus, bus);
+        move_classPrivateFieldSet(this, _moveListener, new move["a" /* CuiMoveEventListener */]());
+        move_classPrivateFieldGet(this, _moveListener).setCallback(this.onMove.bind(this));
+        move_classPrivateFieldSet(this, _firstEvent, undefined);
+        move_classPrivateFieldSet(this, move_isLocked, false);
+        move_classPrivateFieldSet(this, _eventId, null);
+    }
+    attach() {
+        if (!move_classPrivateFieldGet(this, _moveListener).isAttached()) {
+            move_classPrivateFieldGet(this, _moveListener).attach();
+            move_classPrivateFieldSet(this, _eventId, move_classPrivateFieldGet(this, _bus).on(statics["i" /* EVENTS */].MOVE_LOCK, this.onMoveLock.bind(this)));
+        }
+    }
+    detach() {
+        if (move_classPrivateFieldGet(this, _moveListener).isAttached()) {
+            move_classPrivateFieldGet(this, _moveListener).detach();
+            move_classPrivateFieldGet(this, _eventId) != null && move_classPrivateFieldGet(this, _bus).detach(statics["i" /* EVENTS */].MOVE_LOCK, move_classPrivateFieldGet(this, _eventId));
+        }
+    }
+    isAttached() {
+        return move_classPrivateFieldGet(this, _moveListener).isAttached();
+    }
+    onMove(data) {
+        if (move_classPrivateFieldGet(this, move_isLocked)) {
+            return;
+        }
+        switch (data.type) {
+            case "down":
+                move_classPrivateFieldSet(this, _firstEvent, data);
+                break;
+            case "move":
+                if (move_classPrivateFieldGet(this, _firstEvent)) {
+                    move_classPrivateFieldGet(this, _bus).emit(statics["i" /* EVENTS */].GLOBAL_MOVE, null, move_classPrivateFieldGet(this, _firstEvent));
+                    move_classPrivateFieldSet(this, _firstEvent, undefined);
+                }
+                move_classPrivateFieldGet(this, _bus).emit(statics["i" /* EVENTS */].GLOBAL_MOVE, null, data);
+                break;
+            case "up":
+                if (move_classPrivateFieldGet(this, _firstEvent)) {
+                    move_classPrivateFieldSet(this, _firstEvent, undefined);
+                    return;
+                }
+                move_classPrivateFieldGet(this, _bus).emit(statics["i" /* EVENTS */].GLOBAL_MOVE, null, data);
+                break;
+        }
+    }
+    onMoveLock(flag) {
+        move_classPrivateFieldSet(this, move_isLocked, flag);
+    }
+}
+_bus = new WeakMap(), _moveListener = new WeakMap(), move_isLocked = new WeakMap(), _eventId = new WeakMap(), _firstEvent = new WeakMap();
+
+// CONCATENATED MODULE: ./src/managers/toast.ts
+var toast_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var toast_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var toast_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _interactions, _selector, _className, _activeCls, _animationTime, _lock, _animClsIn, _animClsOut;
+
+
+class toast_CuiToastHandler {
+    constructor(interaction, prefix, animationTime) {
+        _interactions.set(this, void 0);
+        _selector.set(this, void 0);
+        _className.set(this, void 0);
+        _activeCls.set(this, void 0);
+        _animationTime.set(this, void 0);
+        _lock.set(this, void 0);
+        _animClsIn.set(this, void 0);
+        _animClsOut.set(this, void 0);
+        toast_classPrivateFieldSet(this, _interactions, interaction);
+        toast_classPrivateFieldSet(this, _selector, `.${prefix}-toast`);
+        toast_classPrivateFieldSet(this, _className, `${prefix}-toast`);
+        toast_classPrivateFieldSet(this, _activeCls, `${prefix}-active`);
+        toast_classPrivateFieldSet(this, _animationTime, animationTime);
+        toast_classPrivateFieldSet(this, _lock, false);
+        toast_classPrivateFieldSet(this, _animClsIn, `${prefix}-toast-animation-in`);
+        toast_classPrivateFieldSet(this, _animClsOut, `${prefix}-toast-animation-out`);
+    }
+    show(message) {
+        return toast_awaiter(this, void 0, void 0, function* () {
+            if (toast_classPrivateFieldGet(this, _lock)) {
+                return false;
+            }
+            toast_classPrivateFieldSet(this, _lock, true);
+            let toastElement = document.querySelector(toast_classPrivateFieldGet(this, _selector));
+            if (!Object(functions["w" /* is */])(toastElement)) {
+                toastElement = document.createElement('div');
+                toastElement.classList.add(toast_classPrivateFieldGet(this, _className));
+                document.body.appendChild(toastElement);
+                yield Object(functions["E" /* sleep */])(10);
+            }
+            toast_classPrivateFieldGet(this, _interactions).mutate(() => {
+                //@ts-ignore
+                toastElement.textContent = message;
+                //@ts-ignore
+                toastElement.classList.add(statics["a" /* CLASSES */].animProgress);
+                //@ts-ignore
+                toastElement.classList.add(toast_classPrivateFieldGet(this, _animClsIn));
+            }, this);
+            yield Object(functions["E" /* sleep */])(toast_classPrivateFieldGet(this, _animationTime));
+            toast_classPrivateFieldGet(this, _interactions).mutate(() => {
+                //@ts-ignore
+                toastElement.classList.remove(statics["a" /* CLASSES */].animProgress);
+                //@ts-ignore
+                toastElement.classList.remove(toast_classPrivateFieldGet(this, _animClsIn));
+                //@ts-ignore
+                toastElement.classList.add(toast_classPrivateFieldGet(this, _activeCls));
+            }, this);
+            yield Object(functions["E" /* sleep */])(3000);
+            toast_classPrivateFieldGet(this, _interactions).mutate(() => {
+                //@ts-ignore
+                toastElement.classList.add(statics["a" /* CLASSES */].animProgress);
+                //@ts-ignore
+                toastElement.classList.add(toast_classPrivateFieldGet(this, _animClsOut));
+            }, this);
+            setTimeout(() => {
+                toast_classPrivateFieldGet(this, _interactions).mutate(() => {
+                    //@ts-ignore
+                    toastElement.classList.remove(statics["a" /* CLASSES */].animProgress);
+                    //@ts-ignore
+                    toastElement.classList.remove(toast_classPrivateFieldGet(this, _animClsOut));
+                    //@ts-ignore
+                    toastElement.classList.remove(toast_classPrivateFieldGet(this, _activeCls));
+                }, this);
+                toast_classPrivateFieldSet(this, _lock, false);
+            }, toast_classPrivateFieldGet(this, _animationTime));
+            return true;
+        });
+    }
+}
+_interactions = new WeakMap(), _selector = new WeakMap(), _className = new WeakMap(), _activeCls = new WeakMap(), _animationTime = new WeakMap(), _lock = new WeakMap(), _animClsIn = new WeakMap(), _animClsOut = new WeakMap();
+
+// CONCATENATED MODULE: ./src/helpers/collection.ts
+var collection_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var collection_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var collection_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var collection_elements, _log, collection_isLocked, _toggleClass, collection_interactions;
+
+
+
+class collection_CollectionManagerHelper {
+    constructor(interactions) {
+        collection_elements.set(this, void 0);
+        _log.set(this, void 0);
+        collection_isLocked.set(this, void 0);
+        _toggleClass.set(this, void 0);
+        collection_interactions.set(this, void 0);
+        collection_classPrivateFieldSet(this, collection_interactions, interactions);
+        collection_classPrivateFieldSet(this, _log, logger["a" /* CuiLoggerFactory */].get('CollectionManager'));
+        collection_classPrivateFieldSet(this, collection_elements, []);
+        collection_classPrivateFieldSet(this, collection_isLocked, false);
+        collection_classPrivateFieldSet(this, _toggleClass, "");
+    }
+    setElements(elements) {
+        collection_classPrivateFieldSet(this, collection_elements, elements);
+    }
+    setToggle(className) {
+        collection_classPrivateFieldSet(this, _toggleClass, className);
+    }
+    addAnimationClass(currentElement, nextElement, animIn, animOut) {
+        nextElement.classList.add(statics["a" /* CLASSES */].animProgress);
+        currentElement.classList.add(animOut);
+        nextElement.classList.add(animIn);
+    }
+    setFinalClasses(currentElement, nextElement, animIn, animOut) {
+        nextElement.classList.remove(statics["a" /* CLASSES */].animProgress);
+        currentElement.classList.remove(animOut);
+        nextElement.classList.remove(animIn);
+        currentElement.classList.remove(collection_classPrivateFieldGet(this, _toggleClass));
+        nextElement.classList.add(collection_classPrivateFieldGet(this, _toggleClass));
+    }
+    verifyIndex(index, current, count) {
+        return index >= 0 && index !== current && index < count;
+    }
+    setCurrent(newIndex, current) {
+        return collection_awaiter(this, void 0, void 0, function* () {
+            this.lock();
+            collection_classPrivateFieldGet(this, _log).debug(`Switching index from: ${current} to ${newIndex}`);
+            if (current > -1)
+                collection_classPrivateFieldGet(this, collection_elements)[current].classList.remove(collection_classPrivateFieldGet(this, _toggleClass));
+            collection_classPrivateFieldGet(this, collection_elements)[newIndex].classList.add(collection_classPrivateFieldGet(this, _toggleClass));
+            this.unlock();
+            return true;
+        });
+    }
+    setCurrentWithAnimation(newIndex, animClassIn, animClassOut, duration, current) {
+        return collection_awaiter(this, void 0, void 0, function* () {
+            this.lock();
+            collection_classPrivateFieldGet(this, _log).debug(`Switching index from: ${current} to ${newIndex}`);
+            const currentElement = collection_classPrivateFieldGet(this, collection_elements)[current];
+            const nextElement = collection_classPrivateFieldGet(this, collection_elements)[newIndex];
+            collection_classPrivateFieldGet(this, collection_interactions).mutate(this.addAnimationClass, this, currentElement, nextElement, animClassIn, animClassOut);
+            setTimeout(() => {
+                collection_classPrivateFieldGet(this, collection_interactions).mutate(this.setFinalClasses, this, currentElement, nextElement, animClassIn, animClassOut);
+                this.unlock();
+            }, duration);
+            return true;
+        });
+    }
+    getCurrentIndex() {
+        if (!Object(functions["w" /* is */])(collection_classPrivateFieldGet(this, _toggleClass))) {
+            return -1;
+        }
+        let len = this.count();
+        for (let i = 0; i < len; i++) {
+            if (collection_classPrivateFieldGet(this, collection_elements)[i].classList.contains(collection_classPrivateFieldGet(this, _toggleClass))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    elements() {
+        return collection_classPrivateFieldGet(this, collection_elements);
+    }
+    check() {
+        if (collection_classPrivateFieldGet(this, collection_isLocked)) {
+            collection_classPrivateFieldGet(this, _log).warning("Object locked. Operation in progress", "Check");
+            return false;
+        }
+        else if (!Object(functions["w" /* is */])(collection_classPrivateFieldGet(this, _toggleClass))) {
+            collection_classPrivateFieldGet(this, _log).warning("Toggle is not set. Call setToggleClass", "Check");
+            return false;
+        }
+        else if (this.count() <= 0) {
+            collection_classPrivateFieldGet(this, _log).warning("Elements list is empty", "Check");
+            return false;
+        }
+        return true;
+    }
+    count() {
+        return collection_classPrivateFieldGet(this, collection_elements) ? collection_classPrivateFieldGet(this, collection_elements).length : -1;
+    }
+    lock() {
+        collection_classPrivateFieldSet(this, collection_isLocked, true);
+    }
+    unlock() {
+        collection_classPrivateFieldSet(this, collection_isLocked, false);
+    }
+}
+collection_elements = new WeakMap(), _log = new WeakMap(), collection_isLocked = new WeakMap(), _toggleClass = new WeakMap(), collection_interactions = new WeakMap();
+
+// CONCATENATED MODULE: ./src/managers/collection.ts
+var managers_collection_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var managers_collection_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var managers_collection_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var collection_log, collection_cDt, _helper;
+
+
+class collection_CollectionManager {
+    constructor(elements, interactions) {
+        collection_log.set(this, void 0);
+        collection_cDt.set(this, void 0);
+        _helper.set(this, void 0);
+        managers_collection_classPrivateFieldSet(this, collection_log, logger["a" /* CuiLoggerFactory */].get('CollectionManager'));
+        managers_collection_classPrivateFieldSet(this, _helper, new collection_CollectionManagerHelper(interactions));
+        managers_collection_classPrivateFieldGet(this, _helper).setElements(elements);
+        managers_collection_classPrivateFieldSet(this, collection_cDt, Date.now());
+    }
+    setToggle(className) {
+        managers_collection_classPrivateFieldGet(this, _helper).setToggle(className);
+    }
+    setElements(elements) {
+        managers_collection_classPrivateFieldGet(this, _helper).setElements(elements);
+    }
+    click(callback) {
+        managers_collection_classPrivateFieldGet(this, _helper).elements().forEach((element, index) => {
+            element.addEventListener('click', () => {
+                this.set(index).then(() => {
+                    if (callback) {
+                        callback(element, index);
+                    }
+                });
+            });
+        });
+    }
+    next() {
+        return managers_collection_awaiter(this, void 0, void 0, function* () {
+            if (!managers_collection_classPrivateFieldGet(this, _helper).check()) {
+                return false;
+            }
+            let newIdx = managers_collection_classPrivateFieldGet(this, _helper).getCurrentIndex() + 1;
+            return this.set(newIdx >= this.length() ? 0 : newIdx);
+        });
+    }
+    previous() {
+        return managers_collection_awaiter(this, void 0, void 0, function* () {
+            if (!managers_collection_classPrivateFieldGet(this, _helper).check()) {
+                return false;
+            }
+            let newIdx = managers_collection_classPrivateFieldGet(this, _helper).getCurrentIndex() - 1;
+            return this.set(newIdx < 0 ? this.length() - 1 : newIdx);
+        });
+    }
+    set(index) {
+        return managers_collection_awaiter(this, void 0, void 0, function* () {
+            let current = managers_collection_classPrivateFieldGet(this, _helper).getCurrentIndex();
+            if (!managers_collection_classPrivateFieldGet(this, _helper).check() || !managers_collection_classPrivateFieldGet(this, _helper).verifyIndex(index, current, this.length())) {
+                return false;
+            }
+            return managers_collection_classPrivateFieldGet(this, _helper).setCurrent(index, current);
+        });
+    }
+    setWithAnimation(index, animClassIn, animClassOut, duration) {
+        return managers_collection_awaiter(this, void 0, void 0, function* () {
+            let current = managers_collection_classPrivateFieldGet(this, _helper).getCurrentIndex();
+            if (!managers_collection_classPrivateFieldGet(this, _helper).check() || !managers_collection_classPrivateFieldGet(this, _helper).verifyIndex(index, current, this.length())) {
+                return false;
+            }
+            return managers_collection_classPrivateFieldGet(this, _helper).setCurrentWithAnimation(index, animClassIn, animClassOut, duration, current);
+        });
+    }
+    getCurrentIndex() {
+        return managers_collection_classPrivateFieldGet(this, _helper).getCurrentIndex();
+    }
+    length() {
+        return managers_collection_classPrivateFieldGet(this, _helper).count();
+    }
+    refresh() {
+        return this.length() > 0 && Date.now() - managers_collection_classPrivateFieldGet(this, collection_cDt) > 360000;
+    }
+}
+collection_log = new WeakMap(), collection_cDt = new WeakMap(), _helper = new WeakMap();
+
+// CONCATENATED MODULE: ./src/managers/plugins.ts
+var plugins_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var plugins_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var plugins_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _plugins, _mutated, plugins_log;
+
+
+class plugins_CuiPluginManager {
+    constructor(plugins) {
+        _plugins.set(this, void 0);
+        _mutated.set(this, void 0);
+        plugins_log.set(this, void 0);
+        plugins_classPrivateFieldSet(this, _plugins, plugins !== null && plugins !== void 0 ? plugins : []);
+        plugins_classPrivateFieldSet(this, plugins_log, logger["a" /* CuiLoggerFactory */].get("CuiPluginManager"));
+        plugins_classPrivateFieldSet(this, _plugins, []);
+        plugins_classPrivateFieldSet(this, _mutated, []);
+    }
+    init(utils) {
+        plugins_classPrivateFieldGet(this, plugins_log).debug("Plugins initialization started: " + plugins_classPrivateFieldGet(this, _plugins).length);
+        plugins_classPrivateFieldSet(this, _mutated, plugins_classPrivateFieldGet(this, _plugins).filter((plugin) => {
+            return Object(functions["w" /* is */])(plugin.mutation);
+        }));
+        plugins_classPrivateFieldGet(this, _plugins).forEach(plugin => {
+            plugin.init(utils);
+            utils.setup.plugins[plugin.description] = plugin.setup;
+        });
+        plugins_classPrivateFieldGet(this, plugins_log).debug("Plugins have been initialized");
+    }
+    get(name) {
+        if (!Object(functions["w" /* is */])(name)) {
+            return undefined;
+        }
+        return plugins_classPrivateFieldGet(this, _plugins).find(p => p.name === name);
+    }
+    onMutation(mutation) {
+        return plugins_awaiter(this, void 0, void 0, function* () {
+            let tasks = [];
+            plugins_classPrivateFieldGet(this, _mutated).forEach((plugin) => {
+                tasks.push(plugin.mutation(mutation));
+            });
+            let result = yield Promise.all(tasks);
+            return result.find(val => {
+                val === false;
+            }) ? false : true;
+        });
+    }
+}
+_plugins = new WeakMap(), _mutated = new WeakMap(), plugins_log = new WeakMap();
+
+// CONCATENATED MODULE: ./src/instance.ts
+var instance_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var instance_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var instance_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var instance_log, _mutationObserver, _toastManager, instance_utils, instance_plugins, _components, _rootElement, _moveObserver, _mutatedAttributes;
+
+
+
+
+
+
+
+
+
+
+
+
+class instance_CuiInstance {
+    constructor(setup, plugins, components) {
+        instance_log.set(this, void 0);
+        _mutationObserver.set(this, void 0);
+        _toastManager.set(this, void 0);
+        instance_utils.set(this, void 0);
+        instance_plugins.set(this, void 0);
+        _components.set(this, void 0);
+        _rootElement.set(this, void 0);
+        _moveObserver.set(this, void 0);
+        _mutatedAttributes.set(this, void 0);
+        statics["l" /* STATICS */].prefix = setup.prefix;
+        statics["l" /* STATICS */].logLevel = setup.logLevel;
+        instance_classPrivateFieldSet(this, instance_plugins, new plugins_CuiPluginManager(plugins));
+        instance_classPrivateFieldSet(this, _components, components !== null && components !== void 0 ? components : []);
+        instance_classPrivateFieldSet(this, instance_utils, new models_utils["a" /* CuiUtils */](setup));
+        instance_classPrivateFieldSet(this, instance_log, logger["a" /* CuiLoggerFactory */].get('CuiInstance'));
+        instance_classPrivateFieldSet(this, _rootElement, setup.root);
+        instance_classPrivateFieldSet(this, _moveObserver, new move_CuiMoveObserver(instance_classPrivateFieldGet(this, instance_utils).bus));
+        instance_classPrivateFieldSet(this, _mutationObserver, undefined);
+        instance_classPrivateFieldSet(this, _toastManager, undefined);
+        instance_classPrivateFieldSet(this, _mutatedAttributes, []);
+    }
+    init() {
+        var _a;
+        instance_classPrivateFieldGet(this, instance_log).debug("Instance started", "init");
+        // Init elements
+        if (!Object(functions["w" /* is */])(window.MutationObserver)) {
+            throw new errors["e" /* CuiInstanceInitError */]("Mutation observer does not exists");
+        }
+        instance_classPrivateFieldSet(this, _toastManager, new toast_CuiToastHandler(instance_classPrivateFieldGet(this, instance_utils).interactions, instance_classPrivateFieldGet(this, instance_utils).setup.prefix, (_a = instance_classPrivateFieldGet(this, instance_utils).setup.animationTimeLong) !== null && _a !== void 0 ? _a : 0));
+        instance_classPrivateFieldSet(this, _mutatedAttributes, instance_classPrivateFieldGet(this, _components).map(x => { return x.attribute; })); // MUTATED_ATTRIBUTES; 
+        const initElements = Object(functions["w" /* is */])(instance_classPrivateFieldGet(this, _mutatedAttributes)) ? instance_classPrivateFieldGet(this, _rootElement).querySelectorAll(Object(functions["A" /* joinAttributesForQuery */])(instance_classPrivateFieldGet(this, _mutatedAttributes))) : null;
+        if (Object(functions["w" /* is */])(initElements)) {
+            //@ts-ignore initElements already checked
+            instance_classPrivateFieldGet(this, instance_log).debug(`Initiating ${initElements.length} elements`);
+            try {
+                //@ts-ignore initElements already checked
+                initElements.forEach((item) => {
+                    Object(functions["C" /* registerCuiElement */])(item, instance_classPrivateFieldGet(this, _components), instance_classPrivateFieldGet(this, _mutatedAttributes), instance_classPrivateFieldGet(this, instance_utils));
+                });
+            }
+            catch (e) {
+                instance_classPrivateFieldGet(this, instance_log).exception(e);
+            }
+        }
+        instance_classPrivateFieldGet(this, instance_log).debug("Init plugins", "init");
+        // Init plugins
+        instance_classPrivateFieldGet(this, instance_plugins).init(instance_classPrivateFieldGet(this, instance_utils));
+        if (Object(functions["b" /* are */])(instance_classPrivateFieldGet(this, _components), instance_classPrivateFieldGet(this, _mutatedAttributes))) {
+            instance_classPrivateFieldGet(this, instance_log).debug("Init mutation observer", "init");
+            instance_classPrivateFieldSet(this, _mutationObserver, new mutations["b" /* CuiMutationObserver */](instance_classPrivateFieldGet(this, _rootElement), instance_classPrivateFieldGet(this, instance_utils)));
+            instance_classPrivateFieldGet(this, _mutationObserver).setComponents(instance_classPrivateFieldGet(this, _components)).setAttributes(instance_classPrivateFieldGet(this, _mutatedAttributes));
+            instance_classPrivateFieldGet(this, _mutationObserver).setPlugins(instance_classPrivateFieldGet(this, instance_plugins));
+            instance_classPrivateFieldGet(this, _mutationObserver).start();
+        }
+        instance_classPrivateFieldGet(this, instance_log).debug("Setting CSS globals", 'init');
+        instance_classPrivateFieldGet(this, instance_utils).interactions.mutate(() => {
+            instance_classPrivateFieldGet(this, instance_utils).setProperty(statics["g" /* CSS_VARIABLES */].animationTimeLong, `${instance_classPrivateFieldGet(this, instance_utils).setup.animationTimeLong}ms`);
+            instance_classPrivateFieldGet(this, instance_utils).setProperty(statics["g" /* CSS_VARIABLES */].animationTime, `${instance_classPrivateFieldGet(this, instance_utils).setup.animationTime}ms`);
+            instance_classPrivateFieldGet(this, instance_utils).setProperty(statics["g" /* CSS_VARIABLES */].animationTimeShort, `${instance_classPrivateFieldGet(this, instance_utils).setup.animationTimeShort}ms`);
+        }, null);
+        instance_classPrivateFieldGet(this, _moveObserver).attach();
+        instance_classPrivateFieldGet(this, instance_utils).bus.emit(statics["i" /* EVENTS */].INSTANCE_INITIALIZED, null);
+        return this;
+    }
+    finish() {
+        if (instance_classPrivateFieldGet(this, _mutationObserver))
+            instance_classPrivateFieldGet(this, _mutationObserver).stop();
+        instance_classPrivateFieldGet(this, _moveObserver).detach();
+        instance_classPrivateFieldGet(this, instance_utils).bus.emit(statics["i" /* EVENTS */].INSTANCE_FINISHED, null);
+    }
+    get(selector) {
+        const elements = this.all(selector);
+        if (!elements) {
+            return undefined;
+        }
+        const newElement = new element_ElementManager(elements, instance_classPrivateFieldGet(this, instance_utils));
+        return newElement;
+    }
+    collection(selector) {
+        const elements = this.all(selector);
+        if (!Object(functions["w" /* is */])(elements)) {
+            return undefined;
+        }
+        // @ts-ignore already checked
+        let manager = new collection_CollectionManager(elements, instance_classPrivateFieldGet(this, instance_utils).interactions);
+        return manager;
+    }
+    toast(message) {
+        return instance_awaiter(this, void 0, void 0, function* () {
+            if (!Object(functions["b" /* are */])(message, instance_classPrivateFieldGet(this, _toastManager))) {
+                return false;
+            }
+            //@ts-ignore toast manager exists
+            return instance_classPrivateFieldGet(this, _toastManager).show(message);
+        });
+    }
+    select(selector) {
+        return document.querySelector(selector);
+    }
+    all(selector) {
+        const nodes = document.querySelectorAll(selector);
+        if (!Object(functions["w" /* is */])(nodes)) {
+            return undefined;
+        }
+        return [...nodes];
+    }
+    getUtils() {
+        return instance_classPrivateFieldGet(this, instance_utils);
+    }
+    on(event, callback, element) {
+        if (!Object(functions["b" /* are */])(event, callback)) {
+            instance_classPrivateFieldGet(this, instance_log).error("Incorrect arguments", "on");
+        }
+        instance_classPrivateFieldGet(this, instance_utils).bus.on(event, callback, element);
+    }
+    detach(event, id) {
+        if (!Object(functions["b" /* are */])(event, id)) {
+            instance_classPrivateFieldGet(this, instance_log).error("Incorrect arguments", "detach");
+        }
+        instance_classPrivateFieldGet(this, instance_utils).bus.detach(event, id);
+    }
+    detachAll(event) {
+        if (!Object(functions["w" /* is */])(event)) {
+            instance_classPrivateFieldGet(this, instance_log).error("Incorrect arguments", "detachAll");
+        }
+        instance_classPrivateFieldGet(this, instance_utils).bus.detachAll(event);
+    }
+    emit(event, element, ...args) {
+        if (!Object(functions["b" /* are */])(event, element)) {
+            instance_classPrivateFieldGet(this, instance_log).warning("Not enough data to emit event", "emit");
+            return;
+        }
+        let el = typeof element === 'string' ? document.querySelector(element) : element;
+        let cuid = el.$cuid;
+        if (!Object(functions["w" /* is */])(cuid)) {
+            instance_classPrivateFieldGet(this, instance_log).warning("Element is not a cUI element", "emit");
+            return;
+        }
+        instance_classPrivateFieldGet(this, instance_utils).bus.emit(event, cuid, ...args);
+    }
+    alert(id, type, data) {
+        let popup = CuiAlertFactory.get(id, type, data, instance_classPrivateFieldGet(this, instance_utils));
+        if (!popup) {
+            instance_classPrivateFieldGet(this, instance_log).error("Possibly incorrect alert type");
+            return;
+        }
+        popup.show(instance_classPrivateFieldGet(this, _rootElement));
+    }
+    getPlugin(name) {
+        return instance_classPrivateFieldGet(this, instance_plugins).get(name);
+    }
+    createCuiElement(element, arg, data) {
+        if (!Object(functions["w" /* is */])(arg) || !instance_classPrivateFieldGet(this, _mutatedAttributes).includes(arg)) {
+            instance_classPrivateFieldGet(this, instance_log).error("Element cannot be created: Unknown attribute");
+            return false;
+        }
+        if (!Object(functions["a" /* addCuiArgument */])(element, arg, data)) {
+            instance_classPrivateFieldGet(this, instance_log).error("Element cannot be created: Missing data");
+            return false;
+        }
+        return true;
+    }
+}
+instance_log = new WeakMap(), _mutationObserver = new WeakMap(), _toastManager = new WeakMap(), instance_utils = new WeakMap(), instance_plugins = new WeakMap(), _components = new WeakMap(), _rootElement = new WeakMap(), _moveObserver = new WeakMap(), _mutatedAttributes = new WeakMap();
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/animation/definitions.js
+var definitions = __webpack_require__(6);
+
+// CONCATENATED MODULE: ./src/initializer.ts
+var initializer_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var initializer_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var initializer_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _window;
+
+
+
+
+
+class initializer_CuiInitializer {
+    constructor() {
+        _window.set(this, void 0);
+        initializer_classPrivateFieldSet(this, _window, window);
+    }
+    init(setup) {
+        var _a, _b;
+        return initializer_awaiter(this, void 0, void 0, function* () {
+            let settings = Object.assign(Object.assign({}, new models_setup["b" /* CuiSetupInit */]()), setup.setup);
+            const appPrefix = settings.app;
+            const result = {
+                result: false
+            };
+            if (Object(functions["w" /* is */])(initializer_classPrivateFieldGet(this, _window)[appPrefix])) {
+                result.message = "Instance is already initialized";
+                return result;
+            }
+            if (Object(functions["w" /* is */])(setup.icons)) {
+                for (let icon in setup.icons) {
+                    statics["j" /* ICONS */][icon] = setup.icons[icon];
+                }
+            }
+            if (Object(functions["w" /* is */])(setup.swipeAnimations)) {
+                for (let animation in setup.swipeAnimations) {
+                    definitions["a" /* SWIPE_ANIMATIONS_DEFINITIONS */][animation] = setup.swipeAnimations[animation];
+                }
+            }
+            try {
+                initializer_classPrivateFieldGet(this, _window)[appPrefix] = new instance_CuiInstance(settings, (_a = setup.plugins) !== null && _a !== void 0 ? _a : [], (_b = setup.components) !== null && _b !== void 0 ? _b : []);
+                initializer_classPrivateFieldGet(this, _window)[appPrefix].init();
+            }
+            catch (e) {
+                console.error(e);
+                result.message = "An error occured during initialization";
+                return result;
+            }
+            result.result = true;
+            return result;
+        });
+    }
+}
+_window = new WeakMap();
+
+// EXTERNAL MODULE: ./node_modules/cui-light-components/dist/esm/module.js + 40 modules
+var esm_module = __webpack_require__(14);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-plugins/dist/esm/module.js + 12 modules
+var dist_esm_module = __webpack_require__(15);
+
+// CONCATENATED MODULE: ./src/init.ts
+var init_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var init_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var init_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _isInitialized;
+
+
+
+
+class init_CuiInit {
+    constructor() {
+        _isInitialized.set(this, void 0);
+        init_classPrivateFieldSet(this, _isInitialized, false);
+    }
+    init(data) {
+        var _a, _b;
+        return init_awaiter(this, void 0, void 0, function* () {
+            if (init_classPrivateFieldGet(this, _isInitialized)) {
+                console.log("Module is already initialized");
+                return false;
+            }
+            const initializer = new initializer_CuiInitializer();
+            const pluginList = Object(dist_esm_module["a" /* GetPlugins */])({
+                autoLight: true,
+                autoPrint: true
+            });
+            const componentList = Object(esm_module["a" /* GetComponents */])({
+                prefix: (_a = data.setup) === null || _a === void 0 ? void 0 : _a.prefix
+            });
+            let appPlugins = pluginList;
+            if (data.plugins) {
+                appPlugins = Object.assign(Object.assign({}, pluginList), data.plugins);
+            }
+            let result = yield initializer.init({
+                setup: data.setup,
+                icons: data.icons,
+                plugins: appPlugins,
+                // @ts-ignore already checked
+                components: Object(functions["w" /* is */])(data.components) ? [...componentList, ...data.components] : componentList,
+                swipeAnimations: data.swipeAnimations
+            });
+            if (result.result) {
+                init_classPrivateFieldSet(this, _isInitialized, true);
+                return true;
+            }
+            else {
+                console.error(`A cUI instance failed to initialize: [${(_b = result.message) !== null && _b !== void 0 ? _b : "#"}]`);
+            }
+            console.log("Cui Light failed to init");
+            return false;
+        });
+    }
+}
+_isInitialized = new WeakMap();
+
+// EXTERNAL MODULE: ./node_modules/cui-light-components/dist/esm/index.js
+var esm = __webpack_require__(11);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-plugins/dist/esm/index.js
+var dist_esm = __webpack_require__(12);
+
+// EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/index.js
+var cui_light_core_dist_esm = __webpack_require__(13);
+
+// CONCATENATED MODULE: ./src/index.ts
+
+
+
+
+const CUI_LIGHT_VERSION = "0.2.0";
+const CUI_LIGHT_CORE_VER = cui_light_core_dist_esm["a" /* CUI_CORE_VERSION */];
+const CUI_LIGHT_COMPONENTS_VER = esm["a" /* CUI_LIGHT_COMPONENTS_VERSION */];
+const CUI_LIGHT_PLUGINS_VER = dist_esm["a" /* CUI_LIGHT_PLUGINS_VERSION */];
+
+window.cuiInit = new init_CuiInit();
+
+
+/***/ })
+
+/******/ });
+});
 //# sourceMappingURL=index.js.map

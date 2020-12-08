@@ -1,6 +1,6 @@
-import { CuiUtils } from "../src/core/models/utils"
-import { CuiSetupInit } from "../src/core/models/setup";
-import { ElementManager } from "../src/app/managers/element";
+import { CuiUtils } from "cui-light-core/dist/esm/models/utils"
+import { CuiSetupInit } from "cui-light-core/dist/esm/models/setup";
+import { ElementManager } from "../src/managers/element";
 
 describe("Tests checking class [managers -> elements]", function () {
     let utils: CuiUtils;

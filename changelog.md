@@ -1,5 +1,6 @@
 # bpd cUI Light changelog
-# [0.1.39] WIP
+# [0.2.0] 2020-12-08
+* [Added] Split core, plugins and components into separate projects. Change in in build features.
 # [0.1.38] 2020-11-18
 * [Added] Introduction to developing interface
 * [Fixed] Small adjustments and fixed to links in scrollspy
