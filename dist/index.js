@@ -1304,7 +1304,6 @@ class plugins_CuiPluginManager {
         plugins_log.set(this, void 0);
         plugins_classPrivateFieldSet(this, _plugins, plugins !== null && plugins !== void 0 ? plugins : []);
         plugins_classPrivateFieldSet(this, plugins_log, logger["a" /* CuiLoggerFactory */].get("CuiPluginManager"));
-        plugins_classPrivateFieldSet(this, _plugins, []);
         plugins_classPrivateFieldSet(this, _mutated, []);
     }
     init(utils) {
@@ -1711,7 +1710,7 @@ var cui_light_core_dist_esm = __webpack_require__(13);
 
 
 
-const CUI_LIGHT_VERSION = "0.2.0";
+const CUI_LIGHT_VERSION = "0.2.1";
 const CUI_LIGHT_CORE_VER = cui_light_core_dist_esm["a" /* CUI_CORE_VERSION */];
 const CUI_LIGHT_COMPONENTS_VER = esm["a" /* CUI_LIGHT_COMPONENTS_VERSION */];
 const CUI_LIGHT_PLUGINS_VER = dist_esm["a" /* CUI_LIGHT_PLUGINS_VERSION */];

@@ -1,4 +1,6 @@
 # bpd cUI Light changelog
+# [0.2.1] 2020-12-09
+* [Change] Move some interfaces to main project
 # [0.2.0] 2020-12-08
 * [Added] Split core, plugins and components into separate projects. Change in in build features.
 # [0.1.38] 2020-11-18

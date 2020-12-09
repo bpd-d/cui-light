@@ -1,5 +1,5 @@
-import { CuiCachable, CuiContext, ICuiPlugin, ICuiMutiationPlugin } from "../../src/core/models/interfaces";
-import { CuiUtils } from "../../src/core/models/utils";
+import { CuiCachable, CuiContext, ICuiPlugin, ICuiMutiationPlugin } from "cui-light-core/dist/esm/models/interfaces";
+import { CuiUtils } from "cui-light-core/dist/esm/models/utils";
 
 export class CacheTestItem implements CuiCachable {
     id: number;

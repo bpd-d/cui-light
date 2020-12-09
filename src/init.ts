@@ -1,6 +1,6 @@
-import { CuiInitData, ICuiPlugin, ICuiComponent } from "cui-light-core/dist/esm/models/interfaces";
+import { ICuiPlugin, ICuiComponent } from "cui-light-core/dist/esm/models/interfaces";
 import { is } from "cui-light-core/dist/esm/utils/functions";
-import { CuiInitializer } from "./initializer";
+import { CuiInitData, CuiInitializer } from "./initializer";
 import { GetComponents } from "cui-light-components/dist/esm/module";
 import { GetPlugins } from "cui-light-plugins/dist/esm/module"
 

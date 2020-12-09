@@ -2,8 +2,21 @@ import { CuiSetupInit } from "cui-light-core/dist/esm/models/setup";
 import { is } from "cui-light-core/dist/esm/utils/functions";
 import { CuiInstance } from "./instance";
 import { ICONS } from "cui-light-core/dist/esm/utils/statics";
-import { CuiInitData, CuiInitResult } from "cui-light-core/dist/esm/models/interfaces";
-import { SWIPE_ANIMATIONS_DEFINITIONS } from "cui-light-core/dist/esm/animation/definitions";
+import { ICuiComponent, ICuiPlugin } from "cui-light-core/dist/esm/models/interfaces";
+import { CuiAnimationsDefinition, SWIPE_ANIMATIONS_DEFINITIONS } from "cui-light-core/dist/esm/animation/definitions";
+
+export interface CuiInitData {
+    plugins?: ICuiPlugin[];
+    components?: ICuiComponent[];
+    setup?: CuiSetupInit;
+    icons?: any;
+    swipeAnimations?: CuiAnimationsDefinition;
+}
+
+export interface CuiInitResult {
+    result: boolean;
+    message?: string;
+}
 
 export class CuiInitializer {
     #window: any;

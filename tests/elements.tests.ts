@@ -189,7 +189,7 @@ describe("Tests checking class [managers -> elements]", function () {
         node.setAttribute('test', 'test');
         let output: string[] = element.getAttribute(null);
 
-        expect(output).toEqual(null);
+        expect(output).toEqual([]);
     })
 
 
@@ -197,8 +197,7 @@ describe("Tests checking class [managers -> elements]", function () {
         node.setAttribute('test', 'test');
         let output: string[] = element.getAttribute('xxx');
 
-        expect(output.length).toEqual(1);
-        expect(output[0]).toBeFalsy();
+        expect(output.length).toEqual(0);
     })
 
     it("Check method [setAttribute] - proper attribute", async function () {

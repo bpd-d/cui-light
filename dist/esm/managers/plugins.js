@@ -30,7 +30,6 @@ export class CuiPluginManager {
         _log.set(this, void 0);
         __classPrivateFieldSet(this, _plugins, plugins !== null && plugins !== void 0 ? plugins : []);
         __classPrivateFieldSet(this, _log, CuiLoggerFactory.get("CuiPluginManager"));
-        __classPrivateFieldSet(this, _plugins, []);
         __classPrivateFieldSet(this, _mutated, []);
     }
     init(utils) {

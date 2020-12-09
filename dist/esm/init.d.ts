@@ -1,4 +1,4 @@
-import { CuiInitData } from "cui-light-core/dist/esm/models/interfaces";
+import { CuiInitData } from "./initializer";
 export declare class CuiInit {
     #private;
     constructor();

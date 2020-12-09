@@ -12,7 +12,6 @@ export class CuiPluginManager implements ICuiPluginManager {
     constructor(plugins: ICuiPlugin[]) {
         this.#plugins = plugins ?? [];
         this.#log = CuiLoggerFactory.get("CuiPluginManager")
-        this.#plugins = [];
         this.#mutated = [];
     }
 
