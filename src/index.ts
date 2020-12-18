@@ -3,7 +3,7 @@ import { CUI_LIGHT_COMPONENTS_VERSION } from "cui-light-components/dist/esm/inde
 import { CUI_LIGHT_PLUGINS_VERSION } from "cui-light-plugins/dist/esm/index";
 import { CUI_CORE_VERSION } from "cui-light-core/dist/esm/index";
 
-export const CUI_LIGHT_VERSION = "0.2.1";
+export const CUI_LIGHT_VERSION = "0.2.2";
 export const CUI_LIGHT_CORE_VER = CUI_CORE_VERSION;
 export const CUI_LIGHT_COMPONENTS_VER = CUI_LIGHT_COMPONENTS_VERSION;
 export const CUI_LIGHT_PLUGINS_VER = CUI_LIGHT_PLUGINS_VERSION;

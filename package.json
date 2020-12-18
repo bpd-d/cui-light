@@ -1,6 +1,6 @@
 {
   "name": "cui-light",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "cUI light framework for the web",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -29,7 +29,8 @@
     "build:minify": "webpack --config webpack.build.minify.js",
     "test": "karma start karma.config.js",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "prod": "npm run build && npm run build:esm && npm run build:minify"
+    "prod": "npm run build && npm run build:esm && npm run build:minify",
+    "dev": "webpack-dev-server --config webpack.development.js"
   },
   "bugs": {
     "url": "https://github.com/bpd-d/cui-light/issues"
@@ -50,9 +51,9 @@
   "devDependencies": {
     "@types/jasmine": "^3.6.2",
     "clean-webpack-plugin": "^3.0.0",
-    "cui-light-components": "^0.2.1",
-    "cui-light-core": "^0.2.1",
-    "cui-light-plugins": "^0.2.1",
+    "cui-light-components": "^0.2.4",
+    "cui-light-core": "^0.2.5",
+    "cui-light-plugins": "^0.2.3",
     "dts-bundle": ">=0.7.3",
     "jasmine": "^3.6.3",
     "karma-typescript": "^5.2.0",

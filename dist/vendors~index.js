@@ -1854,7 +1854,7 @@ _interactions = new WeakMap();
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_LIGHT_COMPONENTS_VERSION; });
-const CUI_LIGHT_COMPONENTS_VERSION = "0.2.1";
+const CUI_LIGHT_COMPONENTS_VERSION = "0.2.4";
 
 
 /***/ }),
@@ -1863,7 +1863,7 @@ const CUI_LIGHT_COMPONENTS_VERSION = "0.2.1";
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_LIGHT_PLUGINS_VERSION; });
-const CUI_LIGHT_PLUGINS_VERSION = "0.2.1";
+const CUI_LIGHT_PLUGINS_VERSION = "0.2.3";
 
 
 /***/ }),
@@ -1872,35 +1872,7 @@ const CUI_LIGHT_PLUGINS_VERSION = "0.2.1";
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_CORE_VERSION; });
-const CUI_CORE_VERSION = "0.2.1";
-// export * from "./models/colors";
-// export * from "./models/errors";
-// export * from "./models/events";
-// export * from "./models/interfaces";
-// export * from "./models/setup";
-// export * from "./models/utils";
-// // Utils
-// export * from "./utils/actions";
-// export * from "./utils/dictionary";
-// export * from "./utils/functions";
-// export * from "./utils/interactions";
-// export * from "./utils/logger";
-// export * from "./utils/types";
-// export * from "./utils/statics";
-// export * from "./styles/appender";
-// // Factories
-// export * from "./factories/logger";
-// export * from "./factories/interactions";
-// //Helpers
-// export * from "./helpers/helpers";
-// // BUS
-// export * from "./bus/executors";
-// export * from "./bus/handlers";
-// export * from "./bus/bus";
-// // Listeners
-// export * from "./listeners/keys";
-// export * from "./listeners/media";
-// export * from "./listeners/scroll";
+const CUI_CORE_VERSION = "0.2.5";
 
 
 /***/ }),
@@ -3772,9 +3744,9 @@ class evaluator_CuiBasePositionEvaluator {
     setElementBox(box) {
         evaluator_classPrivateFieldSet(this, _box, box);
     }
-    setTarget(width, height) {
-        evaluator_classPrivateFieldSet(this, _targetWidth, width);
-        evaluator_classPrivateFieldSet(this, _targetHeight, height);
+    setTarget(targetBox) {
+        evaluator_classPrivateFieldSet(this, _targetWidth, targetBox.width);
+        evaluator_classPrivateFieldSet(this, _targetHeight, targetBox.height);
     }
     setMargin(value) {
         evaluator_classPrivateFieldSet(this, _margin, value);
@@ -3904,9 +3876,10 @@ class calculator_CuiBasePositionCalculator {
     setStatic(position) {
         calculator_classPrivateFieldSet(this, _static, position);
     }
-    calculate(elementBox, targetWidth, targetHeight) {
+    //targetWidth: number, targetHeight: number
+    calculate(elementBox, targetBox) {
         calculator_classPrivateFieldGet(this, _evaluator).setElementBox(elementBox);
-        calculator_classPrivateFieldGet(this, _evaluator).setTarget(targetWidth, targetHeight);
+        calculator_classPrivateFieldGet(this, _evaluator).setTarget(targetBox);
         if (Object(functions["w" /* is */])(calculator_classPrivateFieldGet(this, _static))) {
             calculator_classPrivateFieldGet(this, _log).debug("Evaluating static position");
             const [vertical, horizontal] = this.parse(calculator_classPrivateFieldGet(this, _static));
@@ -3919,7 +3892,6 @@ class calculator_CuiBasePositionCalculator {
         }
         vertical = vertical !== null && vertical !== void 0 ? vertical : "top";
         horizontal = horizontal !== null && horizontal !== void 0 ? horizontal : "center";
-        const joined = [vertical, horizontal].join("-");
         calculator_classPrivateFieldGet(this, _log).debug("Calculating position: " + vertical + "-" + horizontal);
         const [outVNum, outVPos] = calculator_classPrivateFieldGet(this, _evaluator).getAutoVerticalPosition(vertical);
         const [outHNum, outHPos] = calculator_classPrivateFieldGet(this, _evaluator).getAutoHorizontalPosition(horizontal);
@@ -4016,7 +3988,7 @@ var drop_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) 
     }
     return privateMap.get(receiver);
 };
-var _defOpenAct, drop_prefix, drop_prefix_1, drop_bodyClass, drop_attribute, _triggerHoverListener, _hoverListener, _trigger, drop_windowClickEventId, drop_openEventId, drop_closeEventId, _positionCalculator, _posClass, _dropParentCls, _autoTask, _actions;
+var _defOpenAct, drop_prefix, drop_prefix_1, drop_bodyClass, drop_attribute, _triggerHoverListener, _hoverListener, _trigger, drop_windowClickEventId, drop_openEventId, drop_closeEventId, _positionCalculator, _posClass, _autoTask, _actions;
 
 
 
@@ -4029,10 +4001,11 @@ const drop_drop_bodyClass = '{prefix}-drop-open';
 const DROP_POSITION = "{prefix}-drop-position-";
 const DROP_TRIGGER = "{prefix}-drop-trigger";
 const DROP_DEFAULT_TRIGGER = "> a, button";
+const DROP_DEFAULT_ANIMATION_CLS = '{prefix}-drop-animation-in';
 class drop_CuiDropArgs {
     constructor(prefix) {
         _defOpenAct.set(this, void 0);
-        drop_classPrivateFieldSet(this, _defOpenAct, Object(functions["D" /* replacePrefix */])('{prefix}-drop-animation-in', prefix));
+        drop_classPrivateFieldSet(this, _defOpenAct, Object(functions["D" /* replacePrefix */])(DROP_DEFAULT_ANIMATION_CLS, prefix));
         this.mode = "click";
         this.trigger = DROP_DEFAULT_TRIGGER;
         this.autoClose = false;
@@ -4084,7 +4057,6 @@ class drop_CuiDropHandler extends CuiHandler {
         drop_closeEventId.set(this, void 0);
         _positionCalculator.set(this, void 0);
         _posClass.set(this, void 0);
-        _dropParentCls.set(this, void 0);
         _autoTask.set(this, void 0);
         _actions.set(this, void 0);
         drop_classPrivateFieldSet(this, drop_attribute, attribute);
@@ -4100,7 +4072,6 @@ class drop_CuiDropHandler extends CuiHandler {
         drop_classPrivateFieldGet(this, _positionCalculator).setMargin(8);
         drop_classPrivateFieldGet(this, _positionCalculator).setPreferred("bottom-left");
         drop_classPrivateFieldSet(this, _posClass, "");
-        drop_classPrivateFieldSet(this, _dropParentCls, Object(functions["D" /* replacePrefix */])(DROP_TRIGGER, prefix));
         drop_classPrivateFieldSet(this, _triggerHoverListener, undefined);
         drop_classPrivateFieldSet(this, _trigger, this.element);
         drop_classPrivateFieldSet(this, _actions, []);
@@ -4119,9 +4090,6 @@ class drop_CuiDropHandler extends CuiHandler {
         drop_classPrivateFieldSet(this, _actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
         this.mutate(() => {
             AriaAttributes.setAria(this.element, 'aria-dropdown', "");
-            if (this.element.parentElement && !this.helper.hasClass(drop_classPrivateFieldGet(this, _dropParentCls), this.element.parentElement)) {
-                this.helper.setClass(drop_classPrivateFieldGet(this, _dropParentCls), this.element.parentElement);
-            }
         });
         this._log.debug("Initialized", "handle");
     }
@@ -4144,12 +4112,6 @@ class drop_CuiDropHandler extends CuiHandler {
     onDestroy() {
         this.detachEvent(statics["i" /* EVENTS */].OPEN, drop_classPrivateFieldGet(this, drop_openEventId));
         this.detachEvent(statics["i" /* EVENTS */].CLOSE, drop_classPrivateFieldGet(this, drop_closeEventId));
-        if (this.element.parentElement) {
-            this.mutate(() => {
-                //@ts-ignore
-                this.helper.removeClass(drop_classPrivateFieldGet(this, _dropParentCls), this.element.parentElement);
-            });
-        }
     }
     /**
     * Api Method open
@@ -4206,7 +4168,7 @@ class drop_CuiDropHandler extends CuiHandler {
         this.mutate(() => {
             const box = drop_classPrivateFieldGet(this, _trigger).getBoundingClientRect();
             try {
-                const [x, y, pos] = drop_classPrivateFieldGet(this, _positionCalculator).calculate(box, this.element.offsetWidth, this.element.offsetHeight);
+                const [x, y, pos] = drop_classPrivateFieldGet(this, _positionCalculator).calculate(box, this.element.getBoundingClientRect());
                 this.element.style.top = `${y - box.top}px`;
                 this.element.style.left = `${x - box.left}px`;
                 drop_classPrivateFieldSet(this, _posClass, Object(functions["D" /* replacePrefix */])(DROP_POSITION + pos, drop_classPrivateFieldGet(this, drop_prefix_1)));
@@ -4335,7 +4297,7 @@ class drop_CuiDropHandler extends CuiHandler {
         return ret !== null && ret !== void 0 ? ret : this.element;
     }
 }
-drop_prefix_1 = new WeakMap(), drop_bodyClass = new WeakMap(), drop_attribute = new WeakMap(), _triggerHoverListener = new WeakMap(), _hoverListener = new WeakMap(), _trigger = new WeakMap(), drop_windowClickEventId = new WeakMap(), drop_openEventId = new WeakMap(), drop_closeEventId = new WeakMap(), _positionCalculator = new WeakMap(), _posClass = new WeakMap(), _dropParentCls = new WeakMap(), _autoTask = new WeakMap(), _actions = new WeakMap();
+drop_prefix_1 = new WeakMap(), drop_bodyClass = new WeakMap(), drop_attribute = new WeakMap(), _triggerHoverListener = new WeakMap(), _hoverListener = new WeakMap(), _trigger = new WeakMap(), drop_windowClickEventId = new WeakMap(), drop_openEventId = new WeakMap(), drop_closeEventId = new WeakMap(), _positionCalculator = new WeakMap(), _posClass = new WeakMap(), _autoTask = new WeakMap(), _actions = new WeakMap();
 
 // EXTERNAL MODULE: ./node_modules/cui-light-core/dist/esm/listeners/move.js
 var move = __webpack_require__(7);
@@ -7581,7 +7543,7 @@ class tooltip_CuiTooltipArgs {
         this.content = "";
         this.width = 150;
         this.margin = 8;
-        this.timeout = 3000;
+        this.timeout = 2000;
         this.pos = "";
         this.action = tooltip_classPrivateFieldGet(this, _defAct);
     }
@@ -7595,7 +7557,7 @@ class tooltip_CuiTooltipArgs {
         this.margin = Object(functions["n" /* getIntOrDefault */])(val.margin, 8);
         this.pos = Object(functions["t" /* getStringOrDefault */])(val.pos, "");
         this.action = Object(functions["t" /* getStringOrDefault */])(val.action, tooltip_classPrivateFieldGet(this, _defAct));
-        this.timeout = Object(functions["n" /* getIntOrDefault */])(val.timeout, 3000);
+        this.timeout = Object(functions["n" /* getIntOrDefault */])(val.timeout, 2000);
     }
 }
 _defAct = new WeakMap();
@@ -7670,7 +7632,7 @@ class tooltip_CuiTooltipHandler extends CuiHandler {
             const toolbox = tooltip_classPrivateFieldGet(this, _tooltip).getBoundingClientRect();
             tooltip_classPrivateFieldGet(this, tooltip_positionCalculator).setMargin(tooltip_classPrivateFieldGet(this, tooltip_margin));
             try {
-                let [x, y] = tooltip_classPrivateFieldGet(this, tooltip_positionCalculator).calculate(box, toolbox.width, toolbox.height);
+                let [x, y] = tooltip_classPrivateFieldGet(this, tooltip_positionCalculator).calculate(box, toolbox);
                 tooltip_classPrivateFieldGet(this, _tooltip).style.top = `${y}px`;
                 tooltip_classPrivateFieldGet(this, _tooltip).style.left = `${x}px`;
                 this.toggleActions();
@@ -7678,7 +7640,7 @@ class tooltip_CuiTooltipHandler extends CuiHandler {
                     tooltip_classPrivateFieldGet(this, tooltip_task).start();
             }
             catch (e) {
-                this._log.exception(e);
+                this.logError(e.message, "createTooltip", e);
             }
         });
     }
@@ -7689,7 +7651,7 @@ class tooltip_CuiTooltipHandler extends CuiHandler {
         if (tooltip_classPrivateFieldGet(this, tooltip_task))
             tooltip_classPrivateFieldGet(this, tooltip_task).stop();
         this.mutate(() => {
-            //@ts-ignore already checkded
+            //@ts-ignore already checked
             tooltip_classPrivateFieldGet(this, _tooltip).remove();
             tooltip_classPrivateFieldSet(this, _tooltip, undefined);
         });
@@ -8986,22 +8948,30 @@ var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || 
     }
     return privateMap.get(receiver);
 };
-var _limit;
+var _writes, _reads, _raf, _isScheduled, _limit, _reportCallback;
 class FastDom {
     constructor() {
-        this.isScheduled = false;
+        _writes.set(this, void 0);
+        _reads.set(this, void 0);
+        _raf.set(this, void 0);
+        _isScheduled.set(this, false);
         _limit.set(this, void 0);
-        this.raf = window.requestAnimationFrame.bind(window);
-        this.writes = [];
-        this.reads = [];
+        _reportCallback.set(this, void 0);
+        __classPrivateFieldSet(this, _raf, window.requestAnimationFrame.bind(window));
+        __classPrivateFieldSet(this, _writes, []);
+        __classPrivateFieldSet(this, _reads, []);
         __classPrivateFieldSet(this, _limit, 5);
+        __classPrivateFieldSet(this, _reportCallback, undefined);
+    }
+    onError(callback) {
+        __classPrivateFieldSet(this, _reportCallback, callback);
     }
     mutate(callback, ctx, ...args) {
-        this.reads.push(this.createTask(callback, ctx, ...args));
+        __classPrivateFieldGet(this, _reads).push(this.createTask(callback, ctx, ...args));
         this.schedule();
     }
     fetch(callback, ctx, ...args) {
-        this.writes.push(this.createTask(callback, ctx, ...args));
+        __classPrivateFieldGet(this, _writes).push(this.createTask(callback, ctx, ...args));
         this.schedule();
     }
     createTask(callback, ctx, ...args) {
@@ -9014,39 +8984,42 @@ class FastDom {
         }
     }
     schedule(recursion) {
-        if (!this.isScheduled) {
-            this.isScheduled = true;
+        if (!__classPrivateFieldGet(this, _isScheduled)) {
+            __classPrivateFieldSet(this, _isScheduled, true);
             if (recursion && recursion >= __classPrivateFieldGet(this, _limit)) {
                 throw new Error("Fast Dom limit reached");
             }
             else {
-                this.raf(this.flush.bind(this, recursion));
+                __classPrivateFieldGet(this, _raf).call(this, this.flush.bind(this, recursion));
             }
         }
     }
     flush(recursion) {
         let rec = recursion !== null && recursion !== void 0 ? recursion : 0;
         let error = null;
-        let writes = this.writes;
-        let reads = this.reads;
+        let writes = __classPrivateFieldGet(this, _writes);
+        let reads = __classPrivateFieldGet(this, _reads);
         try {
             this.run(reads);
             this.run(writes);
         }
         catch (e) {
+            if (__classPrivateFieldGet(this, _reportCallback)) {
+                __classPrivateFieldGet(this, _reportCallback).call(this, e);
+            }
+            else {
+                console.error(`An error has been captured in interactions: ${e.message}`);
+                //console.error(e)
+            }
             error = e;
-            console.error(e);
         }
-        this.isScheduled = false;
-        if (error) {
-            this.schedule(rec + 1);
-        }
-        if (this.writes.length || this.reads.length) {
+        __classPrivateFieldSet(this, _isScheduled, false);
+        if (error || __classPrivateFieldGet(this, _writes).length || __classPrivateFieldGet(this, _reads).length) {
             this.schedule(rec + 1);
         }
     }
 }
-_limit = new WeakMap();
+_writes = new WeakMap(), _reads = new WeakMap(), _raf = new WeakMap(), _isScheduled = new WeakMap(), _limit = new WeakMap(), _reportCallback = new WeakMap();
 class SyncInteractions {
     constructor() {
         this.isRunning = false;
@@ -9090,11 +9063,14 @@ class interactions_CuiInteractionsFactory {
      * Gets new instance of component focused logger
      * @param type - Interactions type
      */
-    static get(type) {
+    static get(type, errorReport) {
         const interactionType = type;
         switch (interactionType) {
             case 'async':
-                return new FastDom();
+                const fastDom = new FastDom();
+                if (errorReport)
+                    fastDom.onError(errorReport);
+                return fastDom;
             default:
                 return new SyncInteractions();
         }
@@ -9972,32 +9948,34 @@ class development_CuiDevelopmentToolManager {
         development_classPrivateFieldSet(this, _tool, tool);
     }
     pushState(cuid, component, type, message, functionName) {
-        if (!Object(functions["w" /* is */])(development_classPrivateFieldGet(this, _tool))) {
-            return;
-        }
-        // @ts-ignore - tool already checked
-        development_classPrivateFieldGet(this, _tool).pushState(cuid, component, type, message, functionName);
+        this.checkAndCall(() => {
+            // @ts-ignore - tool already checked
+            development_classPrivateFieldGet(this, _tool).pushState(cuid, component, type, message, functionName);
+        });
     }
     registerElement(element, cuid, component) {
-        if (!Object(functions["w" /* is */])(development_classPrivateFieldGet(this, _tool))) {
-            return;
-        }
-        // @ts-ignore - tool already checked
-        development_classPrivateFieldGet(this, _tool).registerElement(element, cuid, component);
+        this.checkAndCall(() => {
+            // @ts-ignore - tool already checked
+            development_classPrivateFieldGet(this, _tool).registerElement(element, cuid, component);
+        });
     }
     unregisterElement(cuid, component) {
-        if (!Object(functions["w" /* is */])(development_classPrivateFieldGet(this, _tool))) {
-            return;
-        }
-        // @ts-ignore - tool already checked
-        development_classPrivateFieldGet(this, _tool).unregisterElement(cuid, component);
+        this.checkAndCall(() => {
+            // @ts-ignore - tool already checked
+            development_classPrivateFieldGet(this, _tool).unregisterElement(cuid, component);
+        });
     }
     setProperty(cuid, component, name, t) {
+        this.checkAndCall(() => {
+            // @ts-ignore - tool already checked
+            development_classPrivateFieldGet(this, _tool).setProperty(cuid, component, name, t);
+        });
+    }
+    checkAndCall(callback) {
         if (!Object(functions["w" /* is */])(development_classPrivateFieldGet(this, _tool))) {
             return;
         }
-        // @ts-ignore - tool already checked
-        development_classPrivateFieldGet(this, _tool).setProperty(cuid, component, name, t);
+        callback();
     }
 }
 _tool = new WeakMap();
@@ -10032,7 +10010,7 @@ class utils_CuiUtils {
     constructor(initialSetup) {
         _resizeObserver.set(this, void 0);
         this.setup = new models_setup["a" /* CuiSetup */]().fromInit(initialSetup);
-        this.interactions = interactions_CuiInteractionsFactory.get(initialSetup.interaction);
+        this.interactions = interactions_CuiInteractionsFactory.get(initialSetup.interaction, this.onInteractionError.bind(this));
         this.cache = new cache_CuiCacheManager(this.setup.cacheSize);
         this.bus = bus_CuiEventBusFactory.get(initialSetup.busSetup);
         this.colors = new colors_CuiInstanceColorHandler(this.interactions);
@@ -10079,6 +10057,10 @@ class utils_CuiUtils {
         }
         let prop = Object(functions["D" /* replacePrefix */])(name, this.setup.prefix);
         document.documentElement.style.setProperty(prop, value);
+    }
+    onInteractionError(e) {
+        console.error("An error has been captured from interactions");
+        console.error(e);
     }
 }
 _resizeObserver = new WeakMap();
