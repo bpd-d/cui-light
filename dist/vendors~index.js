@@ -1614,7 +1614,7 @@ class CuiMutationObserver {
             switch (mutation.type) {
                 case 'attributes':
                     const item = mutation.target;
-                    if (Object(_utils_functions__WEBPACK_IMPORTED_MODULE_1__[/* is */ "w"])(mutation.attributeName)) {
+                    if (Object(_utils_functions__WEBPACK_IMPORTED_MODULE_1__[/* are */ "b"])(mutation.attributeName, item)) {
                         // @ts-ignore - attribute name is checked
                         if (Object(_utils_functions__WEBPACK_IMPORTED_MODULE_1__[/* are */ "b"])(item.$handlers, item.$handlers[mutation.attributeName])) {
                             // @ts-ignore - attribute name is checked
@@ -1622,7 +1622,7 @@ class CuiMutationObserver {
                         }
                     }
                     else {
-                        this._log.error("Mutation attribute doesn't not exisits");
+                        this._log.error("Mutation attribute doesn't not exisist");
                     }
                     break;
                 case 'childList':
@@ -1854,7 +1854,7 @@ _interactions = new WeakMap();
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_LIGHT_COMPONENTS_VERSION; });
-const CUI_LIGHT_COMPONENTS_VERSION = "0.2.4";
+const CUI_LIGHT_COMPONENTS_VERSION = "0.2.5";
 
 
 /***/ }),
@@ -1863,7 +1863,7 @@ const CUI_LIGHT_COMPONENTS_VERSION = "0.2.4";
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_LIGHT_PLUGINS_VERSION; });
-const CUI_LIGHT_PLUGINS_VERSION = "0.2.3";
+const CUI_LIGHT_PLUGINS_VERSION = "0.2.4";
 
 
 /***/ }),
@@ -1872,7 +1872,7 @@ const CUI_LIGHT_PLUGINS_VERSION = "0.2.3";
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_CORE_VERSION; });
-const CUI_CORE_VERSION = "0.2.5";
+const CUI_CORE_VERSION = "0.2.6";
 
 
 /***/ }),
@@ -2729,6 +2729,7 @@ class engine_CuiAnimationEngine {
         _onFinishCallback.set(this, void 0);
         _animators.set(this, void 0);
         _lock.set(this, void 0);
+        // Needed in animation perform - set on first animation exec, cleaned on end
         _animStartStamp.set(this, void 0);
         _element.set(this, void 0);
         _cleanOnFinish.set(this, void 0);
@@ -2737,7 +2738,7 @@ class engine_CuiAnimationEngine {
         _onError_1.set(this, void 0);
         engine_classPrivateFieldSet(this, _animators, []);
         engine_classPrivateFieldSet(this, _element, undefined);
-        engine_classPrivateFieldSet(this, _animStartStamp, -1);
+        engine_classPrivateFieldSet(this, _animStartStamp, undefined);
         engine_classPrivateFieldSet(this, _cleanOnFinish, cleanOnFinish !== null && cleanOnFinish !== void 0 ? cleanOnFinish : false);
         engine_classPrivateFieldSet(this, _factory_1, new engine_AnimatorFactory());
         engine_classPrivateFieldSet(this, _lock, false);
@@ -2820,7 +2821,7 @@ class engine_CuiAnimationEngine {
             engine_classPrivateFieldGet(this, _onFinishCallback).call(this, engine_classPrivateFieldGet(this, _element), reverted, engine_classPrivateFieldGet(this, _errorOccured));
         }
         engine_classPrivateFieldSet(this, _errorOccured, false);
-        engine_classPrivateFieldSet(this, _animStartStamp, -1);
+        engine_classPrivateFieldSet(this, _animStartStamp, undefined);
         engine_classPrivateFieldSet(this, _lock, false);
     }
     callUpdate(progress, factor) {
@@ -3003,8 +3004,8 @@ class banner_CuiBannerHandler extends base_CuiInteractableHandler {
         banner_classPrivateFieldSet(this, _isTracking, false);
     }
     onInit() {
-        banner_classPrivateFieldSet(this, _moveEventId, this.onEvent(statics["i" /* EVENTS */].GLOBAL_MOVE, this.onMove.bind(this)));
-        if (this.isActive()) {
+        //   this.#moveEventId = this.onEvent(EVENTS.GLOBAL_MOVE, this.onMove.bind(this));
+        if (!this.isActive()) {
             this.open();
         }
     }
@@ -6791,7 +6792,7 @@ class slider_CuiSliderHandler extends base_CuiMutableHandler {
         slider_classPrivateFieldSet(this, slider_startX, -1);
         slider_classPrivateFieldSet(this, _swipeRatio, 0);
         slider_classPrivateFieldSet(this, _nextElement, null);
-        slider_classPrivateFieldSet(this, _ratioThreshold, 0.5);
+        slider_classPrivateFieldSet(this, _ratioThreshold, 0.4);
         slider_classPrivateFieldSet(this, _currSlider, new engine_CuiSwipeAnimationEngine());
         slider_classPrivateFieldSet(this, _nextSlider, new engine_CuiSwipeAnimationEngine());
         slider_classPrivateFieldGet(this, _currSlider).setOnFinish(this.onAnimationFinish.bind(this));
@@ -6952,7 +6953,7 @@ class slider_CuiSliderHandler extends base_CuiMutableHandler {
             }
         }
         else {
-            if (!Object(functions["w" /* is */])(slider_classPrivateFieldGet(this, _nextElement))) {
+            if (Object(functions["w" /* is */])(slider_classPrivateFieldGet(this, _nextElement))) {
                 //@ts-ignore
                 this.helper.removeClass(statics["a" /* CLASSES */].animProgress, slider_classPrivateFieldGet(this, _nextElement));
                 //@ts-ignore
@@ -9969,6 +9970,12 @@ class development_CuiDevelopmentToolManager {
         this.checkAndCall(() => {
             // @ts-ignore - tool already checked
             development_classPrivateFieldGet(this, _tool).setProperty(cuid, component, name, t);
+        });
+    }
+    log(type, message, functionName) {
+        this.checkAndCall(() => {
+            // @ts-ignore - tool already checked
+            development_classPrivateFieldGet(this, _tool).log(type, message, functionName);
         });
     }
     checkAndCall(callback) {
