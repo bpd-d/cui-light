@@ -252,7 +252,7 @@ class element_ElementManager {
     }
     toggleClass(className) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             return this.call((element) => {
@@ -267,7 +267,7 @@ class element_ElementManager {
     }
     toggleClassAs(className) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             return this.call((element) => {
@@ -285,7 +285,7 @@ class element_ElementManager {
     }
     setClass(className) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             return this.call((element) => {
@@ -297,7 +297,7 @@ class element_ElementManager {
     }
     setClassAs(className) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             return this.call((element) => {
@@ -312,7 +312,7 @@ class element_ElementManager {
     }
     removeClass(className) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             return this.call((element) => {
@@ -324,7 +324,7 @@ class element_ElementManager {
     }
     removeClassAs(className) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             return this.call((element) => {
@@ -338,7 +338,7 @@ class element_ElementManager {
         });
     }
     getAttribute(attributeName) {
-        if (!Object(functions["w" /* is */])(attributeName)) {
+        if (!Object(functions["x" /* is */])(attributeName)) {
             return [];
         }
         return __classPrivateFieldGet(this, _elements).reduce((val, current) => {
@@ -351,7 +351,7 @@ class element_ElementManager {
     }
     setAttribute(attributeName, attributeValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(attributeName)) {
+            if (!Object(functions["x" /* is */])(attributeName)) {
                 return false;
             }
             return this.call((element) => {
@@ -361,7 +361,7 @@ class element_ElementManager {
     }
     setAttributeAs(attributeName, attributeValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(attributeName)) {
+            if (!Object(functions["x" /* is */])(attributeName)) {
                 return false;
             }
             return this.call((element) => {
@@ -371,7 +371,7 @@ class element_ElementManager {
     }
     removeAttribute(attributeName) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(attributeName)) {
+            if (!Object(functions["x" /* is */])(attributeName)) {
                 return false;
             }
             return this.call((element) => {
@@ -381,7 +381,7 @@ class element_ElementManager {
     }
     removeAttributeAs(attributeName) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(attributeName)) {
+            if (!Object(functions["x" /* is */])(attributeName)) {
                 return false;
             }
             return this.call((element) => {
@@ -391,7 +391,7 @@ class element_ElementManager {
     }
     toggleAttribute(attributeName, attributeValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(attributeName)) {
+            if (!Object(functions["x" /* is */])(attributeName)) {
                 return false;
             }
             return this.call((element) => {
@@ -406,7 +406,7 @@ class element_ElementManager {
     }
     toggleAttributeAs(attributeName, attributeValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(attributeName)) {
+            if (!Object(functions["x" /* is */])(attributeName)) {
                 return false;
             }
             return this.call((element) => {
@@ -423,7 +423,7 @@ class element_ElementManager {
     }
     click(onClick) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(onClick)) {
+            if (!Object(functions["x" /* is */])(onClick)) {
                 return false;
             }
             return this.call((element) => {
@@ -434,7 +434,7 @@ class element_ElementManager {
     }
     event(eventName, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(eventName) || !Object(functions["w" /* is */])(callback)) {
+            if (!Object(functions["x" /* is */])(eventName) || !Object(functions["x" /* is */])(callback)) {
                 return false;
             }
             return this.call((element) => {
@@ -457,7 +457,7 @@ class element_ElementManager {
     }
     animate(className, timeout) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!Object(functions["w" /* is */])(className)) {
+            if (!Object(functions["x" /* is */])(className)) {
                 return false;
             }
             const delay = timeout !== null && timeout !== void 0 ? timeout : __classPrivateFieldGet(this, _utils).setup.animationTime;
@@ -504,13 +504,13 @@ class element_ElementManager {
         });
     }
     emit(event, ...args) {
-        if (!Object(functions["w" /* is */])(event)) {
+        if (!Object(functions["x" /* is */])(event)) {
             __classPrivateFieldGet(this, _logger).warning("Not enough data to emit event", "emit");
             return;
         }
         this.call((element) => {
             let cuid = element.$cuid;
-            if (Object(functions["w" /* is */])(cuid)) {
+            if (Object(functions["x" /* is */])(cuid)) {
                 __classPrivateFieldGet(this, _logger).debug(`Emitting event ${event} to ${cuid}`);
                 __classPrivateFieldGet(this, _utils).bus.emit(event, cuid, ...args);
             }
@@ -524,7 +524,7 @@ class element_ElementManager {
         }
         this.call((element) => {
             let cuiElement = element;
-            if (Object(functions["w" /* is */])(cuiElement)) {
+            if (Object(functions["x" /* is */])(cuiElement)) {
                 let disposeId = __classPrivateFieldGet(this, _utils).bus.on(event, callback, cuiElement);
                 if (disposeId != null)
                     ids.push(disposeId);
@@ -538,7 +538,7 @@ class element_ElementManager {
         }
         this.call((element) => {
             let cuiElement = element;
-            if (Object(functions["w" /* is */])(cuiElement)) {
+            if (Object(functions["x" /* is */])(cuiElement)) {
                 __classPrivateFieldGet(this, _utils).bus.detach(event, id, cuiElement);
             }
         }, "detach");
@@ -604,10 +604,10 @@ class dialog_DialogBuilder {
         dialog_classPrivateFieldSet(this, _reverse, reverse);
     }
     createHeader(title, classes, elements) {
-        if (!Object(functions["w" /* is */])(classes)) {
+        if (!Object(functions["x" /* is */])(classes)) {
             classes = [];
         }
-        if (!Object(functions["w" /* is */])(elements)) {
+        if (!Object(functions["x" /* is */])(elements)) {
             elements = [];
         }
         let headerBuilder = new builders_element["a" /* ElementBuilder */]('div');
@@ -619,10 +619,10 @@ class dialog_DialogBuilder {
         this.appendChildrens(dialog_classPrivateFieldGet(this, _header), ...elements);
     }
     createFooter(classes, elements) {
-        if (!Object(functions["w" /* is */])(classes)) {
+        if (!Object(functions["x" /* is */])(classes)) {
             classes = [];
         }
-        if (!Object(functions["w" /* is */])(elements)) {
+        if (!Object(functions["x" /* is */])(elements)) {
             elements = [];
         }
         dialog_classPrivateFieldSet(this, _footer, new builders_element["a" /* ElementBuilder */]('div').setClasses(this.getPrefixedString("-dialog-footer"), ...classes).build());
@@ -630,10 +630,10 @@ class dialog_DialogBuilder {
         this.appendChildrens(dialog_classPrivateFieldGet(this, _footer), ...elements);
     }
     createBody(classes, elements) {
-        if (!Object(functions["w" /* is */])(classes)) {
+        if (!Object(functions["x" /* is */])(classes)) {
             classes = [];
         }
-        if (!Object(functions["w" /* is */])(elements)) {
+        if (!Object(functions["x" /* is */])(elements)) {
             elements = [];
         }
         dialog_classPrivateFieldSet(this, _body, new builders_element["a" /* ElementBuilder */]('div').setClasses(this.getPrefixedString("-dialog-body"), ...classes).build());
@@ -659,7 +659,7 @@ class dialog_DialogBuilder {
         return dialog;
     }
     appendChildrens(parent, ...elements) {
-        if (Object(functions["w" /* is */])(elements)) {
+        if (Object(functions["x" /* is */])(elements)) {
             elements.forEach((element) => parent.appendChild(element));
         }
     }
@@ -717,7 +717,7 @@ class alert_CuiAlertHandlerBase {
     }
     show(root) {
         let element = document.getElementById(alert_classPrivateFieldGet(this, _id));
-        if (!Object(functions["w" /* is */])(element)) {
+        if (!Object(functions["x" /* is */])(element)) {
             element = this.createElement();
             root.appendChild(element);
         }
@@ -747,8 +747,8 @@ class alert_CuiAlertHandlerBase {
     }
     onClose(arg) {
         try {
-            if (Object(functions["w" /* is */])(arg) && arg.state && alert_classPrivateFieldGet(this, _callbacks)) {
-                if (Object(functions["w" /* is */])(alert_classPrivateFieldGet(this, _callbacks)[arg.state])) {
+            if (Object(functions["x" /* is */])(arg) && arg.state && alert_classPrivateFieldGet(this, _callbacks)) {
+                if (Object(functions["x" /* is */])(alert_classPrivateFieldGet(this, _callbacks)[arg.state])) {
                     let callback = alert_classPrivateFieldGet(this, _callbacks)[arg.state];
                     if (callback) {
                         callback();
@@ -995,11 +995,11 @@ class toast_CuiToastHandler {
             }
             toast_classPrivateFieldSet(this, _lock, true);
             let toastElement = document.querySelector(toast_classPrivateFieldGet(this, _selector));
-            if (!Object(functions["w" /* is */])(toastElement)) {
+            if (!Object(functions["x" /* is */])(toastElement)) {
                 toastElement = document.createElement('div');
                 toastElement.classList.add(toast_classPrivateFieldGet(this, _className));
                 document.body.appendChild(toastElement);
-                yield Object(functions["E" /* sleep */])(10);
+                yield Object(functions["F" /* sleep */])(10);
             }
             toast_classPrivateFieldGet(this, _interactions).mutate(() => {
                 //@ts-ignore
@@ -1009,7 +1009,7 @@ class toast_CuiToastHandler {
                 //@ts-ignore
                 toastElement.classList.add(toast_classPrivateFieldGet(this, _animClsIn));
             }, this);
-            yield Object(functions["E" /* sleep */])(toast_classPrivateFieldGet(this, _animationTime));
+            yield Object(functions["F" /* sleep */])(toast_classPrivateFieldGet(this, _animationTime));
             toast_classPrivateFieldGet(this, _interactions).mutate(() => {
                 //@ts-ignore
                 toastElement.classList.remove(statics["a" /* CLASSES */].animProgress);
@@ -1018,7 +1018,7 @@ class toast_CuiToastHandler {
                 //@ts-ignore
                 toastElement.classList.add(toast_classPrivateFieldGet(this, _activeCls));
             }, this);
-            yield Object(functions["E" /* sleep */])(3000);
+            yield Object(functions["F" /* sleep */])(3000);
             toast_classPrivateFieldGet(this, _interactions).mutate(() => {
                 //@ts-ignore
                 toastElement.classList.add(statics["a" /* CLASSES */].animProgress);
@@ -1129,7 +1129,7 @@ class collection_CollectionManagerHelper {
         });
     }
     getCurrentIndex() {
-        if (!Object(functions["w" /* is */])(collection_classPrivateFieldGet(this, _toggleClass))) {
+        if (!Object(functions["x" /* is */])(collection_classPrivateFieldGet(this, _toggleClass))) {
             return -1;
         }
         let len = this.count();
@@ -1148,7 +1148,7 @@ class collection_CollectionManagerHelper {
             collection_classPrivateFieldGet(this, _log).warning("Object locked. Operation in progress", "Check");
             return false;
         }
-        else if (!Object(functions["w" /* is */])(collection_classPrivateFieldGet(this, _toggleClass))) {
+        else if (!Object(functions["x" /* is */])(collection_classPrivateFieldGet(this, _toggleClass))) {
             collection_classPrivateFieldGet(this, _log).warning("Toggle is not set. Call setToggleClass", "Check");
             return false;
         }
@@ -1309,7 +1309,7 @@ class plugins_CuiPluginManager {
     init(utils) {
         plugins_classPrivateFieldGet(this, plugins_log).debug("Plugins initialization started: " + plugins_classPrivateFieldGet(this, _plugins).length);
         plugins_classPrivateFieldSet(this, _mutated, plugins_classPrivateFieldGet(this, _plugins).filter((plugin) => {
-            return Object(functions["w" /* is */])(plugin.mutation);
+            return Object(functions["x" /* is */])(plugin.mutation);
         }));
         plugins_classPrivateFieldGet(this, _plugins).forEach(plugin => {
             plugin.init(utils);
@@ -1318,7 +1318,7 @@ class plugins_CuiPluginManager {
         plugins_classPrivateFieldGet(this, plugins_log).debug("Plugins have been initialized");
     }
     get(name) {
-        if (!Object(functions["w" /* is */])(name)) {
+        if (!Object(functions["x" /* is */])(name)) {
             return undefined;
         }
         return plugins_classPrivateFieldGet(this, _plugins).find(p => p.name === name);
@@ -1401,19 +1401,19 @@ class instance_CuiInstance {
         var _a;
         instance_classPrivateFieldGet(this, instance_log).debug("Instance started", "init");
         // Init elements
-        if (!Object(functions["w" /* is */])(window.MutationObserver)) {
+        if (!Object(functions["x" /* is */])(window.MutationObserver)) {
             throw new errors["e" /* CuiInstanceInitError */]("Mutation observer does not exists");
         }
         instance_classPrivateFieldSet(this, _toastManager, new toast_CuiToastHandler(instance_classPrivateFieldGet(this, instance_utils).interactions, instance_classPrivateFieldGet(this, instance_utils).setup.prefix, (_a = instance_classPrivateFieldGet(this, instance_utils).setup.animationTimeLong) !== null && _a !== void 0 ? _a : 0));
         instance_classPrivateFieldSet(this, _mutatedAttributes, instance_classPrivateFieldGet(this, _components).map(x => { return x.attribute; })); // MUTATED_ATTRIBUTES; 
-        const initElements = Object(functions["w" /* is */])(instance_classPrivateFieldGet(this, _mutatedAttributes)) ? instance_classPrivateFieldGet(this, _rootElement).querySelectorAll(Object(functions["A" /* joinAttributesForQuery */])(instance_classPrivateFieldGet(this, _mutatedAttributes))) : null;
-        if (Object(functions["w" /* is */])(initElements)) {
+        const initElements = Object(functions["x" /* is */])(instance_classPrivateFieldGet(this, _mutatedAttributes)) ? instance_classPrivateFieldGet(this, _rootElement).querySelectorAll(Object(functions["B" /* joinAttributesForQuery */])(instance_classPrivateFieldGet(this, _mutatedAttributes))) : null;
+        if (Object(functions["x" /* is */])(initElements)) {
             //@ts-ignore initElements already checked
             instance_classPrivateFieldGet(this, instance_log).debug(`Initiating ${initElements.length} elements`);
             try {
                 //@ts-ignore initElements already checked
                 initElements.forEach((item) => {
-                    Object(functions["C" /* registerCuiElement */])(item, instance_classPrivateFieldGet(this, _components), instance_classPrivateFieldGet(this, _mutatedAttributes), instance_classPrivateFieldGet(this, instance_utils));
+                    Object(functions["D" /* registerCuiElement */])(item, instance_classPrivateFieldGet(this, _components), instance_classPrivateFieldGet(this, _mutatedAttributes), instance_classPrivateFieldGet(this, instance_utils));
                 });
             }
             catch (e) {
@@ -1456,7 +1456,7 @@ class instance_CuiInstance {
     }
     collection(selector) {
         const elements = this.all(selector);
-        if (!Object(functions["w" /* is */])(elements)) {
+        if (!Object(functions["x" /* is */])(elements)) {
             return undefined;
         }
         // @ts-ignore already checked
@@ -1477,7 +1477,7 @@ class instance_CuiInstance {
     }
     all(selector) {
         const nodes = document.querySelectorAll(selector);
-        if (!Object(functions["w" /* is */])(nodes)) {
+        if (!Object(functions["x" /* is */])(nodes)) {
             return undefined;
         }
         return [...nodes];
@@ -1498,7 +1498,7 @@ class instance_CuiInstance {
         instance_classPrivateFieldGet(this, instance_utils).bus.detach(event, id);
     }
     detachAll(event) {
-        if (!Object(functions["w" /* is */])(event)) {
+        if (!Object(functions["x" /* is */])(event)) {
             instance_classPrivateFieldGet(this, instance_log).error("Incorrect arguments", "detachAll");
         }
         instance_classPrivateFieldGet(this, instance_utils).bus.detachAll(event);
@@ -1510,7 +1510,7 @@ class instance_CuiInstance {
         }
         let el = typeof element === 'string' ? document.querySelector(element) : element;
         let cuid = el.$cuid;
-        if (!Object(functions["w" /* is */])(cuid)) {
+        if (!Object(functions["x" /* is */])(cuid)) {
             instance_classPrivateFieldGet(this, instance_log).warning("Element is not a cUI element", "emit");
             return;
         }
@@ -1528,7 +1528,7 @@ class instance_CuiInstance {
         return instance_classPrivateFieldGet(this, instance_plugins).get(name);
     }
     createCuiElement(element, arg, data) {
-        if (!Object(functions["w" /* is */])(arg) || !instance_classPrivateFieldGet(this, _mutatedAttributes).includes(arg)) {
+        if (!Object(functions["x" /* is */])(arg) || !instance_classPrivateFieldGet(this, _mutatedAttributes).includes(arg)) {
             instance_classPrivateFieldGet(this, instance_log).error("Element cannot be created: Unknown attribute");
             return false;
         }
@@ -1586,16 +1586,16 @@ class initializer_CuiInitializer {
             const result = {
                 result: false
             };
-            if (Object(functions["w" /* is */])(initializer_classPrivateFieldGet(this, _window)[appPrefix])) {
+            if (Object(functions["x" /* is */])(initializer_classPrivateFieldGet(this, _window)[appPrefix])) {
                 result.message = "Instance is already initialized";
                 return result;
             }
-            if (Object(functions["w" /* is */])(setup.icons)) {
+            if (Object(functions["x" /* is */])(setup.icons)) {
                 for (let icon in setup.icons) {
                     statics["j" /* ICONS */][icon] = setup.icons[icon];
                 }
             }
-            if (Object(functions["w" /* is */])(setup.swipeAnimations)) {
+            if (Object(functions["x" /* is */])(setup.swipeAnimations)) {
                 for (let animation in setup.swipeAnimations) {
                     definitions["a" /* SWIPE_ANIMATIONS_DEFINITIONS */][animation] = setup.swipeAnimations[animation];
                 }
@@ -1616,7 +1616,7 @@ class initializer_CuiInitializer {
 }
 _window = new WeakMap();
 
-// EXTERNAL MODULE: ./node_modules/cui-light-components/dist/esm/module.js + 40 modules
+// EXTERNAL MODULE: ./node_modules/cui-light-components/dist/esm/module.js + 41 modules
 var esm_module = __webpack_require__(14);
 
 // EXTERNAL MODULE: ./node_modules/cui-light-plugins/dist/esm/module.js + 12 modules
@@ -1679,7 +1679,7 @@ class init_CuiInit {
                 icons: data.icons,
                 plugins: appPlugins,
                 // @ts-ignore already checked
-                components: Object(functions["w" /* is */])(data.components) ? [...componentList, ...data.components] : componentList,
+                components: Object(functions["x" /* is */])(data.components) ? [...componentList, ...data.components] : componentList,
                 swipeAnimations: data.swipeAnimations
             });
             if (result.result) {
@@ -1710,7 +1710,7 @@ var cui_light_core_dist_esm = __webpack_require__(13);
 
 
 
-const CUI_LIGHT_VERSION = "0.2.3";
+const CUI_LIGHT_VERSION = "0.2.4";
 const CUI_LIGHT_CORE_VER = cui_light_core_dist_esm["a" /* CUI_CORE_VERSION */];
 const CUI_LIGHT_COMPONENTS_VER = esm["a" /* CUI_LIGHT_COMPONENTS_VERSION */];
 const CUI_LIGHT_PLUGINS_VER = dist_esm["a" /* CUI_LIGHT_PLUGINS_VERSION */];
