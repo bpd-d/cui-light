@@ -1,4 +1,6 @@
 # bpd cUI Light changelog
+# [0.2.5] 2020-01-15
+* [Changed] Update dependencies
 # [0.2.4] 2020-01-14
 * [Changed] Update dependencies
 # [0.2.3] 2020-01-10

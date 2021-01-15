@@ -15,10 +15,10 @@ import { CuiAnimationsDefinition } from "cui-light-core/dist/esm/animation/defin
 import { CuiCachable } from "cui-light-core/dist/esm/models/interfaces";
 import { IUIInteractionProvider, CuiCachable } from "cui-light-core/dist/esm/models/interfaces";
 
-export const CUI_LIGHT_VERSION = "0.2.4";
+export const CUI_LIGHT_VERSION = "0.2.5";
 export const CUI_LIGHT_CORE_VER: string;
-export const CUI_LIGHT_COMPONENTS_VER = "0.2.6";
-export const CUI_LIGHT_PLUGINS_VER = "0.2.5";
+export const CUI_LIGHT_COMPONENTS_VER = "0.2.7";
+export const CUI_LIGHT_PLUGINS_VER = "0.2.6";
 global {
     interface Window {
         cuiInit: CuiInit;

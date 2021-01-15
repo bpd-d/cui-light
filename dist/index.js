@@ -481,7 +481,7 @@ class element_ElementManager {
                 return false;
             }
             const delay = timeout !== null && timeout !== void 0 ? timeout : __classPrivateFieldGet(this, _utils).setup.animationTime;
-            const action = new actions["b" /* CuiClassAction */](animationClass);
+            const action = new actions["c" /* CuiClassAction */](animationClass);
             return this.call((element) => {
                 __classPrivateFieldGet(this, _actionsHelper).performAction(element, action, delay !== null && delay !== void 0 ? delay : 0).then(() => {
                     element.classList.add(openClass);
@@ -495,7 +495,7 @@ class element_ElementManager {
                 return false;
             }
             const delay = timeout !== null && timeout !== void 0 ? timeout : __classPrivateFieldGet(this, _utils).setup.animationTime;
-            const action = new actions["b" /* CuiClassAction */](animationClass);
+            const action = new actions["c" /* CuiClassAction */](animationClass);
             return this.call((element) => {
                 __classPrivateFieldGet(this, _actionsHelper).performAction(element, action, delay !== null && delay !== void 0 ? delay : 0).then(() => {
                     element.classList.remove(closeClass);
@@ -1710,7 +1710,7 @@ var cui_light_core_dist_esm = __webpack_require__(13);
 
 
 
-const CUI_LIGHT_VERSION = "0.2.4";
+const CUI_LIGHT_VERSION = "0.2.5";
 const CUI_LIGHT_CORE_VER = cui_light_core_dist_esm["a" /* CUI_CORE_VERSION */];
 const CUI_LIGHT_COMPONENTS_VER = esm["a" /* CUI_LIGHT_COMPONENTS_VERSION */];
 const CUI_LIGHT_PLUGINS_VER = dist_esm["a" /* CUI_LIGHT_PLUGINS_VERSION */];

@@ -1,6 +1,6 @@
 {
   "name": "cui-light",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "cUI light framework for the web",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -51,9 +51,9 @@
   "devDependencies": {
     "@types/jasmine": "^3.6.2",
     "clean-webpack-plugin": "^3.0.0",
-    "cui-light-components": "^0.2.6",
-    "cui-light-core": "^0.2.7",
-    "cui-light-plugins": "^0.2.5",
+    "cui-light-components": "^0.2.7",
+    "cui-light-core": "^0.2.8",
+    "cui-light-plugins": "^0.2.6",
     "dts-bundle": ">=0.7.3",
     "jasmine": "^3.6.3",
     "karma-typescript": "^5.2.0",

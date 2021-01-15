@@ -56,6 +56,7 @@
 /* unused harmony export mapObject */
 /* unused harmony export mapObjectArray */
 /* unused harmony export delay */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return splitColon; });
 /* harmony import */ var _models_errors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _statics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
@@ -266,21 +267,16 @@ function parseAttributeString(attribute) {
             ret = {};
             //@ts-ignore - null already checked
             attribute.split(';').forEach(val => {
-                let sp = val.split(':');
+                let sp = splitColon(val);
+                //let sp = val.split(':')
                 let len = sp.length;
                 let tag = undefined;
                 let value = "";
                 if (len < 2) {
                     return;
                 }
-                if (len === 2) {
-                    tag = sp[0].trim();
-                    value = sp[1].trim();
-                }
-                else if (len > 2) {
-                    tag = sp.shift();
-                    value = sp.join(":").trim();
-                }
+                tag = sp[0].trim();
+                value = sp[1].trim();
                 if (tag)
                     ret[tag] = value.replace('U+0003B', ';');
             });
@@ -607,6 +603,19 @@ function delay(callback, delayTime) {
         };
     };
 }
+function splitColon(text) {
+    let ret = [];
+    if (!is(text)) {
+        return ret;
+    }
+    let split = text.split(":");
+    if (split.length === 1) {
+        return split;
+    }
+    let tag = split.shift();
+    // @ts-ignore tag is always defined
+    return [tag, split.join(":")];
+}
 
 
 /***/ }),
@@ -798,12 +807,13 @@ const COMPONENTS_COUNTER = Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* cou
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CuiClassAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CuiClassAction; });
 /* unused harmony export CuiInboundAction */
 /* unused harmony export AttributeAction */
+/* unused harmony export StyleAction */
 /* unused harmony export DummyAction */
-/* unused harmony export CuiActionsFatory */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CuiActionsListFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CuiActionsFatory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CuiActionsListFactory; });
 /* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
     if (!privateMap.has(receiver)) {
@@ -818,7 +828,7 @@ var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || 
     }
     return privateMap.get(receiver);
 };
-var _class, _name, _attributeName, _attributeValue;
+var _class, _name, _attributeName, _attributeValue, _attributeName_1, _attributeValue_1;
 
 class CuiClassAction {
     constructor(className) {
@@ -906,7 +916,7 @@ class AttributeAction {
         var _a, _b;
         _attributeName.set(this, void 0);
         _attributeValue.set(this, void 0);
-        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _attributeName, _c); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _attributeValue, _c); } }).value] = attribute.split(',');
+        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _attributeName, _c); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _attributeValue, _c); } }).value] = Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* splitColon */ "G"])(attribute); // attribute.split(',')
     }
     add(element, utils) {
         if (!Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* are */ "b"])(element, __classPrivateFieldGet(this, _attributeName), __classPrivateFieldGet(this, _attributeValue))) {
@@ -935,6 +945,48 @@ class AttributeAction {
     }
 }
 _attributeName = new WeakMap(), _attributeValue = new WeakMap();
+class StyleAction {
+    constructor(attribute) {
+        var _a, _b;
+        _attributeName_1.set(this, void 0);
+        _attributeValue_1.set(this, void 0);
+        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _attributeName_1, _c); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _attributeValue_1, _c); } }).value] = Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* splitColon */ "G"])(attribute);
+    }
+    add(element, utils) {
+        if (!Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* are */ "b"])(element, __classPrivateFieldGet(this, _attributeName_1), __classPrivateFieldGet(this, _attributeValue_1))) {
+            return;
+        }
+        let el = element;
+        if (el.style && !el.style[__classPrivateFieldGet(this, _attributeName_1)]) {
+            el.style[__classPrivateFieldGet(this, _attributeName_1)] = __classPrivateFieldGet(this, _attributeValue_1);
+        }
+    }
+    remove(element, utils) {
+        if (!Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* are */ "b"])(element, __classPrivateFieldGet(this, _attributeName_1), __classPrivateFieldGet(this, _attributeValue_1))) {
+            return;
+        }
+        let el = element;
+        if (el.style && el.style[__classPrivateFieldGet(this, _attributeName_1)]) {
+            el.style[__classPrivateFieldGet(this, _attributeName_1)] = "";
+        }
+    }
+    toggle(element, utils) {
+        if (!Object(_functions__WEBPACK_IMPORTED_MODULE_0__[/* are */ "b"])(element, __classPrivateFieldGet(this, _attributeName_1), __classPrivateFieldGet(this, _attributeValue_1))) {
+            return;
+        }
+        let el = element;
+        if (!el.style) {
+            return;
+        }
+        if (!el.style[__classPrivateFieldGet(this, _attributeName_1)]) {
+            el.style[__classPrivateFieldGet(this, _attributeName_1)] = __classPrivateFieldGet(this, _attributeValue_1);
+        }
+        else {
+            delete el.style[__classPrivateFieldGet(this, _attributeName_1)];
+        }
+    }
+}
+_attributeName_1 = new WeakMap(), _attributeValue_1 = new WeakMap();
 class DummyAction {
     constructor() {
     }
@@ -958,6 +1010,8 @@ class CuiActionsFatory {
                 return new CuiInboundAction(value.substring(1));
             case "&":
                 return new AttributeAction(value.substring(1));
+            case "^":
+                return new StyleAction(value.substring(1));
             default:
                 return new CuiClassAction(value);
         }
@@ -1884,7 +1938,7 @@ _interactions = new WeakMap();
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_LIGHT_COMPONENTS_VERSION; });
-const CUI_LIGHT_COMPONENTS_VERSION = "0.2.6";
+const CUI_LIGHT_COMPONENTS_VERSION = "0.2.7";
 
 
 /***/ }),
@@ -1893,7 +1947,7 @@ const CUI_LIGHT_COMPONENTS_VERSION = "0.2.6";
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_LIGHT_PLUGINS_VERSION; });
-const CUI_LIGHT_PLUGINS_VERSION = "0.2.5";
+const CUI_LIGHT_PLUGINS_VERSION = "0.2.6";
 
 
 /***/ }),
@@ -1902,7 +1956,7 @@ const CUI_LIGHT_PLUGINS_VERSION = "0.2.5";
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CUI_CORE_VERSION; });
-const CUI_CORE_VERSION = "0.2.7";
+const CUI_CORE_VERSION = "0.2.8";
 
 
 /***/ }),
@@ -2209,16 +2263,16 @@ class base_CuiInteractableHandler extends base_CuiHandlerBase {
     onHandle() {
         __classPrivateFieldSet(this, _openEventId, this.onEvent(statics["i" /* EVENTS */].OPEN, this.openFromEvent.bind(this)));
         __classPrivateFieldSet(this, _closeEventId, this.onEvent(statics["i" /* EVENTS */].CLOSE, this.closeFromEvent.bind(this)));
-        __classPrivateFieldSet(this, _openAct, utils_actions["a" /* CuiActionsListFactory */].get(this.args.openAct));
-        __classPrivateFieldSet(this, _closeAct, utils_actions["a" /* CuiActionsListFactory */].get(this.args.closeAct));
+        __classPrivateFieldSet(this, _openAct, utils_actions["b" /* CuiActionsListFactory */].get(this.args.openAct));
+        __classPrivateFieldSet(this, _closeAct, utils_actions["b" /* CuiActionsListFactory */].get(this.args.closeAct));
         this.onInit();
     }
     onRefresh() {
         if (!this.prevArgs || this.args.openAct !== this.prevArgs.openAct) {
-            __classPrivateFieldSet(this, _openAct, utils_actions["a" /* CuiActionsListFactory */].get(this.args.openAct));
+            __classPrivateFieldSet(this, _openAct, utils_actions["b" /* CuiActionsListFactory */].get(this.args.openAct));
         }
         if (!this.prevArgs || this.args.closeAct !== this.prevArgs.closeAct) {
-            __classPrivateFieldSet(this, _closeAct, utils_actions["a" /* CuiActionsListFactory */].get(this.args.closeAct));
+            __classPrivateFieldSet(this, _closeAct, utils_actions["b" /* CuiActionsListFactory */].get(this.args.closeAct));
         }
         this.onUpdate();
     }
@@ -3389,7 +3443,7 @@ class close_CuiCloseHandler extends CuiHandler {
                 return false;
             }
             else if (Object(functions["b" /* are */])(this.args.action, this.args.timeout)) {
-                let actions = utils_actions["a" /* CuiActionsListFactory */].get(this.args.action);
+                let actions = utils_actions["b" /* CuiActionsListFactory */].get(this.args.action);
                 return this.actionsHelper.performActions(target, actions, this.args.timeout, () => {
                     this.removeActiveClass(target);
                 });
@@ -4118,7 +4172,7 @@ class drop_CuiDropHandler extends CuiHandler {
         drop_classPrivateFieldGet(this, _positionCalculator).setStatic(this.args.pos);
         drop_classPrivateFieldGet(this, _positionCalculator).setMargin(this.args.margin);
         drop_classPrivateFieldSet(this, _autoTask, new task_CuiTaskRunner(this.args.timeout, false, this.close.bind(this)));
-        drop_classPrivateFieldSet(this, _actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        drop_classPrivateFieldSet(this, _actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
         this.mutate(() => {
             AriaAttributes.setAria(this.element, 'aria-dropdown', "");
         });
@@ -4137,7 +4191,7 @@ class drop_CuiDropHandler extends CuiHandler {
         this.setTriggerEvent();
         drop_classPrivateFieldGet(this, _positionCalculator).setStatic(this.args.pos);
         drop_classPrivateFieldGet(this, _positionCalculator).setMargin(this.args.margin);
-        drop_classPrivateFieldSet(this, _actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        drop_classPrivateFieldSet(this, _actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
         drop_classPrivateFieldGet(this, _autoTask).setTimeout(this.args.timeout);
     }
     onDestroy() {
@@ -4828,7 +4882,7 @@ class intersection_CuiIntersectionHandler extends CuiHandler {
             let el = this.args.isRoot ? document.body : this.element;
             intersection_intersection_classPrivateFieldSet(this, intersection_targets, [...el.querySelectorAll(this.args.target)]);
         }
-        intersection_intersection_classPrivateFieldSet(this, intersection_actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        intersection_intersection_classPrivateFieldSet(this, intersection_actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
     }
     onIntersection(entries, observer) {
         if (!Object(functions["x" /* is */])(intersection_intersection_classPrivateFieldGet(this, intersection_targets))) {
@@ -5420,7 +5474,7 @@ class offset_CuiOffsetHandler extends CuiHandler {
     parseAttribute() {
         offset_classPrivateFieldSet(this, offset_root, this.getRoot());
         offset_classPrivateFieldSet(this, offset_target, this.getTarget());
-        offset_classPrivateFieldSet(this, _action, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        offset_classPrivateFieldSet(this, _action, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
         offset_classPrivateFieldSet(this, _modeHandler, CuiOffsetModeFactory.get(this.args.mode));
     }
     checkAndPerformActions(ev) {
@@ -5622,7 +5676,7 @@ class open_CuiOpenHandler extends CuiHandler {
                 this._log.debug("Open html component");
                 if (Object(functions["b" /* are */])(this.args.timeout, this.args.action)) {
                     this._log.debug("Perfrom an action");
-                    let actions = utils_actions["a" /* CuiActionsListFactory */].get(this.args.action);
+                    let actions = utils_actions["b" /* CuiActionsListFactory */].get(this.args.action);
                     yield this.actionsHelper.performActions(target, actions, this.args.timeout, () => {
                         this.setActiveClass(target);
                     });
@@ -5691,7 +5745,8 @@ var resize_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet
     }
     return privateMap.get(receiver);
 };
-var resize_prefix, resize_eventId, _intersectionObserver, _currentSize, _currentValue, _lastValue, _isIntersecting, _timeoutToken;
+var resize_prefix, resize_eventId, _intersectionObserver, _currentSize, _currentValue, _lastValue, _currentAction, _isIntersecting, _timeoutToken;
+
 
 
 
@@ -5699,14 +5754,12 @@ var resize_prefix, resize_eventId, _intersectionObserver, _currentSize, _current
 class resize_CuiResizeArgs {
     constructor() {
         this.mode = "simple";
-        this.attribute = "";
         this.default = "";
         this.small = this.medium = this.large = this.xlarge = undefined;
         this.delay = 0;
     }
     parse(args) {
         var _a, _b, _c, _d;
-        this.attribute = Object(functions["u" /* getStringOrDefault */])(args.attribute, "");
         this.default = Object(functions["u" /* getStringOrDefault */])(args.default, "");
         this.small = (_a = args.small) !== null && _a !== void 0 ? _a : args.s;
         this.medium = (_b = args.medium) !== null && _b !== void 0 ? _b : args.m;
@@ -5738,6 +5791,7 @@ class resize_CuiResizeHandler extends CuiHandler {
         _currentSize.set(this, void 0);
         _currentValue.set(this, void 0);
         _lastValue.set(this, void 0);
+        _currentAction.set(this, void 0);
         _isIntersecting.set(this, void 0);
         _timeoutToken.set(this, void 0);
         resize_classPrivateFieldSet(this, resize_eventId, null);
@@ -5748,6 +5802,7 @@ class resize_CuiResizeHandler extends CuiHandler {
         resize_classPrivateFieldSet(this, _currentSize, "none");
         resize_classPrivateFieldSet(this, _isIntersecting, false);
         resize_classPrivateFieldSet(this, _timeoutToken, undefined);
+        resize_classPrivateFieldSet(this, _currentAction, undefined);
     }
     onInit() {
         resize_classPrivateFieldSet(this, resize_eventId, this.utils.bus.on(statics["i" /* EVENTS */].RESIZE, this.resize.bind(this)));
@@ -5833,31 +5888,23 @@ class resize_CuiResizeHandler extends CuiHandler {
             this.logInfo("Not intersecting");
             return;
         }
-        if (!Object(functions["b" /* are */])(this.args.attribute, resize_classPrivateFieldGet(this, _currentValue))) {
-            this.logWarning("Not eligible to set value: " + this.args.attribute + ", " + resize_classPrivateFieldGet(this, _currentValue));
+        if (!Object(functions["x" /* is */])(resize_classPrivateFieldGet(this, _currentValue))) {
+            this.logWarning("Not eligible to set value: " + resize_classPrivateFieldGet(this, _currentValue));
             return;
         }
         if (resize_classPrivateFieldGet(this, _lastValue) !== resize_classPrivateFieldGet(this, _currentValue)) {
             this.run(() => {
-                if (this.args.attribute === 'class') {
-                    this.mutate(() => {
-                        if (Object(functions["x" /* is */])(resize_classPrivateFieldGet(this, _lastValue))) {
-                            this.element.classList.remove(resize_classPrivateFieldGet(this, _lastValue));
-                        }
-                        //@ts-ignore already checked
-                        this.element.classList.add(resize_classPrivateFieldGet(this, _currentValue));
-                        //@ts-ignore already checked
-                        resize_classPrivateFieldSet(this, _lastValue, resize_classPrivateFieldGet(this, _currentValue));
-                    });
-                }
-                else {
-                    this.mutate(() => {
-                        //@ts-ignore already checked
-                        this.element.setAttribute(this.args.attribute, resize_classPrivateFieldGet(this, _currentValue));
-                        //@ts-ignore already checked
-                        resize_classPrivateFieldSet(this, _lastValue, resize_classPrivateFieldGet(this, _currentValue));
-                    });
-                }
+                //@ts-ignore already checked
+                let newAction = utils_actions["a" /* CuiActionsFatory */].get(resize_classPrivateFieldGet(this, _currentValue));
+                this.mutate(() => {
+                    if (resize_classPrivateFieldGet(this, _currentAction)) {
+                        resize_classPrivateFieldGet(this, _currentAction).remove(this.element);
+                    }
+                    newAction.add(this.element);
+                    //@ts-ignore already checked
+                    resize_classPrivateFieldSet(this, _lastValue, resize_classPrivateFieldGet(this, _currentValue));
+                    resize_classPrivateFieldSet(this, _currentAction, newAction);
+                });
             });
         }
     }
@@ -5882,7 +5929,7 @@ class resize_CuiResizeHandler extends CuiHandler {
         }, this.args.delay));
     }
 }
-resize_eventId = new WeakMap(), _intersectionObserver = new WeakMap(), _currentSize = new WeakMap(), _currentValue = new WeakMap(), _lastValue = new WeakMap(), _isIntersecting = new WeakMap(), _timeoutToken = new WeakMap();
+resize_eventId = new WeakMap(), _intersectionObserver = new WeakMap(), _currentSize = new WeakMap(), _currentValue = new WeakMap(), _lastValue = new WeakMap(), _currentAction = new WeakMap(), _isIntersecting = new WeakMap(), _timeoutToken = new WeakMap();
 
 // CONCATENATED MODULE: ./node_modules/cui-light-components/dist/esm/scroll/scroll.js
 var scroll_scroll_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
@@ -6350,8 +6397,8 @@ class scrollspy_CuiScrollspyHandler extends CuiHandler {
         scrollspy_classPrivateFieldGet(this, scrollspy_listener).setChildren(targets);
         scrollspy_classPrivateFieldGet(this, scrollspy_listener).setThreshold(this.args.threshold);
         scrollspy_classPrivateFieldSet(this, _links, this.args.link ? [...document.querySelectorAll(this.args.link)] : []);
-        scrollspy_classPrivateFieldSet(this, scrollspy_actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
-        scrollspy_classPrivateFieldSet(this, _linkActions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.linkAction));
+        scrollspy_classPrivateFieldSet(this, scrollspy_actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
+        scrollspy_classPrivateFieldSet(this, _linkActions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.linkAction));
         scrollspy_classPrivateFieldSet(this, scrollspy_modeHandler, CuiScrollSpyModeHandlerFactory.get(this.args.mode));
     }
     updateAttributes() {
@@ -6366,8 +6413,8 @@ class scrollspy_CuiScrollspyHandler extends CuiHandler {
         }
         scrollspy_classPrivateFieldGet(this, scrollspy_listener).setThreshold(this.args.threshold);
         scrollspy_classPrivateFieldSet(this, _links, this.args.link ? [...document.querySelectorAll(this.args.link)] : []);
-        scrollspy_classPrivateFieldSet(this, scrollspy_actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
-        scrollspy_classPrivateFieldSet(this, _linkActions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.linkAction));
+        scrollspy_classPrivateFieldSet(this, scrollspy_actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
+        scrollspy_classPrivateFieldSet(this, _linkActions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.linkAction));
         scrollspy_classPrivateFieldSet(this, scrollspy_modeHandler, CuiScrollSpyModeHandlerFactory.get(this.args.mode));
     }
 }
@@ -7468,8 +7515,8 @@ class switch_CuiSwitchHandler extends base_CuiMutableHandler {
      * Gets attributes value and prepares properties
      */
     parseArguments() {
-        switch_classPrivateFieldSet(this, _actionsIn, utils_actions["a" /* CuiActionsListFactory */].get(this.args.in));
-        switch_classPrivateFieldSet(this, _actionsOut, utils_actions["a" /* CuiActionsListFactory */].get(this.args.out));
+        switch_classPrivateFieldSet(this, _actionsIn, utils_actions["b" /* CuiActionsListFactory */].get(this.args.in));
+        switch_classPrivateFieldSet(this, _actionsOut, utils_actions["b" /* CuiActionsListFactory */].get(this.args.out));
         switch_classPrivateFieldSet(this, switch_links, Object(functions["x" /* is */])(this.args.links) ? [...document.querySelectorAll(this.args.links)] : []);
     }
     /**
@@ -7712,13 +7759,13 @@ class toggle_CuiToggleHandler extends CuiHandler {
     }
     onInit() {
         toggle_classPrivateFieldSet(this, toggle_target, this.getTarget());
-        toggle_classPrivateFieldSet(this, toggle_actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        toggle_classPrivateFieldSet(this, toggle_actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
         this.element.addEventListener('click', this.onClick);
         toggle_classPrivateFieldSet(this, _toggleEventId, this.onEvent(statics["i" /* EVENTS */].TOGGLE, this.toggle.bind(this)));
     }
     onUpdate() {
         toggle_classPrivateFieldSet(this, toggle_target, this.getTarget());
-        toggle_classPrivateFieldSet(this, toggle_actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        toggle_classPrivateFieldSet(this, toggle_actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
     }
     onDestroy() {
         this.element.removeEventListener('click', this.onClick);
@@ -7898,7 +7945,7 @@ class tooltip_CuiTooltipHandler extends CuiHandler {
     getDataFromArgs() {
         tooltip_classPrivateFieldGet(this, tooltip_positionCalculator).setMargin(this.args.margin);
         tooltip_classPrivateFieldGet(this, tooltip_positionCalculator).setStatic(this.args.pos);
-        tooltip_classPrivateFieldSet(this, tooltip_actions, utils_actions["a" /* CuiActionsListFactory */].get(this.args.action));
+        tooltip_classPrivateFieldSet(this, tooltip_actions, utils_actions["b" /* CuiActionsListFactory */].get(this.args.action));
     }
     toggleActions() {
         if (!tooltip_classPrivateFieldGet(this, _tooltip)) {
